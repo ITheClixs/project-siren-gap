@@ -1,0 +1,5 @@
+date,study,quantity,point,lo80,hi80,rationale-hash
+2026-07-16,S3,P-A canonicalization consistency ordering across activations,"tanh ~ gaussian > sine > relu+pe > finer",NA,NA,0401f8697c36bba3
+2026-07-16,S3,P-B raw-weight decodability ordering across activations (conditional on FINER per-neuron group ~ trivial; operational orbit-volume definition due before S3 prereg),"finer >= tanh ~ gaussian > sine > relu+pe",NA,NA,0401f8697c36bba3
+2026-07-16,S3,P-C post-canonicalization collapse-to-shared-init-ceiling ordering,"tanh ~ gaussian first; sine next; relu+pe next; finer least moved",NA,NA,0401f8697c36bba3
+2026-07-16,S1/PO-9,P-D direction: W1-vs-pixel linear-probe accuracy gap as function of INR width,"monotone decreasing in width (numeric intervals to be registered at S1 prereg)",NA,NA,0401f8697c36bba3

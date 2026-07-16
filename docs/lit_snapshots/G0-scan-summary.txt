@@ -1,0 +1,491 @@
+
+## .lit_cache/verify1.xml (20 entries)
+2312.04501v2 | 2023-12-07 | Graph Metanetworks for Processing Diverse Neural Architectures
+2301.05187v1 | 2023-01-05 | WIRE: Wavelet Implicit Neural Representations
+2305.13546v1 | 2023-05-22 | Neural Functional Transformers
+2003.08934v2 | 2020-03-19 | NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis
+2312.02434v1 | 2023-12-05 | FINER: Flexible spectral-bias tuning in Implicit NEural Representation by Variable-periodic Activation Functions
+2302.03130v2 | 2023-02-06 | Spatial Functa: Scaling Functa to ImageNet Classification and Generation
+2209.04836v6 | 2022-09-11 | Git Re-Basin: Merging Models modulo Permutation Symmetries
+2302.05438v1 | 2023-02-10 | Deep Learning on Implicit Neural Representations of Shapes
+2402.16077v2 | 2024-02-25 | Equivariant Frames and the Impossibility of Continuous Canonicalization
+2403.12143v3 | 2024-03-18 | Graph Neural Networks for Learning Equivariant Representations of Neural Networks
+2211.06489v3 | 2022-11-11 | Equivariance with Learned Canonicalization Functions
+2405.20231v3 | 2024-05-30 | The Empirical Impact of Neural Parameter Symmetries, or Lack Thereof
+2201.12204v3 | 2022-01-28 | From data to functa: Your data point is a function and you can treat it like one
+2402.05232v1 | 2024-02-07 | Universal Neural Functionals
+2301.12780v2 | 2023-01-30 | Equivariant Architectures for Learning in Deep Weight Spaces
+2006.09661v1 | 2020-06-17 | Implicit Neural Representations with Periodic Activation Functions
+2110.03336v4 | 2021-10-07 | Frame Averaging for Invariant and Equivariant Network Design
+2110.06296v2 | 2021-10-12 | The Role of Permutation Invariance in Linear Mode Connectivity of Neural Networks
+2310.13397v4 | 2023-10-20 | Equivariant Deep Weight Space Alignment
+2302.14040v3 | 2023-02-27 | Permutation Equivariant Neural Functionals
+
+## .lit_cache/verify2.xml (16 entries)
+2209.14764v1 | 2022-09-29 | Model Zoos: A Dataset of Diverse Populations of Neural Network Models
+2002.11448v4 | 2020-02-26 | Predicting Neural Network Accuracy from Weights
+2102.13219v1 | 2021-02-25 | Learning with invariances in random features and kernel models
+2406.10685v2 | 2024-06-15 | Scale Equivariant Graph Metanetworks
+2312.10531v2 | 2023-12-16 | How to Train Neural Field Representations: A Comprehensive Study and Benchmark
+2402.04081v2 | 2024-02-06 | Improved Generalization of Weight Space Networks via Augmentations
+2605.08281v1 | 2026-05-08 | Is Class Signal Clustered or Routed in Task-Induced Implicit Neural Representation Weight Spaces?
+2601.23181v1 | 2026-01-30 | Ensuring Semantics in Weights of Implicit Neural Representations through the Implicit Function Theorem
+2306.12447v1 | 2023-06-20 | Thermodynamics of Information
+2303.17015v1 | 2023-03-29 | HyperDiffusion: Generating Implicit Neural Fields with Weight-Space Diffusion
+2409.11697v3 | 2024-09-18 | Monomial Matrix Group Equivariant Neural Functional Networks
+2102.10333v2 | 2021-02-20 | Provably Strict Generalisation Benefit for Equivariant Models
+2106.07148v2 | 2021-06-14 | On the Sample Complexity of Learning under Invariance and Geometric Stability
+2110.15288v5 | 2021-10-28 | Hyper-Representations: Self-Supervised Representation Learning on Neural Network Weights for Model Characteristic Prediction
+2209.12892v1 | 2022-09-26 | Learning to Learn with Generative Models of Neural Network Checkpoints
+2506.13018v3 | 2025-06-16 | Symmetry in Neural Network Parameter Spaces
+
+## .lit_cache/eac.xml (5 entries)
+2304.12794v4 | 2023-04-25 | Expand-and-Cluster: Parameter Recovery of Neural Networks
+2105.11509v1 | 2021-05-24 | The sound-ring radiation of expanding vortex clusters
+2405.13395v1 | 2024-05-22 | An in-depth analysis of the differentially expanding star cluster Stock 18 (Villafranca O-036) using Gaia DR3 and ground-based dat
+astro-ph/9806221v1 | 1998-06-16 | An Expanding Trapezium Cluster?
+2205.13882v1 | 2022-05-27 | How to Peel a Million: Validating and Expanding Bitcoin Clusters
+
+## .lit_cache/s01_wsl.xml (18 entries)
+2607.03551v1 | 2026-07-03 | WeightCLIP: Aligning Datasets and Models for Weight Space Learning
+2605.23410v1 | 2026-05-22 | What Linear Probes Miss: Multi-View Probing for Weight-Space Learning
+2604.26673v1 | 2026-04-29 | Laplace Approximation for Bayesian Tensor Network Kernel Machines
+2604.23720v1 | 2026-04-26 | Quasi-Equivariant Metanetworks
+2603.10090v1 | 2026-03-10 | A Survey of Weight Space Learning: Understanding, Representation, and Generation
+2602.01083v2 | 2026-02-01 | On the Expressive Power of Permutation-Equivariant Weight-Space Networks
+2601.23181v1 | 2026-01-30 | Ensuring Semantics in Weights of Implicit Neural Representations through the Implicit Function Theorem
+2510.02096v1 | 2025-10-02 | Learning Model Representations Using Publicly Available Model Hubs
+2507.10623v2 | 2025-07-14 | Flows and Diffusions on the Neural Manifold
+2506.01153v3 | 2025-06-01 | Weight-Space Linear Recurrent Neural Networks
+2504.18072v2 | 2025-04-25 | A Model Zoo on Phase Transitions in Neural Networks
+2504.10141v1 | 2025-04-14 | The Impact of Model Zoo Size and Composition on Weight Space Learning
+2503.21830v1 | 2025-03-26 | Shape Generation via Weight Space Learning
+2503.19215v2 | 2025-03-24 | On Symmetries in Convolutional Weights
+2503.09120v1 | 2025-03-12 | On the Internal Representations of Graph Metanetworks
+2503.04074v1 | 2025-03-06 | Can We Optimize Deep RL Policy Weights as Trajectory Modeling?
+2410.10811v2 | 2024-10-14 | Deep Linear Probe Generators for Weight Space Learning
+2406.09997v1 | 2024-06-14 | Towards Scalable and Versatile Weight Space Learning
+
+## .lit_cache/s02_inr_cls.xml (30 entries)
+2607.10068v1 | 2026-07-11 | Error Aware Distribution Prediction for Lightweight Implicit Neural Representations
+2607.02166v1 | 2026-07-02 | Dynamic Neural Graph Encoding of Inference Processes in Deep Weight Space
+2605.08281v1 | 2026-05-08 | Is Class Signal Clustered or Routed in Task-Induced Implicit Neural Representation Weight Spaces?
+2604.11172v1 | 2026-04-13 | NeuVolEx: Implicit Neural Features for Volume Exploration
+2604.07180v2 | 2026-04-08 | Energy-based Tissue Manifolds for Longitudinal Multiparametric MRI Analysis
+2603.29768v1 | 2026-03-31 | Big2Small: A Unifying Neural Network Framework for Model Compression
+2603.28334v1 | 2026-03-30 | Key-Embedded Privacy for Decentralized AI in Biomedical Omics
+2603.25951v1 | 2026-03-26 | Low-Rank-Modulated Functa: Exploring the Latent Space of Implicit Neural Representations for Interpretable Ultrasound Video Analys
+2601.23181v1 | 2026-01-30 | Ensuring Semantics in Weights of Implicit Neural Representations through the Implicit Function Theorem
+2601.14256v1 | 2026-01-20 | Implicit Neural Representation Facilitates Unified Universal Vision Encoding
+2512.11894v1 | 2025-12-10 | mmWEAVER: Environment-Specific mmWave Signal Synthesis from a Photo and Activity Description
+2511.03531v1 | 2025-11-05 | Efficient Neural Networks with Discrete Cosine Transform Activations
+2510.09936v1 | 2025-10-11 | Semi-disentangled spatiotemporal implicit neural representations of longitudinal neuroimaging data for trajectory classification
+2509.20323v2 | 2025-09-24 | A Recovery Guarantee for Sparse Neural Networks
+2508.15946v1 | 2025-08-21 | Investigating Different Geo Priors for Image Classification
+2508.05168v1 | 2025-08-07 | Beyond Pixels: Medical Image Quality Assessment with Implicit Neural Representations
+2507.21863v1 | 2025-07-29 | VidFuncta: Towards Generalizable Neural Representations for Ultrasound Videos
+2506.15948v1 | 2025-06-19 | Information-computation trade-offs in non-linear transforms
+2506.04206v1 | 2025-06-04 | A Few Moments Please: Scalable Graphon Learning via Moment Matching
+2503.18123v1 | 2025-03-23 | End-to-End Implicit Neural Representations for Classification
+2503.15420v1 | 2025-03-19 | LIFT: Latent Implicit Functions for Task- and Data-Agnostic Encoding
+2503.15156v1 | 2025-03-19 | ARC: Anchored Representation Clouds for High-Resolution INR Classification
+2502.20314v3 | 2025-02-27 | Adversarial Attacks in Weight-Space Classifiers
+2412.01124v2 | 2024-12-02 | SUICA: Learning Super-high Dimensional Sparse Implicit Neural Representations for Spatial Transcriptomics
+2407.02974v1 | 2024-07-03 | IM-MoCo: Self-supervised MRI Motion Correction using Motion-Guided Implicit Neural Representations
+2403.14213v1 | 2024-03-21 | Toward Multi-class Anomaly Detection: Exploring Class-aware Unified Model against Inter-class Interference
+2403.12143v3 | 2024-03-18 | Graph Neural Networks for Learning Equivariant Representations of Neural Networks
+2307.00868v1 | 2023-07-03 | MADS: Modulated Auto-Decoding SIREN for time series imputation
+2306.16699v3 | 2023-06-29 | Rapid-INR: Storage Efficient CPU-free DNN Training Using Implicit Neural Representation
+2306.03576v1 | 2023-06-06 | Human 3D Avatar Modeling with Implicit Neural Representation: A Brief Survey
+
+## .lit_cache/s03_param_sym.xml (30 entries)
+2607.10337v1 | 2026-07-11 | Interwoven long-range order induced by random fields
+2606.23607v1 | 2026-06-22 | Scaling Linear Mode Connectivity and Merging to Billion Parameter Pretrained Transformers
+2606.21872v1 | 2026-06-20 | Spectroscopic fingerprints of a ferroaxial charge density wave
+2606.18303v1 | 2026-06-16 | A Link between Shock-wave Theory and Symmetry-reduced Stochastic Gradient Descent for Artificial Neural Networks
+2606.17191v1 | 2026-06-15 | How twist angle inhomogeneity masks the BKT transition and the order parameter symmetry
+2606.04754v1 | 2026-06-03 | Beyond Structural Symmetries: Linear Mode Connectivity via Neuron Identifiability
+2605.18319v1 | 2026-05-18 | The Symmetries of Three-Layer ReLU Networks
+2605.15107v1 | 2026-05-14 | Solutions for Hecke Sum Questions of Banerjee and Bringmann
+2604.14037v2 | 2026-04-15 | A Complete Symmetry Classification of Shallow ReLU Networks
+2604.02133v2 | 2026-04-02 | Effective Field Theory for Superconducting Phase Transitions
+2603.21502v1 | 2026-03-23 | Quotient Geometry, Effective Curvature, and Implicit Bias in Simple Shallow Neural Networks
+2603.11278v1 | 2026-03-11 | Pseudo Point Nodal Superconducting Gap in Spin-Triplet UTe$_2$
+2603.07299v1 | 2026-03-07 | Spectral Discovery of Continuous Symmetries via Generalized Fourier Transforms
+2602.17952v1 | 2026-02-20 | Hardware-Friendly Input Expansion for Accelerating Function Approximation
+2602.02144v1 | 2026-02-02 | Optimizing the Upper-Bound Constant for the Crossing Number of Polynomial Curve Systems
+2601.14526v2 | 2026-01-20 | 3D bulk-resolved $g$-wave altermagnetic order parameter in CrSb
+2510.20237v3 | 2025-10-23 | Electric field induced Berry curvature dipole and non-linear anomalous Hall effects in higher wave symmetric unconventional magnet
+2510.16591v1 | 2025-10-18 | Symmetry and Generalisation in Neural Approximations of Renormalisation Transformations
+2509.22219v4 | 2025-09-26 | Interpretable Discovery of One-parameter Subgroups: A Modular Framework for Elliptical, Hyperbolic, and Parabolic Symmetries
+2506.13018v3 | 2025-06-16 | Symmetry in Neural Network Parameter Spaces
+2506.02269v2 | 2025-06-02 | A Tale of Two Symmetries: Exploring the Loss Landscape of Equivariant Models
+2505.23681v1 | 2025-05-29 | Understanding Mode Connectivity via Parameter Space Symmetry
+2505.12387v4 | 2025-05-18 | Neural Thermodynamics: Entropic Forces in Deep and Universal Representation Learning
+2504.15399v1 | 2025-04-21 | Improving Learning to Optimize Using Parameter Symmetries
+2504.13094v1 | 2025-04-17 | Symmetry classification and invariant solutions of the classical geometric mean reversion process
+2504.00554v1 | 2025-04-01 | Symmetry-based observers for ODE systems
+2503.16168v3 | 2025-03-20 | Tomographic imaging of superconducting order using particle-hole interference
+2503.15767v1 | 2025-03-20 | Angular Interplay of Nematicity, Superconductivity, and Strange Metallicity in a Moiré Flat Band
+2503.10633v2 | 2025-03-13 | We Should Chart an Atlas of All the World's Models
+2503.08901v2 | 2025-03-11 | Collective mode spectroscopy in time-reversal symmetry breaking superconductors
+
+## .lit_cache/s04_canon.xml (30 entries)
+2606.23361v1 | 2026-06-22 | Rethinking Molecular Graph Backdoors under Chemistry-aware Admission
+2606.16996v1 | 2026-06-15 | ActiveSAM: Image-Conditional Class Pruning for Fast and Accurate Open-Vocabulary Segmentation
+2606.00671v1 | 2026-05-30 | AXIOM: A Trust-First Neuro-Symbolic Execution Architecture for Verifiable Mathematical Reasoning
+2606.00426v1 | 2026-05-29 | Canonicalized Stable-List Replay for Private Federated Continual Learning over Language-Model Embeddings
+2605.29168v1 | 2026-05-27 | Better Later Than Sooner: Neuro-Symbolic Knowledge Graph Construction via Ontology-grounded Post-extraction Correction
+2605.23446v1 | 2026-05-22 | Weisfeiler-Leman Is Incomplete on Simple Spectrum Graphs, so Canonicalize Them
+2604.25200v1 | 2026-04-28 | Making AI-Assisted Grant Evaluation Auditable without Exposing the Model
+2603.21319v1 | 2026-03-22 | Active Inference Agency Formalization, Metrics, and Convergence Assessments
+2603.08942v2 | 2026-03-09 | BiCLIP: Domain Canonicalization via Structured Geometric Transformation
+2602.15022v1 | 2026-02-16 | Rethinking Diffusion Models with Symmetries through Canonicalization with Applications to Molecular Graph Generation
+2602.08267v2 | 2026-02-09 | Inverting Data Transformations via Diffusion Sampling
+2601.22327v1 | 2026-01-29 | Molecular Representations in Implicit Functional Space via Hyper-Networks
+2601.17396v1 | 2026-01-24 | GO-OSC and VASH: Geometry-Aware Representation Learning for Early Degradation Detection in Oscillatory Systems
+2601.05052v2 | 2026-01-08 | DeepWeightFlow: Re-Basined Flow Matching for Generating Neural Network Weights
+2601.06151v1 | 2026-01-06 | PromptPort: A Reliability Layer for Cross-Model Structured Extraction
+2601.03300v1 | 2026-01-06 | TRYLOCK: Defense-in-Depth Against LLM Jailbreaks via Layered Preference and Representation Engineering
+2511.03570v1 | 2025-11-05 | TabGemma: Text-Based Tabular ICL via LLM using Continued Pretraining and Retrieval
+2510.20974v2 | 2025-10-23 | Robust Point Cloud Reinforcement Learning via PCA-Based Canonicalization
+2509.26499v1 | 2025-09-30 | Equivariance by Local Canonicalization: A Matter of Representation
+2509.24886v3 | 2025-09-29 | Adaptive Canonicalization with Application to Invariant Anisotropic Geometric Networks
+2509.19506v2 | 2025-09-23 | Frame-based Equivariant Diffusion Models for 3D Molecular Generation
+2509.11298v2 | 2025-09-14 | When Are Two RLHF Objectives the Same?
+2508.14187v1 | 2025-08-19 | Local Scale Equivariance with Latent Deep Equilibrium Canonicalizer
+2506.16189v1 | 2025-06-19 | CP$^2$: Leveraging Geometry for Conformal Prediction via Canonicalization
+2506.05530v2 | 2025-06-05 | Spectral Graph Neural Networks are Incomplete on Graphs with a Simple Spectrum
+2505.20280v2 | 2025-05-26 | Lorentz Local Canonicalization: How to Make Any Network Lorentz-Equivariant
+2505.13289v5 | 2025-05-19 | RECON: Robust symmetry discovery via Explicit Canonical Orientation Normalization
+2503.21985v1 | 2025-03-27 | Improving Equivariant Networks with Probabilistic Symmetry Breaking
+2502.19758v1 | 2025-02-27 | Learning with Exact Invariances in Polynomial Time
+2502.05318v2 | 2025-02-07 | Diagonal Symmetrization of Neural Network Solvers for the Many-Electron Schrödinger Equation
+
+## .lit_cache/s05_periodic_sym.xml (0 entries)
+
+## .lit_cache/s06_siren_sym.xml (3 entries)
+2503.18123v1 | 2025-03-23 | End-to-End Implicit Neural Representations for Classification
+2605.14998v4 | 2026-05-14 | Learning Developmental Scaffoldings to Guide Self-Organisation
+2505.19747v2 | 2025-05-26 | Gravitational wave cosmology
+
+## .lit_cache/s07_metanets.xml (30 entries)
+2607.12495v1 | 2026-07-14 | RealSkin: Spatio-Spectral Partial Neural Adjoint Maps for Image-to-3D Attribute Transfer
+2607.06114v2 | 2026-07-07 | x-Prediction Is All You Need:Training-Free Accelerated Generation via Endpoint Decodability
+2606.30131v1 | 2026-06-29 | Hyper-Network Neural Functional Maps for Unsupervised Robust 3D Shape Matching
+2606.28240v1 | 2026-06-26 | Entropy density functional theory for inhomogeneous fluids
+2606.27956v1 | 2026-06-26 | Linking the "inner" and "outer" self to mental health and brain networks
+2606.04860v1 | 2026-06-03 | Learning Empirically Admissible Neural Heuristics for Combinatorial Search
+2605.29823v2 | 2026-05-28 | Quantifying and Optimizing Simplicity via Polynomial Representations
+2605.25224v1 | 2026-05-24 | Multi-Objective Optimisation with Oscillatory Dynamics in Spontaneous and Decision Spiking Neural Networks
+2605.19140v1 | 2026-05-18 | Learning to Hand Off: Provably Convergent Workflow Learning under Interface Constraints
+2605.19050v1 | 2026-05-18 | Generative Pseudo-Force Fields for Molecular Generation
+2605.16468v1 | 2026-05-15 | Mechanistically Interpretable Neural Encoding Reveals Fine-Grained Functional Selectivity in Human Visual Cortex
+2605.12485v2 | 2026-05-12 | Letting the neural code speak: Automated characterization of monkey visual neurons through human language
+2605.08559v1 | 2026-05-08 | Structure-Preserving Reconstruction of Convex Lipschitz Functionals on Hilbert Spaces from Finite Samples
+2605.07907v1 | 2026-05-08 | Consistency Regularised Gradient Flows for Inverse Problems
+2605.07013v2 | 2026-05-07 | CoBit: Language Modeling with Bitstream Diffusion
+2605.02417v2 | 2026-05-04 | DirectEdit: Step-Level Accurate Inversion for Flow-Based Image Editing
+2604.23720v1 | 2026-04-26 | Quasi-Equivariant Metanetworks
+2604.23536v1 | 2026-04-26 | $Z^2$-Sampling: Zero-Cost Zigzag Trajectories for Semantic Alignment in Diffusion Models
+2604.21489v1 | 2026-04-23 | MISTY: High-Throughput Motion Planning via Mixer-based Single-step Drifting
+2604.19228v1 | 2026-04-21 | Rippled graphene pores as fluidic memristive devices with synaptic and neuromorphic functionalities
+2604.17625v2 | 2026-04-19 | FlowC2S: Flowing from Current to Succeeding Frames for Fast and Memory-Efficient Video Continuation
+2605.04060v1 | 2026-04-10 | Lookahead Drifting Model
+2604.00987v1 | 2026-04-01 | Bridging Structured Knowledge and Data: A Unified Framework with Finance Applications
+2603.28288v1 | 2026-03-30 | FI-KAN: Fractal Interpolation Kolmogorov-Arnold Networks
+2603.19735v1 | 2026-03-20 | Surrogate Modeling with Low-Rank Function Representation for Electromagnetic Simulation
+2603.11973v2 | 2026-03-12 | Metadensity functional learning for classical fluids: Regularizing with pair correlations
+2603.12286v2 | 2026-03-07 | The DIME Architecture: A Unified Operational Algorithm for Neural Representation, Dynamics, Control and Integration
+2603.05686v1 | 2026-03-05 | OWL: A Novel Approach to Machine Perception During Motion
+2603.00793v1 | 2026-02-28 | Neural Functional Alignment Space: Brain-Referenced Representation of Artificial Neural Networks
+2603.04450v1 | 2026-02-26 | MPBMC: Multi-Property Bounded Model Checking with GNN-guided Clustering
+
+## .lit_cache/s08_ws_inr.xml (18 entries)
+2607.02166v1 | 2026-07-02 | Dynamic Neural Graph Encoding of Inference Processes in Deep Weight Space
+2605.08281v1 | 2026-05-08 | Is Class Signal Clustered or Routed in Task-Induced Implicit Neural Representation Weight Spaces?
+2604.16649v1 | 2026-04-17 | FLARE: A Data-Efficient Surrogate for Predicting Displacement Fields in Directed Energy Deposition
+2604.15238v2 | 2026-04-16 | A Nonlinear Separation Principle via Contraction Theory: Applications to Neural Networks, Control, and Learning
+2604.15047v1 | 2026-04-16 | Implicit Neural Representations: A Signal Processing Perspective
+2602.22823v1 | 2026-02-26 | Hypernetwork-based approach for grid-independent functional data clustering
+2602.16711v1 | 2026-02-18 | TeCoNeRV: Leveraging Temporal Coherence for Compressible Neural Representations for Videos
+2601.23181v1 | 2026-01-30 | Ensuring Semantics in Weights of Implicit Neural Representations through the Implicit Function Theorem
+2509.24353v1 | 2025-09-29 | NeRV-Diffusion: Diffuse Implicit Neural Representations for Video Synthesis
+2508.05168v1 | 2025-08-07 | Beyond Pixels: Medical Image Quality Assessment with Implicit Neural Representations
+2502.20314v3 | 2025-02-27 | Adversarial Attacks in Weight-Space Classifiers
+2409.11697v3 | 2024-09-18 | Monomial Matrix Group Equivariant Neural Functional Networks
+2407.09497v1 | 2024-06-09 | Simplicits: Mesh-Free, Geometry-Agnostic, Elastic Simulation
+2311.08851v1 | 2023-11-15 | Data Augmentations in Deep Weight Spaces
+2308.16246v1 | 2023-08-30 | Active Neural Mapping
+2305.13546v1 | 2023-05-22 | Neural Functional Transformers
+2303.17015v1 | 2023-03-29 | HyperDiffusion: Generating Implicit Neural Fields with Weight-Space Diffusion
+2206.08464v2 | 2022-06-16 | PRANC: Pseudo RAndom Networks for Compacting deep models
+
+## .lit_cache/s09_ti_ws.xml (40 entries)
+2607.07916v1 | 2026-07-08 | Persona Cartography: Charting Language Model Personality Traits in Weight Space
+2607.07127v1 | 2026-07-08 | Weight-Space Physics: Interpretable Hypernetworks for Lattice Quantum Field Theories
+2607.04123v1 | 2026-07-05 | CertMix: Certified, Data-Efficient Metamaterial Design by Affine Mixing of Aligned Neural-Implicit Weight Spaces
+2607.03551v1 | 2026-07-03 | WeightCLIP: Aligning Datasets and Models for Weight Space Learning
+2607.02166v1 | 2026-07-02 | Dynamic Neural Graph Encoding of Inference Processes in Deep Weight Space
+2607.01686v1 | 2026-07-02 | WARP: Weight-Space Analysis for Recovering Training Data Portfolios
+2606.31092v2 | 2026-06-30 | Fora: From Weight-Space to Function-Space Protection in Capability-Preserving Fine-Tuning
+2606.23740v1 | 2026-06-21 | Weight-Space Geometry of Offline Reasoning Training
+2607.13047v1 | 2026-06-19 | Targeted Recovery of Weight-Space Mechanisms From Neural Networks
+2606.18457v1 | 2026-06-16 | Task-Restricted Symmetries in Recurrent Weight Space
+2606.16263v1 | 2026-06-15 | Correction to the article "Global well-posedness and scattering in weighted space for nonlinear Schrödinger equations below the St
+2606.13276v1 | 2026-06-11 | Different Layers, Different Manifolds: Module-Wise Weight-Space Geometry in Transformer Optimization
+2606.07217v1 | 2026-06-05 | Robotic Policy Adaptation via Weight-Space Meta-Learning
+2606.00442v1 | 2026-05-30 | Exploiting weight-space symmetries for approximating curvature
+2605.29489v1 | 2026-05-28 | Access Sets Matter: Budgeting Expert Reads for Scalable Weight-Space Model Merging
+2605.23410v1 | 2026-05-22 | What Linear Probes Miss: Multi-View Probing for Weight-Space Learning
+2605.18632v1 | 2026-05-18 | Position: Weight Space Should Be a First-Class Generative AI Modality
+2605.16600v1 | 2026-05-15 | Where Pretraining writes and Alignment reads: the asymmetry of Transformer weight space
+2605.14546v1 | 2026-05-14 | Discovering Physical Directions in Weight Space: Composing Neural PDE Experts
+2605.08281v1 | 2026-05-08 | Is Class Signal Clustered or Routed in Task-Induced Implicit Neural Representation Weight Spaces?
+2605.06298v2 | 2026-05-07 | Render, Don't Decode: Weight-Space World Models with Latent Structural Disentanglement
+2604.22470v1 | 2026-04-24 | Error of discretization of Caputo fractional derivative in weighted spaces
+2604.03420v3 | 2026-04-03 | Zero-Shot Quantization via Weight-Space Arithmetic
+2604.01538v1 | 2026-04-02 | Countering Catastrophic Forgetting of Large Language Models for Better Instruction Following via Weight-Space Model Merging
+2603.10090v1 | 2026-03-10 | A Survey of Weight Space Learning: Understanding, Representation, and Generation
+2603.05873v1 | 2026-03-06 | Shifting Adaptation from Weight Space to Memory Space: A Memory-Augmented Agent for Medical Image Segmentation
+2603.00180v2 | 2026-02-26 | NNiT: Width-Agnostic Neural Network Generation with Structurally Aligned Weight Spaces
+2602.15195v3 | 2026-02-16 | Weight space Detection of Backdoors in LoRA Adapters
+2602.13550v3 | 2026-02-14 | Out-of-Support Generalisation via Weight-Space Sequence Modelling
+2602.01083v2 | 2026-02-01 | On the Expressive Power of Permutation-Equivariant Weight-Space Networks
+2512.13788v3 | 2025-12-15 | Constrained Policy Optimization via Sampling-Based Weight-Space Projection
+2512.13144v2 | 2025-12-15 | Weight Space Correlation Analysis: Quantifying Feature Utilization in Deep Learning Models
+2512.01759v3 | 2025-12-01 | Weight Space Representation Learning via Neural Field Adaptation
+2511.04046v1 | 2025-11-06 | The Kato problem and extensions for degenerate elliptic operators of higher order in weighted spaces
+2510.22491v3 | 2025-10-26 | LAMP: Data-Efficient Linear Affine Weight-Space Models for Parameter-Controlled 3D Shape Generation and Extrapolation
+2509.04145v2 | 2025-09-04 | Hyper Diffusion Avatars: Dynamic Human Avatar Generation using Network Weight Space Diffusion
+2508.20382v1 | 2025-08-28 | Immanant inequalities and weight spaces
+2508.13633v1 | 2025-08-19 | Text2Weight: Bridging Natural Language and Neural Network Weight Spaces
+2506.23695v1 | 2025-06-30 | A linear topological invariant for weighted spaces of holomorphic functions
+2506.15720v1 | 2025-06-04 | Tripartite Weight-Space Ensemble for Few-Shot Class-Incremental Learning
+
+## .lit_cache/s10_nef_init.xml (20 entries)
+2607.06237v1 | 2026-07-07 | PhyRes-MDNF: Physics-Coupled Residual GNN Correction for Multilevel Discrete Neural Field Inversion
+2605.26328v1 | 2026-05-25 | RadarSim: Simulating Single-Chip Radar via Multimodal Neural Fields
+2605.25214v1 | 2026-05-24 | A Quantum-Analogue Formalism for Modeling Supraliminal Information Processing
+2605.20185v2 | 2026-05-19 | PiG-Avatar: Hierarchical Neural-Field-Guided Gaussian Avatars
+2604.24167v1 | 2026-04-27 | PEPS: Positional Encoding Projected Sampling -- Extended
+2604.22669v3 | 2026-04-24 | DeepHartree: A Poisson-Coupled Neural Field for Scalable Density Functional Theory
+2603.10995v1 | 2026-03-11 | Factorized Neural Implicit DMD for Parametric Dynamics
+2512.01178v1 | 2025-12-01 | VSRD++: Autolabeling for 3D Object Detection via Instance-Aware Volumetric Silhouette Rendering
+2511.06802v1 | 2025-11-10 | Neural-Initialized Newton: Accelerating Nonlinear Finite Elements via Operator Learning
+2510.22022v2 | 2025-10-24 | Control of neural field equations with step-function inputs
+2509.21751v2 | 2025-09-26 | On the Effect of Neural Field Reparameterization for 4DVAR
+2505.16443v2 | 2025-05-22 | Stochastic collocation schemes for Neural Field Equations with random data
+2505.16343v3 | 2025-05-22 | Neural Field Equations with random data
+2505.13275v2 | 2025-05-19 | Hamiltonian Neural PDE Solvers through Functional Approximation
+2501.05757v3 | 2025-01-10 | Locality-aware Gaussian Compression for Fast and High-quality Rendering
+2412.19089v2 | 2024-12-26 | Humans as a Calibration Pattern: Dynamic 3D Scene Reconstruction from Unsynchronized and Uncalibrated Videos
+2412.05233v1 | 2024-12-06 | Physics-informed reduced order model with conditional neural fields
+2412.03570v1 | 2024-12-04 | Sparse-view Pose Estimation and Reconstruction via Analysis by Generative Synthesis
+2411.06181v1 | 2024-11-09 | Epi-NAF: Enhancing Neural Attenuation Fields for Limited-Angle CT with Epipolar Consistency Conditions
+2410.04779v3 | 2024-10-07 | Fast Training of Sinusoidal Neural Fields via Scaling Initialization
+
+## .lit_cache/s11_titles_a.xml (20 entries)
+2409.11697v3 | 2024-09-18 | Monomial Matrix Group Equivariant Neural Functional Networks
+2402.16077v2 | 2024-02-25 | Equivariant Frames and the Impossibility of Continuous Canonicalization
+2410.10811v2 | 2024-10-14 | Deep Linear Probe Generators for Weight Space Learning
+1312.5451v1 | 2013-12-19 | On the perturbations on satellites probing General Relativity
+1211.2146v1 | 2012-11-09 | Probing General Relativity with Accreting Black Holes
+2506.08978v1 | 2025-06-10 | Propositional Logic for Probing Generalization in Neural Networks
+2601.05320v1 | 2026-01-08 | Probing General Relativity on Cosmological Scales in the 2040s
+hep-ph/0412321v1 | 2004-12-21 | Probing Generalized Parton Distributions with Neutrino Beams
+2605.09391v2 | 2026-05-10 | Do Linear Probes Generalize Better in Persona Coordinates?
+2507.00835v3 | 2025-07-01 | Probing Generalized Emergent Dark Energy with DESI DR2
+2303.07094v2 | 2023-03-13 | Probing generalized neutrino interactions with the DUNE Near Detector
+2212.08463v2 | 2022-12-16 | Probing General Relativity in galactic scales at z $\sim0.3$
+1306.2402v2 | 2013-06-11 | Satellite probing General Relativity and its extensions and Kolmogorov analysis
+1812.09307v1 | 2018-12-21 | Probing Generalized Parton Distributions through the photoproduction of a $γπ$ pair
+hep-ph/0307369v1 | 2003-07-30 | Probing generalized parton distributions with electroproduction of lepton pairs off the nucleon
+1105.2318v1 | 2011-05-11 | Probing general relativistic effects during AGN X-ray eclipses
+2504.11392v2 | 2025-04-15 | Probing General Relativity-Induced Decoherence Using an on-chip Sagnac Interferometer
+0907.0707v2 | 2009-07-03 | New Perspective on Galaxy Clustering as a Cosmological Probe: General Relativistic Effects
+2602.23783v4 | 2026-02-27 | Diffusion Probe: Generated Image Result Prediction Using CNN Probes
+hep-ph/0110080v1 | 2001-10-05 | Probing generalized parton distributions in pi N -> l+ l- N
+
+## .lit_cache/s12_titles_b.xml (3 entries)
+2406.09997v1 | 2024-06-14 | Towards Scalable and Versatile Weight Space Learning
+2310.13397v4 | 2023-10-20 | Equivariant Deep Weight Space Alignment
+2406.17438v1 | 2024-06-25 | Implicit-Zoo: A Large-Scale Dataset of Neural Implicit Functions for 2D Images and 3D Scenes
+
+## .lit_cache/s13_recent_ws.xml (60 entries)
+2607.13967v1 | 2026-07-15 | DeltaMerge-LowRes: Composing Language and Task Deltas for Low-Resource Adaptation
+2607.13886v1 | 2026-07-15 | Dynamic Universal Approximation via Signature Controlled Differential Equations
+2607.12458v1 | 2026-07-14 | Euler Characteristics of Generic Quiver Grassmannians: Semi-Invariants and Localization
+2607.09967v2 | 2026-07-10 | Learning in Curved Weight Space:Exponential-Linear Weight Reparameterization for Improved Optimization
+2607.08866v2 | 2026-07-09 | Logarithmic Depletion of Vortex Stretching and Singularity Evasion in the 3D Navier-Stokes Equations
+2607.07916v1 | 2026-07-08 | Persona Cartography: Charting Language Model Personality Traits in Weight Space
+2607.07127v1 | 2026-07-08 | Weight-Space Physics: Interpretable Hypernetworks for Lattice Quantum Field Theories
+2607.04801v1 | 2026-07-06 | LILAC: Layer-Wise Independent LoRAs and Cascaded Conditioning for Multi-Concept Customization of Diffusion Models
+2607.04123v1 | 2026-07-05 | CertMix: Certified, Data-Efficient Metamaterial Design by Affine Mixing of Aligned Neural-Implicit Weight Spaces
+2607.03551v1 | 2026-07-03 | WeightCLIP: Aligning Datasets and Models for Weight Space Learning
+2607.02166v1 | 2026-07-02 | Dynamic Neural Graph Encoding of Inference Processes in Deep Weight Space
+2607.01686v1 | 2026-07-02 | WARP: Weight-Space Analysis for Recovering Training Data Portfolios
+2607.01546v1 | 2026-07-01 | The General Stability of Ranking
+2607.01433v1 | 2026-07-01 | CreativityNeuro: Steering Language Model Weights to Improve Divergent Thinking and Reduce Mode Collapse
+2607.00927v3 | 2026-07-01 | Post-Training Pruning for Diffusion Transformers
+2606.31282v1 | 2026-06-30 | Revisiting the Volume Hypothesis
+2606.31092v2 | 2026-06-30 | Fora: From Weight-Space to Function-Space Protection in Capability-Preserving Fine-Tuning
+2606.30899v1 | 2026-06-29 | Curvature-Guided Module Localization for Low-Rank Detoxification of Backdoored Large Language Models
+2606.30512v1 | 2026-06-29 | Informational Frustration in Neural Manifolds: Shannon Bottlenecks and the Limits of Learnability
+2606.29604v1 | 2026-06-28 | Mechanistically Eliciting Latent Behaviors in Language Models
+2606.29158v1 | 2026-06-28 | On the Nonlinearity of Learning Rate Scaling for LLM Training
+2606.27785v1 | 2026-06-26 | Output-Space Allocation Costs for Calibration-Guided LLM Compression: An Empirical Study
+2606.26629v1 | 2026-06-25 | From Weights to Features: SAE-Guided Activation Regularization for LLM Continual Learning
+2606.25087v1 | 2026-06-23 | Neural Network Quantization by Learning Low-Loss Subspaces
+2606.24219v1 | 2026-06-23 | Decoherence as Defence and the Magnitude of Noise Regularisation: A Rigorous N -Qubit Theory of Stochastic Quantum Neural Networks
+2606.23641v1 | 2026-06-22 | Flatness Preserves Instruction Following in Vision-Language-Action Models
+2606.23365v1 | 2026-06-22 | Exact and Fast Subset Selection Algorithms for the Bi-objective Integral R2 Indicator
+2606.23360v1 | 2026-06-22 | The fractional Porous Medium Equation on graphs
+2606.22146v1 | 2026-06-20 | Meta-Reinforcement Learning via Evolution for Multi-Objective Combinatorial Supply Chain Optimisation
+2606.20817v1 | 2026-06-18 | Provably Sub-Linear Two-Timescale NeuroEvolution with Online Plasticity
+2606.20386v1 | 2026-06-18 | Characters of modules over negative rank-2 Borcherds-Kac-Moody Lie algebras
+2606.18457v1 | 2026-06-16 | Task-Restricted Symmetries in Recurrent Weight Space
+2606.16793v1 | 2026-06-15 | Decay estimates for beam equations with potentials in dimension two
+2606.16263v1 | 2026-06-15 | Correction to the article "Global well-posedness and scattering in weighted space for nonlinear Schrödinger equations below the St
+2606.15168v1 | 2026-06-13 | Long-time asymptotics and invariant manifold for the fractional 2D Navier-Stokes equation
+2606.15036v1 | 2026-06-13 | Transformers Learn the Mestre-Nagao Heuristic
+2606.13276v1 | 2026-06-11 | Different Layers, Different Manifolds: Module-Wise Weight-Space Geometry in Transformer Optimization
+2606.10078v1 | 2026-06-08 | Mult-DPO: Multinomial Direct Preference Optimization for Recommender Systems
+2606.09020v1 | 2026-06-08 | On an $n-$Dimensional Travel Time Tomography Problem
+2606.08490v1 | 2026-06-07 | Nonexistence Results for Semilinear Parabolic and Hyperbolic Equations on Metric Graphs
+2606.07217v1 | 2026-06-05 | Robotic Policy Adaptation via Weight-Space Meta-Learning
+2606.06351v1 | 2026-06-04 | Function-Space Priors for Bayesian Neural ODEs with Application to Vessel Trajectory Prediction
+2606.06087v1 | 2026-06-04 | LatentSkill: From In-Context Textual Skills to In-Weight Latent Skills for LLM Agents
+2606.05145v1 | 2026-06-03 | Failed Reasoning Traces Tell You What Is Fixable (But Not by Reading Them)
+2606.04583v1 | 2026-06-03 | HalfNet: Randomized Neural Networks with Learned Subspace Geometry
+2606.04420v1 | 2026-06-03 | Loss-Conditional PINNs for Parametric PDE Families
+2606.04405v1 | 2026-06-03 | Low-Rank Decay for Grokking in Scale-Invariant Transformers: A Spectral-Geometric View
+2606.00442v1 | 2026-05-30 | Exploiting weight-space symmetries for approximating curvature
+2605.31494v1 | 2026-05-29 | Consolidating Rewarded Perturbations for LLM Post-Training
+2605.30836v2 | 2026-05-29 | Cross-Layer Subspace Coupling for LLM Compression: A Unifying Framework and Its Empirical Limits
+2605.30148v1 | 2026-05-28 | Overcoming Forgetting in LLM Fine-Tuning with Evolution Strategies
+2605.29489v1 | 2026-05-28 | Access Sets Matter: Budgeting Expert Reads for Scalable Weight-Space Model Merging
+2605.28819v1 | 2026-05-27 | PEFT-Arena: Understanding Parameter-Efficient Finetuning from a Stability-Plasticity Perspective
+2605.28649v1 | 2026-05-27 | Interpretability-Guided Layer Selection over Subspace Projection: SAEs as Stethoscopes, Not Scalpels, for Raw Task Vector Model Ed
+2605.27197v1 | 2026-05-26 | Representations of shifted twisted quantum affine algebras
+2605.26735v1 | 2026-05-26 | Rethinking the Multilingual Reasoning Gap with Layer Swap
+2605.25525v1 | 2026-05-25 | SAE-FD: Sparse Autoencoder Feature Distillation for Continual Learning of Large Language Models
+2605.23904v2 | 2026-05-22 | SkillOpt: Executive Strategy for Self-Evolving Agent Skills
+2605.23482v1 | 2026-05-22 | Multimodal Distribution Matching for Vision-Language Dataset Distillation
+2605.23410v1 | 2026-05-22 | What Linear Probes Miss: Multi-View Probing for Weight-Space Learning
+
+## .lit_cache/s14_recent_inr.xml (60 entries)
+2607.12321v1 | 2026-07-14 | Learning-Based Beamforming for Energy Efficiency of Continuous Aperture Array Systems
+2607.10068v1 | 2026-07-11 | Error Aware Distribution Prediction for Lightweight Implicit Neural Representations
+2607.06274v1 | 2026-07-07 | Learning-based Physics-Constrained Neural Kernel for Sound Field Estimation With Source-Position-Dependent Directional Weighting
+2607.04069v1 | 2026-07-05 | Enhancing Implicit Neural Representations with Image Feature Embedding for Unsupervised Cardiac Cine MRI Reconstruction
+2607.02166v1 | 2026-07-02 | Dynamic Neural Graph Encoding of Inference Processes in Deep Weight Space
+2607.01164v1 | 2026-07-01 | Efficient Compression of Structured and Unstructured Volumes via Learned 3D Gaussian Representation
+2607.00955v2 | 2026-07-01 | Learning Cardiac Motion Priors for Implicit Neural Representations
+2607.00138v1 | 2026-06-30 | MG-SpaIR: Multi-grade Sparse-guided Implicit Representation for Training-Data-Free Image Restoration
+2606.29414v1 | 2026-06-28 | FiRe: Frequency Reparameterization as a Preconditioner for Periodic Implicit Neural Representations
+2606.28163v1 | 2026-06-26 | Enhanced Neural Video Representation Compression across Extreme Complexity and Quality Scales
+2606.27862v1 | 2026-06-26 | ScaLe-INR: Scale and Learn Implicit Neural Representations
+2606.26763v1 | 2026-06-25 | Calibrated Harmonic Overlaid Implicit Neural Representations for Multi-Dimensional Data
+2606.25534v1 | 2026-06-24 | PatchINR: Patch-Based Implicit Neural Representations for Efficient and Scalable Inference
+2606.24997v1 | 2026-06-23 | What's in an Earth Embedding? An Explainability Analysis of Location Encoders
+2606.23129v2 | 2026-06-22 | Spectral Gating via Damped Oscillations for Adaptive Implicit Neural Representations
+2606.21655v1 | 2026-06-19 | PaaF: Raising the perceived quality of INR-Based Image Compression
+2606.18826v1 | 2026-06-17 | EDoF-NeRF: extended depth-of-field neural radiance fields using a coded aperture camera
+2606.16159v1 | 2026-06-15 | Continuous Splatting meets Retinex: Continuous Gaussian Splatting and Implicit Reflectance Modeling for Low-Light Image Enhancemen
+2606.23707v1 | 2026-06-12 | Coordinate-Queryable Neural Field Reconstruction for EEG Spatial Super-Resolution with Unseen-Electrode Generation
+2606.12200v1 | 2026-06-10 | Implicit Neural Representations of Individual Behavior
+2606.11518v1 | 2026-06-09 | SirenFNO: Efficient and Full Frequency Learning of Fourier Neural Operators
+2606.10756v1 | 2026-06-09 | DD-INR: Dynamics-Driven Implicit Neural Representation for Accelerated Whole-Brain Functional MRI Reconstruction
+2606.09108v1 | 2026-06-08 | RAM: Reachability Across Morphologies
+2606.09029v1 | 2026-06-08 | Frequency Decoupled Framework for Screen Content Image Super-Resolution
+2606.17069v1 | 2026-06-05 | Implicit Neural Representations Framework for One-Dimensional Magnetotelluric Inversion
+2606.06827v1 | 2026-06-05 | Architecture Shapes Transfer Specificity in Implicit Neural Representations
+2606.06671v1 | 2026-06-04 | JA-SIREN: Deterministic Initialization for Sinusoidal Networks via Spectral Matching
+2606.04291v1 | 2026-06-02 | A Cookbook of 3D Vision: Data, Learning Paradigms, and Application
+2606.03531v1 | 2026-06-02 | Voxel-CKM: Voxelized Radio Frequency Radiance Fields for Fast and Few-Shot CKM Construction
+2606.00404v1 | 2026-05-29 | Rethinking Amortized Neural Representations for High-Resolution Terrain Elevation Data
+2605.31302v1 | 2026-05-29 | MoE-dqINR: A Unified Mixture-of-Experts Implicit Neural Representation Framework for Scan-Specific Dynamic and Quantitative MRI Re
+2606.07605v2 | 2026-05-29 | SRT: Super-Resolution for Time Series via Disentangled Rectified Flow
+2606.00126v1 | 2026-05-28 | Bounding Global and Local Compression Error of Signal Parameterizations
+2605.29417v2 | 2026-05-28 | ParCo-SDF: Learning Prior-Free Partial-to-Complete Signed Distance Fields of Deformable Objects
+2605.27024v1 | 2026-05-26 | NeR-SC: Adapting Neural Video Representation to Screen Content
+2605.25163v1 | 2026-05-24 | K-U-KAN: Koopman-Enhanced U-KAN for 3D Dental Reconstruction from a Single Panoramic X-ray Radiograph
+2605.22556v1 | 2026-05-21 | ImplicitTerrainV2: Wavelet-Guided Spatially Adaptive Neural Terrain Representation
+2605.19889v1 | 2026-05-19 | GLUT: 3D Gaussian Lookup Table for Continuous Color Transformation
+2605.13583v1 | 2026-05-13 | Phy-CoSF: Physics-Guided Continuous Spectral Fields Reconstruction and Super-Resolution for Snapshot Compressive Imaging
+2605.12778v1 | 2026-05-12 | Generative Motion In-betweening by Diffusion over Continuous Implicit Representations
+2605.12709v1 | 2026-05-12 | Spectral Energy Centroid: a Metric for Improving Performance and Analyzing Spectral Bias in Implicit Neural Representations
+2605.10275v1 | 2026-05-11 | PolarVSR: A Unified Framework and Benchmark for Continuous Space-Time Polarization Video Reconstruction
+2605.10213v1 | 2026-05-11 | Unsupervised Online Channel Estimation for High-Mobility OFDM via Implicit Neural Representation
+2605.09977v3 | 2026-05-11 | INFANiTE: Implicit Neural representation for high-resolution Fetal brain spatio-temporal Atlas learNing from clinical Thick-slicE 
+2605.09511v1 | 2026-05-10 | WindINR: Latent-State INR for Fast Local Wind Query and Correction in Complex Terrain
+2605.07444v1 | 2026-05-08 | Accelerated and data-efficient flow prediction in stirred tanks via physics-informed learning
+2605.08281v1 | 2026-05-08 | Is Class Signal Clustered or Routed in Task-Induced Implicit Neural Representation Weight Spaces?
+2605.06298v2 | 2026-05-07 | Render, Don't Decode: Weight-Space World Models with Latent Structural Disentanglement
+2605.04234v1 | 2026-05-05 | Disentangled Learning Improves Implicit Neural Representations for Medical Reconstruction
+2605.02575v1 | 2026-05-04 | Self-Supervised Spatial And Zero-Shot Angular Super-Resolution by Spatial-Angular Implicit Representation For Rotating-View SNR-Ef
+2605.01172v1 | 2026-05-02 | A Theory of Generalization in Deep Learning
+2605.01040v1 | 2026-05-01 | Differentiable Multiphysics Co-Optimization via Implicit Neural Representations: A Transient Hamburger-Cooking Benchmark
+2604.26938v2 | 2026-04-29 | Meta-learning-enhanced implicit full waveform inversion
+2604.24167v1 | 2026-04-27 | PEPS: Positional Encoding Projected Sampling -- Extended
+2604.19979v1 | 2026-04-21 | Fast Amortized Fitting of Scientific Signals Across Time and Ensembles via Transferable Neural Fields
+2604.18083v1 | 2026-04-20 | Implicit neural representations as a coordinate-based framework for continuous environmental field reconstruction from sparse ecol
+2604.18047v1 | 2026-04-20 | GS-STVSR: Ultra-Efficient Continuous Spatio-Temporal Video Super-Resolution via 2D Gaussian Splatting
+2604.16800v1 | 2026-04-18 | Frequency-Decomposed INR for NIR-Assisted Low-Light RGB Image Denoising
+2604.15047v1 | 2026-04-16 | Implicit Neural Representations: A Signal Processing Perspective
+2604.25936v1 | 2026-04-15 | SAND: Spatially Adaptive Network Depth for Fast Sampling of Neural Implicit Surfaces
+
+## .lit_cache/s15_class_signal.xml (20 entries)
+2304.04188v1 | 2023-04-09 | HyperINR: A Fast and Predictive Hypernetwork for Implicit Neural Representations via Knowledge Distillation
+2510.25381v2 | 2025-10-29 | CGM-Led Multimodal Tracking with Chatbot Support: An Autoethnography in Sub-Health
+2510.14077v1 | 2025-10-15 | ERGO: Entropy-guided Resetting for Generation Optimization in Multi-turn Language Models
+2011.06393v1 | 2020-11-12 | Heterogeneous Data-Aware Federated Learning
+2603.23089v2 | 2026-03-24 | A Synchronized Audio-Visual Multi-View Capture System
+2602.14251v1 | 2026-02-15 | Multi-Agent Debate: A Unified Agentic Framework for Tabular Anomaly Detection
+2603.24291v2 | 2026-03-25 | Cost-Sensitive Neighborhood Aggregation for Heterophilous Graphs: When Does Per-Edge Routing Help?
+2602.08945v1 | 2026-02-09 | GitSearch: Enhancing Community Notes Generation with Gap-Informed Targeted Search
+2108.10427v1 | 2021-08-23 | Graph-LDA: Graph Structure Priors to Improve the Accuracy in Few-Shot Classification
+2110.00297v1 | 2021-10-01 | Machine learning aided noise filtration and signal classification for CREDO experiment
+2605.20506v1 | 2026-05-19 | Reinforcing Human Behavior Simulation via Verbal Feedback
+2208.05006v1 | 2022-08-09 | Design and characterization of new 90 GHz detectors for the Cosmology Large Angular Scale Surveyor (CLASS)
+2602.14161v1 | 2026-02-15 | When Benchmarks Lie: Evaluating Malicious Prompt Classifiers Under True Distribution Shift
+2605.08281v1 | 2026-05-08 | Is Class Signal Clustered or Routed in Task-Induced Implicit Neural Representation Weight Spaces?
+2505.17544v1 | 2025-05-23 | FreqU-FNet: Frequency-Aware U-Net for Imbalanced Medical Image Segmentation
+2607.06724v1 | 2026-07-07 | EvoPlan: Evolutionary Neuro-Symbolic Robot Planning with Spatio-Temporal Guarantees
+2506.09955v1 | 2025-06-11 | Canonical Latent Representations in Conditional Diffusion Models
+2505.13578v2 | 2025-05-19 | Symmetry-Breaking Descent for Invariant Cost Functionals
+2005.02156v1 | 2020-04-29 | A User Study to Investigate Semantically Relevant Contextual Information of WWW Images
+2510.08626v1 | 2025-10-08 | From What to Why: Thought-Space Recommendation with Small Language Models
+
+## .lit_cache/s16_identif.xml (30 entries)
+2607.12026v1 | 2026-07-13 | Learning the Graphical Nature of Symmetries
+2607.11986v1 | 2026-07-13 | SpikeDS: Dual Sparsity Spikformer for Perineural Invasion Prediction in 3D MRI
+2607.11967v1 | 2026-07-12 | Beyond Coordinate Gauge: An Audited Protocol for Detecting Donor-Specific Functional Fingerprints after Neural Collapse
+2607.10804v1 | 2026-07-12 | When does distribution shift break graph neural networks calibration?
+2607.10430v1 | 2026-07-11 | Emergent Generalization by Representation Learning in Artificial Neural Networks
+2607.09967v2 | 2026-07-10 | Learning in Curved Weight Space:Exponential-Linear Weight Reparameterization for Improved Optimization
+2607.09480v1 | 2026-07-10 | Foveation-Guided Dynamic Token Selection for Robust and Efficient Vision Transformers
+2607.09372v1 | 2026-07-10 | Graph Neural Networks for Scalable and Transferable Node Centrality Approximation
+2607.09324v1 | 2026-07-10 | Letting the Data Speak: Extracting Keywords from Crowdsourced Collections with AI
+2607.08533v1 | 2026-07-09 | AI-guided stimuli discovery and generation to optimize facial emotion perception studies in autism
+2607.07967v1 | 2026-07-08 | Expressivity and Statistical Trade-offs in Diffusion Policy Learning
+2607.07957v1 | 2026-07-08 | Evaluating the Effect of Frame Rate in Sequence-Based Classification of Autism-Related Self-Stimulatory Hand Idiosyncrasies
+2607.09788v1 | 2026-07-08 | MVMGNN;Multi-View Masked Graph Neural Network for Alzheimer's Disease Diagnosis using Structural MRI
+2607.07425v1 | 2026-07-08 | Reliable mechanistic operator recovery with biologically-informed neural networks: principles for architecture and optimisation de
+2607.07289v1 | 2026-07-08 | Bayesian Optimization of Genetic Algorithm Hyperparameters in a Multi-Fidelity Framework for Efficient Lattice Material Design
+2607.05381v1 | 2026-07-06 | What Does a Discrete Diffusion Model Learn?
+2607.05017v1 | 2026-07-06 | Hyperparameter Transfer in Graph Neural Networks
+2607.04600v1 | 2026-07-06 | Measuring What Matters: A Unified Evaluation Framework for GNN Explainability
+2607.03971v1 | 2026-07-04 | Order-based Causal Discovery for Multistage Processes
+2607.03682v2 | 2026-07-04 | LRX-PINN: A Layer-Resolving XNet Physics-Informed Neural Network with Integrated Cauchy Activations for Convection-Dominated Probl
+2607.03039v1 | 2026-07-03 | Out-of-distribution Neural Inference in Dynamical Ising Models
+2607.02964v1 | 2026-07-03 | Individual Parameters in Weight-Sparse Transformers Appear Interpretable
+2607.02142v1 | 2026-07-02 | Predicting Early Stages Of Alzheimer's Disease And Identifying Key Biomarkers Using Deep Artificial Neural Network And Ensemble Of
+2607.02003v1 | 2026-07-02 | Born Discrete, Made Smooth: Variational Formulation of Shallow Neural Networks
+2607.01799v1 | 2026-07-02 | Expander Sparse Autoencoders: Parameter-Efficient Dictionaries for Mechanistic Interpretability
+2607.01752v1 | 2026-07-02 | Efficient Temporal Point Processes via Monotone Alternating Splines
+2607.01329v1 | 2026-07-01 | Ravines in quantum cost landscapes: opportunities for improved VQA predictions
+2607.00995v1 | 2026-07-01 | Deep Multitask Learning for Mixed-Type Outcomes with Shared Sparsity
+2607.00365v1 | 2026-07-01 | When AI meets quantum information: A comprehensive review
+2606.30822v1 | 2026-06-29 | Separation Capacity of Scattering Networks
