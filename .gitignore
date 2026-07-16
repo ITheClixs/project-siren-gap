@@ -1,0 +1,21 @@
+# raw literature scan dumps (script re-generates)
+.lit_cache/
+
+# raw INR shards (safetensors) — released via HF Hub, never committed
+data/
+*.safetensors
+
+# python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# os / editors
+.DS_Store
+.idea/
+.vscode/
+
+# large run outputs (per-seed CSVs + figures under results/ ARE committed;
+# anything under results/raw/ is not)
+results/raw/
