@@ -3,3 +3,6 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-07-16,S3,P-B raw-weight decodability ordering across activations (conditional on FINER per-neuron group ~ trivial; operational orbit-volume definition due before S3 prereg),"finer >= tanh ~ gaussian > sine > relu+pe",NA,NA,0401f8697c36bba3
 2026-07-16,S3,P-C post-canonicalization collapse-to-shared-init-ceiling ordering,"tanh ~ gaussian first; sine next; relu+pe next; finer least moved",NA,NA,0401f8697c36bba3
 2026-07-16,S1/PO-9,P-D direction: W1-vs-pixel linear-probe accuracy gap as function of INR width,"monotone decreasing in width (numeric intervals to be registered at S1 prereg)",NA,NA,0401f8697c36bba3
+2026-07-17,S3,"P-A-v2 (amends P-A pre-data: FINER is odd => sigma survives, group = Z2 like tanh; ch1 Prop 8.1)","tanh ~ gaussian ~ finer > sine > relu+pe",NA,NA,cb2be1d2075c09a7
+2026-07-17,S3,"P-B-v2 (amends P-B pre-data, same derivation; operational orbit-volume definition still owed before S3 prereg)","finer ~ tanh ~ gaussian > sine > relu+pe",NA,NA,cb2be1d2075c09a7
+2026-07-17,S3,"P-C-v2 (amends P-C pre-data: FINER canonicalizable like tanh per ch1 PO-7)","tanh ~ gaussian ~ finer collapse first; sine next; relu+pe next",NA,NA,c59a54d994e705dc

@@ -45,8 +45,9 @@ fetch_search s09_ti_ws          'ti:"weight space"'                             
 fetch_search s10_nef_init       'abs:"neural field" AND abs:"initialization"'                         submittedDate 20
 fetch_search s11_titles_a       'ti:"monomial matrix group" OR ti:"continuous canonicalization" OR ti:"probe generators"' relevance 20
 fetch_search s12_titles_b       'ti:"implicit zoo" OR ti:"versatile weight space" OR ti:"weight space alignment"'         relevance 20
-fetch_search s13_recent_ws      'abs:"weight space" AND submittedDate:[202601010000 TO 202607170000]' submittedDate 60
-fetch_search s14_recent_inr     'abs:"implicit neural representation" AND submittedDate:[202601010000 TO 202607170000]' submittedDate 60
+# bump the end date at every gate re-scan (G2: 2026-07-18)
+fetch_search s13_recent_ws      'abs:"weight space" AND submittedDate:[202601010000 TO 202607180000]' submittedDate 60
+fetch_search s14_recent_inr     'abs:"implicit neural representation" AND submittedDate:[202601010000 TO 202607180000]' submittedDate 60
 fetch_search s15_class_signal   'abs:"class signal" OR all:"HyperINR"'                                relevance     20
 fetch_search s16_identif        'abs:"identifiability" AND abs:"neural network" AND cat:cs.LG'        submittedDate 30
 

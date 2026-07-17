@@ -100,3 +100,56 @@ lemma + tie-stress tests (advisor G1 Theorist 2), PO-5, PO-3 (incl. u=0), PO-2 L
 microcosm (profiled 2D loss surfaces, F4), PO-6 + novelty paragraph, PO-2-deep timebox (2 days,
 Jacobi–Anger), PO-7 formal incl. FINER parity derivation; canonicalizer docstrings gain the
 "exact w.r.t. implemented group, conditional on PO-2" qualifier; IFT close-read (2601.23181).
+
+---
+
+## 2026-07-17 — Session 3: G2 (theory sprint)
+
+**Gate status: G2 PASSED** (App. E: PO-1/3/4/5 written ✓; PO-2 attempted-with-memo — exceeded:
+**L=1 PROVED**, deep case downgraded with roadmap ✓; PO-8 solved ✓). Artifacts:
+paper/thesis/ch1-symmetry.tex, ch2-fitmap.tex, proof-memos/PO-2-deep-attempt.md,
+results/microcosm/ (F4 drafts), CLAIMS rows 3–11.
+
+**Theory results:**
+1. **PO-1 theorem** with the compact normal form g_{d,j}: (w,b,u) ↦ ((−1)^d w, (−1)^d b + πj,
+   (−1)^{d+j} u), composition (d₁⊕d₂, j₂+(−1)^{d₂}j₁) ⇒ D∞ per neuron; wreath per layer;
+   cross-layer commutation.
+2. **PO-2 L=1 THEOREM**: on Θ_gen, functional equality ⟹ unique group relation. Final proof via
+   distributional Fourier atoms (supports {±wᵢ}∪{0}, coefficients (uᵢ/2i)e^{±ibᵢ}) — resolves
+   the sine case of Monomial-NFN's Remark 4.5 open question, in the maximal-symmetry-group sense
+   of 2604.23720 Def 2.2.
+3. **Two self-caught errors, same-session repairs (kept as thesis remarks, not sanitized):**
+   (a) duplicate stratum needs only *parallel frequencies* (phasor addition merges any-bias
+   parallel neurons) — Θ_gen and PO-3 corrected, and the exclusion is provably necessary;
+   (b) first PO-2 draft's "hyperplane complement is connected" is false — replaced by the FT
+   argument, which is simpler and stronger.
+4. **PO-4 separation proposition** proved (Φ = (w⊗w, cos2b, sin2b·w, sinb·u, cosb·(w⊗u))
+   separates orbits on {w≠0,u≠0}); PO-5 impossibility via an elementary τ-winding loop proof;
+   PO-6 factorization + informational-equivalence corollary, positioned against 2602.01083;
+   PO-7 classification incl. **FINER = ℤ₂ (odd activation; no bias-shift symmetries)** — NOT
+   near-trivial as the protocol expected.
+5. **Prediction amendments (pre-data, hashed):** P-A-v2, P-B-v2, P-C-v2 move FINER into the
+   tanh/Gaussian class. Original rows retained for calibration accounting.
+6. **PO-8 microcosm solved**: closed-form profiled loss (quadrature-certified to 6e−16); zero set
+   = D∞ orbit exactly; 20 minima in the fundamental domain (1 global + 19 sidelobe); **basin
+   census is non-monotone in init range with three regimes** — ±2: 100% degenerate-ridge capture
+   (orbit never reached), ±10: 62% global (sweet spot ≈ ω), ±20: 51% spurious-sidelobe capture.
+   Bug found by the certification itself: the naive G⁻¹ profile blows up on the w≈0 ridge;
+   pseudo-inverse semantics fixed it. Caveat logged: census is Nelder-Mead-based; Adam/GD variant
+   owed before F4 ships (advisor G2 Empiricist 1).
+7. **PO-2-deep**: honest attempt memo — Jacobi–Anger ⇒ Bessel-CP reduction, two open lemmas
+   (Bessel-Vandermonde generic rank, truncation control); numeric support shows rank holds but
+   conditioning collapses by n=5 (min|det| ~ 4e−13) ⇒ S4e falsification hunt is the right next
+   investment, not more proof effort.
+
+**Chores:** tie-stress tests added (57 tests green CPU+MPS); canonicalizer scope qualifiers;
+IFT 2601.23181 close-read (generated-regime complement; laziness connection noted for Ch2);
+G2 re-scan clean (4 new arXiv titles, none relevant — snapshot committed).
+
+**Deviations:** none. **Waivers:** none. **Compute:** ~0.2 h (microcosm + tests).
+
+**Next (G3):** INR-Bench sine — pilot fits on real MNIST (quality-gate tuning: width/steps),
+T9 re-verification at production config, strata audit implementation (geometry/), full corpus
+generation plan + overnight queue, replication anchors A1/A2, fp32 storage, leakage audits;
+plus G2 advisor queue: tectonic compile + stable labels, census optimizer variant, S4-prereg
+item for the init-range prediction, scan-diff tooling.

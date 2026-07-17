@@ -1,4 +1,11 @@
-"""c_sort: exact, template-free canonicalizer for the D_inf wreath action (Ch3.1).
+"""c_sort: template-free canonicalizer, exact w.r.t. the *implemented* group (Ch3.1).
+
+Scope qualifier (advisor G1): "exact" means exact orbit collapse for the group of
+Theorem PO-1 (D_inf wreath S_n per layer) on generic inputs. Whether that group is
+ALL functional symmetries is PO-2: proved for L=1 (ch1-symmetry.tex, Thm 6.4),
+conjectural for deeper networks. Behavior at strata/ties: function preservation
+always holds (only group elements are applied); orbit collapse is not guaranteed
+at ties (tests/test_tie_stress.py documents the policy).
 
 Steps per hidden layer (docs/THINKING/G0-theory-scoping.md §1–2 for the algebra):
   (a) phase reduction: k = floor(b/pi + 1/2); b <- b - k*pi in [-pi/2, pi/2);

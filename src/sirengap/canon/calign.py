@@ -1,5 +1,9 @@
 """c_align: template canonicalizer via activation matching (Ch3.2, protocol A.2).
 
+Scope qualifier (advisor G1): alignment is exact w.r.t. the *implemented* group
+(PO-1); maximality of that group is PO-2 (proved L=1, conjectural deeper).
+Function preservation is asserted on every call regardless.
+
 Per hidden layer: phase-reduce, compute activations on a fixed probe set, solve
 the assignment against template activations maximizing |corr|, take the
 correlation sign as the sigma fix, propagate permutation+signs to the outgoing

@@ -1,0 +1,369 @@
+% Chapter 1 — Symmetry and identifiability of periodic-activation networks
+% Status tags: [PROVED] / [PROP] / [CONJ + experiment pointer]. Compile deferred (no local TeX).
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Dinf}{D_\infty}
+\title{Chapter 1: Symmetry and identifiability of sine networks}
+\begin{document}
+\maketitle
+
+\section{Setting and conventions}\label{sec:setting}
+
+Fix input dimension $m\ge 1$ (images: $m=2$, $x\in[-1,1]^2$), output dimension $c\ge 1$, and
+hidden widths $n_1,\dots,n_L$. A \emph{sine network} in canonical form is
+\[
+h^0 = x,\qquad h^\ell = \sin\!\big(W^\ell h^{\ell-1} + b^\ell\big)\ (\ell=1..L),\qquad
+f_\theta(x) = W^{L+1} h^L + b^{L+1},
+\]
+with $\theta=(W^1,b^1,\dots,W^{L+1},b^{L+1})$. The SIREN factor $\omega_0$ is absorbed into stored
+weights at dataset creation (fitter convention, tested by T4). For a hidden neuron $i$ of layer
+$\ell$ write $w_i\in\R^{n_{\ell-1}}$ (its row of $W^\ell$), $b_i\in\R$, and $u_i\in\R^{n_{\ell+1}}$
+(its column of $W^{\ell+1}$; for $\ell=L$, of $W^{L+1}$).
+
+\section{The symmetry group (PO-1) [PROVED]}
+
+\begin{definition}[Per-neuron maps]\label{def:generators}
+For a hidden neuron $(w,b,u)$ define
+$\tau_k:(w,b,u)\mapsto(w,\,b+2\pi k,\,u)$ for $k \in \Z$;\quad
+$\rho:(w,b,u)\mapsto(w,\,b+\pi,\,-u)$;\quad
+$\sigma:(w,b,u)\mapsto(-w,\,-b,\,-u)$.
+\end{definition}
+
+\begin{lemma}[Normal form of the per-neuron group]\label{lem:normalform}
+Every element of $\langle \tau_1,\rho,\sigma\rangle$ acts as
+\[
+g_{d,j}\colon (w,b,u)\ \mapsto\ \big((-1)^d w,\ (-1)^d b + \pi j,\ (-1)^{d+j} u\big),
+\qquad d\in\{0,1\},\ j\in\Z ,
+\]
+with composition $g_{d_2,j_2}\circ g_{d_1,j_1} = g_{\,d_1\oplus d_2,\ j_2+(-1)^{d_2} j_1}$.
+Consequently $\langle \tau_1,\rho,\sigma\rangle \cong \Z\rtimes\Z_2 = \Dinf$, with
+$\sigma=g_{1,0}$, $\rho=g_{0,1}$, $\tau_k=g_{0,2k}$, and the relations
+$\rho^2=\tau_1$, $\sigma^2=\mathrm{id}$, $\sigma\rho\sigma=\rho^{-1}$; $\tau_1$ is redundant as a
+generator.
+\end{lemma}
+
+\begin{proof}
+The generators are $g_{1,0},g_{0,1},g_{0,2}$; closure under the stated composition law is a direct
+computation on each coordinate: $w$ picks up $(-1)^{d_1+d_2}$; $b\mapsto
+(-1)^{d_2}\!\big((-1)^{d_1}b+\pi j_1\big)+\pi j_2=(-1)^{d_1\oplus d_2}b+\pi\big(j_2+(-1)^{d_2}j_1\big)$;
+the $u$-sign multiplies and $(-1)^{j_2+(-1)^{d_2}j_1}=(-1)^{j_1+j_2}$. The map
+$g_{d,j}\mapsto (j,d)\in\Z\rtimes\Z_2$ (with $\Z_2$ acting on $\Z$ by negation) is then an
+isomorphism onto the infinite dihedral group. The relations follow by specialization; e.g.
+$\sigma\rho\sigma= g_{1,0}\circ g_{0,1}\circ g_{1,0}=g_{0,-1}=\rho^{-1}$.
+\end{proof}
+
+\begin{theorem}[Symmetry group; PO-1]\label{thm:po1}
+For every $d\in\{0,1\}, j\in\Z$ applied at any hidden neuron, and every permutation
+$\pi\in S_{n_\ell}$ applied jointly to (rows of $W^\ell$, entries of $b^\ell$, columns of
+$W^{\ell+1}$), the network function is exactly preserved. Hence the group
+\[
+G \;=\; \prod_{\ell=1}^{L}\ \Dinf \wr S_{n_\ell}
+\;=\;\prod_{\ell=1}^{L}\big(\Dinf^{\,n_\ell}\rtimes S_{n_\ell}\big)
+\]
+acts on parameter space with $f_{g\cdot\theta}=f_\theta$ for all $g\in G$. Actions of distinct
+layers commute (layer $\ell$ touches columns, layer $\ell+1$ rows, of the shared matrix
+$W^{\ell+1}$).
+\end{theorem}
+
+\begin{proof}
+Per-neuron: with pre-activation $z=\langle w,h\rangle+b$,
+\[
+(-1)^{d+j}u\,\sin\!\big((-1)^d z+\pi j\big)
+=(-1)^{d+j}(-1)^{j}u\,\sin\!\big((-1)^d z\big)
+=(-1)^{d+j}(-1)^{j}(-1)^{d}u\,\sin z = u\sin z ,
+\]
+so the neuron's contribution to the next layer's pre-activations is unchanged; downstream layers
+receive identical inputs. Permutations relabel neurons while re-wiring outgoing columns
+consistently, leaving all pre-activations of the next layer unchanged as sums. Row and column
+operations on $W^{\ell+1}$ act on different indices and commute. \qedhere
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:po1} asserts \emph{containment}: $G$ consists of symmetries. That $G$ is
+\emph{maximal} (all functional equivalences on a generic set) is Theorem~\ref{thm:po2} for $L=1$
+and Conjecture~\ref{conj:deep} for $L\ge 2$. Tran et al.\ (arXiv:2409.11697, Rmk.~4.5) prove
+maximality among \emph{linear} (monomial-matrix) actions and pose the general sine case as open;
+the affine maps $g_{0,j}$ ($j\neq0$) are outside every linear action, which is why their
+classification cannot see the phase component.
+\end{remark}
+
+\section{Degenerate strata (PO-3) [PROP]}
+
+\begin{proposition}[Strata]\label{prop:po3}
+Within a hidden layer with neurons $(w_i,b_i,u_i)_{i\le n}$, define
+$\mathcal S_{\mathrm{dead}}=\{\exists i: w_i=0\}$,
+$\mathcal S_{\mathrm{inv}}=\{\exists i: u_i=0\}$, and the \emph{parallel-frequency} stratum
+$\mathcal S_{\mathrm{par}}=\{\exists i\ne j,\ \varepsilon\in\{\pm1\}:\ w_j=\varepsilon w_i\}$.
+Each is a closed, Lebesgue-null subset of parameter space, and on each the functional equivalence
+class strictly exceeds the $G$-orbit:
+(i) on $\mathcal S_{\mathrm{dead}}$ the neuron computes the constant $\sin b_i$, and the continuum
+$(u_i,b^{L+1}_{\mathrm{out}})\mapsto(u_i+v,\ b_{\mathrm{out}}-v\sin b_i)$ (any $v$) preserves $f$;
+(ii) on $\mathcal S_{\mathrm{inv}}$ the pair $(w_i,b_i)$ is entirely unconstrained;
+(iii) on $\mathcal S_{\mathrm{par}}$ (after a $\sigma$ making $w_j=w_i=:w$), \emph{phasor
+addition} $u_i\sin(z+b_i)+u_j\sin(z+b_j)=\mathrm{Im}\big((u_ie^{\mathrm i b_i}+u_je^{\mathrm i
+b_j})e^{\mathrm i z}\big)$ shows only the complex sums $u_ie^{\mathrm i b_i}+u_je^{\mathrm i b_j}$
+(componentwise in $u$) are functionally visible: two parallel neurons carry one neuron's worth of
+function, giving a merge/split continuum for \emph{arbitrary} bias pairs — the $b$-matched
+duplicate case is the special case of aligned phasors.
+\end{proposition}
+
+\begin{proof}
+Closedness: each set is a finite union of zero sets of continuous functions. Each lies in a proper
+analytic subset, hence is null. The extra equivalences are the displayed identities.
+\end{proof}
+
+Empirical audit (wired to INR-Bench, G3): report distributions of $\min_i\|w_i\|$,
+$\min_i\|u_i\|$, and the minimal pairwise \emph{angular} distance
+$\min_{i\ne j}\;\angle(\pm w_i,w_j)$ on every corpus; ``generic'' is an assumption to be measured,
+not assumed. (G2 note: $\mathcal S_{\mathrm{par}}$ was initially mis-stated as requiring matched
+biases; phasor addition shows parallelism alone suffices — caught during proof-writing, logged in
+the notebook.)
+
+\section{Invariant theory of the per-neuron action (PO-4) [PROP]}
+
+Write the action of Lemma~\ref{lem:normalform}. Monomial invariants $g(b)P_\alpha(w)Q_\beta(u)$
+(with $P_\alpha$, $Q_\beta$ homogeneous of degree-parities $\alpha,\beta$) require:
+$g$ $2\pi$-periodic ($\tau$); $g(b+\pi)=(-1)^\beta g(b)$ ($\rho$); $g(-b)=(-1)^{\alpha+\beta}g(b)$
+($\sigma$). The minimal-frequency solutions are
+\[
+(\alpha,\beta)=(0,0):\ 1,\ \cos 2b;\quad (1,0):\ \sin 2b;\quad (0,1):\ \sin b;\quad (1,1):\ \cos b .
+\]
+
+\begin{proposition}[Separating invariants]\label{prop:po4}
+On $\{w\ne0,\ u\ne0\}$ the feature map
+\[
+\Phi(w,b,u)=\Big(w\otimes w,\ \cos 2b,\ (\sin 2b)\,w,\ (\sin b)\,u,\ (\cos b)\,(w\otimes u)\Big)
+\]
+is $\langle\sigma,\rho,\tau\rangle$-invariant and separates orbits: $\Phi(w,b,u)=\Phi(w',b',u')$
+iff the triples lie in the same orbit.
+\end{proposition}
+
+\begin{proof}
+\emph{Invariance}: under $g_{d,j}$, $\cos 2b$ is invariant ($\cos$ even, $2\pi j$-shifts);
+$(\sin 2b)w\mapsto(-1)^d\sin 2b\cdot(-1)^d w$; $(\sin b)u\mapsto(-1)^{d+j}\sin b\cdot(-1)^{d+j}u$
+using $\sin((-1)^db+\pi j)=(-1)^{d+j}\sin b$; $(\cos b)(w\otimes u)\mapsto
+(-1)^{j}\cos b\cdot(-1)^{d}\,(-1)^{d+j}(w\otimes u)$ using $\cos((-1)^db+\pi j)=(-1)^j\cos b$;
+$w\otimes w$ is even in $w$. All signs cancel.
+
+\emph{Separation}: from $w\otimes w$ recover $w=\varepsilon w_0$ ($\varepsilon\in\{\pm1\}$,
+$w_0\neq0$ known). Contracting $(\sin 2b)w$ with $w_0$ gives $\varepsilon\sin 2b$; with $\cos 2b$
+this determines $2b \bmod 2\pi$ for each choice of $\varepsilon$, the two solutions being related
+by $b\mapsto-b$, i.e.\ by $\sigma$ jointly with the $w$-sign. Fix $\varepsilon=+1$; then $b$ is
+known modulo $\pi$, say $b\in\{\beta,\beta+\pi\}$ mod $2\pi$. If $\sin\beta\ne0$, the vector
+$(\sin b)u$ determines $u$ for each of the two choices, and the two solutions
+$(\beta,u)$, $(\beta+\pi,-u)$ are exactly $\rho$-related. If $\sin\beta=0$ then $\cos\beta=\pm1$;
+contracting $(\cos b)(w\otimes u)$ with $w_0$ gives $\|w_0\|^2(\cos b)\,u\neq$ degenerate, and the
+same two $\rho$-related solutions appear. In all cases the preimage of a $\Phi$-value is a single
+orbit. \qedhere
+\end{proof}
+
+\begin{remark}[The protocol's candidate features are not invariant]
+$\cos(2b)\,(w\otimes u)$ has $(\alpha,\beta)=(1,1)$ but even bias-frequency, violating the $\rho$
+condition; $\sin(2b)\,(w\otimes u)$ violates the $\sigma$ condition. Both are refuted numerically
+in test T6. This is why the parity table above, not the protocol's example list, is the reference
+for all downstream encoders.
+\end{remark}
+
+\begin{remark}[Layer level, and scope]
+At layer level the invariant is the \emph{multiset} $\{\Phi(w_i,b_i,u_i)\}_i$ (separating for
+pairwise-distinct values; sum-pooling as used in the W10 encoder is a deliberately incomplete
+surrogate — see PO-6's escape hatches). For $L\ge2$, the $u$-slots carry the next layer's group
+action and per-neuron invariants are no longer invariants of the full product group
+(OPEN\_PROBLEMS \#4); Proposition~\ref{prop:po4} is stated and used for $L=1$.
+\end{remark}
+
+\section{No continuous canonicalization (PO-5) [PROP]}
+
+\begin{proposition}\label{prop:po5}
+Let $\Theta_{\mathrm{gen}}\supseteq\{(w,b,u): w\ne0,u\ne0\}$ (single hidden neuron suffices, any
+$m,c$). There is no continuous map $\kappa:\Theta_{\mathrm{gen}}\to\Theta_{\mathrm{gen}}$ with
+$\kappa(\theta)\in\mathrm{Orb}(\theta)$ and $\kappa(g\theta)=\kappa(\theta)$ for all
+$g\in\langle\sigma,\rho,\tau\rangle$.
+\end{proposition}
+
+\begin{proof}
+Assume $\kappa$ exists. Take $m=c=1$ and the path $\theta_t=(1,\,t,\,1)$, $t\in[0,2\pi]$, inside
+$\Theta_{\mathrm{gen}}$. Write $\kappa(\theta_t)=g_{d_t,j_t}\theta_t=\big((-1)^{d_t},\,
+(-1)^{d_t}t+\pi j_t,\,(-1)^{d_t+j_t}\big)$. Continuity of the first coordinate forces $d_t\equiv d$
+constant; of the third, the parity of $j_t$ constant; then
+$j_t=\big(\beta_t-(-1)^dt\big)/\pi$ is a continuous integer-valued function of $t$ (where
+$\beta_t$ is the bias coordinate of $\kappa(\theta_t)$), hence constant, $j_t\equiv j$. But
+$\theta_{2\pi}=\tau_1\theta_0$, so invariance gives $\kappa(\theta_{2\pi})=\kappa(\theta_0)$ and
+in particular $\beta_{2\pi}=\beta_0$, while the normal form gives
+$\beta_{2\pi}-\beta_0=(-1)^d\,2\pi\ne0$. Contradiction. \qedhere
+\end{proof}
+
+\begin{corollary}[Where exactness must break]
+Any exact canonicalizer for the sine group is discontinuous on a set meeting every loop that
+winds the bias circle. For \texttt{c\_sort} these are precisely $\{b\equiv\pi/2 \bmod \pi\}$
+(phase-reduction boundary), $\{\langle w,v_{\mathrm{ref}}\rangle=0\}$ ($\sigma$ margin), and
+sorting-key ties; the shipped diagnostics measure the empirical mass near each (F7). Contrast:
+for the pure permutation group, canonicalization is continuous off key-ties
+(cf.\ arXiv:2602.01083, Thm.~6.3's construction); the $\tau$-circle makes the obstruction global
+for sine, not merely tie-local. General topological framing: arXiv:2402.16077.
+\end{corollary}
+
+\section{Generic identifiability, $L=1$ (PO-2) [PROVED $L{=}1$; CONJ deep]}
+
+\begin{definition}[Generic stratum, $L=1$]
+$\Theta_{\mathrm{gen}}$ = parameters with all $w_i\ne0$, all $u_i\ne 0$, and no pair $i\ne j$ with
+$w_j=\pm w_i$ — the complement of the strata of Proposition~\ref{prop:po3}.
+\end{definition}
+
+\begin{lemma}[Uniqueness for finite sine sums]\label{lem:bohr}
+Let $F(t)=\beta+\sum_{i=1}^{n}\mathrm{Im}\,\gamma_i e^{\mathrm i a_i t}$ with distinct $a_i>0$ and
+$\gamma_i\in\mathbb C\setminus\{0\}$, and similarly $F'$ with data
+$(\beta',n',a'_j,\gamma'_j)$. If $F\equiv F'$ on $\R$ then $\beta=\beta'$, $n=n'$, and there is a
+permutation $\pi$ with $a'_{\pi(i)}=a_i$, $\gamma'_{\pi(i)}=\gamma_i$.
+\end{lemma}
+
+\begin{proof}
+The Bohr mean $M\{h\}=\lim_{T\to\infty}\frac1{2T}\int_{-T}^{T}h$ satisfies
+$M\{e^{\mathrm i\lambda t}\}=\delta_{\lambda,0}$. Applying $M\{\cdot\,e^{-\mathrm i\lambda t}\}$
+to $F-F'\equiv0$ at $\lambda=0$ gives $\beta=\beta'$; at $\lambda=a_i$ (resp.\ $a'_j$) it isolates
+$\gamma_i/(2\mathrm i)$ (resp.), forcing the frequency sets and coefficients to coincide.
+\end{proof}
+
+\begin{theorem}[PO-2, single hidden layer]\label{thm:po2}
+Let $\theta,\theta'\in\Theta_{\mathrm{gen}}$ (widths $n,n'$) with $f_\theta=f_{\theta'}$ on some
+open $U\subseteq\R^m$. Then $n=n'$ and $\theta'=g\theta$ for a \emph{unique}
+$g\in \Dinf\wr S_n$.
+\end{theorem}
+
+\begin{proof}
+\textbf{(i) Globalization.} $f_\theta-f_{\theta'}$ is entire (a finite sum of sines of affine
+forms), and vanishes on an open set, hence on all of $\R^m$.
+
+\textbf{(ii) Fourier atoms.} As tempered distributions on $\R^m$ (componentwise in the $c$ output
+coordinates), using $u\sin(\langle w,x\rangle+b)=\frac{u}{2\mathrm i}\big(e^{\mathrm i b}
+e^{\mathrm i\langle w,x\rangle}-e^{-\mathrm i b}e^{-\mathrm i\langle w,x\rangle}\big)$,
+\[
+\widehat{f_\theta}\;=\;\beta\,\delta_0\;+\;\sum_{i=1}^n \frac{u_i}{2\mathrm i}
+\Big(e^{\mathrm i b_i}\,\delta_{w_i}\;-\;e^{-\mathrm i b_i}\,\delta_{-w_i}\Big)
+\]
+(up to the fixed normalization constant of the transform), a vector-coefficient atomic measure.
+On $\Theta_{\mathrm{gen}}$ the $2n$ points $\{\pm w_i\}$ are pairwise distinct (no parallel pair)
+and nonzero (no dead neuron), and every atom's coefficient is nonzero ($u_i\ne0$). This is
+precisely where the parallel-frequency stratum earns its exclusion: for $w_j=\pm w_i$ the atoms
+at the shared support point add as phasors (Prop.~\ref{prop:po3}(iii)) and separate recovery is
+genuinely impossible, not merely harder.
+
+\textbf{(iii) Matching.} $f_\theta=f_{\theta'}$ forces $\widehat{f_\theta}=\widehat{f_{\theta'}}$:
+equal supports and equal atom coefficients. Equality of the $\delta_0$ coefficients gives
+$\beta=\beta'$; the punctured supports biject, giving $n=n'$ and, for each $i$, either
+(A)~$w'_{\pi(i)}=w_i$ with $u'e^{\mathrm i b'}=u\,e^{\mathrm i b}$, or
+(B)~$w'_{\pi(i)}=-w_i$ with $u'e^{-\mathrm i b'}=-u\,e^{\mathrm i b}$ (matching the atom at
+$w_i$ of $\theta$ against the atom at $-w'_{\pi(i)}$ of $\theta'$). With $u,u'$ real vectors and
+$e^{\mathrm i b}$ scalar phases, case (A) solves to
+$(u',b')=(u,\ b+2\pi k)$ or $(-u,\ b+\pi+2\pi k)$ — exactly $g_{0,j}$ (the $\rho/\tau$ family) —
+and case (B) is the image of case (A) under $\sigma$ (a direct check: the $\sigma$-transformed
+neuron $(-w,-b,-u)$ carries the atom $-\frac{u}{2\mathrm i}e^{-\mathrm i b}\delta_{-w}$, matching
+(B)). Hence each matched pair is related by some $g_{d_i,j_i}$, and the support bijection is the
+permutation part.
+
+\textbf{(iv) Uniqueness.} If $g\in\Dinf\wr S_n$ fixes $\theta\in\Theta_{\mathrm{gen}}$: the
+permutation must fix the (distinct) unordered pairs $\{\pm w_i\}$, hence is trivial;
+$g_{d,j}(w,b,u)=(w,b,u)$ with $w\ne0$ forces $d=0$, then $j=0$. \qedhere
+\end{proof}
+
+\begin{remark}[Proof-process note, G2]
+A first draft argued via generic line restrictions and Bohr means, claiming the ``good direction''
+set is connected; the complement of finitely many hyperplanes is of course \emph{disconnected},
+and the matching's constancy across components was unjustified. The distributional-Fourier proof
+above repairs and simplifies; Lemma~\ref{lem:bohr} remains in use for genuinely one-dimensional
+statements (the microcosm, Ch.~2). Caught in-session and logged (LAB\_NOTEBOOK 2026-07-17).
+\end{remark}
+
+\begin{remark}
+The theorem is \emph{non-asymptotic}: no width assumption beyond membership in
+$\Theta_{\mathrm{gen}}$, which is an explicit, measurable condition (audited on real corpora).
+In the maximal-symmetry-group phrasing of arXiv:2604.23720 (Def.~2.2): $\Dinf\wr S_n$ is a
+maximal symmetry group of the $L=1$ sine architecture, resolving the sine case of
+arXiv:2409.11697, Rmk.~4.5 (their question is posed among linear actions; the answer requires
+leaving them).
+\end{remark}
+
+\begin{conjecture}[Deep case]\label{conj:deep}
+For $L\ge2$, off a proper analytic subset, functional equality implies $G$-relatedness.
+\emph{Attack and status}: reduction to a Bessel--CP tensor decomposition with two open lemmas —
+see \texttt{docs/THINKING/proof-memos/PO-2-deep-attempt.md}; falsification protocol: S4e
+(exhaustive-alignment residual hunt on repeated same-image fits at production $L=2$).
+\end{conjecture}
+
+\section{Completeness is function-access (PO-6) [PROP, conditional]}
+
+\begin{proposition}\label{prop:po6}
+Assume the conclusion of Theorem~\ref{thm:po2} on $\Theta_{\mathrm{gen}}$ (unconditional for
+$L=1$; conditional on Conjecture~\ref{conj:deep} otherwise). Let $I:\Theta_{\mathrm{gen}}\to X$ be
+$G$-invariant and \emph{complete} ($I(\theta)=I(\theta')\Rightarrow\theta'\in G\theta$). Then $I$
+factors as $I=\bar I\circ R$ through the realization map $R:\theta\mapsto f_\theta$, with
+$\bar I$ injective on $R(\Theta_{\mathrm{gen}})$. Conversely any injective encoding of
+$R(\Theta_{\mathrm{gen}})$ pulls back to a complete invariant.
+\end{proposition}
+
+\begin{proof}
+$R(\theta)=R(\theta')\Rightarrow\theta'\in G\theta$ (identifiability) $\Rightarrow
+I(\theta)=I(\theta')$ (invariance): so $I$ is constant on $R$-fibers and $\bar I$ is well defined;
+completeness makes $\bar I$ injective. The converse composes an injective encoding with $R$.
+\end{proof}
+
+\begin{corollary}[Informational equivalence; the field's remaining object]
+A complete-invariant weight-space perceiver receives exactly the information of a function-space
+perceiver; any advantage of weight access over function access must be \emph{computational}
+(amortization: canonicalize once, decode cheaply) or must come from deliberately
+\emph{incomplete} invariants or from non-pointwise (distributional) processing. This sharpens RQ6
+and is adjudicated on the S5 FLOPs--accuracy Pareto frontier. For the permutation group on ReLU
+networks, the approximation-theoretic counterpart is arXiv:2602.01083 (invariant weight-space
+networks approximate function-space functionals); Proposition~\ref{prop:po6} is the exact,
+identifiability-based statement for the full sine group.
+\end{corollary}
+
+\section{Comparative classification (PO-7) [PROP per row]}
+
+\begin{proposition}[Per-neuron groups by activation]\label{prop:po7}
+With the conventions of \S\ref{sec:setting} (activation $\psi$ replacing $\sin$), the following
+maps generate per-neuron symmetries, and the associated per-layer groups are as tabulated:
+(i) $\psi$ odd (tanh; FINER's $\psi(p)=\sin(\omega_0(|p|+1)p)$): $\sigma:(w,b,u)\mapsto(-w,-b,-u)$,
+group $\Z_2$;
+(ii) $\psi$ even (Gaussian $e^{-p^2}$): $\sigma':(w,b)\mapsto(-w,-b)$, $u$ untouched, group $\Z_2$
+(a different embedding — canonicalization touches only $(w,b)$);
+(iii) ReLU with fixed positional encoding: positive rescaling
+$\lambda\cdot(w,b,u)=(\lambda w,\lambda b,u/\lambda)$, $\lambda>0$, group $(\R_{>0},\times)$,
+continuous non-compact;
+(iv) sine: $\Dinf$ (Theorem~\ref{thm:po1});
+(v) FINER admits \emph{no} bias-shift symmetries: $p\mapsto\omega_0(|p|+1)p$ is a strictly
+increasing bijection, so $\psi(p+s)=\pm\psi(p)$ for all $p$ forces $s=0$.
+\end{proposition}
+
+\begin{proof}
+(i)/(ii): parity identities as for $\sin$; oddness of FINER's $\psi$ holds because
+$(|-p|+1)(-p)=-(|p|+1)p$. (iii): $\mathrm{ReLU}(\lambda z)=\lambda\,\mathrm{ReLU}(z)$.
+(v): if $\psi(p+s)=\varepsilon\psi(p)$ for all $p$ with fixed $\varepsilon=\pm1$, then the zero
+sets satisfy $Z-s=Z$ where $Z=\{p:\psi(p)=0\}=\{p:\omega_0(|p|+1)p\in\pi\Z\}$; $Z$ has strictly
+decreasing consecutive gaps as $|p|\to\infty$ (frequency grows), so it is invariant under no
+nonzero translation.
+\end{proof}
+
+\begin{remark}[Consequences for the registered predictions]
+FINER lands in the \emph{finite} class ($\Z_2\wr S_n$, tanh-like), contrary to the protocol's
+``near-trivial'' expectation: its variable period destroys $\tau/\rho$ but oddness preserves
+$\sigma$. Predictions P-A/P-B are amended \emph{before} any S3 data exist (ledger rows P-A-v2 /
+P-B-v2, notebook 2026-07-17): expected canonicalization-consistency ordering
+tanh $\approx$ Gauss $\approx$ FINER $>$ sine $>$ ReLU+PE; expected raw-decodability ordering
+(inverse effective orbit volume) FINER $\approx$ tanh $\approx$ Gauss $>$ sine $>$ ReLU+PE.
+Maximality status per row: tanh — known (Sussmann 1992; via 2409.11697's citations);
+sine $L=1$ — Theorem~\ref{thm:po2}; ReLU — conditional results cited in 2409.11697;
+Gaussian, FINER — expected, not located in the literature at G2 (tracked in RELATED\_WORK; treat
+as conjectures with the S3 empirical audit as partial evidence).
+\end{remark}
+
+\end{document}

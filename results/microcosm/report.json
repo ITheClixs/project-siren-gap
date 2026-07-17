@@ -1,0 +1,203 @@
+{
+  "params": {
+    "A": 1.0,
+    "omega": 7.0,
+    "phi": 0.8,
+    "c0": 0.3
+  },
+  "closed_form_max_abs_err_vs_quadrature": 5.551115123125783e-16,
+  "loss_at_orbit_points": [
+    -1.1102230246251565e-16,
+    0.0,
+    -1.1102230246251565e-16,
+    0.0
+  ],
+  "n_minima_fundamental_domain": 20,
+  "n_spurious": 19,
+  "minima": [
+    {
+      "w": 7.0,
+      "b": 0.8,
+      "loss": -1.1102230246251565e-16,
+      "type": "global(orbit)",
+      "orbit_dist": 0.0
+    },
+    {
+      "w": 0.010245,
+      "b": 1.569396,
+      "loss": 0.4371683645016946,
+      "type": "spurious",
+      "orbit_dist": 7.031974
+    },
+    {
+      "w": 0.011484,
+      "b": 1.569232,
+      "loss": 0.43716852872216777,
+      "type": "spurious",
+      "orbit_dist": 7.030723
+    },
+    {
+      "w": 0.01252,
+      "b": 1.569082,
+      "loss": 0.4371687597048648,
+      "type": "spurious",
+      "orbit_dist": 7.029677
+    },
+    {
+      "w": 0.013732,
+      "b": 1.568931,
+      "loss": 0.4371688954381239,
+      "type": "spurious",
+      "orbit_dist": 7.028456
+    },
+    {
+      "w": 0.014728,
+      "b": 1.568778,
+      "loss": 0.4371690378914309,
+      "type": "spurious",
+      "orbit_dist": 7.027449
+    },
+    {
+      "w": 0.018703,
+      "b": 1.568235,
+      "loss": 0.43716935362698023,
+      "type": "spurious",
+      "orbit_dist": 7.023439
+    },
+    {
+      "w": 0.060294,
+      "b": 1.56257,
+      "loss": 0.43717771971116903,
+      "type": "spurious",
+      "orbit_dist": 6.981478
+    },
+    {
+      "w": 0.06326,
+      "b": 1.562165,
+      "loss": 0.4371786687915311,
+      "type": "spurious",
+      "orbit_dist": 6.978486
+    },
+    {
+      "w": 0.065457,
+      "b": 1.561865,
+      "loss": 0.4371794016258531,
+      "type": "spurious",
+      "orbit_dist": 6.976268
+    },
+    {
+      "w": 0.070848,
+      "b": 1.561129,
+      "loss": 0.4371813053129236,
+      "type": "spurious",
+      "orbit_dist": 6.970829
+    },
+    {
+      "w": 0.072115,
+      "b": 1.560956,
+      "loss": 0.4371817744598484,
+      "type": "spurious",
+      "orbit_dist": 6.969551
+    },
+    {
+      "w": 0.0815,
+      "b": 1.559675,
+      "loss": 0.4371855097494283,
+      "type": "spurious",
+      "orbit_dist": 6.960083
+    },
+    {
+      "w": 0.088623,
+      "b": 1.558702,
+      "loss": 0.43718865005146146,
+      "type": "spurious",
+      "orbit_dist": 6.952896
+    },
+    {
+      "w": 11.486846,
+      "b": 0.898544,
+      "loss": 0.47399274239675604,
+      "type": "spurious",
+      "orbit_dist": 4.487929
+    },
+    {
+      "w": 0.443579,
+      "b": -0.0,
+      "loss": 0.48354994000797674,
+      "type": "spurious",
+      "orbit_dist": 6.605048
+    },
+    {
+      "w": 14.716314,
+      "b": 0.891929,
+      "loss": 0.4888082826588666,
+      "type": "spurious",
+      "orbit_dist": 7.716861
+    },
+    {
+      "w": 17.893231,
+      "b": 0.888076,
+      "loss": 0.4926582314385358,
+      "type": "spurious",
+      "orbit_dist": 10.893588
+    },
+    {
+      "w": 21.053114,
+      "b": 0.886342,
+      "loss": 0.49420413182386613,
+      "type": "spurious",
+      "orbit_dist": 14.05338
+    },
+    {
+      "w": 21.587536,
+      "b": 0.0,
+      "loss": 0.49524555140247145,
+      "type": "spurious",
+      "orbit_dist": 14.609456
+    }
+  ],
+  "basin_census": {
+    "2.0": {
+      "n_distinct_endpoints_fundamental": 2,
+      "n_global_reached": 0,
+      "n_spurious_basins_hit": 0,
+      "n_ridge_clusters": 2,
+      "frac_inits_reaching_global": 0.0,
+      "frac_inits_on_ridge": 1.0,
+      "frac_inits_spurious": 0.0
+    },
+    "5.0": {
+      "n_distinct_endpoints_fundamental": 2,
+      "n_global_reached": 1,
+      "n_spurious_basins_hit": 0,
+      "n_ridge_clusters": 1,
+      "frac_inits_reaching_global": 0.26,
+      "frac_inits_on_ridge": 0.74,
+      "frac_inits_spurious": 0.0
+    },
+    "10.0": {
+      "n_distinct_endpoints_fundamental": 3,
+      "n_global_reached": 1,
+      "n_spurious_basins_hit": 1,
+      "n_ridge_clusters": 1,
+      "frac_inits_reaching_global": 0.6177777777777778,
+      "frac_inits_on_ridge": 0.3711111111111111,
+      "frac_inits_spurious": 0.011111111111111112
+    },
+    "20.0": {
+      "n_distinct_endpoints_fundamental": 6,
+      "n_global_reached": 1,
+      "n_spurious_basins_hit": 4,
+      "n_ridge_clusters": 1,
+      "frac_inits_reaching_global": 0.32,
+      "frac_inits_on_ridge": 0.17444444444444446,
+      "frac_inits_spurious": 0.5055555555555555
+    }
+  },
+  "bessel_vandermonde_min_abs_det": {
+    "2": 0.004385631171629055,
+    "3": 5.227616689463022e-08,
+    "4": 6.895249777208787e-09,
+    "5": 4.3848518523357796e-13
+  }
+}
