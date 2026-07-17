@@ -19,3 +19,6 @@ __pycache__/
 # large run outputs (per-seed CSVs + figures under results/ ARE committed;
 # anything under results/raw/ is not)
 results/raw/
+
+# compiled chapter PDFs (tectonic output)
+*.pdf
