@@ -19,9 +19,14 @@ Two literature phenomena must replicate qualitatively before the pipeline is tru
   permutation + σ sign + τ phase ops per step, τ range matched to measured bias statistics) vs W3
   raw, same decoder/seeds/statistics.
 - **Success criterion (binding):** acc(W6) − acc(W3) > 1 accuracy point with 95% CI excluding 0.
-- **Caveat:** if the G1 close-read shows Shamsian's augs already include τ-phase ops, W6 cites them
-  as origin and A2 becomes a direct replication; otherwise A2 is a "direction" replication with our
-  aug family. Either way the delta is documented here.
+- **Caveat (resolved at G1 close-read, 2026-07-17):** Shamsian's §4.1 defines both "SIREN negation"
+  (σ) and "SIREN bias" (τ/ρ with unbounded k) — and their Table 3 shows unbounded SIREN-bias
+  augmentation *severely hurts* (e.g. DWS 4.69 vs ≈18 no-aug). A2 therefore replicates the
+  *direction* with our bounded aug family (perm + σ + bias-range-matched τ, k ∈ {−1,0,1}); W6 cites
+  them as origin. **Pre-registered risk note:** if bounded-τ augmentation also hurts, that is a
+  finding consistent with their Table 3 and evidence for canonicalization-over-augmentation — not a
+  pipeline failure; the A2 binding criterion then applies to the perm+σ aug variant only, with the
+  τ result reported alongside.
 
 ## Status
 

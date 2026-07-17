@@ -28,3 +28,8 @@ Sub-questions not yet resolved, each with the best partial attack. ≥ 10 requir
    which reduction moves into outgoing-sign bookkeeping. Attack: S1 rung comparison W5 vs W5-minus-
    phase-step ablation + direct probe on (k, b_reduced) split. — *Candidate for a sharp, small,
    early result.*
+7. **Why does phase augmentation hurt DWS far more than GNN?** (Shamsian Table 3: DWS collapses
+   under unbounded SIREN-bias aug, GNN degrades mildly.) Hypothesis: DWS features are raw-bias-
+   magnitude sensitive (unbounded kπ shifts blow up the input distribution); graph nets renormalize
+   per-node. Attack: reproduce the contrast inside S1's W6 with bounded vs unbounded k (E-track
+   note); connects PO-12's truncated-group-averaging error term to a published failure.

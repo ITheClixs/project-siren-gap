@@ -45,6 +45,32 @@ Evidence:
 Tripwires that would flip the verdict: any of items 5–7 revealing phase-shift exploitation; any new
 arXiv hit on the re-scan queries at G1+.
 
+### G1 update (2026-07-17, after full-text close-reads) — verdict CONFIRMED with revised precision
+
+The close-reads (docs/THINKING/close-reads/) resolve items 6–7 and sharpen item 1:
+
+- **Shamsian et al. DO publish the τ/ρ ops** as augmentations ("SIREN negation" = σ, "SIREN bias" =
+  b+kπ with (−1)ᵏ on the next layer, k ∈ ℤ unbounded) — *and their Table 3 shows SIREN bias
+  augmentation severely hurts weight-space learners* (DWS: 4.69 vs ≈18 no-aug on ModelNet40-INR;
+  58.2 vs ≈68 FMNIST; 24.3 vs ≈39 CIFAR-family). So the strict reading of Gate-1 is "the ops are
+  known, were tried as augmentation, and failed." Nobody canonicalizes, classifies, or builds
+  equivariance for the phase component.
+- **Monomial-NFN's Remark 4.5 states functional maximality for sine as an open question.** Their
+  maximality is for matrix subgroups of GL(n); τ/ρ are affine. PO-1/PO-2 answer their open question.
+- **Quasi-equivariant metanetworks:** sine appears only inside their learned-action
+  parameterization; no phase symmetries. Their Def 2.2 (maximal symmetry group off a variety) is
+  adopted as PO-2's statement form.
+- **Revised Gate-1 novelty statement (binding for all papers):** the sine phase symmetries are
+  *known as isolated identities and were used as (failed) augmentation*; the program's novelty is
+  (a) the group-theoretic classification (D∞ ≀ Sₙ, wreath structure) with identifiability (resolving
+  2409.11697's open question), (b) exact canonicalization algorithms for the full group, (c) full-
+  group equivariant layers (perm/+sign/+phase ablation), (d) the causal decomposition built on
+  exactness, (e) the published failure of phase *augmentation* as direct motivation for exactness
+  (and a PO-12 data point).
+- Gate-2 confirmed: 2605.08281's own scoping sentence — "the object of study is not an
+  independently fitted SIREN zoo." 2602.01083 is ReLU/perm approximation theory; PO-6 survives with
+  sharpened framing (see close-read).
+
 ## Gate-2 — "Does a published causal decomposition of the perception gap exist?"
 
 ### Verdict: **PASS** (no decomposition found; the premise is stated but never decomposed).
