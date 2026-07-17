@@ -9,6 +9,7 @@ Hardware: MacBook Air M4, unified memory, fanless. Rules: checkpoint ≥ every 1
 |---|---|---|---|---|---|
 | G0 | 2026-07-16 | ~0 (API only) | ~0 | 350 | lit scan; no training compute |
 | G1 | 2026-07-17 | ~0.3 (tests + profiling) | ~0.3 | ~349.7 | throughput measured (below) |
+| G3 (interim) | 2026-07-17 | ~4 (pilots + full MNIST chain) | ~4.3 | ~345.7 | **steps frozen at 300 (quality gate)** — MNIST protocol now ~24 min, full 4-protocol chain ~3.5 h vs 12.5 h projected at 1k steps; sustained thermal throttle measured 55→48 fits/s (−13%, fanless, R7); anchors/decoders extra |
 
 ## Measured throughput (G1, `scripts/01_profile_fitting.py`, torch 2.13.0, M4)
 
