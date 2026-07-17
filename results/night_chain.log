@@ -1,0 +1,5 @@
+=== night chain start Fri Jul 17 23:54:10 CEST 2026 ===
+/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/06_anchors.py:37: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /Users/runner/work/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:219.)
+  labels[split] = torch.from_numpy(meta.loc[meta["split"] == split, "label"].to_numpy())
+rung W3 (P-random raw):
+  W3 seed 0: test 14.10 (val 14.46, 13 ep)
