@@ -1,0 +1,5 @@
+{
+  "config": "B=64 w32 L2 steps300 shared-det MNIST",
+  "mps_refit_gap": 0.0,
+  "torch": "2.13.0"
+}

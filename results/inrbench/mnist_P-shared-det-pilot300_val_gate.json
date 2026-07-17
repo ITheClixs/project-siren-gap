@@ -1,0 +1,52 @@
+{
+  "corpus": "data/inrbench/mnist/P-shared-det-pilot300",
+  "eval_split": "val",
+  "n_eval": 2000,
+  "gate": {
+    "acc_real_pixels": 97.9,
+    "acc_renders": 98.0,
+    "gap_pts": -0.09999999999999432,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": 0.17624759081683872,
+    "corr_loss_label": -0.17589856082024127
+  },
+  "psnr": {
+    "median": 39.12055969238281,
+    "q05": 36.821323204040525
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      0.695198,
+      1.520619,
+      3.14705
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      0.634994,
+      1.636685,
+      1.970201
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.000259,
+      0.002013
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      1.129881,
+      1.305483,
+      1.646543
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.001924,
+      0.007321,
+      0.025512
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.054266,
+      0.117226,
+      0.269829
+    ]
+  },
+  "gate_cnn_train_acc_check": 97.9
+}

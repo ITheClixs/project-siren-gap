@@ -66,15 +66,31 @@ def init_siren_train(
 
 
 def forward_train(tensors: list[Tensor], x: Tensor) -> Tensor:
-    """Internal-parameterization forward: sin(omega_0 * (W h + b)) per sine layer."""
+    """Internal-parameterization forward: sin(omega_0 * (W h + b)) per sine layer.
+
+    x: shared coords [P, in] or per-INR coords [B, P, in] (minibatch mode).
+    """
     n_sine = (len(tensors) - 2) // 2
     w0, b0 = tensors[0], tensors[1]
-    h = torch.sin(OMEGA_0 * (torch.einsum("bji,pi->bpj", w0, x) + b0[:, None, :]))
+    eq0 = "bji,pi->bpj" if x.ndim == 2 else "bji,bpi->bpj"
+    h = torch.sin(OMEGA_0 * (torch.einsum(eq0, w0, x) + b0[:, None, :]))
     for layer in range(1, n_sine):
         w, b = tensors[2 * layer], tensors[2 * layer + 1]
         h = torch.sin(OMEGA_0 * (torch.einsum("bji,bpi->bpj", w, h) + b[:, None, :]))
     w_out, b_out = tensors[-2], tensors[-1]
     return torch.einsum("bci,bpi->bpc", w_out, h) + b_out[:, None, :]
+
+
+def init_from_seeds(
+    seeds: list[int], in_dim: int, widths: tuple[int, ...], out_dim: int
+) -> list[Tensor]:
+    """Per-INR inits with individually recorded seeds (P-random); identical seeds
+    give identical inits (shared protocols). Returns the flat tensor list, batched."""
+    per_inr: list[list[Tensor]] = []
+    for s in seeds:
+        gen = torch.Generator().manual_seed(int(s))
+        per_inr.append(init_siren_train(1, in_dim, widths, out_dim, gen, shared_init=False))
+    return [torch.cat([p[i] for p in per_inr], dim=0) for i in range(len(per_inr[0]))]
 
 
 def absorb_omega(tensors: list[Tensor]) -> SirenParams:
@@ -97,25 +113,42 @@ def fit_batch(
     shared_init: bool = False,
     device: str = "cpu",
     log_every: int = 100,
+    init_seeds: list[int] | None = None,
+    coord_batch: int | None = None,
+    fit_seed: int = 0,
 ) -> FitResult:
-    """Fit B INRs to targets [B, P, c] on coords [P, in_dim] (full-batch, deterministic)."""
+    """Fit B INRs to targets [B, P, c] on coords [P, in_dim].
+
+    Deterministic full-batch by default (P-shared-det / P-random given init_seeds).
+    coord_batch=k enables per-INR coordinate minibatching driven by fit_seed
+    (P-shared-stoch). init_seeds overrides (seed, shared_init) with per-INR seeds.
+    """
     if targets.ndim != 3 or coords.ndim != 2 or targets.shape[1] != coords.shape[0]:
         raise ValueError(f"bad shapes: targets {tuple(targets.shape)}, coords {tuple(coords.shape)}")
-    gen = torch.Generator().manual_seed(seed)
-    tensors = [
-        t.to(device).requires_grad_(True)
-        for t in init_siren_train(
-            targets.shape[0], coords.shape[1], widths, targets.shape[2], gen, shared_init
-        )
-    ]
+    b_sz, n_pts, ch = targets.shape
+    if init_seeds is not None:
+        if len(init_seeds) != b_sz:
+            raise ValueError("init_seeds length must equal batch size")
+        raw = init_from_seeds(init_seeds, coords.shape[1], widths, ch)
+    else:
+        gen = torch.Generator().manual_seed(seed)
+        raw = init_siren_train(b_sz, coords.shape[1], widths, ch, gen, shared_init)
+    tensors = [t.to(device).requires_grad_(True) for t in raw]
     targets = targets.to(device)
     coords = coords.to(device)
+    mb_gen = torch.Generator().manual_seed(fit_seed)
     opt = torch.optim.Adam(tensors, lr=lr)
     curve: list[float] = []
     for step in range(steps):
         opt.zero_grad(set_to_none=True)
-        pred = forward_train(tensors, coords)
-        per_inr = ((pred - targets) ** 2).mean(dim=(1, 2))
+        if coord_batch is None:
+            x_step, t_step = coords, targets
+        else:
+            idx = torch.randint(0, n_pts, (b_sz, coord_batch), generator=mb_gen).to(device)
+            x_step = coords[idx]  # [B, k, in]
+            t_step = torch.gather(targets, 1, idx[:, :, None].expand(-1, -1, ch))
+        pred = forward_train(tensors, x_step)
+        per_inr = ((pred - t_step) ** 2).mean(dim=(1, 2))
         # sum (not mean): Adam on the sum is exactly independent per-INR Adam,
         # because per-INR losses share no parameters (protocol A.1 / T9)
         per_inr.sum().backward()

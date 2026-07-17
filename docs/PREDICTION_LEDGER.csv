@@ -6,3 +6,6 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-07-17,S3,"P-A-v2 (amends P-A pre-data: FINER is odd => sigma survives, group = Z2 like tanh; ch1 Prop 8.1)","tanh ~ gaussian ~ finer > sine > relu+pe",NA,NA,cb2be1d2075c09a7
 2026-07-17,S3,"P-B-v2 (amends P-B pre-data, same derivation; operational orbit-volume definition still owed before S3 prereg)","finer ~ tanh ~ gaussian > sine > relu+pe",NA,NA,cb2be1d2075c09a7
 2026-07-17,S3,"P-C-v2 (amends P-C pre-data: FINER canonicalizable like tanh per ch1 PO-7)","tanh ~ gaussian ~ finer collapse first; sine next; relu+pe next",NA,NA,c59a54d994e705dc
+2026-07-17,G3-pilot,QG-1 frozen MNIST config steps,"500",300,1000,b00acd73de3c5994
+2026-07-17,G3-pilot,QG-2 mean test-render PSNR dB [0-1] range of frozen config,"33",28,40,b00acd73de3c5994
+2026-07-17,A1,QG-3 anchor gap acc(W1)-acc(W3) accuracy points MNIST matched MLP,"30",12,45,b00acd73de3c5994

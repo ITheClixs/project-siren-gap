@@ -1,0 +1,52 @@
+{
+  "corpus": "data/inrbench/mnist/P-random-pilot300",
+  "eval_split": "val",
+  "n_eval": 2000,
+  "gate": {
+    "acc_real_pixels": 97.9,
+    "acc_renders": 97.85,
+    "gap_pts": 0.05000000000001137,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": 0.014561184812841334,
+    "corr_loss_label": -0.006661104601205114
+  },
+  "psnr": {
+    "median": 37.37359619140625,
+    "q05": 33.72294540405274
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      0.019257,
+      0.380838,
+      2.559094
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      1.018369,
+      1.490734,
+      1.896477
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.002652
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      1.042351,
+      1.235315,
+      1.592659
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.000245,
+      0.006411,
+      0.027092
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.046112,
+      0.088029,
+      0.274768
+    ]
+  },
+  "gate_cnn_train_acc_check": 97.9
+}
