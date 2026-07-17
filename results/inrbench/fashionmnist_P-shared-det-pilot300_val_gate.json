@@ -1,0 +1,52 @@
+{
+  "corpus": "data/inrbench/fashionmnist/P-shared-det-pilot300",
+  "eval_split": "val",
+  "n_eval": 2000,
+  "gate": {
+    "acc_real_pixels": 86.2,
+    "acc_renders": 86.15,
+    "gap_pts": 0.04999999999999716,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": -0.025832343204980134,
+    "corr_loss_label": -0.006838526467128274
+  },
+  "psnr": {
+    "median": 43.438697814941406,
+    "q05": 39.07375965118408
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      1.215177,
+      1.842006,
+      3.01139
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      1.454197,
+      1.713541,
+      2.121143
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.001891
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      0.845939,
+      1.226671,
+      2.214026
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      5.9e-05,
+      0.008056,
+      0.046197
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.067756,
+      0.160693,
+      0.555498
+    ]
+  },
+  "gate_cnn_train_acc_check": 87.6
+}

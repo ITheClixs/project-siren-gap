@@ -3,3 +3,83 @@
   labels[split] = torch.from_numpy(meta.loc[meta["split"] == split, "label"].to_numpy())
 rung W3 (P-random raw):
   W3 seed 0: test 14.10 (val 14.46, 13 ep)
+  W3 seed 1: test 13.54 (val 13.72, 19 ep)
+  W3 seed 2: test 13.69 (val 14.68, 14 ep)
+  W3 seed 3: test 14.15 (val 14.74, 13 ep)
+  W3 seed 4: test 14.13 (val 14.90, 17 ep)
+rung W1 (P-shared-det raw):
+  W1 seed 0: test 94.24 (val 95.36, 13 ep)
+  W1 seed 1: test 94.05 (val 95.24, 13 ep)
+  W1 seed 2: test 94.41 (val 95.68, 25 ep)
+  W1 seed 3: test 94.54 (val 95.62, 27 ep)
+  W1 seed 4: test 94.54 (val 95.88, 33 ep)
+{
+  "n": 5,
+  "mean_diff": 80.434,
+  "ci95": [
+    80.17316188516988,
+    80.69483811483012
+  ],
+  "t_p": 1.1166484813168929e-11,
+  "wilcoxon_p": 0.0625,
+  "cohen_d": 382.88883546243414
+}
+rung W6 (W3 + bounded group aug):
+  W6 seed 0: test 17.34 (val 18.34, 34 ep)
+  W6 seed 1: test 18.71 (val 18.18, 44 ep)
+  W6 seed 2: test 18.45 (val 18.62, 43 ep)
+  W6 seed 3: test 18.45 (val 18.56, 45 ep)
+  W6 seed 4: test 18.42 (val 19.22, 67 ep)
+{
+  "n": 5,
+  "mean_diff": 4.351999999999999,
+  "ci95": [
+    3.456907512501348,
+    5.247092487498651
+  ],
+  "t_p": 0.0001742559436500424,
+  "wilcoxon_p": 0.0625,
+  "cohen_d": 6.037054042631459
+}
+written results/anchors/anchors_mnist.json
+ANCHORS DONE Sat Jul 18 00:03:09 CEST 2026
+shard_k0_000000: 256 fits in 5.1s  psnr_med=37.9dB  overall 49.5 fits/s
+shard_k0_000256: 256 fits in 4.6s  psnr_med=36.9dB  overall 52.3 fits/s
+shard_k0_000512: 256 fits in 4.7s  psnr_med=37.7dB  overall 53.1 fits/s
+shard_k0_000768: 256 fits in 4.6s  psnr_med=37.6dB  overall 53.7 fits/s
+shard_k0_001024: 256 fits in 4.7s  psnr_med=37.5dB  overall 53.9 fits/s
+shard_k0_001280: 256 fits in 4.6s  psnr_med=37.5dB  overall 54.2 fits/s
+shard_k0_001536: 256 fits in 4.6s  psnr_med=37.4dB  overall 54.4 fits/s
+shard_k0_001792: 256 fits in 4.6s  psnr_med=37.5dB  overall 54.6 fits/s
+shard_k0_002048: 256 fits in 4.6s  psnr_med=37.5dB  overall 54.7 fits/s
+shard_k0_002304: 256 fits in 4.8s  psnr_med=37.5dB  overall 54.5 fits/s
+shard_k0_002560: 256 fits in 5.0s  psnr_med=37.5dB  overall 54.2 fits/s
+shard_k0_002816: 256 fits in 4.9s  psnr_med=37.4dB  overall 54.0 fits/s
+shard_k0_003072: 256 fits in 4.6s  psnr_med=37.4dB  overall 54.2 fits/s
+shard_k0_003328: 256 fits in 4.7s  psnr_med=37.3dB  overall 54.2 fits/s
+shard_k0_003584: 256 fits in 4.7s  psnr_med=37.7dB  overall 54.2 fits/s
+shard_k0_003840: 256 fits in 4.7s  psnr_med=37.5dB  overall 54.1 fits/s
+shard_k0_004096: 256 fits in 6.4s  psnr_med=37.4dB  overall 53.0 fits/s
+shard_k0_004352: 256 fits in 9.4s  psnr_med=37.3dB  overall 50.4 fits/s
+shard_k0_004608: 256 fits in 9.8s  psnr_med=37.8dB  overall 48.0 fits/s
+shard_k0_004864: 256 fits in 10.2s  psnr_med=37.6dB  overall 45.9 fits/s
+shard_k0_005120: 256 fits in 10.5s  psnr_med=37.6dB  overall 44.0 fits/s
+shard_k0_005376: 256 fits in 10.9s  psnr_med=37.5dB  overall 42.4 fits/s
+shard_k0_005632: 256 fits in 11.1s  psnr_med=37.5dB  overall 40.9 fits/s
+shard_k0_005888: 256 fits in 11.4s  psnr_med=37.7dB  overall 39.5 fits/s
+shard_k0_006144: 256 fits in 9.6s  psnr_med=37.6dB  overall 38.8 fits/s
+shard_k0_006400: 256 fits in 8.2s  psnr_med=37.4dB  overall 38.4 fits/s
+shard_k0_006656: 256 fits in 7.0s  psnr_med=36.9dB  overall 38.3 fits/s
+shard_k0_006912: 256 fits in 6.1s  psnr_med=37.9dB  overall 38.4 fits/s
+shard_k0_007168: 256 fits in 6.1s  psnr_med=37.2dB  overall 38.6 fits/s
+shard_k0_007424: 256 fits in 6.8s  psnr_med=37.5dB  overall 38.5 fits/s
+=== fmnist chain queued Sat Jul 18 00:06:30 CEST 2026 ===
+shard_k0_007680: 256 fits in 6.3s  psnr_med=37.4dB  overall 38.6 fits/s
+shard_k0_007936: 256 fits in 6.1s  psnr_med=37.6dB  overall 38.7 fits/s
+shard_k0_008192: 256 fits in 6.1s  psnr_med=37.5dB  overall 38.8 fits/s
+shard_k0_008448: 256 fits in 6.6s  psnr_med=37.5dB  overall 38.8 fits/s
+shard_k0_008704: 256 fits in 6.1s  psnr_med=37.3dB  overall 38.9 fits/s
+shard_k0_008960: 256 fits in 6.1s  psnr_med=37.6dB  overall 38.9 fits/s
+shard_k0_009216: 256 fits in 6.2s  psnr_med=37.6dB  overall 39.0 fits/s
+shard_k0_009472: 256 fits in 6.6s  psnr_med=37.7dB  overall 39.0 fits/s
+shard_k0_009728: 256 fits in 6.3s  psnr_med=37.4dB  overall 39.0 fits/s

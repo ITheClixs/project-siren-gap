@@ -153,3 +153,49 @@ T9 re-verification at production config, strata audit implementation (geometry/)
 generation plan + overnight queue, replication anchors A1/A2, fp32 storage, leakage audits;
 plus G2 advisor queue: tectonic compile + stable labels, census optimizer variant, S4-prereg
 item for the init-range prediction, scan-diff tooling.
+
+---
+
+## 2026-07-17/18 — Session 4: G3 (INR-Bench sine: MNIST complete, anchors PASSED)
+
+**Gate status: G3 IN PROGRESS** (MNIST done + anchors done; FMNIST chain queued detached;
+CIFAR pending pilot + fallback decision).
+
+**Pilot → freeze:** MNIST sine config frozen at **L=2, w=32, steps=300, lr 1e−3**. Task-referenced
+gates on official test split: P-shared-det (−0.07 pts, renders *beat* pixels), P-random (−0.07),
+P-shared-stoch (−0.06) — all PASS. PSNR medians 39.2/37.5/32.2 dB. FMNIST pilot also passes at
+identical config (gap 0.05) — frozen same.
+
+**Replication anchors (binding criteria fixed pre-data):**
+- **A1 PASSED: W1−W3 = +80.43 pts** [80.17, 80.69]. Raw random-init weights are *chance-level*
+  for linear probe (10.1) and kNN (10.5); matched MLP reaches only 13.9. Shared-det weights:
+  94.4 MLP / 88.9 linear / 84.1 kNN — near-linear decodability, consistent with PO-9 laziness.
+  The perception gap in its rawest form: ~80 accuracy points destroyed by init nuisance alone
+  (both protocols fully deterministic given seeds).
+- **A2 PASSED: W6−W3 = +4.35 pts** [3.46, 5.25] with the *bounded* aug family — helps where
+  Shamsian's unbounded SIREN-bias hurt; recovers only ~5% of the gap (headroom for W4/W5).
+
+**Prediction scoring (protocol §0.1.2):**
+- QG-1 (steps): predicted 500, 80% int {300..1000}; observed 300 — interval HIT (boundary),
+  abs err 200.
+- QG-2 (PSNR): predicted 33 [28,40]; observed 39.2/37.5 — HIT, abs err ~5.
+- QG-3 (A1 gap): predicted 30 [12,45]; observed 80.4 — **interval MISS**, abs err 50.
+  *Miscalibration memo:* I anchored on Papa's graph-net relative gains and under-weighted my own
+  PO-9 reasoning (lazy shared-det ⇒ near-linear code ⇒ ceiling-level W1) and the fact that a
+  plain MLP gets no permutation structure for W3 (⇒ floor-level). The thesis's own mechanism
+  predicts extremes; I predicted the middle. Lesson recorded: when a registered mechanism makes a
+  directional extreme prediction, do not hedge toward literature baselines from a different
+  reader class. Running coverage: 2/3 intervals.
+- Instrument note: Wilcoxon p=.0625 at n=5 is the two-sided floor — report alongside t per §0.5.
+
+**Infra findings:** harness-tracked background tasks were killed twice (likely machine sleep ~
+midnight); switched to detached nohup+caffeinate chains with shard-resume — survived. Sustained
+throttle 55→48 fits/s (R7 measured). P-shared-stoch generation is ~2.5× faster (256-coord
+minibatches). Leakage: corr(PSNR,label) = 0.203 (det) / 0.017 (random) / 0.061 (stoch) —
+PSNR-matched control path pre-committed in S1 prereg draft.
+
+**Running detached:** P-random-K MNIST (440k fits), then FMNIST 4-protocol chain (queued,
+auto-starts). **Compute:** ~5 h this session (chains + decoders).
+
+**Next:** K + FMNIST complete → gates on both; CIFAR pilot (expect steps retune + 20k/4k fallback
+decision per burn-down); then G3 exit review + S1 prereg freeze (power memo from anchor σ≈0.2–0.6).

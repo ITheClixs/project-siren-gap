@@ -32,5 +32,9 @@ Two literature phenomena must replicate qualitatively before the pipeline is tru
 
 | anchor | status | result | delta memo |
 |---|---|---|---|
-| A1 | pending (G3) | — | — |
-| A2 | pending (G3/G4) | — | — |
+| A1 | **PASSED** (2026-07-18) | W1−W3 = **+80.43 pts** [95% CI 80.17, 80.69], paired t p=1.1e−11, Wilcoxon p=.0625 (n=5 floor), d≈383. W1 = 94.36±0.21 (linear probe 88.9, kNN 84.1); W3 = 13.92±0.28 (linear probe 10.1 = chance, kNN 10.5 = chance). | Direction matches Papa et al. Table 1 emphatically; magnitude far larger than their graph-net setting (+40–120% rel.) because our matched-MLP reader gets *no* permutation structure — raw random-init weights are chance-level for linear/kNN readers. Registered QG-3 interval [12,45] **missed** (obs. 80.4) — miscalibration scored in notebook. |
+| A2 | **PASSED** (2026-07-18) | W6−W3 = **+4.35 pts** [3.46, 5.25], t p=1.7e−4, d=6.0 (W6 = 18.27±0.55). | Direction matches Shamsian with our *bounded* family (perm+σ+τ, |j|≤1) where their unbounded SIREN-bias aug *hurt* — consistent with the truncated-group-averaging account (PO-12). Augmentation recovers ~5% of the 80-pt gap: large headroom for exact canonicalization at S1. |
+
+Artifacts: results/anchors/anchors_mnist.json (+ run log). Note: probes_W6 in the JSON duplicates
+W3's probe numbers (probes ignore train-time augmentation by design; label is misleading — fix at
+S1 refactor).

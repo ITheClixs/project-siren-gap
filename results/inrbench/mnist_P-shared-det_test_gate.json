@@ -1,0 +1,52 @@
+{
+  "corpus": "data/inrbench/mnist/P-shared-det",
+  "eval_split": "test",
+  "n_eval": 10000,
+  "gate": {
+    "acc_real_pixels": 97.83,
+    "acc_renders": 97.9,
+    "gap_pts": -0.07000000000000739,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": 0.20334436174057763,
+    "corr_loss_label": -0.200627401563746
+  },
+  "psnr": {
+    "median": 39.15058898925781,
+    "q05": 36.79595718383789
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      0.677725,
+      1.396849,
+      3.058503
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      0.687288,
+      1.57677,
+      1.968636
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.002238
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      1.049253,
+      1.249977,
+      1.537467
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.000174,
+      0.007866,
+      0.02364
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.051765,
+      0.103656,
+      0.269408
+    ]
+  },
+  "gate_cnn_train_acc_check": 97.9
+}
