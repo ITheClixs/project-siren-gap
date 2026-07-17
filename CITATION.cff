@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "SIREN-GAP: the weight-space perception gap — symmetry, basins, and the limits of reading semantics from neural network parameters"
+message: "If you use this software or the INR-Bench dataset, please cite it as below."
+type: software
+authors:
+  - name: "SIREN-GAP research program"
+repository-code: "https://github.com/TBD/siren-gap"
+license: MIT
+version: 0.0.1
+date-released: "2026-07-17"

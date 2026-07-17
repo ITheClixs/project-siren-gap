@@ -50,4 +50,14 @@ fetch_search s14_recent_inr     'abs:"implicit neural representation" AND submit
 fetch_search s15_class_signal   'abs:"class signal" OR all:"HyperINR"'                                relevance     20
 fetch_search s16_identif        'abs:"identifiability" AND abs:"neural network" AND cat:cs.LG'        submittedDate 30
 
+# fail-loudly audit: empty result sets are suspicious for queries that had hits before
+# (advisor review G0, Systems 2). s05/s06 are legitimately near-empty (Gate-1 tripwires).
+for f in "$OUT"/*.xml; do
+  n=$(grep -ac "<entry" "$f" 2>/dev/null || echo 0)
+  base=$(basename "$f" .xml)
+  case "$base" in
+    s05_periodic_sym|s06_siren_sym) ;;  # zero is the expected (good) outcome here
+    *) [ "$n" -eq 0 ] && echo "WARNING: $base returned 0 entries — possible fetch failure or scoop-blind spot" >&2 ;;
+  esac
+done
 echo "done: $(ls "$OUT" | wc -l | tr -d ' ') files in $OUT"

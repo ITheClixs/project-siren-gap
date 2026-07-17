@@ -1,7 +1,9 @@
 .PHONY: test lit-scan demo figures thesis
 
+PY := .venv/bin/python
+
 test:
-	python3 -m pytest tests/ -q
+	$(PY) -m pytest tests/ -q
 
 lit-scan:
 	bash scripts/00_lit_scan.sh .lit_cache

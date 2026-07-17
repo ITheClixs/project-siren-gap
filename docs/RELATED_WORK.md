@@ -33,6 +33,11 @@ Added at G0 (not in protocol, same treatment): 2602.01083 (expressivity of perm-
 **PO-6 novelty check, G1**), 2604.23720 (quasi-equivariant metanetworks, G1), surveys 2506.13018 +
 2603.10090 (sine sections, G1).
 
+**Close-read status (2026-07-17):** DONE — Papa 2312.10531, Shamsian 2402.04081 (+ SIREN-bias-aug
+failure finding), 2605.08281, Monomial-NFN 2409.11697 (maximality open question), 2602.01083,
+2604.23720, both surveys (memos in docs/THINKING/close-reads/). Remaining per schedule: IFT
+2601.23181 (G2), SANE + ScaleGMN + ProbeGen (G5 / before S5).
+
 ## A. Closest neighbors — INR weight-space perception
 
 | # | work | access | symmetries handled | init protocol | delta-to-us |

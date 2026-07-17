@@ -1,0 +1,19 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install -p .venv/bin/python -e ".[dev]"
+      - name: Property tests T1-T9 (CPU)
+        run: .venv/bin/python -m pytest tests/ -q
