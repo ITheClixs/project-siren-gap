@@ -51,3 +51,52 @@ PREDICTION_LEDGER.csv; deviations → docs/waivers/.
 3. Throughput profiling script (fits/sec MPS vs CPU, batched-SIREN A.1); COMPUTE_LEDGER v1.
 4. CI (GitHub Actions, CPU test suite).
 5. Re-run scan with updated s13/s14 windows; diff.
+
+---
+
+## 2026-07-17 — Session 2: G1 (close-reads, T1–T9, profiling)
+
+**Gate status: G1 PASSED.** Acceptance: T1–T9 green on MPS+CPU (49 tests, local run; CI covers CPU
+only — gate satisfied by the local run per ADVISOR_REVIEWS/G1.md Systems 2); profiling + burn-down
+v1 in COMPUTE_LEDGER; kill-risk close-reads done *before* any fitter/science code (G0 review
+condition honored).
+
+**Close-read findings (memos in docs/THINKING/close-reads/):**
+1. **Monomial-NFN Remark 4.5 leaves sine functional maximality explicitly open** — PO-1/PO-2
+   resolve it; their maximality is scoped to matrix subgroups of GL(n), τ/ρ are affine.
+2. **Shamsian publish both sine symmetry ops as augmentations** ("SIREN negation" = σ, "SIREN
+   bias" = ρ/τ with unbounded k) — **and SIREN-bias augmentation badly hurts** (their Table 3:
+   DWS 4.69 vs ≈18 no-aug). Gate-1 verdict revised, not flipped: ops known as failed augmentation;
+   classification + exact canonicalization + full-group equivariance + causal decomposition remain
+   ours, now with published motivation for exactness-over-averaging. W6 design: bounded k only.
+3. 2605.08281 is explicitly *not* an independently-fitted-zoo study (their words) — Gate-2 stands;
+   S2 prereg must carry their "routed" alternative; bias route (rank 2–5, causal) noted as hook.
+4. 2602.01083 = ReLU/perm *approximation* universality — PO-6 (exact, identifiability-based, D∞)
+   survives; cite as counterpart. 2604.23720's Def 2.2 adopted as PO-2's statement form.
+5. Surveys: sine phase symmetry absent (only a one-line Shamsian-aug citation) — tripwire closed.
+6. Papa: RQ2 already hypothesizes overtraining hurts downstream — C-11 delta re-scoped to
+   *mechanism* (chaos rates, post-alignment dispersion, basin counts), not the bare phenomenon.
+
+**Engineering:**
+- Core library: params/forward (canonical form, single source of truth), D∞≀Sₙ action in compact
+  (d, j, perm) parameterization, c_sort, c_align (+ diagnostics), Hungarian/Sinkhorn/greedy/brute,
+  phase-invariant encoding (corrected parity classes; refuses L≥2 per OPEN_PROBLEMS #4), minimal
+  invariant-DeepSets layer, batched fitter (A.1; ω₀ absorbed at save; sum-loss for exact per-INR
+  Adam), shard IO + schema validation.
+- **T1–T9 all green, CPU + MPS (49 tests).** T6 includes an executable negative control: the
+  protocol's cos(2b)·(w⊗u) demonstrably breaks under ρ. T4 verifies the convention lock
+  (internal forward ≡ canonical forward after absorption).
+- **T9: MPS refit determinism gap = 0.0** (torch 2.13.0, B=2/w16/150 steps) — P-shared-det viable
+  on MPS; risk R1 downgraded; re-verify at production config before G3 (advisor condition).
+- Throughput (M4): MNIST-config ~15 fits/s, CIFAR-config ~2.1 fits/s on MPS; flat in batch size
+  beyond B=64; MPS/CPU ≈ 1.5×. Corpus projections: fallback path ≈ 94 h fitting, full-CIFAR ≈
+  156 h — both inside budget; decision at G3 pilot. Lockfile committed (torch 2.13.0, numpy 2.5.1).
+
+**Deviations:** none. **Waivers:** none. **Scan:** G0 scan is 1 day old; per-gate re-scan next
+falls at G2 (s13/s14 windows to be bumped then) — logged as a judgment call, not a skip.
+
+**Next (G2):** theory sprint per scoping memo §11 order — PO-1 write-up, PO-4 generation/separation
+lemma + tie-stress tests (advisor G1 Theorist 2), PO-5, PO-3 (incl. u=0), PO-2 L=1 proof, PO-8
+microcosm (profiled 2D loss surfaces, F4), PO-6 + novelty paragraph, PO-2-deep timebox (2 days,
+Jacobi–Anger), PO-7 formal incl. FINER parity derivation; canonicalizer docstrings gain the
+"exact w.r.t. implemented group, conditional on PO-2" qualifier; IFT close-read (2601.23181).

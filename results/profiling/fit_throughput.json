@@ -1,0 +1,109 @@
+{
+  "platform": "macOS-26.0.1-arm64-arm-64bit-Mach-O",
+  "torch": "2.13.0",
+  "timed_steps": 200,
+  "runs": [
+    {
+      "device": "mps",
+      "batch": 64,
+      "timed_steps": 200,
+      "seconds": 0.862,
+      "steps_per_sec": 231.97,
+      "peak_mem_mb": 93.0,
+      "config": "mnist-like"
+    },
+    {
+      "device": "mps",
+      "batch": 256,
+      "timed_steps": 200,
+      "seconds": 3.659,
+      "steps_per_sec": 54.66,
+      "peak_mem_mb": 1175.1,
+      "config": "mnist-like"
+    },
+    {
+      "device": "mps",
+      "batch": 1024,
+      "timed_steps": 200,
+      "seconds": 13.306,
+      "steps_per_sec": 15.03,
+      "peak_mem_mb": 1175.1,
+      "config": "mnist-like"
+    },
+    {
+      "device": "cpu",
+      "batch": 64,
+      "timed_steps": 200,
+      "seconds": 1.253,
+      "steps_per_sec": 159.56,
+      "peak_mem_mb": null,
+      "config": "mnist-like"
+    },
+    {
+      "device": "cpu",
+      "batch": 256,
+      "timed_steps": 200,
+      "seconds": 5.473,
+      "steps_per_sec": 36.54,
+      "peak_mem_mb": null,
+      "config": "mnist-like"
+    },
+    {
+      "device": "mps",
+      "batch": 64,
+      "timed_steps": 200,
+      "seconds": 3.253,
+      "steps_per_sec": 61.48,
+      "peak_mem_mb": 1175.1,
+      "config": "cifar-like"
+    },
+    {
+      "device": "mps",
+      "batch": 256,
+      "timed_steps": 200,
+      "seconds": 12.172,
+      "steps_per_sec": 16.43,
+      "peak_mem_mb": 1175.1,
+      "config": "cifar-like"
+    },
+    {
+      "device": "mps",
+      "batch": 1024,
+      "timed_steps": 200,
+      "seconds": 48.568,
+      "steps_per_sec": 4.12,
+      "peak_mem_mb": 3358.3,
+      "config": "cifar-like"
+    },
+    {
+      "device": "cpu",
+      "batch": 64,
+      "timed_steps": 200,
+      "seconds": 5.519,
+      "steps_per_sec": 36.24,
+      "peak_mem_mb": null,
+      "config": "cifar-like"
+    },
+    {
+      "device": "cpu",
+      "batch": 256,
+      "timed_steps": 200,
+      "seconds": 25.361,
+      "steps_per_sec": 7.89,
+      "peak_mem_mb": null,
+      "config": "cifar-like"
+    }
+  ],
+  "derived_fits_per_sec_at_protocol_steps": {
+    "mnist-like/mps/B64": 14.85,
+    "mnist-like/mps/B256": 13.99,
+    "mnist-like/mps/B1024": 15.39,
+    "mnist-like/cpu/B64": 10.21,
+    "mnist-like/cpu/B256": 9.35,
+    "cifar-like/mps/B64": 1.97,
+    "cifar-like/mps/B256": 2.1,
+    "cifar-like/mps/B1024": 2.11,
+    "cifar-like/cpu/B64": 1.16,
+    "cifar-like/cpu/B256": 1.01
+  }
+}
