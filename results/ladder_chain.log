@@ -1,0 +1,15 @@
+=== ladder chain start Mon Jul 27 11:01:19 CEST 2026 ===
+--- rung P0 Mon Jul 27 11:01:19 CEST 2026 ---
+=== rung P0 ===
+  P0 seed 0: test 98.12 (val 98.60, 43 ep)
+  P0 seed 1: test 97.97 (val 98.42, 36 ep)
+  P0 seed 2: test 97.89 (val 98.52, 44 ep)
+  P0 seed 3: test 97.92 (val 98.38, 30 ep)
+  P0 seed 4: test 97.97 (val 98.58, 43 ep)
+  -> results/ladder/mnist/P0.json (97.97 mean over 5 seeds)
+--- rung P1 Mon Jul 27 11:03:39 CEST 2026 ---
+=== rung P1 ===
+  P1 seed 0: test 97.52 (val 98.16, 34 ep)
+  P1 seed 1: test 97.48 (val 98.18, 36 ep)
+  P1 seed 2: test 97.59 (val 98.06, 26 ep)
+  P1 seed 3: test 97.75 (val 98.40, 33 ep)

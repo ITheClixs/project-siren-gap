@@ -1,0 +1,183 @@
+{
+  "n_inits": 900,
+  "n_grid": 64,
+  "target": {
+    "A": 1.0,
+    "omega": 7.0,
+    "phi": 0.8,
+    "c0": 0.3
+  },
+  "settings": [
+    {
+      "label": "adam_production",
+      "optimizer": "adam",
+      "lr": 0.001,
+      "steps": 300
+    },
+    {
+      "label": "adam_converged",
+      "optimizer": "adam",
+      "lr": 0.01,
+      "steps": 5000
+    },
+    {
+      "label": "gd_converged",
+      "optimizer": "sgd",
+      "lr": 0.01,
+      "steps": 5000
+    }
+  ],
+  "census": {
+    "adam_production": {
+      "optimizer": "adam",
+      "lr": 0.001,
+      "steps": 300,
+      "by_init_range": {
+        "2.0": {
+          "frac_inits_reaching_global": 0.0,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 1.0,
+          "median_abs_w_travel": 0.2369683653625656,
+          "median_final_mse": 0.5650238655408875,
+          "median_endpoint_grad_norm": 0.47543388132277437
+        },
+        "5.0": {
+          "frac_inits_reaching_global": 0.0,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 1.0,
+          "median_abs_w_travel": 0.247171637927861,
+          "median_final_mse": 0.603266018930372,
+          "median_endpoint_grad_norm": 0.5793930110302608
+        },
+        "10.0": {
+          "frac_inits_reaching_global": 0.0044444444444444444,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 0.9955555555555555,
+          "median_abs_w_travel": 0.2512641225435921,
+          "median_final_mse": 0.588097029568704,
+          "median_endpoint_grad_norm": 0.6938885135369103
+        },
+        "20.0": {
+          "frac_inits_reaching_global": 0.0011111111111111111,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 0.9988888888888889,
+          "median_abs_w_travel": 0.24893876401436366,
+          "median_final_mse": 0.6215121934210792,
+          "median_endpoint_grad_norm": 0.6812266494001578
+        }
+      }
+    },
+    "adam_converged": {
+      "optimizer": "adam",
+      "lr": 0.01,
+      "steps": 5000,
+      "by_init_range": {
+        "2.0": {
+          "frac_inits_reaching_global": 0.0,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 1.0,
+          "median_abs_w_travel": 0.6511948151782233,
+          "median_final_mse": 0.43866261495663245,
+          "median_endpoint_grad_norm": 0.0005367513488172681
+        },
+        "5.0": {
+          "frac_inits_reaching_global": 0.20222222222222222,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 0.7977777777777778,
+          "median_abs_w_travel": 1.6631076485201608,
+          "median_final_mse": 0.4385880750129755,
+          "median_endpoint_grad_norm": 0.0005123848273291419
+        },
+        "10.0": {
+          "frac_inits_reaching_global": 0.56,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.02,
+          "frac_inits_unconverged": 0.42,
+          "median_abs_w_travel": 1.5044097348369654,
+          "median_final_mse": 2.0593837026757958e-20,
+          "median_endpoint_grad_norm": 1.579333283711372e-13
+        },
+        "20.0": {
+          "frac_inits_reaching_global": 0.30777777777777776,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.47888888888888886,
+          "frac_inits_unconverged": 0.21333333333333335,
+          "median_abs_w_travel": 1.0423664587092922,
+          "median_final_mse": 0.4405313509394814,
+          "median_endpoint_grad_norm": 1.2810719257724064e-16
+        }
+      }
+    },
+    "gd_converged": {
+      "optimizer": "sgd",
+      "lr": 0.01,
+      "steps": 5000,
+      "by_init_range": {
+        "2.0": {
+          "frac_inits_reaching_global": 0.0,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 1.0,
+          "median_abs_w_travel": 0.25211048351794174,
+          "median_final_mse": 0.4662442366444798,
+          "median_endpoint_grad_norm": 0.007026736499082314
+        },
+        "5.0": {
+          "frac_inits_reaching_global": 0.17888888888888888,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 0.8211111111111111,
+          "median_abs_w_travel": 0.5341222691433836,
+          "median_final_mse": 0.44963852530196935,
+          "median_endpoint_grad_norm": 0.0086974226061285
+        },
+        "10.0": {
+          "frac_inits_reaching_global": 0.5766666666666667,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 0.42333333333333334,
+          "median_abs_w_travel": 0.8629052497660743,
+          "median_final_mse": 2.586359555328388e-11,
+          "median_endpoint_grad_norm": 4.14845923795049e-06
+        },
+        "20.0": {
+          "frac_inits_reaching_global": 0.3277777777777778,
+          "frac_inits_on_ridge": 0.0,
+          "frac_inits_spurious": 0.0,
+          "frac_inits_unconverged": 0.6722222222222223,
+          "median_abs_w_travel": 0.33968246210894115,
+          "median_final_mse": 0.47383324827921636,
+          "median_endpoint_grad_norm": 0.0025351458898974525
+        }
+      }
+    }
+  },
+  "nelder_mead_reference": {
+    "2.0": {
+      "frac_inits_reaching_global": 0.0,
+      "frac_inits_on_ridge": 1.0,
+      "frac_inits_spurious": 0.0
+    },
+    "5.0": {
+      "frac_inits_reaching_global": 0.26,
+      "frac_inits_on_ridge": 0.74,
+      "frac_inits_spurious": 0.0
+    },
+    "10.0": {
+      "frac_inits_reaching_global": 0.6177777777777778,
+      "frac_inits_on_ridge": 0.3711111111111111,
+      "frac_inits_spurious": 0.011111111111111112
+    },
+    "20.0": {
+      "frac_inits_reaching_global": 0.32,
+      "frac_inits_on_ridge": 0.17444444444444446,
+      "frac_inits_spurious": 0.5055555555555555
+    }
+  }
+}
