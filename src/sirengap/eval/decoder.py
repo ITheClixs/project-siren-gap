@@ -9,7 +9,7 @@ fresh each step before flattening.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Callable
 
 import numpy as np
@@ -40,6 +40,7 @@ class DecoderResult:
     test_acc: float
     val_acc: float
     epochs_ran: int
+    extra_acc: dict[str, float] = field(default_factory=dict)
 
 
 def _standardize(train: Tensor, *others: Tensor) -> tuple[Tensor, ...]:
@@ -70,10 +71,14 @@ def train_matched_mlp(
     params_train: SirenParams | None = None,
     augment: AugFn | None = None,
     flatten: Callable[[SirenParams], Tensor] | None = None,
+    extra_eval: dict[str, tuple[Tensor, Tensor]] | None = None,
 ) -> DecoderResult:
     """feats/labels keys: train/val/test. If augment is given, params_train must be
     the training-split SirenParams; each step applies a fresh group element to the
-    minibatch and flattens (features are then standardized with the same stats)."""
+    minibatch and flattens (features are then standardized with the same stats).
+
+    extra_eval maps a name to (features, labels) scored by the selected model under the
+    *training* rung's standardization — the transfer evaluation used by rung X1."""
     torch.manual_seed(seed)
     x_tr, x_va, x_te = _standardize(feats["train"], feats["val"], feats["test"])
     mu = feats["train"].mean(dim=0, keepdim=True)
@@ -112,7 +117,16 @@ def train_matched_mlp(
             break
     assert best_state is not None
     model.load_state_dict(best_state)
-    return DecoderResult(test_acc=_acc(model, x_te, y_te, device), val_acc=best_val, epochs_ran=epoch + 1)
+    extra = {
+        name: _acc(model, (fx - mu) / sd, fy, device)
+        for name, (fx, fy) in (extra_eval or {}).items()
+    }
+    return DecoderResult(
+        test_acc=_acc(model, x_te, y_te, device),
+        val_acc=best_val,
+        epochs_ran=epoch + 1,
+        extra_acc=extra,
+    )
 
 
 def _index_params(params: SirenParams, idx: Tensor) -> SirenParams:
