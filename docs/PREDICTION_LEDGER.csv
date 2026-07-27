@@ -15,3 +15,11 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-07-27,G3-cifar-pilot,QG-6 probability full 50k CIFAR path chosen by rule R-CIFAR,"0.35",NA,NA,9d4cf5119d5c2be5
 2026-07-27,G3-cifar-pilot,QG-7 CIFAR gate-CNN real-pixel accuracy percent at 10 epochs,"66",60,72,9d4cf5119d5c2be5
 2026-07-27,G3-cifar-pilot,"QG-8 sign of gate gap acc_real-acc_render at frozen CIFAR config (positive = renders lose; P=0.80)","positive",NA,NA,9d4cf5119d5c2be5
+2026-07-27,S1,H-S1-1 P1-P0 accuracy points MNIST matched MLP (TOST margin 1.0),"0.1",-0.4,0.6,8c029cf43f01a94c
+2026-07-27,S1,H-S1-2 W1-P1 accuracy points (decoder-vs-representation residual),"-3.8",-6.5,-1.5,8c029cf43f01a94c
+2026-07-27,S1,H-S1-3 W1-W2 accuracy points (optimization-noise rung),"2.0",0.0,6.0,8c029cf43f01a94c
+2026-07-27,S1,H-S1-4a W1-W3 accuracy points under frozen S1 apparatus,"80.4",79,82,8c029cf43f01a94c
+2026-07-27,S1,H-S1-4b canonicalization recovery fraction f(W4)=(W4-W3)/(W1-W3),"0.06",0.01,0.20,8c029cf43f01a94c
+2026-07-27,S1,H-S1-4c canonicalization recovery fraction f(W5)=(W5-W3)/(W1-W3); direction f(W5)>=f(W4),"0.10",0.02,0.30,8c029cf43f01a94c
+2026-07-27,S1,H-S1-5 (W7-W3)-(W6-W3) accuracy points (marginalize beats group-augment),"15",5,35,8c029cf43f01a94c
+2026-07-27,S1,H-S1-6 W10 distance outside interval [W4 W5] accuracy points,"0 (within +/-3)",-3,3,8c029cf43f01a94c
