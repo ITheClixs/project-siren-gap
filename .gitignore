@@ -1,8 +1,10 @@
 # raw literature scan dumps (script re-generates)
 .lit_cache/
 
-# raw INR shards (safetensors) — released via HF Hub, never committed
-data/
+# raw INR shards (safetensors) — released via HF Hub, never committed.
+# Anchored with a leading slash: an unanchored `data/` also swallowed the source
+# package `src/sirengap/data/` (loaders + schema), which silently went uncommitted.
+/data/
 *.safetensors
 
 # python

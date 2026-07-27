@@ -9,3 +9,9 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-07-17,G3-pilot,QG-1 frozen MNIST config steps,"500",300,1000,b00acd73de3c5994
 2026-07-17,G3-pilot,QG-2 mean test-render PSNR dB [0-1] range of frozen config,"33",28,40,b00acd73de3c5994
 2026-07-17,A1,QG-3 anchor gap acc(W1)-acc(W3) accuracy points MNIST matched MLP,"30",12,45,b00acd73de3c5994
+2026-07-27,G3-cifar-pilot,QG-4 frozen CIFAR-10 config steps,"1000",500,3000,9d4cf5119d5c2be5
+2026-07-27,G3-cifar-pilot,QG-4b probability config A (w32 L2) passes the CIFAR task-referenced gate,"0.15",NA,NA,9d4cf5119d5c2be5
+2026-07-27,G3-cifar-pilot,QG-5 median val-render PSNR dB of frozen CIFAR config,"27",22,32,9d4cf5119d5c2be5
+2026-07-27,G3-cifar-pilot,QG-6 probability full 50k CIFAR path chosen by rule R-CIFAR,"0.35",NA,NA,9d4cf5119d5c2be5
+2026-07-27,G3-cifar-pilot,QG-7 CIFAR gate-CNN real-pixel accuracy percent at 10 epochs,"66",60,72,9d4cf5119d5c2be5
+2026-07-27,G3-cifar-pilot,"QG-8 sign of gate gap acc_real-acc_render at frozen CIFAR config (positive = renders lose; P=0.80)","positive",NA,NA,9d4cf5119d5c2be5

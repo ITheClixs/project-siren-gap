@@ -6,6 +6,10 @@ Usage:
       --protocol P-shared-det --split all --steps 1000 --width 32 --layers 2 \
       [--limit N] [--batch 256] [--device mps] [--out-root data/inrbench] [--tag pilot]
 
+Subsetting (CIFAR fallback path, docs/COMPUTE_LEDGER.md): --n-train/--n-val/--n-test
+take a prefix of each split's id list, e.g. --n-train 20000 --n-val 2000 --n-test 2000.
+--limit truncates the concatenated id list instead (pilot use).
+
 Resume: shards named shard_<split>_<start>.safetensors (+ .parquet); existing pairs
 are skipped, so restarts continue where they left off (checkpoint interval = one
 shard ≈ 20 s at B=256 on MPS, far under the 10-minute protocol requirement).
@@ -31,12 +35,11 @@ import torch
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-from sirengap.data.images import load_idx_dataset  # noqa: E402
+from sirengap.data.images import DATASET_SPECS, load_dataset, spec_of  # noqa: E402
 from sirengap.data.schema import save_shard, validate_metadata  # noqa: E402
 from sirengap.fitting.batched import fit_batch, make_coord_grid, psnr  # noqa: E402
 
 PROTOCOLS = ("P-shared-det", "P-shared-stoch", "P-random", "P-random-K")
-VAL_START = 55000  # train-file indices >= VAL_START form the val split
 TEST_ID_OFFSET = 100000
 
 
@@ -49,10 +52,10 @@ def git_hash() -> str:
         return "unknown"
 
 
-def split_of(image_id: int) -> str:
+def split_of(image_id: int, val_start: int) -> str:
     if image_id >= TEST_ID_OFFSET:
         return "test"
-    return "val" if image_id >= VAL_START else "train"
+    return "val" if image_id >= val_start else "train"
 
 
 def init_seed_for(protocol: str, image_id: int, k: int = 0) -> int:
@@ -67,12 +70,14 @@ def init_seed_for(protocol: str, image_id: int, k: int = 0) -> int:
 
 def generate(args: argparse.Namespace) -> None:
     device = args.device
-    side = 28
-    coords = make_coord_grid(side, side)
+    spec = spec_of(args.dataset)
+    coords = make_coord_grid(spec.side, spec.side)
     widths = tuple([args.width] * args.layers)
 
-    x_train, y_train = load_idx_dataset(args.dataset, "train")
-    x_test, y_test = load_idx_dataset(args.dataset, "test")
+    x_train, y_train = load_dataset(args.dataset, "train")
+    x_test, y_test = load_dataset(args.dataset, "test")
+    if len(x_train) != spec.n_train_file:
+        raise ValueError(f"{args.dataset} train file has {len(x_train)} rows, spec says {spec.n_train_file}")
 
     def images_for(ids: list[int]) -> torch.Tensor:
         rows = [x_test[i - TEST_ID_OFFSET] if i >= TEST_ID_OFFSET else x_train[i] for i in ids]
@@ -82,13 +87,17 @@ def generate(args: argparse.Namespace) -> None:
         return int(y_test[i - TEST_ID_OFFSET] if i >= TEST_ID_OFFSET else y_train[i])
 
     wanted_splits = {"all": ("train", "val", "test"), "train": ("train",), "val": ("val",), "test": ("test",)}[args.split]
+
+    def prefix(all_ids: list[int], n: int) -> list[int]:
+        return all_ids[:n] if n else all_ids
+
     ids: list[int] = []
     if "train" in wanted_splits:
-        ids += list(range(0, VAL_START))
+        ids += prefix(list(range(0, spec.val_start)), args.n_train)
     if "val" in wanted_splits:
-        ids += list(range(VAL_START, 60000))
+        ids += prefix(list(range(spec.val_start, spec.n_train_file)), args.n_val)
     if "test" in wanted_splits:
-        ids += [TEST_ID_OFFSET + i for i in range(len(x_test))]
+        ids += prefix([TEST_ID_OFFSET + i for i in range(len(x_test))], args.n_test)
     if args.limit:
         ids = ids[: args.limit]
     ks = list(range(8)) if args.protocol == "P-random-K" else [0]
@@ -99,6 +108,8 @@ def generate(args: argparse.Namespace) -> None:
         "dataset": args.dataset, "protocol": args.protocol, "steps": args.steps, "lr": args.lr,
         "width": args.width, "layers": args.layers, "batch": args.batch, "code_version": git_hash(),
         "torch": torch.__version__, "device": device, "limit": args.limit, "split": args.split,
+        "side": spec.side, "channels": spec.channels, "val_start": spec.val_start,
+        "n_train": args.n_train, "n_val": args.n_val, "n_test": args.n_test, "n_ids": len(ids),
     }
     (out / "config.json").write_text(json.dumps(config, indent=2))
 
@@ -126,7 +137,7 @@ def generate(args: argparse.Namespace) -> None:
                 {
                     "image_id": chunk,
                     "label": [label_of(i) for i in chunk],
-                    "split": [split_of(i) for i in chunk],
+                    "split": [split_of(i, spec.val_start) for i in chunk],
                     "activation": "sine",
                     "protocol": args.protocol,
                     "init_seed": iseeds,
@@ -161,7 +172,7 @@ def generate(args: argparse.Namespace) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", default="mnist", choices=["mnist", "fashionmnist"])
+    ap.add_argument("--dataset", default="mnist", choices=sorted(DATASET_SPECS))
     ap.add_argument("--protocol", required=True, choices=PROTOCOLS)
     ap.add_argument("--split", default="all", choices=["all", "train", "val", "test"])
     ap.add_argument("--steps", type=int, required=True)
@@ -170,6 +181,9 @@ def main() -> None:
     ap.add_argument("--lr", type=float, default=1e-3)
     ap.add_argument("--batch", type=int, default=256)
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--n-train", type=int, default=0, help="0 = all train ids")
+    ap.add_argument("--n-val", type=int, default=0, help="0 = all val ids")
+    ap.add_argument("--n-test", type=int, default=0, help="0 = all test ids")
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--out-root", default="data/inrbench")
     ap.add_argument("--tag", default="")

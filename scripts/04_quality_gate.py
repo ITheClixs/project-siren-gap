@@ -21,7 +21,7 @@ import pandas as pd
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-from sirengap.data.images import DATA_DIR, load_idx_dataset  # noqa: E402
+from sirengap.data.images import DATA_DIR, DATASET_SPECS, load_dataset, spec_of  # noqa: E402
 from sirengap.data.schema import load_shard  # noqa: E402
 from sirengap.eval.quality_gate import accuracy, quality_gate, train_gate_cnn  # noqa: E402
 from sirengap.fitting.batched import make_coord_grid  # noqa: E402
@@ -34,10 +34,13 @@ TEST_ID_OFFSET = 100000
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", required=True)
-    ap.add_argument("--dataset", default="mnist")
+    ap.add_argument("--dataset", default="mnist", choices=sorted(DATASET_SPECS))
     ap.add_argument("--eval-split", default="val", choices=["val", "test"])
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--limit", type=int, default=0)
+    # 2 epochs suffice for MNIST-family (~99% / ~86% real-pixel); CIFAR-10 needs a stronger
+    # reference classifier or the gate is too weak to discriminate render damage.
+    ap.add_argument("--gate-epochs", type=int, default=2)
     args = ap.parse_args()
 
     corpus = Path(args.dir)
@@ -48,15 +51,16 @@ def main() -> None:
     if sel.empty:
         raise SystemExit(f"no rows for split {args.eval_split} in {corpus}")
 
-    x_train, y_train = load_idx_dataset(args.dataset, "train")
-    x_test, y_test = load_idx_dataset(args.dataset, "test")
+    spec = spec_of(args.dataset)
+    x_train, y_train = load_dataset(args.dataset, "train")
+    x_test, y_test = load_dataset(args.dataset, "test")
     model = train_gate_cnn(
-        x_train[:55000], y_train[:55000], side=28, device=args.device,
-        cache=DATA_DIR / f"gate_cnn_{args.dataset}.pt",
+        x_train[: spec.val_start], y_train[: spec.val_start], side=spec.side, device=args.device,
+        epochs=args.gate_epochs, cache=DATA_DIR / f"gate_cnn_{args.dataset}_e{args.gate_epochs}.pt",
     )
 
     # render selected INRs shard by shard
-    coords = make_coord_grid(28, 28, device=args.device)
+    coords = make_coord_grid(spec.side, spec.side, device=args.device)
     wanted = set(sel["image_id"].tolist())
     renders, labels, reals, audits = [], [], [], []
     for spath in sorted(corpus.glob("shard_*.safetensors")):
@@ -81,6 +85,7 @@ def main() -> None:
     gate = quality_gate(model, reals_t, renders_t, labels_t, args.device)
     report = {
         "corpus": str(corpus), "eval_split": args.eval_split, "n_eval": len(labels_t),
+        "dataset": args.dataset, "gate_epochs": args.gate_epochs,
         "gate": gate,
         "leakage": {
             "corr_psnr_label": float(sel["final_psnr"].corr(sel["label"])),
