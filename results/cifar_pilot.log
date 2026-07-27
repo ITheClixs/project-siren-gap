@@ -1,0 +1,74 @@
+=== cifar pilot sweep start Mon Jul 27 10:55:45 CEST 2026 ===
+--- config A: width=32 layers=2 steps=1000 (tag pilot-w32L2s1000) Mon Jul 27 10:55:45 CEST 2026 ---
+Traceback (most recent call last):
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 194, in <module>
+    main()
+    ~~~~^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 190, in main
+    generate(ap.parse_args())
+    ~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 77, in generate
+    x_train, y_train = load_dataset(args.dataset, "train")
+                       ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/src/sirengap/data/images.py", line 131, in load_dataset
+    return load_cifar10(split)
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/src/sirengap/data/images.py", line 81, in load_cifar10
+    with open(batch_dir / n, "rb") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/dmr/Development/Projects/ai-research/project-siren-gap/data/cifar10/cifar-10-batches-py/data_batch_1'
+GEN FAILED A
+--- config B: width=64 layers=3 steps=500 (tag pilot-w64L3s500) Mon Jul 27 10:55:46 CEST 2026 ---
+Traceback (most recent call last):
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 194, in <module>
+    main()
+    ~~~~^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 190, in main
+    generate(ap.parse_args())
+    ~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 77, in generate
+    x_train, y_train = load_dataset(args.dataset, "train")
+                       ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/src/sirengap/data/images.py", line 131, in load_dataset
+    return load_cifar10(split)
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/src/sirengap/data/images.py", line 81, in load_cifar10
+    with open(batch_dir / n, "rb") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/dmr/Development/Projects/ai-research/project-siren-gap/data/cifar10/cifar-10-batches-py/data_batch_1'
+GEN FAILED B
+--- config C: width=64 layers=3 steps=1000 (tag pilot-w64L3s1000) Mon Jul 27 10:55:47 CEST 2026 ---
+Traceback (most recent call last):
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 194, in <module>
+    main()
+    ~~~~^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 190, in main
+    generate(ap.parse_args())
+    ~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 77, in generate
+    x_train, y_train = load_dataset(args.dataset, "train")
+                       ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/src/sirengap/data/images.py", line 131, in load_dataset
+    return load_cifar10(split)
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/src/sirengap/data/images.py", line 81, in load_cifar10
+    with open(batch_dir / n, "rb") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/dmr/Development/Projects/ai-research/project-siren-gap/data/cifar10/cifar-10-batches-py/data_batch_1'
+GEN FAILED C
+--- config D: width=64 layers=3 steps=2000 (tag pilot-w64L3s2000) Mon Jul 27 10:55:48 CEST 2026 ---
+Traceback (most recent call last):
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 194, in <module>
+    main()
+    ~~~~^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 190, in main
+    generate(ap.parse_args())
+    ~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py", line 77, in generate
+    x_train, y_train = load_dataset(args.dataset, "train")
+                       ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/src/sirengap/data/images.py", line 131, in load_dataset
+    return load_cifar10(split)
+  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/src/sirengap/data/images.py", line 81, in load_cifar10
+    with open(batch_dir / n, "rb") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/dmr/Development/Projects/ai-research/project-siren-gap/data/cifar10/cifar-10-batches-py/data_batch_1'
+GEN FAILED D
+=== cifar pilot sweep complete Mon Jul 27 10:55:49 CEST 2026 ===

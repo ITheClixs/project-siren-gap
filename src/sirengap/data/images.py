@@ -7,7 +7,9 @@ row-major to match sirengap.fitting.batched.make_coord_grid.
 from __future__ import annotations
 
 import gzip
+import hashlib
 import pickle
+import shutil
 import tarfile
 import urllib.request
 from dataclasses import dataclass
@@ -29,13 +31,45 @@ IDX_FILES = {
     "test_labels": "t10k-labels-idx1-ubyte.gz",
 }
 CIFAR_URL = "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz"
+# verified against the archive fetched 2026-07-27; see docs/REPLICATION.md
+CIFAR_MD5 = "c58f30108f718f92721af3b95e74349a"
 
 
-def _download(url: str, dest: Path) -> Path:
+def _md5_of_bytes(data: bytes) -> str:
+    return hashlib.md5(data).hexdigest()  # noqa: S324 — integrity, not a security boundary
+
+
+def _md5(path: Path, chunk: int = 1 << 20) -> str:
+    digest = hashlib.md5()  # noqa: S324 — integrity of a public archive, not a security boundary
+    with open(path, "rb") as f:
+        while block := f.read(chunk):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def _download(url: str, dest: Path, expected_md5: str | None = None) -> Path:
+    """Download atomically: a partial transfer must never look like a finished file.
+
+    The naive version (skip when `dest` exists) silently hands a truncated archive to the
+    caller if a download dies or is read while still in flight — which produced a partial
+    CIFAR-10 extraction (missing data_batch_1, truncated data_batch_2) on 2026-07-27.
+    """
     dest.parent.mkdir(parents=True, exist_ok=True)
-    if not dest.exists():
-        print(f"downloading {url}")
-        urllib.request.urlretrieve(url, dest)  # noqa: S310 — fixed https/s3 mirrors
+    if dest.exists():
+        if expected_md5 is None or _md5(dest) == expected_md5:
+            return dest
+        print(f"{dest.name}: checksum mismatch, re-downloading")
+        dest.unlink()
+    part = dest.with_suffix(dest.suffix + ".part")
+    print(f"downloading {url}")
+    try:
+        urllib.request.urlretrieve(url, part)  # noqa: S310 — fixed https/s3 mirrors
+        if expected_md5 is not None and _md5(part) != expected_md5:
+            raise RuntimeError(f"checksum mismatch for {url}; refusing to use the download")
+    except BaseException:
+        part.unlink(missing_ok=True)
+        raise
+    part.rename(dest)
     return dest
 
 
@@ -67,14 +101,29 @@ def load_idx_dataset(name: str, split: str) -> tuple[torch.Tensor, torch.Tensor]
     return x, y
 
 
+CIFAR_MEMBERS = tuple([f"data_batch_{i}" for i in range(1, 6)] + ["test_batch", "batches.meta"])
+
+
 def load_cifar10(split: str) -> tuple[torch.Tensor, torch.Tensor]:
     """Returns (images [N, 1024, 3] in [-1,1] row-major spatial, labels [N])."""
-    tar_path = _download(CIFAR_URL, DATA_DIR / "cifar10" / "cifar-10-python.tar.gz")
+    tar_path = _download(CIFAR_URL, DATA_DIR / "cifar10" / "cifar-10-python.tar.gz", CIFAR_MD5)
     extract_dir = DATA_DIR / "cifar10"
     batch_dir = extract_dir / "cifar-10-batches-py"
-    if not batch_dir.exists():
+    if not all((batch_dir / m).exists() for m in CIFAR_MEMBERS):
+        # extract beside the target, then move into place, so an interrupted extraction
+        # cannot leave a directory that later looks complete
+        staging = extract_dir / "_staging"
+        if staging.exists():
+            shutil.rmtree(staging)
         with tarfile.open(tar_path) as tf:
-            tf.extractall(extract_dir, filter="data")
+            tf.extractall(staging, filter="data")
+        missing = [m for m in CIFAR_MEMBERS if not (staging / "cifar-10-batches-py" / m).exists()]
+        if missing:
+            raise RuntimeError(f"CIFAR-10 archive is missing {missing}")
+        if batch_dir.exists():
+            shutil.rmtree(batch_dir)
+        (staging / "cifar-10-batches-py").rename(batch_dir)
+        shutil.rmtree(staging)
     names = [f"data_batch_{i}" for i in range(1, 6)] if split == "train" else ["test_batch"]
     xs, ys = [], []
     for n in names:
