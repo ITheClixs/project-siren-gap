@@ -1,0 +1,52 @@
+{
+  "corpus": "data/inrbench/fashionmnist/P-random",
+  "eval_split": "test",
+  "n_eval": 10000,
+  "gate": {
+    "acc_real_pixels": 85.78,
+    "acc_renders": 85.78,
+    "gap_pts": 0.0,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": -0.12167076310243694,
+    "corr_loss_label": 0.12235790059071573
+  },
+  "psnr": {
+    "median": 42.624481201171875,
+    "q05": 36.1330961227417
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      0.234011,
+      0.576948,
+      2.485152
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      1.286911,
+      1.636454,
+      2.088016
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.002028
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      0.673781,
+      1.015019,
+      2.066957
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      4e-05,
+      0.004292,
+      0.038439
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.100578,
+      0.174262,
+      0.537582
+    ]
+  },
+  "gate_cnn_train_acc_check": 87.6
+}

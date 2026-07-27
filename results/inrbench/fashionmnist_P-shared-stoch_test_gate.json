@@ -1,0 +1,52 @@
+{
+  "corpus": "data/inrbench/fashionmnist/P-shared-stoch",
+  "eval_split": "test",
+  "n_eval": 10000,
+  "gate": {
+    "acc_real_pixels": 85.78,
+    "acc_renders": 85.87,
+    "gap_pts": -0.09000000000000341,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": -0.022805120901446103,
+    "corr_loss_label": -0.01249257147827146
+  },
+  "psnr": {
+    "median": 34.153297424316406,
+    "q05": 31.018035697937012
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      1.438979,
+      2.123212,
+      3.006435
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      1.166681,
+      1.421636,
+      1.894946
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.001938
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      0.67337,
+      1.143772,
+      2.089422
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.000296,
+      0.008026,
+      0.045834
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.178412,
+      0.271168,
+      0.553587
+    ]
+  },
+  "gate_cnn_train_acc_check": 87.6
+}
