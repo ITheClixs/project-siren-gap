@@ -38,3 +38,24 @@ Two literature phenomena must replicate qualitatively before the pipeline is tru
 Artifacts: results/anchors/anchors_mnist.json (+ run log). Note: probes_W6 in the JSON duplicates
 W3's probe numbers (probes ignore train-time augmentation by design; label is misleading — fix at
 S1 refactor).
+
+## Dataset provenance and integrity (added G4, 2026-07-28)
+
+Raw datasets are fetched from fixed mirrors and verified before use; a partial download silently
+corrupted a CIFAR-10 extraction on 2026-07-27 (missing `data_batch_1`, truncated `data_batch_2`),
+so the loader now downloads to a `.part` file, checks the archive hash, renames atomically, and
+verifies every expected member after extraction (tests T11).
+
+| dataset | source | integrity check |
+|---|---|---|
+| MNIST | `https://ossci-datasets.s3.amazonaws.com/mnist/` (IDX) | atomic download; IDX magic/dim parse |
+| FashionMNIST | `http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/` (IDX) | same |
+| CIFAR-10 | `https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz` | md5 `c58f30108f718f92721af3b95e74349a`, then all 7 members present |
+
+## S1 ladder re-measurement of the anchors (G4)
+
+The frozen S1 apparatus reproduces A1 seed-for-seed (W1 94.24/94.05/94.41/94.54/94.54, W3 mean
+13.92, gap +80.43), which is the strongest available check that the ladder's decoder path and the
+anchor path are the same instrument. The `probes_W6` labelling problem noted above is fixed in the
+S1 cells: augmentation-bearing rungs report `linear_probe: null` with the reason recorded, instead
+of silently duplicating the raw rung's probe numbers.
