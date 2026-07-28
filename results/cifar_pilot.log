@@ -235,3 +235,85 @@ shard_000000: 256 fits in 71.5s  psnr_med=73.5dB  overall 3.6 fits/s
 shard_000256: 256 fits in 77.3s  psnr_med=76.5dB  overall 3.4 fits/s
 shard_000512: 256 fits in 78.1s  psnr_med=76.3dB  overall 3.4 fits/s
 shard_000768: 256 fits in 71.2s  psnr_med=75.4dB  overall 3.4 fits/s
+shard_001024: 256 fits in 72.0s  psnr_med=76.1dB  overall 3.5 fits/s
+shard_001280: 256 fits in 73.6s  psnr_med=76.1dB  overall 3.5 fits/s
+shard_001536: 256 fits in 75.5s  psnr_med=73.9dB  overall 3.4 fits/s
+shard_001792: 208 fits in 61.7s  psnr_med=77.4dB  overall 3.4 fits/s
+{
+  "n_inrs": 2000,
+  "psnr_median": 75.88375854492188,
+  "psnr_q05": 49.594913482666016,
+  "corr_psnr_label": -0.025862318147929546,
+  "wallclock_total_s": 581.1937940120697
+}
+{
+  "corpus": "data/inrbench/cifar10/P-shared-det-pilot-w64L3s1000",
+  "eval_split": "val",
+  "n_eval": 2000,
+  "dataset": "cifar10",
+  "gate_epochs": 10,
+  "gate": {
+    "acc_real_pixels": 67.45,
+    "acc_renders": 67.5,
+    "gap_pts": -0.04999999999999716,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": -0.025862318147929546,
+    "corr_loss_label": 0.014790086752830781
+  },
+  "psnr": {
+    "median": 75.88375854492188,
+    "q05": 49.594913482666016
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      1.771839,
+      1.943211,
+      2.342755
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      1.044629,
+      1.269139,
+      1.518388
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.000488
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      1.191023,
+      1.316319,
+      1.704878
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      1.003022,
+      1.146063,
+      1.448982
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.892614,
+      0.972632,
+      1.056232
+    ],
+    "layer2.min_w_norm.q0_q05_q50": [
+      0.675513,
+      0.805726,
+      1.205545
+    ],
+    "layer2.min_u_norm.q0_q05_q50": [
+      0.001525,
+      0.004582,
+      0.016946
+    ],
+    "layer2.min_parallel_angle_rad.q0_q05_q50": [
+      0.568214,
+      0.686139,
+      0.81945
+    ]
+  },
+  "gate_cnn_train_acc_check": 70.9
+}
+--- config C done Tue Jul 28 12:58:39 +03 2026 ---
+--- config D: width=64 layers=3 steps=2000 (tag pilot-w64L3s2000) Tue Jul 28 12:58:39 +03 2026 ---

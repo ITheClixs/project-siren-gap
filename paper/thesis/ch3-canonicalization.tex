@@ -1,0 +1,183 @@
+% Chapter 3 — Canonicalization and invariant front-ends
+% G4 content: §3.6 deep phase-invariant encoding (CLAIMS row 15) written; §§3.1-3.5 stubs
+% pointing at the implemented canonicalizers, to be filled at G5.
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\title{Chapter 3: Canonicalization and invariant front-ends}
+\begin{document}
+\maketitle
+
+\section{Overview}
+Chapter~1 established that the per-neuron symmetry group of a sine network is $D_\infty$ and that
+the per-layer group is $D_\infty\wr S_n$, with identifiability proved at $L=1$. This chapter asks
+what can be \emph{done} with that structure: exact canonicalization ($c_{\mathrm{sort}}$,
+$c_{\mathrm{align}}$), its impossibility in continuous form (PO-5), and invariant encodings that
+bypass canonicalization altogether. Sections~\ref{sec:csort}--\ref{sec:margins} are written at G5;
+Section~\ref{sec:deep} is written here because the $L=2$ construction it contains was needed to
+run rung W10 of Study~S1.
+
+\section{The template-free canonicalizer $c_{\mathrm{sort}}$}
+\label{sec:csort}
+[G5] Phase reduction to $b\in[-\pi/2,\pi/2)$, sign fixing against a reference direction, and
+lexicographic ordering of neurons; exactness with respect to the implemented group; tie margins.
+
+\section{The template canonicalizer $c_{\mathrm{align}}$}
+\label{sec:calign}
+[G5] Activation matching against a template with a Hungarian assignment, the correlation sign as
+the $\sigma$ fix, and function preservation asserted on every call. Empirically this is the
+strongest rung of the S1 ladder that is not an oracle (Chapter~5), and the template it needs is
+the chapter's main practical caveat.
+
+\section{Margins, ties, and the continuity obstruction}
+\label{sec:margins}
+[G5] PO-5's winding argument; where real fits land relative to tie sets (figure F7).
+
+\section{Deep phase-invariant encoding}
+\label{sec:deep}
+
+Proposition PO-4 gives a family of $D_\infty$-invariants of a single neuron $(w,b,u)$, organised by
+the parity of each generator's action. For a network of depth $L=1$ that family is complete enough
+to separate orbits on the generic stratum. It does not, however, transfer to $L\ge 2$: the outgoing
+vector $u$ of a hidden neuron is a \emph{column of the next layer's weight matrix}, and the next
+layer's own group acts on it. An encoding built from $\sin b\,u$ at layer~1 is therefore invariant
+under layer~1's action and covariant under layer~2's --- not invariant at all. This section closes
+the gap for $L=2$.
+
+\subsection{Setup and notation}
+Write the stored (canonical) form of a two-layer sine network as
+\begin{equation}
+h_1 = \sin(W_1x+b_1),\qquad h_2=\sin(W_2h_1+b_2),\qquad f = W_3h_2+b_3,
+\end{equation}
+with $W_1\in\R^{n\times m}$, $W_2\in\R^{p\times n}$, $W_3\in\R^{c\times p}$. For a layer-1 neuron
+$i$ put $w_i = (W_1)_{i:}$, $b_i=(b_1)_i$ and $u_i = (W_2)_{:i}$; for a layer-2 neuron $k$ put
+$w_k'=(W_2)_{k:}$, $b_k'=(b_2)_k$ and $u_k'=(W_3)_{:k}$. By Theorem PO-1 the group acts per neuron
+by $g_{d,j}:(w,b,u)\mapsto((-1)^dw,\,(-1)^db+\pi j,\,(-1)^{d+j}u)$, together with a permutation of
+the neurons of each layer.
+
+Throughout, write $\varepsilon_i := (-1)^{d_i+j_i}$ for the scalar that layer~1's action at
+neuron~$i$ applies to $u_i$. The parity bookkeeping we need is elementary:
+\begin{equation}
+\label{eq:parities}
+\begin{aligned}
+w_i &\mapsto (-1)^{d_i}w_i, &\qquad \cos 2b_i &\mapsto \cos 2b_i, &\qquad \|w_i\|^2&\mapsto\|w_i\|^2,\\
+\sin 2b_i &\mapsto (-1)^{d_i}\sin 2b_i, &\qquad \sin b_i&\mapsto \varepsilon_i \sin b_i,
+&\qquad \cos b_i &\mapsto (-1)^{j_i}\cos b_i .
+\end{aligned}
+\end{equation}
+Only the third and fifth entries are not immediate: $\sin((-1)^db+\pi j) = (-1)^j\sin((-1)^db)
+= (-1)^{j}(-1)^{d}\sin b = \varepsilon\sin b$, and $\cos((-1)^db+\pi j)=(-1)^j\cos b$.
+
+\subsection{The layer-2 Gram matrix}
+
+\begin{lemma}[Gram invariance]
+\label{lem:gram}
+Let $G := W_2^{\top}W_2\in\R^{n\times n}$, i.e.\ $G_{i\ell} = \langle u_i,u_\ell\rangle$. Then $G$ is
+invariant under the entire layer-2 group, and under layer~1's action it transforms as
+$G_{i\ell}\mapsto \varepsilon_i\varepsilon_\ell G_{i\ell}$, i.e.\ $G\mapsto PDGDP^{\top}$ with
+$D=\mathrm{diag}(\varepsilon)$ and $P$ the layer-1 permutation.
+\end{lemma}
+
+\begin{proof}
+A layer-2 element acts on neuron $k$ by $w_k'\mapsto(-1)^{d_k}w_k'$, $b_k'\mapsto(-1)^{d_k}b_k'+\pi
+j_k$, $u_k'\mapsto(-1)^{d_k+j_k}u_k'$, and by permuting the layer-2 neurons. In terms of $W_2$ the
+first is a sign flip of \emph{row} $k$ and the last is a permutation of rows; the bias and $W_3$ are
+untouched by $G$. Each entry of $G$ is a sum over rows,
+$G_{i\ell}=\sum_k (W_2)_{ki}(W_2)_{k\ell}$, in which a row sign $(-1)^{d_k}$ occurs twice and
+cancels, and a row permutation only reindexes the sum. Hence $G$ is layer-2 invariant. Layer~1's
+action multiplies the column $u_i$ by $\varepsilon_i$, giving the stated covariance, and permutes
+the columns, giving the conjugation by $P$.
+\end{proof}
+
+\subsection{Sign-cancelling couplings}
+
+\begin{proposition}[Invariant matrices]
+\label{prop:matrices}
+Define, for layer-1 neurons $i,\ell$,
+\begin{align}
+A_{i\ell} &:= \sin b_i \sin b_\ell\, G_{i\ell}, &
+B_{i\ell} &:= \langle \cos b_i\, w_i,\ \cos b_\ell\, w_\ell\rangle\, G_{i\ell}, \notag\\
+C_{i\ell} &:= \langle \sin 2b_i\, w_i,\ \sin 2b_\ell\, w_\ell\rangle . &&
+\end{align}
+Each is symmetric, invariant under the layer-2 group, and satisfies $M\mapsto PMP^{\top}$ under the
+layer-1 group. Consequently the sorted spectrum of each is invariant under the full group
+$\prod_{l}\left(D_\infty^{n_l}\rtimes S_{n_l}\right)$.
+\end{proposition}
+
+\begin{proof}
+Layer-2 invariance is Lemma~\ref{lem:gram} for $A,B$ (the layer-1 quantities $w,b$ are untouched by
+layer~2) and is vacuous for $C$. For layer~1, use \eqref{eq:parities}. In $A$, the factor
+$\sin b_i\sin b_\ell$ acquires $\varepsilon_i\varepsilon_\ell$ and $G_{i\ell}$ acquires
+$\varepsilon_i\varepsilon_\ell$, whose product is $1$. In $B$, the vector $\cos b_i w_i$ acquires
+$(-1)^{j_i}(-1)^{d_i}=\varepsilon_i$, so the inner product acquires
+$\varepsilon_i\varepsilon_\ell$, again cancelled by $G_{i\ell}$. In $C$, each factor
+$\sin 2b_i\,w_i$ acquires $(-1)^{d_i}(-1)^{d_i}=1$ and is invariant on its own. Permuting layer-1
+neurons permutes indices $i,\ell$ simultaneously, which is conjugation by $P$; the spectrum of a
+symmetric matrix is invariant under conjugation by a permutation matrix and under the diagonal sign
+conjugation already cancelled, so sorting the eigenvalues yields group invariants.
+\end{proof}
+
+\begin{remark}
+The pairing is forced, not chosen. A quantity with layer-1 parity $\varepsilon$ cannot be made
+invariant by itself, because $\varepsilon_i$ depends on the neuron; it must be contracted against
+another $\varepsilon$-covariant quantity carrying the \emph{same} index, and $G$ is the only object
+available that is simultaneously layer-2 invariant and $\varepsilon_i\varepsilon_\ell$-covariant.
+This is why $\cos b_i\cos b_\ell G_{i\ell}$ --- the apparent companion to $A$ --- is \emph{not}
+invariant: $\cos b$ carries $(-1)^{j}$ rather than $\varepsilon$, leaving a residual
+$(-1)^{d_i+d_\ell}$.
+\end{remark}
+
+\begin{proposition}[Order statistics]
+\label{prop:order}
+The per-neuron scalars $\|w_i\|^2$, $\cos 2b_i$ and $G_{ii}=\|u_i\|^2$ are invariant under the
+per-neuron action and are permuted by the layer-1 permutation. Their order statistics --- and, more
+usefully, their values gathered under a single common sort key that is itself invariant --- are
+therefore full-group invariants.
+\end{proposition}
+
+\begin{proof}
+Immediate from \eqref{eq:parities} and Lemma~\ref{lem:gram} (diagonal entries have
+$\varepsilon_i^2=1$). Sorting by a common invariant key preserves the association between the three
+features, which independent sorting would destroy.
+\end{proof}
+
+\subsection{The encoding, and what it is not}
+
+\begin{definition}[Deep invariant encoding]
+For an $L=2$ sine network let
+\begin{multline}
+\Phi_{\mathrm{deep}} := \bigl(\mathrm{spec}(A),\ \mathrm{spec}(B),\ \mathrm{spec}(C),\\
+\text{key-sorted } (\|w_i\|^2,\cos 2b_i, G_{ii})_{i\le n},\
+\Phi_{\mathrm{PO4}}(\text{layer }2)\bigr),
+\end{multline}
+where the layer-2 block applies the PO-4 invariants to $(w_k',b_k',u_k')$ contracted over the
+layer-1 index (so that only $\|w_k'\|^2$, $\cos 2b_k'$, $\|u_k'\|^2$ and $\sin b_k'\,u_k'$ enter,
+each of which is insensitive to layer~1's action on the column index).
+\end{definition}
+
+\begin{corollary}
+$\Phi_{\mathrm{deep}}$ is invariant under the full group. For the frozen corpus geometry
+($n=p=32$, $m=2$, $c=1$) it has dimension $320$.
+\end{corollary}
+
+Invariance is certified numerically as well as proved: applying random group elements with windings
+up to $3$ and non-trivial permutations moves $\Phi_{\mathrm{deep}}$ by $\approx 3\times 10^{-7}$
+relative, which is \texttt{float32} round-off (test T10, which also verifies that the encoding is
+not trivially constant across distinct networks).
+
+Two limitations should be stated plainly. First, $\Phi_{\mathrm{deep}}$ is invariant but is
+\emph{not claimed to be separating}: spectra discard the eigenvectors, and Chapter~5 finds that
+rung W10 reaches $35.5\%$ where the template canonicalizer reaches $64.4\%$, which is consistent
+with a real loss of information in the pooling (though it does not prove one, since the two rungs
+also differ in dimension). Second, the construction is specific to $L=2$. At $L\ge 3$ one needs a
+Gram per successive layer and the parity bookkeeping compounds; whether a finite invariant family
+of this shape remains separating at depth is open (OPEN\_PROBLEMS \#4).
+
+\end{document}
