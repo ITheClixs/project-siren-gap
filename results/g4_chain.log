@@ -16,3 +16,4 @@ written results/ladder/mnist/EXPLORATORY_w5_template_sensitivity.json
 --- S1 ladder on fashionmnist Tue Jul 28 13:29:39 +03 2026 ---
 --- rung P0 Tue Jul 28 13:29:39 +03 2026 ---
 === rung P0 ===
+  P0 seed 0: test 89.44 (val 90.14, 41 ep)
