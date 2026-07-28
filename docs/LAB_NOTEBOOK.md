@@ -199,3 +199,129 @@ auto-starts). **Compute:** ~5 h this session (chains + decoders).
 
 **Next:** K + FMNIST complete → gates on both; CIFAR pilot (expect steps retune + 20k/4k fallback
 decision per burn-down); then G3 exit review + S1 prereg freeze (power memo from anchor σ≈0.2–0.6).
+
+---
+
+## 2026-07-27/28 — Session 5: G3 close-out (CIFAR) + G4 (S1 ladder) + G2 leftovers
+
+**Gate status: G3 pilot decision made; G4 (S1) DECODED on MNIST.** The dissertation's spine
+figure (F9) exists: `results/ladder/mnist/F9_waterfall.png`.
+
+### Two integrity bugs found and fixed (both could have corrupted results silently)
+
+1. **`src/sirengap/data/` was never committed.** The `.gitignore` rule `data/` (unanchored) matched
+   the source package as well as the corpus directory, so `images.py` and `schema.py` — every
+   loader and the shard schema — existed only on this machine. A fresh clone could not generate a
+   single INR. Rule anchored to `/data/`; the two files are now tracked.
+2. **Partial downloads were treated as complete.** `_download` skipped whenever the destination
+   existed, so a transfer still in flight was handed to `tarfile`, which extracted the readable
+   prefix: CIFAR-10 arrived with `data_batch_1` missing and `data_batch_2` truncated to 4.4 MB of
+   31 MB. The pilot failed loudly only because the *first* batch was the missing one — had it been
+   the last, generation would have fitted 2000 INRs to a silently partial dataset. Now: download to
+   `.part`, verify md5, atomic rename; extract to staging, verify every member, then move into
+   place. Regression test T11 (4 cases).
+
+### Compute ledger correction: two clocks, and they differ by 10×
+
+Detached chains keep running across machine sleep, so a shard's recorded wall-clock absorbs the
+sleep interval. Measured from corpus metadata: **11.1 h active compute** (median s/fit × fits) for
+all 1.31 M MNIST+FMNIST INRs, against **123.4 h wall-clock**. Budget accounting now uses active
+hours (~12 h cumulative of 350); wall-clock is tracked separately for scheduling. Median 0.03 s/fit
+at the MNIST config = ~33 fits/s, better than the 15 fits/s G1 projection.
+
+### G2 advisor leftover cleared: basin census under the production optimizer
+
+`scripts/13_microcosm_optimizers.py` repeats the PO-8 census on the *full* model (u, c trained,
+not profiled out) with Adam and plain GD, 900 inits per cell.
+
+- **The headline replicates.** Global-capture fraction at init ranges 2/5/10/20: 0.00/0.20/0.56/0.31
+  (Adam), 0.00/0.18/0.58/0.33 (GD), against Nelder–Mead's 0.00/0.26/0.62/0.32. The non-monotone
+  three-regime shape and the sweet spot at init range ≈ ω survive the optimizer change.
+- **One sub-claim was an artifact.** "100 % degenerate-ridge capture at ±2" is Nelder–Mead on the
+  profiled surface: ridge capture is 0.00 under both gradient methods, and those runs are *still
+  descending* (endpoint ‖∇‖ far above tolerance) rather than sitting in a w≈0 basin. The ±20
+  spurious-sidelobe fraction is optimizer-dependent too (0.48 Adam, 0.00 GD). CLAIMS row 11 is
+  corrected by row 12 rather than edited. An `unconverged` class had to be added after the first
+  pass assigned those endpoints to "spurious basins" — which would have been a false claim about
+  the landscape.
+- **Laziness, measured.** At the frozen corpus setting (Adam, lr 1e−3, 300 steps) every init ends
+  unconverged, endpoint ‖∇‖ ≈ 0.5–0.7, and median |Δw| ≈ 0.24 *independently of init range*: the
+  fit never leaves its initialization neighbourhood. That is the microcosm-level mechanism for the
+  80-point W1−W3 gap (CLAIMS row 13).
+
+### S1 pre-registration frozen (hash 8c029cf43f01a94c) + addendum 01
+
+Power memo (`scripts/10_power_memo.py`) sized the seeds from measured anchor variance instead of
+the protocol default. Paired-difference SD is **0.210 pts** for rungs with a fixed feature matrix
+and **0.721 pts** for rungs that re-draw features each step; sizing on each SD's upper 80%
+confidence limit (0.327 / 1.123) gives at n=5: MDE 0.55 pt and TOST power ≈ 1.00 for the first
+class, but MDE 1.89 pts and TOST power **0.20** for the second. So W6 and W8 run at **15 seeds**,
+everything else at 5.
+
+Addendum 01 resolved four definitions before any cell was computed: W5's template is θ₀ (the shared
+init — data-independent, and the frame W1 lives in); W8 is canonicalize-*then*-augment, because
+augment-then-canonicalize is identically W4 once `c_sort` is exact and would measure nothing; W9's
+frame is drawn once per seed and shared across INRs; and W10 became an **exact L=2 invariant
+encoding** instead of the L=1-scoped fallback.
+
+### New mathematics: deep phase-invariant encoding (W10, Ch3.6)
+
+`canon/invariants.py` refuses L ≥ 2 because a hidden neuron's outgoing u is acted on by the next
+layer's group. The missing coupling for L=2 is the layer-2 Gram **G = W₂ᵀW₂**, which is invariant
+under the *entire* layer-2 group (row sign flips cancel inside each product, row permutations
+reindex the sum, phase shifts touch b₂ and W₃ only) while picking up ε_i ε_l under layer 1, with
+ε_i = (−1)^{d_i+j_i}. Since `sin b_i` carries exactly ε_i and `cos b_i · w_i` carries ε_i after
+contraction, the matrices A = (sin b_i sin b_l)G, B = (cos b_i w_i · cos b_l w_l)G and
+C = (sin 2b_i w_i · sin 2b_l w_l) are sign-cancelling and transform as M ↦ P M Pᵀ — so their sorted
+eigenvalue spectra are invariant under the full group. Per-neuron even scalars are emitted as order
+statistics under a shared invariant sort key; layer 2 uses PO-4 contracted over the layer-1 index.
+D = 320 for the frozen corpora. T10 measures the residual move under random group elements
+(windings ≤ 3, non-trivial permutations) at **≈ 3 × 10⁻⁷ relative** — fp32 round-off, not tolerance
+slack — with controls for non-constancy and wrong depth.
+
+### S1 ladder — results (MNIST, matched MLP)
+
+| rung | P0 | P1 | W1 | W2 | W3 | W4 | W5 | W6 | W7 | W7-1/8 | W8 | W9 | W10 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| acc | 97.97 | 97.59 | 94.36 | 95.04 | 13.92 | 28.19 | **64.41** | 18.12 | 17.75 | 14.59 | 10.27 | 14.13 | 35.54 |
+| f = (·−W3)/(W1−W3) | — | — | 1 | — | 0 | .177 | **.628** | .054 | .048 | — | <0 | .003 | .269 |
+
+Label-shuffle controls collapse (10.65 / 11.03 / 9.79 at W1 / W3 / W5). W1 reproduces anchor A1
+seed-for-seed. Scoring against the frozen registration:
+
+- **H-S1-1 HIT.** P1 − P0 = −0.39; TOST equivalent at margin 1.0 (p 2.5e−05). The fit destroys no
+  class information — this kills "it's all decoder inadequacy" (defense row 4 now answered).
+- **H-S1-2 HIT.** W1 − P1 = −3.23 (registered −3.8).
+- **H-S1-3 MISS.** W1 − W2 = **−0.68**, registered +2.0 [0, 6]. Optimization noise is not a nuisance
+  at all; stochastic fitting is marginally *better*. The rung is null and the entire gap is
+  init/basin. (Mechanism, in hindsight: minibatch coordinate sampling is a mild regularizer, and
+  under laziness both protocols stay in the same basin anyway.)
+- **H-S1-4a HIT** to the decimal. W1 − W3 = +80.43 (registered 80.4).
+- **H-S1-4b HIT.** f(W4) = 0.177 (registered 0.06, interval to 0.20).
+- **H-S1-4c BIG MISS.** f(W5) = **0.628** (registered 0.10, interval to 0.30).
+- **H-S1-5 MISS.** W7 − W6 = −0.52, Holm p = .21 — because *neither* intervention works
+  (f = .048, .054). Of W7's small gain, +3.16 pts is explained by row count alone (W7 vs W7-1/8).
+- **H-S1-6 HIT.** W10 = 35.54 sits inside [W4, W5].
+
+Two unregistered results that matter: **W8 collapses to chance (10.27)** — augmenting inside the
+canonical frame destroys the frame the decoder just gained — and **X1 shows total brittleness**: a
+W1-trained reader scores 10.7 on W3 features, 13.2 in reverse.
+
+### What the c_align result does to the thesis
+
+Registered position was that canonicalization recovers little. It recovers **63 %**. The honest
+restatement, which is a *better* thesis: the perception gap decomposes as ≈ 63 % symmetry-orbit
+scatter (removable by an exact, function-preserving change of frame) + ≈ 37 % residual that no
+canonicalization can touch — while the *template-free* canonicalizer, the one available when no
+shared init exists, recovers only 18 %. The 18 → 63 span is canonicalizer quality, not information.
+Defense row 8's pre-registered falsification conjunction lost its third conjunct (W7−W3 ≫ W6−W3),
+so the basin claim is now carried by the residual and by S4 dispersion, and is stated at that
+strength. Defense row 15's weakest link is now the template: θ₀ exists only because the corpus was
+built with a known shared init. Sensitivity check (exploratory) is running.
+
+**Calibration lesson (repeat of the QG-3 lesson, same direction).** Both big misses under-trusted a
+registered mechanism relative to literature priors from a different reader class. Where I trusted
+the mechanism the intervals hit, including ±80.4 to the decimal. Running interval coverage: 8/12.
+
+**Deviations:** none. **Waivers:** none. **Compute this session:** ~1.5 h active (ladder ~0.9 h,
+microcosm census ~0.2 h, CIFAR pilot in flight).

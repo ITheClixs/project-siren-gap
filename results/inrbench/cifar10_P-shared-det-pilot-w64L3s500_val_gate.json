@@ -1,0 +1,69 @@
+{
+  "corpus": "data/inrbench/cifar10/P-shared-det-pilot-w64L3s500",
+  "eval_split": "val",
+  "n_eval": 2000,
+  "dataset": "cifar10",
+  "gate_epochs": 10,
+  "gate": {
+    "acc_real_pixels": 67.45,
+    "acc_renders": 67.4,
+    "gap_pts": 0.04999999999999716,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": 0.02896426679999684,
+    "corr_loss_label": 0.00879629243581341
+  },
+  "psnr": {
+    "median": 68.14633178710938,
+    "q05": 49.03724384307861
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      1.767281,
+      1.932072,
+      2.335268
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      1.0142,
+      1.242885,
+      1.4898
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.000488
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      1.154515,
+      1.290894,
+      1.666501
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.977403,
+      1.130069,
+      1.41296
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.889666,
+      0.970878,
+      1.055403
+    ],
+    "layer2.min_w_norm.q0_q05_q50": [
+      0.692055,
+      0.806741,
+      1.177499
+    ],
+    "layer2.min_u_norm.q0_q05_q50": [
+      0.001137,
+      0.004492,
+      0.016883
+    ],
+    "layer2.min_parallel_angle_rad.q0_q05_q50": [
+      0.53568,
+      0.670183,
+      0.800052
+    ]
+  },
+  "gate_cnn_train_acc_check": 70.9
+}
