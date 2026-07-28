@@ -5,11 +5,28 @@ Hardware: MacBook Air M4, unified memory, fanless. Rules: checkpoint ≥ every 1
 
 ## Burn-down (updated at every Gate)
 
-| gate | date | spent this gate (h) | cumulative (h) | remaining vs 350 | notes |
+**Two clocks, and the difference is large.** Detached overnight chains keep running across machine
+sleep, so a shard's recorded wall-clock absorbs the sleep interval. Budget accounting uses
+**active compute** = median seconds-per-fit × number of fits (robust to those stalls); wall-clock is
+tracked separately because it is what governs scheduling.
+
+| gate | date | spent this gate (h, active) | cumulative (h) | remaining vs 350 | notes |
 |---|---|---|---|---|---|
 | G0 | 2026-07-16 | ~0 (API only) | ~0 | 350 | lit scan; no training compute |
 | G1 | 2026-07-17 | ~0.3 (tests + profiling) | ~0.3 | ~349.7 | throughput measured (below) |
-| G3 (interim) | 2026-07-17 | ~4 (pilots + full MNIST chain) | ~4.3 | ~345.7 | **steps frozen at 300 (quality gate)** — MNIST protocol now ~24 min, full 4-protocol chain ~3.5 h vs 12.5 h projected at 1k steps; sustained thermal throttle measured 55→48 fits/s (−13%, fanless, R7); anchors/decoders extra |
+| G3 (interim) | 2026-07-17 | ~4 (pilots + MNIST chain) | ~4.3 | ~345.7 | **steps frozen at 300 (quality gate)**; sustained thermal throttle 55→48 fits/s (−13%, fanless, R7) |
+| G3 (corpora complete) | 2026-07-23 | 11.1 total fitting, all corpora | ~12 | ~338 | 1.31 M INRs across MNIST+FMNIST × 4 protocols. **Wall-clock for the same work: 123.4 h** — the gap is machine sleep inside detached shards, not compute. Median 0.03 s/fit (MNIST cfg) = ~33 fits/s, better than the 15 fits/s G1 projection |
+| G4 (in progress) | 2026-07-27 | ~0.2 (microcosm optimizer census) + ladder/pilot in flight | — | — | S1 ladder on MNIST + CIFAR-10 pilot sweep running detached |
+
+### Measured corpus costs (from metadata, 2026-07-27)
+
+| corpus | fits | active h | wall h |
+|---|---|---|---|
+| mnist P-shared-det / P-random / P-shared-stoch | 3 × 70 000 | 0.49 / 0.49 / 0.16 | ~0 (ran awake) |
+| mnist P-random-K (K=8) | 440 000 | 3.10 | 25.1 |
+| fashionmnist P-shared-det / P-random / P-shared-stoch | 3 × 70 000 | 0.78 / 0.79 / 0.27 | 13.3 / 11.8 / 3.2 |
+| fashionmnist P-random-K (K=8) | 440 000 | 4.91 | 69.9 |
+| **total** | **1 308 256** | **11.1** | **123.4** |
 
 ## Measured throughput (G1, `scripts/01_profile_fitting.py`, torch 2.13.0, M4)
 

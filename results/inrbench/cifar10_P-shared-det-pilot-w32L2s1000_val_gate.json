@@ -1,0 +1,54 @@
+{
+  "corpus": "data/inrbench/cifar10/P-shared-det-pilot-w32L2s1000",
+  "eval_split": "val",
+  "n_eval": 2000,
+  "dataset": "cifar10",
+  "gate_epochs": 10,
+  "gate": {
+    "acc_real_pixels": 67.45,
+    "acc_renders": 67.2,
+    "gap_pts": 0.25,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": -0.13837132753252468,
+    "corr_loss_label": 0.10140373813331663
+  },
+  "psnr": {
+    "median": 40.12769317626953,
+    "q05": 35.213885116577146
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      1.270699,
+      1.782043,
+      2.625617
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      0.814518,
+      1.246735,
+      1.821901
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.001859
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      0.077023,
+      0.565339,
+      1.265195
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.003284,
+      0.031685,
+      0.070267
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.08445,
+      0.610085,
+      0.845336
+    ]
+  },
+  "gate_cnn_train_acc_check": 70.9
+}

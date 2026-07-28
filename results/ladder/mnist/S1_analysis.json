@@ -1,0 +1,349 @@
+{
+  "dataset": "mnist",
+  "prereg": "docs/prereg/S1.md (8c029cf43f01a94c) + addendum 01",
+  "means": {
+    "P0": 97.974,
+    "P1": 97.58800000000001,
+    "W1": 94.35600000000001,
+    "W10": 35.536,
+    "W2": 95.03999999999999,
+    "W3": 13.922,
+    "W4": 28.188,
+    "W5": 64.408,
+    "W6": 18.122,
+    "W7": 17.752,
+    "W7-1/8": 14.594,
+    "W8": 10.267333333333335,
+    "W9": 14.13,
+    "X1": 94.35600000000001
+  },
+  "seeds": {
+    "P0": 5,
+    "P1": 5,
+    "W1": 5,
+    "W10": 5,
+    "W2": 5,
+    "W3": 5,
+    "W4": 5,
+    "W5": 5,
+    "W6": 15,
+    "W7": 5,
+    "W7-1/8": 5,
+    "W8": 15,
+    "W9": 5,
+    "X1": 5
+  },
+  "tests": {
+    "H-S1-1": {
+      "statement": "P1 ~ P0 (TOST margin 1.0 pt); registered +0.1 [-0.4, +0.6]",
+      "diff": {
+        "n": 5,
+        "mean_diff": -0.38600000000000134,
+        "ci95": [
+          -0.5927659512671123,
+          -0.1792340487328904
+        ],
+        "t_p": 0.006591822782468009,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": -2.3179943330587007,
+        "paired_on_seeds": 5
+      },
+      "tost": {
+        "margin": 1.0,
+        "p_lower": 0.0005901621575268301,
+        "p_upper": 2.453099267654136e-05,
+        "equivalent_at_05": true
+      },
+      "registered": {
+        "point": 0.1,
+        "lo80": -0.4,
+        "hi80": 0.6
+      },
+      "holm_adjusted_p": 0.013183645564936017,
+      "observed": -0.38600000000000134,
+      "interval_hit": true,
+      "abs_error": 0.4860000000000013
+    },
+    "H-S1-2": {
+      "statement": "W1 - P1 residual; registered -3.8 [-6.5, -1.5]",
+      "diff": {
+        "n": 5,
+        "mean_diff": -3.2319999999999993,
+        "ci95": [
+          -3.4012037721978055,
+          -3.062796227802193
+        ],
+        "t_p": 7.566951013846185e-07,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": -23.717308367706693,
+        "paired_on_seeds": 5
+      },
+      "registered": {
+        "point": -3.8,
+        "lo80": -6.5,
+        "hi80": -1.5
+      },
+      "holm_adjusted_p": 3.026780405538474e-06,
+      "observed": -3.2319999999999993,
+      "interval_hit": true,
+      "abs_error": 0.5680000000000005
+    },
+    "H-S1-3": {
+      "statement": "W1 - W2 optimization-noise rung; registered +2.0 [0.0, +6.0]",
+      "diff": {
+        "n": 5,
+        "mean_diff": -0.6839999999999975,
+        "ci95": [
+          -0.830284671937845,
+          -0.5377153280621499
+        ],
+        "t_p": 0.00020313233403450307,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": -5.805790610325978,
+        "paired_on_seeds": 5
+      },
+      "registered": {
+        "point": 2.0,
+        "lo80": 0.0,
+        "hi80": 6.0
+      },
+      "holm_adjusted_p": 0.0006093970021035092,
+      "observed": -0.6839999999999975,
+      "interval_hit": false,
+      "abs_error": 2.6839999999999975
+    },
+    "H-S1-4a": {
+      "statement": "W1 - W3 init/symmetry gap; registered +80.4 [79, 82]",
+      "diff": {
+        "n": 5,
+        "mean_diff": 80.434,
+        "ci95": [
+          80.17316188516988,
+          80.69483811483012
+        ],
+        "t_p": 1.1166484813168929e-11,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": 382.88883546243414,
+        "paired_on_seeds": 5
+      },
+      "registered": {
+        "point": 80.4,
+        "lo80": 79.0,
+        "hi80": 82.0
+      },
+      "holm_adjusted_p": 5.583242406584464e-11,
+      "observed": 80.434,
+      "interval_hit": true,
+      "abs_error": 0.033999999999991815
+    },
+    "H-S1-5": {
+      "statement": "(W7 - W3) - (W6 - W3) = W7 - W6; registered +15 [+5, +35]",
+      "diff": {
+        "n": 5,
+        "mean_diff": -0.5219999999999999,
+        "ci95": [
+          -1.4943664128915968,
+          0.45036641289159685
+        ],
+        "t_p": 0.21035006296958153,
+        "wilcoxon_p": 0.3125,
+        "cohen_d": -0.6665682796826744,
+        "paired_on_seeds": 5
+      },
+      "registered": {
+        "point": 15.0,
+        "lo80": 5.0,
+        "hi80": 35.0
+      },
+      "holm_adjusted_p": 0.21035006296958153,
+      "observed": -0.5219999999999999,
+      "interval_hit": false,
+      "abs_error": 15.522
+    },
+    "H-S1-6": {
+      "statement": "W10 within +-3 pts of the interval [W4, W5]",
+      "w10_mean": 35.536,
+      "interval": [
+        28.188,
+        64.408
+      ],
+      "registered": {
+        "point": 0.0,
+        "lo80": -3.0,
+        "hi80": 3.0
+      },
+      "distance_outside_interval": 0.0,
+      "observed": 0.0,
+      "interval_hit": true,
+      "abs_error": 0.0
+    },
+    "W7_rowcount_control": {
+      "statement": "W7 vs W7-1/8: is the K-marginalization gain just 8x more rows?",
+      "diff": {
+        "n": 5,
+        "mean_diff": 3.1580000000000004,
+        "ci95": [
+          2.570901659996205,
+          3.745098340003796
+        ],
+        "t_p": 0.000117089763469156,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": 6.678906478090431,
+        "paired_on_seeds": 5
+      }
+    },
+    "X1_transfer": {
+      "w1_trained_on_w3_features": {
+        "W3_test": [
+          10.97,
+          10.45,
+          10.84,
+          10.97,
+          10.42
+        ]
+      },
+      "w1_own_test": 94.35600000000001,
+      "reverse": {
+        "W1_test": [
+          13.66,
+          12.85,
+          12.84,
+          12.81,
+          13.57
+        ]
+      }
+    }
+  },
+  "recovery_fractions": {
+    "f_W4": {
+      "point": 0.17736303468123343,
+      "ci95": [
+        0.17492571072599583,
+        0.1802586583221655
+      ],
+      "n": 5
+    },
+    "f_W5": {
+      "point": 0.6276695141890121,
+      "ci95": [
+        0.6231857574689001,
+        0.632153270909124
+      ],
+      "n": 5
+    },
+    "f_W6": {
+      "point": 0.05409099277135106,
+      "ci95": [
+        0.04672171922850708,
+        0.05997180875086285
+      ],
+      "n": 5
+    },
+    "f_W7": {
+      "point": 0.04761667752663541,
+      "ci95": [
+        0.042659601640590177,
+        0.05210770606165334
+      ],
+      "n": 5
+    },
+    "f_W9": {
+      "point": 0.002596481121179116,
+      "ci95": [
+        -0.0008647020135236057,
+        0.0074356445055874226
+      ],
+      "n": 5
+    },
+    "f_W10": {
+      "point": 0.26871870643583584,
+      "ci95": [
+        0.26545553394650234,
+        0.2730243718088179
+      ],
+      "n": 5
+    },
+    "registered_f_W4": {
+      "point": 0.06,
+      "lo80": 0.01,
+      "hi80": 0.2
+    },
+    "registered_f_W5": {
+      "point": 0.1,
+      "lo80": 0.02,
+      "hi80": 0.3
+    }
+  },
+  "controls": {
+    "W6": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": null,
+      "knn10_cosine": null
+    },
+    "P1": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 91.01,
+      "knn10_cosine": 96.48
+    },
+    "P0": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 91.61,
+      "knn10_cosine": 96.50999999999999
+    },
+    "W7": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 10.49,
+      "knn10_cosine": 9.42
+    },
+    "W1": {
+      "label_shuffle_test_acc": 10.65,
+      "linear_probe": 88.9,
+      "knn10_cosine": 84.09
+    },
+    "W2": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 88.84,
+      "knn10_cosine": 85.38
+    },
+    "W7-1/8": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 10.51,
+      "knn10_cosine": 10.02
+    },
+    "W3": {
+      "label_shuffle_test_acc": 11.03,
+      "linear_probe": 10.12,
+      "knn10_cosine": 10.489999999999998
+    },
+    "W10": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 32.77,
+      "knn10_cosine": 15.299999999999999
+    },
+    "W4": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 20.68,
+      "knn10_cosine": 11.43
+    },
+    "X1": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 88.9,
+      "knn10_cosine": 84.09
+    },
+    "W8": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": null,
+      "knn10_cosine": null
+    },
+    "W9": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 9.88,
+      "knn10_cosine": 10.13
+    },
+    "W5": {
+      "label_shuffle_test_acc": 9.79,
+      "linear_probe": 58.31,
+      "knn10_cosine": 13.3
+    }
+  }
+}

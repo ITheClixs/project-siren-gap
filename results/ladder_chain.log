@@ -13,3 +13,123 @@
   P1 seed 1: test 97.48 (val 98.18, 36 ep)
   P1 seed 2: test 97.59 (val 98.06, 26 ep)
   P1 seed 3: test 97.75 (val 98.40, 33 ep)
+  P1 seed 4: test 97.60 (val 98.28, 28 ep)
+  -> results/ladder/mnist/P1.json (97.59 mean over 5 seeds)
+--- rung W2 Mon Jul 27 11:06:00 CEST 2026 ---
+=== rung W2 ===
+  W2 seed 0: test 94.83 (val 96.00, 20 ep)
+  W2 seed 1: test 94.85 (val 96.28, 38 ep)
+  W2 seed 2: test 95.14 (val 96.20, 28 ep)
+  W2 seed 3: test 95.31 (val 96.26, 27 ep)
+  W2 seed 4: test 95.07 (val 96.30, 35 ep)
+  -> results/ladder/mnist/W2.json (95.04 mean over 5 seeds)
+--- rung W3 Mon Jul 27 11:08:32 CEST 2026 ---
+=== rung W3 ===
+  W3 seed 0: test 14.10 (val 14.46, 13 ep)
+  W3 seed 1: test 13.54 (val 13.72, 19 ep)
+  W3 seed 2: test 13.69 (val 14.68, 14 ep)
+  W3 seed 3: test 14.15 (val 14.74, 13 ep)
+  W3 seed 4: test 14.13 (val 14.90, 17 ep)
+  W3 label-shuffle control: 11.03
+  -> results/ladder/mnist/W3.json (13.92 mean over 5 seeds)
+--- rung W4 Mon Jul 27 11:10:03 CEST 2026 ---
+=== rung W4 ===
+  W4 seed 0: test 28.15 (val 29.54, 12 ep)
+  W4 seed 1: test 27.99 (val 29.34, 13 ep)
+  W4 seed 2: test 27.81 (val 28.76, 13 ep)
+  W4 seed 3: test 28.81 (val 29.88, 13 ep)
+  W4 seed 4: test 28.18 (val 29.78, 12 ep)
+  -> results/ladder/mnist/W4.json (28.19 mean over 5 seeds)
+--- rung W5 Mon Jul 27 11:11:04 CEST 2026 ---
+=== rung W5 ===
+  W5 seed 0: test 64.11 (val 65.26, 12 ep)
+  W5 seed 1: test 64.53 (val 65.32, 12 ep)
+  W5 seed 2: test 64.03 (val 65.50, 13 ep)
+  W5 seed 3: test 65.20 (val 65.78, 12 ep)
+  W5 seed 4: test 64.17 (val 65.34, 13 ep)
+  W5 label-shuffle control: 9.79
+  -> results/ladder/mnist/W5.json (64.41 mean over 5 seeds)
+--- rung W10 Mon Jul 27 11:12:24 CEST 2026 ---
+=== rung W10 ===
+  W10 seed 0: test 35.61 (val 36.88, 13 ep)
+  W10 seed 1: test 35.82 (val 37.90, 13 ep)
+  W10 seed 2: test 34.99 (val 36.50, 12 ep)
+  W10 seed 3: test 35.70 (val 36.96, 13 ep)
+  W10 seed 4: test 35.56 (val 36.76, 12 ep)
+  -> results/ladder/mnist/W10.json (35.54 mean over 5 seeds)
+--- rung W9 Mon Jul 27 11:13:29 CEST 2026 ---
+=== rung W9 ===
+  W9 seed 0: test 15.04 (val 14.20, 13 ep)
+  W9 seed 1: test 13.59 (val 14.24, 21 ep)
+  W9 seed 2: test 13.49 (val 14.82, 14 ep)
+  W9 seed 3: test 14.32 (val 15.00, 13 ep)
+  W9 seed 4: test 14.21 (val 14.60, 14 ep)
+  -> results/ladder/mnist/W9.json (14.13 mean over 5 seeds)
+--- rung X1 Mon Jul 27 11:14:50 CEST 2026 ---
+=== rung X1 ===
+  X1 seed 0: test 94.24 (val 95.36, 13 ep)
+  X1 seed 1: test 94.05 (val 95.24, 13 ep)
+  X1 seed 2: test 94.41 (val 95.68, 25 ep)
+  X1 seed 3: test 94.54 (val 95.62, 27 ep)
+  X1 seed 4: test 94.54 (val 95.88, 33 ep)
+  X1-rev seed 0: test 14.10 (val 14.46, 13 ep)
+  X1-rev seed 1: test 13.54 (val 13.72, 19 ep)
+  X1-rev seed 2: test 13.69 (val 14.68, 14 ep)
+  X1-rev seed 3: test 14.15 (val 14.74, 13 ep)
+  X1-rev seed 4: test 14.13 (val 14.90, 17 ep)
+  -> results/ladder/mnist/X1.json (94.36 mean over 5 seeds)
+--- rung W6 Mon Jul 27 11:17:45 CEST 2026 ---
+=== rung W6 ===
+  W6 seed 0: test 17.34 (val 18.34, 34 ep)
+  W6 seed 1: test 18.71 (val 18.18, 44 ep)
+  W6 seed 2: test 18.45 (val 18.62, 43 ep)
+  W6 seed 3: test 18.45 (val 18.56, 45 ep)
+  W6 seed 4: test 18.42 (val 19.22, 67 ep)
+  W6 seed 5: test 17.96 (val 18.68, 39 ep)
+  W6 seed 6: test 17.95 (val 18.04, 37 ep)
+  W6 seed 7: test 17.62 (val 18.04, 42 ep)
+  W6 seed 8: test 18.00 (val 18.44, 42 ep)
+  W6 seed 9: test 18.98 (val 19.70, 63 ep)
+  W6 seed 10: test 18.73 (val 19.36, 70 ep)
+  W6 seed 11: test 18.49 (val 19.36, 61 ep)
+  W6 seed 12: test 17.11 (val 17.86, 28 ep)
+  W6 seed 13: test 17.91 (val 18.04, 36 ep)
+  W6 seed 14: test 17.71 (val 18.30, 35 ep)
+  -> results/ladder/mnist/W6.json (18.12 mean over 15 seeds)
+--- rung W8 Mon Jul 27 11:28:01 CEST 2026 ---
+=== rung W8 ===
+  W8 seed 0: test 10.64 (val 10.70, 11 ep)
+  W8 seed 1: test 10.18 (val 11.06, 20 ep)
+  W8 seed 2: test 10.14 (val 10.24, 12 ep)
+  W8 seed 3: test 10.39 (val 10.30, 20 ep)
+  W8 seed 4: test 10.16 (val 10.30, 17 ep)
+  W8 seed 5: test 11.00 (val 11.36, 11 ep)
+  W8 seed 6: test 10.40 (val 10.72, 11 ep)
+  W8 seed 7: test 9.76 (val 10.16, 12 ep)
+  W8 seed 8: test 10.33 (val 10.54, 11 ep)
+  W8 seed 9: test 10.11 (val 10.70, 14 ep)
+  W8 seed 10: test 10.26 (val 10.30, 20 ep)
+  W8 seed 11: test 9.88 (val 10.42, 19 ep)
+  W8 seed 12: test 10.24 (val 10.74, 21 ep)
+  W8 seed 13: test 10.37 (val 10.24, 11 ep)
+  W8 seed 14: test 10.15 (val 10.48, 23 ep)
+  -> results/ladder/mnist/W8.json (10.27 mean over 15 seeds)
+--- rung W7-1/8 Mon Jul 27 11:31:57 CEST 2026 ---
+=== rung W7-1/8 ===
+  W7-1/8 seed 0: test 14.31 (val 14.34, 24 ep)
+  W7-1/8 seed 1: test 14.76 (val 14.68, 13 ep)
+  W7-1/8 seed 2: test 14.79 (val 14.76, 18 ep)
+  W7-1/8 seed 3: test 14.54 (val 14.06, 16 ep)
+  W7-1/8 seed 4: test 14.57 (val 14.32, 19 ep)
+  -> results/ladder/mnist/W7-1-8.json (14.59 mean over 5 seeds)
+--- rung W7 Mon Jul 27 11:33:46 CEST 2026 ---
+=== rung W7 ===
+  W7 seed 0: test 18.14 (val 18.04, 20 ep)
+  W7 seed 1: test 17.94 (val 17.98, 17 ep)
+  W7 seed 2: test 17.50 (val 17.86, 18 ep)
+  W7 seed 3: test 17.25 (val 17.98, 28 ep)
+  W7 seed 4: test 17.93 (val 17.70, 20 ep)
+  -> results/ladder/mnist/W7.json (17.75 mean over 5 seeds)
+=== ladder complete Tue Jul 28 01:33:25 +03 2026 ===
+=== waiting for CIFAR-10 download Tue Jul 28 01:33:25 +03 2026 ===
+=== CIFAR present, starting pilot Tue Jul 28 01:33:26 +03 2026 ===

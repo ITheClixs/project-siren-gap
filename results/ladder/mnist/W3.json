@@ -1,0 +1,31 @@
+{
+  "rung": "W3",
+  "notes": "raw weights, P-random",
+  "feature_dim": 1185,
+  "n_train_rows": 55000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    14.1,
+    13.54,
+    13.69,
+    14.15,
+    14.13
+  ],
+  "mean": 13.922,
+  "ci95_bootstrap": [
+    13.687999999999999,
+    14.132
+  ],
+  "epochs_ran": [
+    13,
+    19,
+    14,
+    13,
+    17
+  ],
+  "wallclock_s": 68.9820659160614,
+  "linear_probe": 10.12,
+  "knn10_cosine": 10.489999999999998,
+  "label_shuffle_test_acc": 11.03
+}

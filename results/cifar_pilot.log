@@ -72,3 +72,81 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: '/Users/dmr/Development/Projects/ai-research/project-siren-gap/data/cifar10/cifar-10-batches-py/data_batch_1'
 GEN FAILED D
 === cifar pilot sweep complete Mon Jul 27 10:55:49 CEST 2026 ===
+=== cifar pilot sweep start Tue Jul 28 01:33:26 +03 2026 ===
+--- config A: width=32 layers=2 steps=1000 (tag pilot-w32L2s1000) Tue Jul 28 01:33:26 +03 2026 ---
+shard_000000: 256 fits in 1225.0s  psnr_med=40.0dB  overall 0.2 fits/s
+shard_000256: 256 fits in 1211.7s  psnr_med=40.2dB  overall 0.2 fits/s
+shard_000512: 256 fits in 650.9s  psnr_med=40.2dB  overall 0.2 fits/s
+shard_000768: 256 fits in 20.8s  psnr_med=40.0dB  overall 0.3 fits/s
+shard_001024: 256 fits in 4929.2s  psnr_med=39.9dB  overall 0.2 fits/s
+shard_001280: 256 fits in 8015.4s  psnr_med=39.8dB  overall 0.1 fits/s
+shard_001536: 256 fits in 8166.1s  psnr_med=40.6dB  overall 0.1 fits/s
+shard_001792: 208 fits in 7397.6s  psnr_med=40.1dB  overall 0.1 fits/s
+{
+  "n_inrs": 2000,
+  "psnr_median": 40.12769317626953,
+  "psnr_q05": 35.213885116577146,
+  "corr_psnr_label": -0.13837132753252468,
+  "wallclock_total_s": 31616.854948043823
+}
+{
+  "corpus": "data/inrbench/cifar10/P-shared-det-pilot-w32L2s1000",
+  "eval_split": "val",
+  "n_eval": 2000,
+  "dataset": "cifar10",
+  "gate_epochs": 10,
+  "gate": {
+    "acc_real_pixels": 67.45,
+    "acc_renders": 67.2,
+    "gap_pts": 0.25,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": -0.13837132753252468,
+    "corr_loss_label": 0.10140373813331663
+  },
+  "psnr": {
+    "median": 40.12769317626953,
+    "q05": 35.213885116577146
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      1.270699,
+      1.782043,
+      2.625617
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      0.814518,
+      1.246735,
+      1.821901
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.001859
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      0.077023,
+      0.565339,
+      1.265195
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.003284,
+      0.031685,
+      0.070267
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.08445,
+      0.610085,
+      0.845336
+    ]
+  },
+  "gate_cnn_train_acc_check": 70.9
+}
+--- config A done Tue Jul 28 12:06:02 +03 2026 ---
+--- config B: width=64 layers=3 steps=500 (tag pilot-w64L3s500) Tue Jul 28 12:06:02 +03 2026 ---
+shard_000000: 256 fits in 2343.0s  psnr_med=67.6dB  overall 0.1 fits/s
+shard_000256: 256 fits in 29.5s  psnr_med=68.6dB  overall 0.2 fits/s
+shard_000512: 256 fits in 29.9s  psnr_med=68.3dB  overall 0.3 fits/s
+shard_000768: 256 fits in 34.4s  psnr_med=68.5dB  overall 0.4 fits/s
+shard_001024: 256 fits in 33.8s  psnr_med=67.6dB  overall 0.5 fits/s

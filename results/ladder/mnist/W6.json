@@ -1,0 +1,50 @@
+{
+  "rung": "W6",
+  "notes": "raw weights + bounded group augmentation at train time",
+  "feature_dim": 1185,
+  "n_train_rows": 55000,
+  "seeds": 15,
+  "augmentation_bearing": true,
+  "acc": [
+    17.34,
+    18.71,
+    18.45,
+    18.45,
+    18.42,
+    17.96,
+    17.95,
+    17.62,
+    18.0,
+    18.98,
+    18.73,
+    18.49,
+    17.11,
+    17.91,
+    17.71
+  ],
+  "mean": 18.122,
+  "ci95_bootstrap": [
+    17.854666666666667,
+    18.378
+  ],
+  "epochs_ran": [
+    34,
+    44,
+    43,
+    45,
+    67,
+    39,
+    37,
+    42,
+    42,
+    63,
+    70,
+    61,
+    28,
+    36,
+    35
+  ],
+  "wallclock_s": 613.7854909896851,
+  "linear_probe": null,
+  "knn10_cosine": null
+}
