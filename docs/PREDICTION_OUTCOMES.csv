@@ -1,0 +1,17 @@
+date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,note
+2026-07-18,QG-1 frozen MNIST config steps,interval,500,300,1000,300,HIT,200,,boundary hit
+2026-07-18,QG-2 MNIST frozen-config test-render PSNR dB,interval,33,28,40,39.2,HIT,6.2,,
+2026-07-18,QG-3 A1 anchor gap W1-W3 pts,interval,30,12,45,80.4,MISS,50.4,,hedged toward graph-net literature against own PO-9 mechanism
+2026-07-28,QG-4 frozen CIFAR-10 config steps,interval,1000,500,3000,1000,HIT,0,,point exact
+2026-07-28,QG-4b P(config A w32L2 passes CIFAR gate),probability,0.15,,,1,—,,0.7225,it passed; I under-rated the cheap config
+2026-07-28,QG-5 CIFAR frozen-config median render PSNR dB,interval,27,22,32,40.1,MISS,13.1,,under-rated overparameterisation (8707 params vs 3072 target values)
+2026-07-28,QG-7 CIFAR gate-CNN real-pixel accuracy pct,interval,66,60,72,67.45,HIT,1.45,,
+2026-07-28,QG-8 sign of CIFAR gate gap (positive = renders lose),probability,0.8,,,1,—,,0.04,positive at the frozen config; flips negative at higher-fidelity configs
+2026-07-28,H-S1-1 P1-P0 pts,interval,0.1,-0.4,0.6,-0.39,HIT,0.49,,TOST also declares equivalence at margin 1.0
+2026-07-28,H-S1-2 W1-P1 pts,interval,-3.8,-6.5,-1.5,-3.23,HIT,0.57,,
+2026-07-28,H-S1-3 W1-W2 pts,interval,2.0,0.0,6.0,-0.68,MISS,2.68,,assumed a nuisance that is null; sign wrong
+2026-07-28,H-S1-4a W1-W3 pts,interval,80.4,79,82,80.43,HIT,0.03,,mechanism trusted; hit to the decimal
+2026-07-28,H-S1-4b canonicalization recovery f(W4),interval,0.06,0.01,0.20,0.177,HIT,0.117,,
+2026-07-28,H-S1-4c canonicalization recovery f(W5),interval,0.10,0.02,0.30,0.628,MISS,0.528,,forced a rewrite of the canonicalization claim per prereg S1 section 8.3
+2026-07-28,H-S1-5 (W7-W3)-(W6-W3) pts,interval,15,5,35,-0.52,MISS,15.52,,both interventions are null; the contrast could not exist
+2026-07-28,H-S1-6 W10 distance outside [W4 W5] pts,interval,0,-3,3,0,HIT,0,,W10 = 35.54 inside [28.19 64.41]

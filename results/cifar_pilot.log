@@ -317,3 +317,4 @@ shard_001792: 208 fits in 61.7s  psnr_med=77.4dB  overall 3.4 fits/s
 }
 --- config C done Tue Jul 28 12:58:39 +03 2026 ---
 --- config D: width=64 layers=3 steps=2000 (tag pilot-w64L3s2000) Tue Jul 28 12:58:39 +03 2026 ---
+shard_000000: 256 fits in 155.8s  psnr_med=68.1dB  overall 1.6 fits/s

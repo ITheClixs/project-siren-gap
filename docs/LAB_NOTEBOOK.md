@@ -325,3 +325,32 @@ the mechanism the intervals hit, including ±80.4 to the decimal. Running interv
 
 **Deviations:** none. **Waivers:** none. **Compute this session:** ~1.5 h active (ladder ~0.9 h,
 microcosm census ~0.2 h, CIFAR pilot in flight).
+
+### Session 5 addendum — CIFAR pilot scored, calibration accounting corrected
+
+**CIFAR pilot sweep (all four registered configs).** Every config that ran passed the
+strengthened 10-epoch gate: w32 L2 s1000 (gap **+0.25**, 40.1 dB), w64 L3 s500 (+0.05, 68.1 dB),
+w64 L3 s1000 (−0.05, 75.9 dB). The pre-committed freeze rule takes the cheapest passing config, so
+**CIFAR-10 is frozen at w32 L2, steps 1000, lr 1e−3** — the same architecture as MNIST/FMNIST,
+which is worth more for cross-dataset comparability than the extra fidelity of the w64 arms.
+
+The sign of the gate gap **tracks render fidelity**: positive (renders lose) at 40 dB, ≈0 at 68 dB,
+negative (renders win, as on MNIST) at 76 dB. That is what the low-pass account predicts — smoothing
+costs texture until the render is essentially exact, at which point the small denoising benefit
+returns — and it is a stronger form of the QG-8 evidence than the single registered sign, though
+the *mechanism* remains a conjecture (G3 review, Empiricist 2).
+
+**Prediction scoring** (new file `docs/PREDICTION_OUTCOMES.csv`, one row per registered call):
+QG-4 steps HIT (point exact, 1000); QG-5 PSNR **MISS** (registered 27 [22,32], observed 40.1 — I
+under-rated the overparameterization: 8707 parameters against 3072 target values interpolates);
+QG-7 gate-CNN accuracy HIT (67.45 in [60,72]); QG-4b probability call poorly resolved (P=0.15 on
+config A passing; it passed, Brier 0.72); QG-8 well resolved (Brier 0.04).
+
+**Correction to this session's earlier entry.** I wrote "running interval coverage 8/12"; the
+correct count at that moment was 7/11, and with the CIFAR rows scored it is now **9/14 = 64%
+coverage against nominal 80%** — i.e. the intervals are too narrow, not too wide. The five misses
+are QG-3, QG-5, H-S1-3, H-S1-4c, H-S1-5. Three of them (QG-3, QG-5, H-S1-4c) are the same failure
+mode: hedging a registered mechanism toward priors from a different setting. Two (H-S1-3, H-S1-5)
+are a second, distinct mode: assuming a nuisance exists and then registering a contrast that could
+not exist once the nuisance turned out to be null. Both modes are now named in defense row 14, and
+the coverage number is reported rather than the successes alone.
