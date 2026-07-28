@@ -1,0 +1,78 @@
+{
+  "rung": "X1",
+  "notes": "train on W1, evaluate on W3 features",
+  "feature_dim": 1185,
+  "n_train_rows": 55000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    82.89,
+    83.08,
+    82.89,
+    83.16,
+    82.82
+  ],
+  "mean": 82.96799999999999,
+  "ci95_bootstrap": [
+    82.862,
+    83.076
+  ],
+  "epochs_ran": [
+    38,
+    13,
+    23,
+    12,
+    13
+  ],
+  "wallclock_s": 108.32785487174988,
+  "extra_acc": {
+    "W3_test": [
+      10.31,
+      9.93,
+      10.0,
+      9.76,
+      9.67
+    ]
+  },
+  "linear_probe": 78.72,
+  "knn10_cosine": 79.51,
+  "reverse": {
+    "rung": "X1-rev",
+    "notes": "train on W3, evaluate on W1 features",
+    "feature_dim": 1185,
+    "n_train_rows": 55000,
+    "seeds": 5,
+    "augmentation_bearing": false,
+    "acc": [
+      12.49,
+      12.17,
+      12.85,
+      13.19,
+      12.58
+    ],
+    "mean": 12.655999999999999,
+    "ci95_bootstrap": [
+      12.370000000000001,
+      12.982
+    ],
+    "epochs_ran": [
+      15,
+      23,
+      14,
+      13,
+      24
+    ],
+    "wallclock_s": 100.3990170955658,
+    "extra_acc": {
+      "W1_test": [
+        13.96,
+        10.55,
+        13.54,
+        12.3,
+        9.72
+      ]
+    },
+    "linear_probe": 10.31,
+    "knn10_cosine": 9.81
+  }
+}

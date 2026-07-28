@@ -1,0 +1,30 @@
+{
+  "rung": "W9",
+  "notes": "frame averaging, R=64, frame fixed per seed",
+  "feature_dim": 1185,
+  "n_train_rows": 55000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    12.47,
+    11.95,
+    11.72,
+    12.44,
+    12.04
+  ],
+  "mean": 12.123999999999999,
+  "ci95_bootstrap": [
+    11.876,
+    12.371999999999998
+  ],
+  "epochs_ran": [
+    13,
+    14,
+    11,
+    13,
+    12
+  ],
+  "wallclock_s": 65.45673894882202,
+  "linear_probe": 10.06,
+  "knn10_cosine": 10.31
+}

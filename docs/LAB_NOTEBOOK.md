@@ -408,3 +408,30 @@ corpus member) and belongs in Ch3 as a design note, not as a finding.
 Third: every template clears f > 0.5, so the falsification condition written into the frozen
 registration (§8.3) is met unambiguously rather than at a knife edge. The rewrite of the
 canonicalization claim stands on all five arms, not on one.
+
+### S1 ladder replication on FashionMNIST (2026-07-28)
+
+| rung | P0 | P1 | W1 | W2 | W3 | W4 | W5 | W6 | W7 | W7-1/8 | W8 | W9 | W10 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| FMNIST | 89.62 | 89.44 | 82.97 | 83.67 | 12.66 | 24.61 | 59.34 | 14.86 | 15.05 | 13.20 | 10.20 | 12.12 | 42.77 |
+
+**Recovery fractions replicate the MNIST structure almost exactly** (FMNIST vs MNIST):
+f(W4) 0.170 vs 0.177 · **f(W5) 0.664 vs 0.628** · f(W6) 0.032 vs 0.054 · f(W7) 0.034 vs 0.048 ·
+f(W9) −0.008 vs 0.003 · f(W10) **0.428 vs 0.269**. W8 sits at chance on both (10.20 / 10.27), and
+the null optimization-noise result is near-identical: W1 − W2 = −0.70 (MNIST −0.68).
+
+So every qualitative claim from the MNIST ladder survives a dataset change: template alignment
+recovers about two thirds, template-free sorting about one sixth, augmentation and marginalization
+about a thirtieth, frame averaging nothing, and augmenting inside the canonical frame destroys it.
+The one substantive difference is W10, where the exact invariants do markedly better on FashionMNIST
+(0.428) than on MNIST (0.269) — plausibly because garment silhouettes are more separable from
+coarse spectral statistics than digit strokes are, but that is a conjecture and is written as one.
+
+**Scoring note (important, and a category error avoided).** The analysis script scores every dataset
+against the same registered intervals, so it printed H-S1-4a as a MISS on FMNIST (+70.31 against
+[79, 82]). That is not a real miss: the interval was registered as a *MNIST* magnitude, calibrated
+on the MNIST anchor, and FMNIST's ceiling is 8 points lower to begin with (P0 89.6 vs 98.0). Only
+the dataset-agnostic hypotheses transfer — the sign and nullity results (H-S1-3, H-S1-5), the
+bracket claim (H-S1-6, HIT), and the recovery fractions. **The FMNIST rows are therefore recorded as
+a replication of structure and are NOT added to the calibration ledger**; adding them would inflate
+the denominator with predictions that were never made about this dataset.

@@ -1,0 +1,30 @@
+{
+  "rung": "W2",
+  "notes": "raw weights, P-shared-stoch",
+  "feature_dim": 1185,
+  "n_train_rows": 55000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    84.1,
+    83.34,
+    83.78,
+    83.54,
+    83.57
+  ],
+  "mean": 83.666,
+  "ci95_bootstrap": [
+    83.46600000000001,
+    83.90799999999999
+  ],
+  "epochs_ran": [
+    12,
+    12,
+    13,
+    13,
+    41
+  ],
+  "wallclock_s": 97.38120818138123,
+  "linear_probe": 79.83,
+  "knn10_cosine": 78.36
+}

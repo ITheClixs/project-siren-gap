@@ -1,0 +1,50 @@
+{
+  "rung": "W8",
+  "notes": "c_sort canonicalization + bounded augmentation in the canonical frame",
+  "feature_dim": 1185,
+  "n_train_rows": 55000,
+  "seeds": 15,
+  "augmentation_bearing": true,
+  "acc": [
+    10.2,
+    10.22,
+    10.16,
+    10.26,
+    10.24,
+    10.11,
+    9.99,
+    10.07,
+    10.35,
+    10.26,
+    10.11,
+    10.39,
+    10.25,
+    10.09,
+    10.37
+  ],
+  "mean": 10.204666666666668,
+  "ci95_bootstrap": [
+    10.148,
+    10.260666666666667
+  ],
+  "epochs_ran": [
+    11,
+    30,
+    11,
+    20,
+    21,
+    17,
+    21,
+    26,
+    22,
+    14,
+    15,
+    19,
+    35,
+    14,
+    36
+  ],
+  "wallclock_s": 297.29605889320374,
+  "linear_probe": null,
+  "knn10_cosine": null
+}

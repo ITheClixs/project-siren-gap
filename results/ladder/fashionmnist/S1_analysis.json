@@ -1,0 +1,349 @@
+{
+  "dataset": "fashionmnist",
+  "prereg": "docs/prereg/S1.md (8c029cf43f01a94c) + addendum 01",
+  "means": {
+    "P0": 89.618,
+    "P1": 89.44200000000001,
+    "W1": 82.96799999999999,
+    "W10": 42.774,
+    "W2": 83.666,
+    "W3": 12.655999999999999,
+    "W4": 24.612000000000002,
+    "W5": 59.342,
+    "W6": 14.857999999999999,
+    "W7": 15.047999999999998,
+    "W7-1/8": 13.2,
+    "W8": 10.204666666666668,
+    "W9": 12.123999999999999,
+    "X1": 82.96799999999999
+  },
+  "seeds": {
+    "P0": 5,
+    "P1": 5,
+    "W1": 5,
+    "W10": 5,
+    "W2": 5,
+    "W3": 5,
+    "W4": 5,
+    "W5": 5,
+    "W6": 15,
+    "W7": 5,
+    "W7-1/8": 5,
+    "W8": 15,
+    "W9": 5,
+    "X1": 5
+  },
+  "tests": {
+    "H-S1-1": {
+      "statement": "P1 ~ P0 (TOST margin 1.0 pt); registered +0.1 [-0.4, +0.6]",
+      "diff": {
+        "n": 5,
+        "mean_diff": -0.1759999999999991,
+        "ci95": [
+          -0.7723607611752716,
+          0.4203607611752734
+        ],
+        "t_p": 0.4585745977174889,
+        "wilcoxon_p": 0.625,
+        "cohen_d": -0.3664440686090576,
+        "paired_on_seeds": 5
+      },
+      "tost": {
+        "margin": 1.0,
+        "p_lower": 0.009259381315194881,
+        "p_upper": 0.002708132494529092,
+        "equivalent_at_05": true
+      },
+      "registered": {
+        "point": 0.1,
+        "lo80": -0.4,
+        "hi80": 0.6
+      },
+      "holm_adjusted_p": 0.7935619655081867,
+      "observed": -0.1759999999999991,
+      "interval_hit": true,
+      "abs_error": 0.27599999999999913
+    },
+    "H-S1-2": {
+      "statement": "W1 - P1 residual; registered -3.8 [-6.5, -1.5]",
+      "diff": {
+        "n": 5,
+        "mean_diff": -6.474000000000004,
+        "ci95": [
+          -7.014130975171492,
+          -5.933869024828516
+        ],
+        "t_p": 4.86284672085519e-06,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": -14.882561996780492,
+        "paired_on_seeds": 5
+      },
+      "registered": {
+        "point": -3.8,
+        "lo80": -6.5,
+        "hi80": -1.5
+      },
+      "holm_adjusted_p": 1.945138688342076e-05,
+      "observed": -6.474000000000004,
+      "interval_hit": true,
+      "abs_error": 2.674000000000004
+    },
+    "H-S1-3": {
+      "statement": "W1 - W2 optimization-noise rung; registered +2.0 [0.0, +6.0]",
+      "diff": {
+        "n": 5,
+        "mean_diff": -0.6980000000000018,
+        "ci95": [
+          -1.1767576865711922,
+          -0.21924231342881156
+        ],
+        "t_p": 0.015502678717528834,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": -1.8102716573666038,
+        "paired_on_seeds": 5
+      },
+      "registered": {
+        "point": 2.0,
+        "lo80": 0.0,
+        "hi80": 6.0
+      },
+      "holm_adjusted_p": 0.0465080361525865,
+      "observed": -0.6980000000000018,
+      "interval_hit": false,
+      "abs_error": 2.6980000000000017
+    },
+    "H-S1-4a": {
+      "statement": "W1 - W3 init/symmetry gap; registered +80.4 [79, 82]",
+      "diff": {
+        "n": 5,
+        "mean_diff": 70.31200000000001,
+        "ci95": [
+          69.84679835798852,
+          70.7772016420115
+        ],
+        "t_p": 1.9347532928132653e-10,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": 187.6688970060562,
+        "paired_on_seeds": 5
+      },
+      "registered": {
+        "point": 80.4,
+        "lo80": 79.0,
+        "hi80": 82.0
+      },
+      "holm_adjusted_p": 9.673766464066327e-10,
+      "observed": 70.31200000000001,
+      "interval_hit": false,
+      "abs_error": 10.087999999999994
+    },
+    "H-S1-5": {
+      "statement": "(W7 - W3) - (W6 - W3) = W7 - W6; registered +15 [+5, +35]",
+      "diff": {
+        "n": 5,
+        "mean_diff": 0.15799999999999947,
+        "ci95": [
+          -0.3047093834185106,
+          0.6207093834185096
+        ],
+        "t_p": 0.39678098275409335,
+        "wilcoxon_p": 0.4375,
+        "cohen_d": 0.42398732065208866,
+        "paired_on_seeds": 5
+      },
+      "registered": {
+        "point": 15.0,
+        "lo80": 5.0,
+        "hi80": 35.0
+      },
+      "holm_adjusted_p": 0.7935619655081867,
+      "observed": 0.15799999999999947,
+      "interval_hit": false,
+      "abs_error": 14.842
+    },
+    "H-S1-6": {
+      "statement": "W10 within +-3 pts of the interval [W4, W5]",
+      "w10_mean": 42.774,
+      "interval": [
+        24.612000000000002,
+        59.342
+      ],
+      "registered": {
+        "point": 0.0,
+        "lo80": -3.0,
+        "hi80": 3.0
+      },
+      "distance_outside_interval": 0.0,
+      "observed": 0.0,
+      "interval_hit": true,
+      "abs_error": 0.0
+    },
+    "W7_rowcount_control": {
+      "statement": "W7 vs W7-1/8: is the K-marginalization gain just 8x more rows?",
+      "diff": {
+        "n": 5,
+        "mean_diff": 1.848,
+        "ci95": [
+          1.60194367138036,
+          2.09405632861964
+        ],
+        "t_p": 3.1253293922715296e-05,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": 9.325486897870435,
+        "paired_on_seeds": 5
+      }
+    },
+    "X1_transfer": {
+      "w1_trained_on_w3_features": {
+        "W3_test": [
+          10.31,
+          9.93,
+          10.0,
+          9.76,
+          9.67
+        ]
+      },
+      "w1_own_test": 82.96799999999999,
+      "reverse": {
+        "W1_test": [
+          13.96,
+          10.55,
+          13.54,
+          12.3,
+          9.72
+        ]
+      }
+    }
+  },
+  "recovery_fractions": {
+    "f_W4": {
+      "point": 0.17000972879002915,
+      "ci95": [
+        0.16284772408266385,
+        0.1787852966825215
+      ],
+      "n": 5
+    },
+    "f_W5": {
+      "point": 0.6639927465608608,
+      "ci95": [
+        0.6613810174704623,
+        0.6665445418122756
+      ],
+      "n": 5
+    },
+    "f_W6": {
+      "point": 0.0317445854284706,
+      "ci95": [
+        0.02614808756334171,
+        0.03734108329359949
+      ],
+      "n": 5
+    },
+    "f_W7": {
+      "point": 0.03399130915592414,
+      "ci95": [
+        0.02662233624708491,
+        0.039669417504375463
+      ],
+      "n": 5
+    },
+    "f_W9": {
+      "point": -0.00758541195674914,
+      "ci95": [
+        -0.012444463521993807,
+        -0.0028922315156931474
+      ],
+      "n": 5
+    },
+    "f_W10": {
+      "point": 0.4283427942235942,
+      "ci95": [
+        0.4271704720144093,
+        0.42981186244804326
+      ],
+      "n": 5
+    },
+    "registered_f_W4": {
+      "point": 0.06,
+      "lo80": 0.01,
+      "hi80": 0.2
+    },
+    "registered_f_W5": {
+      "point": 0.1,
+      "lo80": 0.02,
+      "hi80": 0.3
+    }
+  },
+  "controls": {
+    "W6": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": null,
+      "knn10_cosine": null
+    },
+    "P1": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 82.68,
+      "knn10_cosine": 85.52
+    },
+    "P0": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 82.95,
+      "knn10_cosine": 85.49
+    },
+    "W7": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 9.97,
+      "knn10_cosine": 10.16
+    },
+    "W1": {
+      "label_shuffle_test_acc": 11.83,
+      "linear_probe": 78.72,
+      "knn10_cosine": 79.51
+    },
+    "W2": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 79.83,
+      "knn10_cosine": 78.36
+    },
+    "W7-1/8": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 10.16,
+      "knn10_cosine": 10.040000000000001
+    },
+    "W3": {
+      "label_shuffle_test_acc": 9.78,
+      "linear_probe": 10.31,
+      "knn10_cosine": 9.81
+    },
+    "W10": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 33.35,
+      "knn10_cosine": 12.72
+    },
+    "W4": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 18.82,
+      "knn10_cosine": 11.4
+    },
+    "X1": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 78.72,
+      "knn10_cosine": 79.51
+    },
+    "W8": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": null,
+      "knn10_cosine": null
+    },
+    "W9": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 10.06,
+      "knn10_cosine": 10.31
+    },
+    "W5": {
+      "label_shuffle_test_acc": 10.23,
+      "linear_probe": 56.34,
+      "knn10_cosine": 11.360000000000001
+    }
+  }
+}

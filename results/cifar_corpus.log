@@ -1,0 +1,4 @@
+=== cifar corpus start Tue Jul 28 14:18:35 +03 2026 (fallback=0) ===
+shard_000000: 256 fits in 20.2s  psnr_med=39.9dB  overall 12.6 fits/s
+shard_000256: 256 fits in 19.7s  psnr_med=39.8dB  overall 12.8 fits/s
+shard_000512: 256 fits in 19.8s  psnr_med=40.1dB  overall 12.9 fits/s

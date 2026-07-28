@@ -1,0 +1,30 @@
+{
+  "rung": "W7",
+  "notes": "K-marginalization: all K=8 views as training rows",
+  "feature_dim": 1185,
+  "n_train_rows": 440000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    15.07,
+    15.16,
+    15.18,
+    14.54,
+    15.29
+  ],
+  "mean": 15.047999999999998,
+  "ci95_bootstrap": [
+    14.791999999999998,
+    15.224
+  ],
+  "epochs_ran": [
+    13,
+    12,
+    14,
+    12,
+    13
+  ],
+  "wallclock_s": 641.1127488613129,
+  "linear_probe": 9.97,
+  "knn10_cosine": 10.16
+}

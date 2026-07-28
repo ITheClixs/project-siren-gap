@@ -17,3 +17,228 @@ written results/ladder/mnist/EXPLORATORY_w5_template_sensitivity.json
 --- rung P0 Tue Jul 28 13:29:39 +03 2026 ---
 === rung P0 ===
   P0 seed 0: test 89.44 (val 90.14, 41 ep)
+  P0 seed 1: test 89.59 (val 89.82, 27 ep)
+  P0 seed 2: test 89.37 (val 89.70, 17 ep)
+  P0 seed 3: test 89.94 (val 90.20, 45 ep)
+  P0 seed 4: test 89.75 (val 89.96, 32 ep)
+  -> results/ladder/fashionmnist/P0.json (89.62 mean over 5 seeds)
+--- rung P1 Tue Jul 28 13:33:23 +03 2026 ---
+=== rung P1 ===
+  P1 seed 0: test 90.06 (val 90.30, 41 ep)
+  P1 seed 1: test 89.48 (val 89.76, 26 ep)
+  P1 seed 2: test 88.86 (val 89.86, 26 ep)
+  P1 seed 3: test 89.63 (val 89.94, 46 ep)
+  P1 seed 4: test 89.18 (val 89.84, 24 ep)
+  -> results/ladder/fashionmnist/P1.json (89.44 mean over 5 seeds)
+--- rung W1 Tue Jul 28 13:36:43 +03 2026 ---
+=== rung W1 ===
+  W1 seed 0: test 82.89 (val 84.56, 38 ep)
+  W1 seed 1: test 83.08 (val 84.52, 13 ep)
+  W1 seed 2: test 82.89 (val 83.88, 23 ep)
+  W1 seed 3: test 83.16 (val 84.02, 12 ep)
+  W1 seed 4: test 82.82 (val 83.80, 13 ep)
+  W1 label-shuffle control: 11.83
+  -> results/ladder/fashionmnist/W1.json (82.97 mean over 5 seeds)
+--- rung W2 Tue Jul 28 13:38:59 +03 2026 ---
+=== rung W2 ===
+  W2 seed 0: test 84.10 (val 84.68, 12 ep)
+  W2 seed 1: test 83.34 (val 84.26, 12 ep)
+  W2 seed 2: test 83.78 (val 84.62, 13 ep)
+  W2 seed 3: test 83.54 (val 84.16, 13 ep)
+  W2 seed 4: test 83.57 (val 84.62, 41 ep)
+  -> results/ladder/fashionmnist/W2.json (83.67 mean over 5 seeds)
+--- rung W3 Tue Jul 28 13:40:48 +03 2026 ---
+=== rung W3 ===
+  W3 seed 0: test 12.49 (val 13.14, 15 ep)
+  W3 seed 1: test 12.17 (val 13.08, 23 ep)
+  W3 seed 2: test 12.85 (val 13.52, 14 ep)
+  W3 seed 3: test 13.19 (val 13.86, 13 ep)
+  W3 seed 4: test 12.58 (val 12.98, 24 ep)
+  W3 label-shuffle control: 9.78
+  -> results/ladder/fashionmnist/W3.json (12.66 mean over 5 seeds)
+--- rung W4 Tue Jul 28 13:42:54 +03 2026 ---
+=== rung W4 ===
+  W4 seed 0: test 24.14 (val 23.84, 14 ep)
+  W4 seed 1: test 25.41 (val 24.94, 13 ep)
+  W4 seed 2: test 25.00 (val 24.06, 12 ep)
+  W4 seed 3: test 24.67 (val 24.42, 13 ep)
+  W4 seed 4: test 23.84 (val 24.30, 13 ep)
+  -> results/ladder/fashionmnist/W4.json (24.61 mean over 5 seeds)
+--- rung W5 Tue Jul 28 13:44:21 +03 2026 ---
+=== rung W5 ===
+  W5 seed 0: test 59.22 (val 61.00, 12 ep)
+  W5 seed 1: test 58.92 (val 61.48, 12 ep)
+  W5 seed 2: test 59.54 (val 60.96, 12 ep)
+  W5 seed 3: test 59.54 (val 61.02, 12 ep)
+  W5 seed 4: test 59.49 (val 60.94, 12 ep)
+  W5 label-shuffle control: 10.23
+  -> results/ladder/fashionmnist/W5.json (59.34 mean over 5 seeds)
+--- rung W10 Tue Jul 28 13:45:53 +03 2026 ---
+=== rung W10 ===
+  W10 seed 0: test 42.59 (val 42.94, 15 ep)
+  W10 seed 1: test 42.73 (val 42.84, 14 ep)
+  W10 seed 2: test 42.90 (val 42.86, 14 ep)
+  W10 seed 3: test 43.08 (val 42.62, 14 ep)
+  W10 seed 4: test 42.57 (val 42.56, 14 ep)
+  -> results/ladder/fashionmnist/W10.json (42.77 mean over 5 seeds)
+--- rung W9 Tue Jul 28 13:47:13 +03 2026 ---
+=== rung W9 ===
+  W9 seed 0: test 12.47 (val 12.80, 13 ep)
+  W9 seed 1: test 11.95 (val 13.56, 14 ep)
+  W9 seed 2: test 11.72 (val 12.64, 11 ep)
+  W9 seed 3: test 12.44 (val 13.58, 13 ep)
+  W9 seed 4: test 12.04 (val 12.68, 12 ep)
+  -> results/ladder/fashionmnist/W9.json (12.12 mean over 5 seeds)
+--- rung X1 Tue Jul 28 13:48:34 +03 2026 ---
+=== rung X1 ===
+  X1 seed 0: test 82.89 (val 84.56, 38 ep)
+  X1 seed 1: test 83.08 (val 84.52, 13 ep)
+  X1 seed 2: test 82.89 (val 83.88, 23 ep)
+  X1 seed 3: test 83.16 (val 84.02, 12 ep)
+  X1 seed 4: test 82.82 (val 83.80, 13 ep)
+  X1-rev seed 0: test 12.49 (val 13.14, 15 ep)
+  X1-rev seed 1: test 12.17 (val 13.08, 23 ep)
+  X1-rev seed 2: test 12.85 (val 13.52, 14 ep)
+  X1-rev seed 3: test 13.19 (val 13.86, 13 ep)
+  X1-rev seed 4: test 12.58 (val 12.98, 24 ep)
+  -> results/ladder/fashionmnist/X1.json (82.97 mean over 5 seeds)
+--- rung W6 Tue Jul 28 13:52:25 +03 2026 ---
+=== rung W6 ===
+  W6 seed 0: test 15.12 (val 16.08, 29 ep)
+  W6 seed 1: test 15.02 (val 16.68, 38 ep)
+  W6 seed 2: test 14.63 (val 15.14, 25 ep)
+  W6 seed 3: test 14.88 (val 16.44, 47 ep)
+  W6 seed 4: test 14.80 (val 15.50, 26 ep)
+  W6 seed 5: test 15.67 (val 16.10, 39 ep)
+  W6 seed 6: test 14.39 (val 15.12, 23 ep)
+  W6 seed 7: test 15.04 (val 16.04, 39 ep)
+  W6 seed 8: test 14.42 (val 15.34, 20 ep)
+  W6 seed 9: test 15.26 (val 15.78, 43 ep)
+  W6 seed 10: test 15.44 (val 16.30, 42 ep)
+  W6 seed 11: test 15.10 (val 15.56, 25 ep)
+  W6 seed 12: test 14.38 (val 16.42, 27 ep)
+  W6 seed 13: test 14.44 (val 15.96, 26 ep)
+  W6 seed 14: test 14.28 (val 15.62, 25 ep)
+  -> results/ladder/fashionmnist/W6.json (14.86 mean over 15 seeds)
+--- rung W8 Tue Jul 28 14:00:03 +03 2026 ---
+=== rung W8 ===
+  W8 seed 0: test 10.20 (val 10.44, 11 ep)
+  W8 seed 1: test 10.22 (val 10.66, 30 ep)
+  W8 seed 2: test 10.16 (val 10.42, 11 ep)
+  W8 seed 3: test 10.26 (val 10.88, 20 ep)
+  W8 seed 4: test 10.24 (val 10.58, 21 ep)
+  W8 seed 5: test 10.11 (val 10.52, 17 ep)
+  W8 seed 6: test 9.99 (val 10.58, 21 ep)
+  W8 seed 7: test 10.07 (val 10.46, 26 ep)
+  W8 seed 8: test 10.35 (val 11.16, 22 ep)
+  W8 seed 9: test 10.26 (val 10.76, 14 ep)
+  W8 seed 10: test 10.11 (val 10.38, 15 ep)
+  W8 seed 11: test 10.39 (val 10.90, 19 ep)
+  W8 seed 12: test 10.25 (val 10.94, 35 ep)
+  W8 seed 13: test 10.09 (val 10.48, 14 ep)
+  W8 seed 14: test 10.37 (val 10.84, 36 ep)
+  -> results/ladder/fashionmnist/W8.json (10.20 mean over 15 seeds)
+--- rung W7-1/8 Tue Jul 28 14:05:02 +03 2026 ---
+=== rung W7-1/8 ===
+  W7-1/8 seed 0: test 13.03 (val 13.42, 14 ep)
+  W7-1/8 seed 1: test 13.33 (val 13.32, 14 ep)
+  W7-1/8 seed 2: test 13.54 (val 13.04, 14 ep)
+  W7-1/8 seed 3: test 12.87 (val 12.76, 13 ep)
+  W7-1/8 seed 4: test 13.23 (val 13.68, 14 ep)
+  -> results/ladder/fashionmnist/W7-1-8.json (13.20 mean over 5 seeds)
+--- rung W7 Tue Jul 28 14:06:37 +03 2026 ---
+=== rung W7 ===
+  W7 seed 0: test 15.07 (val 15.30, 13 ep)
+  W7 seed 1: test 15.16 (val 15.32, 12 ep)
+  W7 seed 2: test 15.18 (val 15.86, 14 ep)
+  W7 seed 3: test 14.54 (val 15.80, 12 ep)
+  W7 seed 4: test 15.29 (val 15.98, 13 ep)
+  -> results/ladder/fashionmnist/W7.json (15.05 mean over 5 seeds)
+{
+  "means": {
+    "P0": 89.618,
+    "P1": 89.44200000000001,
+    "W1": 82.96799999999999,
+    "W10": 42.774,
+    "W2": 83.666,
+    "W3": 12.655999999999999,
+    "W4": 24.612000000000002,
+    "W5": 59.342,
+    "W6": 14.857999999999999,
+    "W7": 15.047999999999998,
+    "W7-1/8": 13.2,
+    "W8": 10.204666666666668,
+    "W9": 12.123999999999999,
+    "X1": 82.96799999999999
+  },
+  "recovery_fractions": {
+    "f_W4": {
+      "point": 0.17000972879002915,
+      "ci95": [
+        0.16284772408266385,
+        0.1787852966825215
+      ],
+      "n": 5
+    },
+    "f_W5": {
+      "point": 0.6639927465608608,
+      "ci95": [
+        0.6613810174704623,
+        0.6665445418122756
+      ],
+      "n": 5
+    },
+    "f_W6": {
+      "point": 0.0317445854284706,
+      "ci95": [
+        0.02614808756334171,
+        0.03734108329359949
+      ],
+      "n": 5
+    },
+    "f_W7": {
+      "point": 0.03399130915592414,
+      "ci95": [
+        0.02662233624708491,
+        0.039669417504375463
+      ],
+      "n": 5
+    },
+    "f_W9": {
+      "point": -0.00758541195674914,
+      "ci95": [
+        -0.012444463521993807,
+        -0.0028922315156931474
+      ],
+      "n": 5
+    },
+    "f_W10": {
+      "point": 0.4283427942235942,
+      "ci95": [
+        0.4271704720144093,
+        0.42981186244804326
+      ],
+      "n": 5
+    },
+    "registered_f_W4": {
+      "point": 0.06,
+      "lo80": 0.01,
+      "hi80": 0.2
+    },
+    "registered_f_W5": {
+      "point": 0.1,
+      "lo80": 0.02,
+      "hi80": 0.3
+    }
+  }
+}
+H-S1-1: obs -0.18 vs registered +0.10 [-0.4, 0.6] -> HIT, holm p=0.79
+H-S1-2: obs -6.47 vs registered -3.80 [-6.5, -1.5] -> HIT, holm p=1.9e-05
+H-S1-3: obs -0.70 vs registered +2.00 [0.0, 6.0] -> MISS, holm p=0.047
+H-S1-4a: obs +70.31 vs registered +80.40 [79.0, 82.0] -> MISS, holm p=9.7e-10
+H-S1-5: obs +0.16 vs registered +15.00 [5.0, 35.0] -> MISS, holm p=0.79
+H-S1-6: W10 42.77, interval [24.612000000000002, 59.342], outside by 0.00 -> HIT
+
+written results/ladder/fashionmnist/S1_analysis.json and F9_waterfall.png
+--- fashionmnist ladder done Tue Jul 28 14:18:35 +03 2026 ---
+--- CIFAR-10 corpus Tue Jul 28 14:18:35 +03 2026 ---
