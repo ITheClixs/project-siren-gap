@@ -403,3 +403,35 @@ shard_001792: 208 fits in 124.6s  psnr_med=67.7dB  overall 1.6 fits/s
 }
 --- config D done Tue Jul 28 13:19:16 +03 2026 ---
 === cifar pilot sweep complete Tue Jul 28 13:19:16 +03 2026 ===
+--- clean throughput probe at the frozen config Tue Jul 28 13:21:27 +03 2026 ---
+shard_000000: 256 fits in 21.3s  psnr_med=40.0dB  overall 12.0 fits/s
+shard_000256: 256 fits in 20.7s  psnr_med=40.2dB  overall 12.2 fits/s
+{
+  "n_inrs": 512,
+  "psnr_median": 40.131622314453125,
+  "psnr_q05": 35.1790994644165,
+  "corr_psnr_label": -0.13199012362596627,
+  "wallclock_total_s": 42.11105489730835
+}
+{
+  "rule": "R-CIFAR (docs/THINKING/G3-cifar-pilot.md)",
+  "frozen_config": {
+    "width": 32,
+    "layers": 2,
+    "steps": 1000,
+    "lr": 0.001
+  },
+  "median_s_per_fit": 0.08211646880954504,
+  "fits_per_s_raw": 12.177825160983568,
+  "fits_per_s_derated": 10.594707890055703,
+  "projected_hours": {
+    "registered_510k": 13.371455649063847,
+    "corrected_540k": 14.158011863714663,
+    "fallback_232k": 6.082701393299634
+  },
+  "thresholds": {
+    "full_max_h": 30,
+    "fallback_max_h": 20
+  },
+  "decision": "full"
+}

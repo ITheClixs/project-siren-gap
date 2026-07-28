@@ -13,6 +13,12 @@ LOG=results/cifar_corpus.log
 FALLBACK="${FALLBACK:-0}"
 mkdir -p results
 
+# NOTE: plain `pgrep -f <pattern>` also matches *any shell whose command line contains the
+# pattern* - including a waiter loop that greps for it. That deadlocked the R-CIFAR decision job
+# on 2026-07-28 (it waited on a phantom that was itself). Match the python process instead, and
+# never embed these literals in a polling shell one-liner.
+gen_running() { pgrep -fl "03_generate_inrbench" 2>/dev/null | grep -q "[.]venv/bin/python"; }
+
 GEN="scripts/03_generate_inrbench.py --dataset cifar10 --steps 1000 --width 32 --layers 2 --batch 256"
 if [ "$FALLBACK" = "1" ]; then
   SUBSET="--n-train 20000 --n-val 2000 --n-test 2000"
@@ -22,7 +28,7 @@ fi
 
 {
   echo "=== cifar corpus start $(date) (fallback=$FALLBACK) ==="
-  while pgrep -f "03_generate_inrbench" > /dev/null; do sleep 60; done
+  while gen_running; do sleep 60; done
   for p in P-shared-det P-random P-shared-stoch; do
     $PY $GEN --protocol "$p" --split all $SUBSET && echo "CIFAR $p DONE $(date)"
   done

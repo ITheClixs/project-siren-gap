@@ -15,3 +15,4 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-07-28,H-S1-4c canonicalization recovery f(W5),interval,0.10,0.02,0.30,0.628,MISS,0.528,,forced a rewrite of the canonicalization claim per prereg S1 section 8.3
 2026-07-28,H-S1-5 (W7-W3)-(W6-W3) pts,interval,15,5,35,-0.52,MISS,15.52,,both interventions are null; the contrast could not exist
 2026-07-28,H-S1-6 W10 distance outside [W4 W5] pts,interval,0,-3,3,0,HIT,0,,W10 = 35.54 inside [28.19 64.41]
+2026-07-28,QG-6 P(full 50k CIFAR path chosen by R-CIFAR),probability,0.35,,,1,—,,0.4225,full path chosen: 14.2 h projected against a 30 h threshold

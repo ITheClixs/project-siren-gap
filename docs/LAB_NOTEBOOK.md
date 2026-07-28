@@ -366,3 +366,15 @@ Separately, **PSNR is non-monotone in steps** at w64 L3: 68.1 dB at 500 steps, 7
 at 2000. Fitting longer made the fit *worse*, at fixed architecture and lr. That is a directly
 relevant datum for Papa et al.'s overtraining question (RQ2) and it was obtained for free from a
 config sweep, so it is exploratory, not registered — flagged for a proper steps-sweep at S2.
+
+**R-CIFAR applied (2026-07-28).** Clean uncontended probe at the frozen config: median
+**0.0821 s/fit = 12.18 fits/s**, derated ×0.87 → 10.59 fits/s. Projected full-path corpus
+(540 000 fits, the corrected count) = **14.2 h** against the rule's 30 h threshold, so the
+**full 50k/10k path is taken**; the fallback would have been 6.1 h. QG-6 registered P(full) = 0.35
+→ scored, Brier 0.42. Corpus generation launched detached (`scripts/17_g4_chain.sh`, third stage).
+
+*Infrastructure note worth remembering:* the decision job hung for ~15 minutes on a self-inflicted
+deadlock — `pgrep -f "09_cifar_pilot"` matches **any shell whose command line contains that
+string**, including the polling one-liner I had started to watch for the pilot's exit, so the job
+waited on a phantom that was itself. Fixed in `16_cifar_corpus.sh` / `17_g4_chain.sh` by matching
+the python process (`pgrep -fl ... | grep .venv/bin/python`) and documented in the scripts.

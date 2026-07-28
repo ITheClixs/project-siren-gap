@@ -1,0 +1,22 @@
+{
+  "rule": "R-CIFAR (docs/THINKING/G3-cifar-pilot.md)",
+  "frozen_config": {
+    "width": 32,
+    "layers": 2,
+    "steps": 1000,
+    "lr": 0.001
+  },
+  "median_s_per_fit": 0.08211646880954504,
+  "fits_per_s_raw": 12.177825160983568,
+  "fits_per_s_derated": 10.594707890055703,
+  "projected_hours": {
+    "registered_510k": 13.371455649063847,
+    "corrected_540k": 14.158011863714663,
+    "fallback_232k": 6.082701393299634
+  },
+  "thresholds": {
+    "full_max_h": 30,
+    "fallback_max_h": 20
+  },
+  "decision": "full"
+}
