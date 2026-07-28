@@ -378,3 +378,33 @@ deadlock — `pgrep -f "09_cifar_pilot"` matches **any shell whose command line 
 string**, including the polling one-liner I had started to watch for the pilot's exit, so the job
 waited on a phantom that was itself. Fixed in `16_cifar_corpus.sh` / `17_g4_chain.sh` by matching
 the python process (`pgrep -fl ... | grep .venv/bin/python`) and documented in the scripts.
+
+### W5 template sensitivity (EXPLORATORY, 2026-07-28) — the weakest link does not break
+
+Defense row 15 named W5's template as the thesis's weakest link: θ₀ exists only because the corpus
+was built with a known shared init, so a recovery fraction of 0.628 might have been an artifact of
+privileged access rather than a statement about canonicalization. Five templates, same rung
+otherwise (`scripts/15_w5_template_sensitivity.py`, exploratory watermark):
+
+| template | test acc | linear probe | f = (W5−W3)/(W1−W3) |
+|---|---|---|---|
+| θ₀, the corpus's shared init (the registered W5) | 64.41 | 58.31 | 0.628 |
+| an **unrelated** random init, seed 12345 | 65.44 | 60.09 | **0.640** |
+| an unrelated random init, seed 777 | 62.24 | 56.44 | 0.601 |
+| a fitted P-shared-det INR (image 0) | 58.29 | 50.83 | 0.552 |
+| a fitted P-random INR (image 0) | 54.76 | 47.79 | 0.508 |
+
+**The result holds under every template, and the shared init is not special** — an unrelated random
+draw does marginally *better* (0.640 vs 0.628). What alignment buys is a consistent frame, and any
+fixed reference network supplies one; knowing the corpus's initialization is not required. This
+removes the caveat that would otherwise have shrunk the practical claim to c_sort's 0.177.
+
+Second, unregistered observation: **fitted INRs make worse templates than random inits** (0.51–0.55
+vs 0.60–0.64). Conjecture — a fitted network's neurons are specialized to its own image, so
+activation matching against it imports that image's structure as bias, while an untrained init is
+generic. Untested; it suggests a cheap improvement (align to a *random* fixed net, never to a
+corpus member) and belongs in Ch3 as a design note, not as a finding.
+
+Third: every template clears f > 0.5, so the falsification condition written into the frozen
+registration (§8.3) is met unambiguously rather than at a knife edge. The rewrite of the
+canonicalization claim stands on all five arms, not on one.

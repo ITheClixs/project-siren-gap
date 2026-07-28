@@ -1,0 +1,89 @@
+{
+  "status": "EXPLORATORY \u2014 not pre-registered, not confirmatory evidence",
+  "question": "does W5's recovery depend on the template being the shared init?",
+  "W1": 94.35600000000001,
+  "W3": 13.922,
+  "seeds": 5,
+  "templates": {
+    "theta0_shared_init": {
+      "acc": [
+        64.11,
+        64.53,
+        64.03,
+        65.2,
+        64.17
+      ],
+      "mean": 64.408,
+      "ci95_bootstrap": [
+        64.09,
+        64.798
+      ],
+      "linear_probe": 58.31,
+      "recovery_fraction": 0.6276698908421812
+    },
+    "unrelated_init_12345": {
+      "acc": [
+        65.63,
+        65.36,
+        65.09,
+        66.2,
+        64.91
+      ],
+      "mean": 65.43800000000002,
+      "ci95_bootstrap": [
+        65.072,
+        65.828
+      ],
+      "linear_probe": 60.09,
+      "recovery_fraction": 0.6404754208419327
+    },
+    "unrelated_init_777": {
+      "acc": [
+        61.71,
+        62.59,
+        62.76,
+        61.93,
+        62.19
+      ],
+      "mean": 62.236000000000004,
+      "ci95_bootstrap": [
+        61.894000000000005,
+        62.577999999999996
+      ],
+      "linear_probe": 56.44,
+      "recovery_fraction": 0.600666384862123
+    },
+    "a_fitted_shared_det_inr": {
+      "acc": [
+        58.76,
+        58.22,
+        58.14,
+        58.21,
+        58.12
+      ],
+      "mean": 58.29,
+      "ci95_bootstrap": [
+        58.144000000000005,
+        58.528
+      ],
+      "linear_probe": 50.83,
+      "recovery_fraction": 0.5516075291543375
+    },
+    "a_fitted_random_inr": {
+      "acc": [
+        54.95,
+        55.15,
+        54.71,
+        54.23,
+        54.77
+      ],
+      "mean": 54.762,
+      "ci95_bootstrap": [
+        54.470000000000006,
+        55.022000000000006
+      ],
+      "linear_probe": 47.79,
+      "recovery_fraction": 0.5077454807668399
+    }
+  }
+}

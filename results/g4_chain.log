@@ -1,2 +1,18 @@
 === g4 chain start Tue Jul 28 13:22:41 +03 2026 ===
 --- W5 template sensitivity (exploratory) Tue Jul 28 13:22:41 +03 2026 ---
+theta0_shared_init: 64.41 (probe 58.31)
+unrelated_init_12345: 65.44 (probe 60.09)
+unrelated_init_777: 62.24 (probe 56.44)
+a_fitted_shared_det_inr: 58.29 (probe 50.83)
+a_fitted_random_inr: 54.76 (probe 47.79)
+{
+  "theta0_shared_init": 0.628,
+  "unrelated_init_12345": 0.64,
+  "unrelated_init_777": 0.601,
+  "a_fitted_shared_det_inr": 0.552,
+  "a_fitted_random_inr": 0.508
+}
+written results/ladder/mnist/EXPLORATORY_w5_template_sensitivity.json
+--- S1 ladder on fashionmnist Tue Jul 28 13:29:39 +03 2026 ---
+--- rung P0 Tue Jul 28 13:29:39 +03 2026 ---
+=== rung P0 ===
