@@ -354,3 +354,15 @@ mode: hedging a registered mechanism toward priors from a different setting. Two
 are a second, distinct mode: assuming a nuisance exists and then registering a contrast that could
 not exist once the nuisance turned out to be null. Both modes are now named in defense row 14, and
 the coverage number is reported rather than the successes alone.
+
+**Correction to the addendum above, after config D landed.** All *four* registered configs pass
+(w64 L3 s2000: gap 0.00, 67.3 dB), not the three I listed. And the fidelity claim needs weakening:
+the gate gaps are +0.25 at 40.1 dB, then +0.05 / 0.00 / −0.05 at 68.1 / 67.3 / 75.9 dB. What the
+data support is "the render penalty is real at 40 dB and has vanished into gate noise (±0.05) by
+~68 dB", not a clean monotone trend in fidelity — the three high-fidelity configs are not ordered
+by PSNR in their gaps.
+
+Separately, **PSNR is non-monotone in steps** at w64 L3: 68.1 dB at 500 steps, 75.9 at 1000, 67.3
+at 2000. Fitting longer made the fit *worse*, at fixed architecture and lr. That is a directly
+relevant datum for Papa et al.'s overtraining question (RQ2) and it was obtained for free from a
+config sweep, so it is exploratory, not registered — flagged for a proper steps-sweep at S2.
