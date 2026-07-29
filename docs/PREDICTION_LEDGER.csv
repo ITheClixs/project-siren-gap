@@ -23,3 +23,23 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-07-27,S1,H-S1-4c canonicalization recovery fraction f(W5)=(W5-W3)/(W1-W3); direction f(W5)>=f(W4),"0.10",0.02,0.30,8c029cf43f01a94c
 2026-07-27,S1,H-S1-5 (W7-W3)-(W6-W3) accuracy points (marginalize beats group-augment),"15",5,35,8c029cf43f01a94c
 2026-07-27,S1,H-S1-6 W10 distance outside interval [W4 W5] accuracy points,"0 (within +/-3)",-3,3,8c029cf43f01a94c
+2026-07-29,S1-CIFAR,H-C1-1 P0 real-pixel MLP test accuracy pct,"53.0",47,59,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-2 P1-P0 accuracy points (TOST margin 1.5 registered),"-0.4",-2.0,0.6,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-3 W1-P1 accuracy points,"-12",-22,-5,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-4 W3 test accuracy pct,"13.0",10.5,17.0,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-5 W1-W3 perception gap accuracy points,"27",14,41,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-6 W1-W2 accuracy points (optimization noise; direction W2>=W1),"-0.7",-2.5,1.0,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-7 recovery fraction f(W4) template-free c_sort,"0.17",0.08,0.30,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-8 recovery fraction f(W5) c_align to theta0,"0.62",0.42,0.78,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-9 recovery fraction f(W6) bounded group augmentation,"0.04",-0.02,0.12,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-10 recovery fraction f(W7) K-marginalization,"0.04",-0.02,0.12,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-11 (W7-W3)-(W6-W3) accuracy points,"0.0",-2.0,2.0,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-12 recovery fraction f(W9) frame averaging R=64,"0.00",-0.03,0.05,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-13 recovery fraction f(W10) exact L=2 invariants,"0.38",0.12,0.62,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-14 W8 canonicalize-then-augment test accuracy pct,"11.0",10.0,14.0,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-15 X1 forward W1-reader on W3 features pct,"11.5",10.0,15.0,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-16 X1 reverse W3-reader on W1 features pct,"12.5",10.0,17.0,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,H-C1-17 W10 signed distance outside [W4 W5] accuracy points,"0 (within +/-3)",-3,3,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,P-C1-A probability separated ordering f(W5)>f(W10)>f(W4)>max(f(W6) f(W7) f(W9)) holds,"P=0.65",NA,NA,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,P-C1-B probability f(W10)_CIFAR > f(W10)_MNIST=0.269 (c=3 channel mechanism),"P=0.60",NA,NA,f7906fc6904c7c81
+2026-07-29,S1-CIFAR,P-C1-C probability all three label-shuffle controls within 2 pts of chance,"P=0.75",NA,NA,f7906fc6904c7c81

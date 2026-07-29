@@ -242,3 +242,4 @@ H-S1-6: W10 42.77, interval [24.612000000000002, 59.342], outside by 0.00 -> HIT
 written results/ladder/fashionmnist/S1_analysis.json and F9_waterfall.png
 --- fashionmnist ladder done Tue Jul 28 14:18:35 +03 2026 ---
 --- CIFAR-10 corpus Tue Jul 28 14:18:35 +03 2026 ---
+=== g4 chain complete Wed Jul 29 05:44:16 +03 2026 ===

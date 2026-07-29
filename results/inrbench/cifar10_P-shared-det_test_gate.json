@@ -1,0 +1,54 @@
+{
+  "corpus": "data/inrbench/cifar10/P-shared-det",
+  "eval_split": "test",
+  "n_eval": 10000,
+  "dataset": "cifar10",
+  "gate_epochs": 10,
+  "gate": {
+    "acc_real_pixels": 66.41,
+    "acc_renders": 66.11,
+    "gap_pts": 0.29999999999999716,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": -0.1498149928138663,
+    "corr_loss_label": 0.12047961351701537
+  },
+  "psnr": {
+    "median": 40.075870513916016,
+    "q05": 35.52499160766602
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      1.432578,
+      1.657328,
+      2.461474
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      0.851738,
+      1.205607,
+      1.739585
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.002197
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      0.062582,
+      0.58694,
+      1.332095
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.015247,
+      0.031844,
+      0.073097
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.131281,
+      0.649728,
+      0.864512
+    ]
+  },
+  "gate_cnn_train_acc_check": 70.9
+}

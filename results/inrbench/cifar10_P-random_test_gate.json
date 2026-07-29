@@ -1,0 +1,54 @@
+{
+  "corpus": "data/inrbench/cifar10/P-random",
+  "eval_split": "test",
+  "n_eval": 10000,
+  "dataset": "cifar10",
+  "gate_epochs": 10,
+  "gate": {
+    "acc_real_pixels": 66.41,
+    "acc_renders": 66.16,
+    "gap_pts": 0.25,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": -0.14040119817331836,
+    "corr_loss_label": 0.11048127351580046
+  },
+  "psnr": {
+    "median": 40.275367736816406,
+    "q05": 35.41975326538086
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      0.39849,
+      1.001346,
+      2.111814
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      0.842504,
+      1.219283,
+      1.706251
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.002013
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      0.153058,
+      0.561752,
+      1.543711
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.014372,
+      0.032292,
+      0.072953
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.37015,
+      0.627971,
+      0.832492
+    ]
+  },
+  "gate_cnn_train_acc_check": 70.9
+}

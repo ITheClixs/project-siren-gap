@@ -1,0 +1,54 @@
+{
+  "corpus": "data/inrbench/cifar10/P-shared-stoch",
+  "eval_split": "test",
+  "n_eval": 10000,
+  "dataset": "cifar10",
+  "gate_epochs": 10,
+  "gate": {
+    "acc_real_pixels": 66.41,
+    "acc_renders": 65.57,
+    "gap_pts": 0.8400000000000034,
+    "passes": true
+  },
+  "leakage": {
+    "corr_psnr_label": -0.17454738525497787,
+    "corr_loss_label": 0.1501772301490565
+  },
+  "psnr": {
+    "median": 34.943321228027344,
+    "q05": 31.3677116394043
+  },
+  "strata_audit_first_shard": {
+    "layer0.min_w_norm.q0_q05_q50": [
+      1.369999,
+      1.710886,
+      2.532451
+    ],
+    "layer0.min_u_norm.q0_q05_q50": [
+      0.843291,
+      1.189905,
+      1.631094
+    ],
+    "layer0.min_parallel_angle_rad.q0_q05_q50": [
+      0.0,
+      0.0,
+      0.001998
+    ],
+    "layer1.min_w_norm.q0_q05_q50": [
+      0.081781,
+      0.502207,
+      1.338652
+    ],
+    "layer1.min_u_norm.q0_q05_q50": [
+      0.01624,
+      0.027666,
+      0.05938
+    ],
+    "layer1.min_parallel_angle_rad.q0_q05_q50": [
+      0.287375,
+      0.68696,
+      0.856558
+    ]
+  },
+  "gate_cnn_train_acc_check": 70.9
+}
