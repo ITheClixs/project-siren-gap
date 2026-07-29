@@ -367,6 +367,80 @@ def fig_template() -> None:
     save(fig, "fig4_template")
 
 
+def fig_s4e() -> None:
+    """S4e: does functional near-equality imply parameter proximity modulo the group?"""
+    path = ROOT / "results" / "s4e" / "s4e.json"
+    if not path.exists():
+        print("skip fig5: no S4e results")
+        return
+    arms = json.loads(path.read_text())["arms"]
+    if not {"teacher", "warmstart", "sensitivity", "null"} <= arms.keys():
+        print("skip fig5: S4e run incomplete")
+        return
+
+    widths = sorted(r["width"] for r in arms["teacher"])
+    cmap = plt.get_cmap("viridis")
+    colour = {w: cmap(i / max(len(widths) - 1, 1) * 0.85) for i, w in enumerate(widths)}
+
+    fig, (ax0, ax1, ax2) = plt.subplots(1, 3, figsize=(5.5, 2.0),
+                                        gridspec_kw={"width_ratios": [1.35, 1, 0.85]})
+
+    # (a) the scatter: independent students, R_theta against R_f
+    null_med = float(np.median([r["R_theta_median"] for r in arms["null"]]))
+    kap = {r["width"]: r["ladder"][0]["kappa_median"] for r in arms["sensitivity"]}
+    ax0.axhspan(null_med * 0.8, null_med * 1.25, color="#C0392B", alpha=0.10, lw=0)
+    ax0.text(1.4e-4, null_med * 1.02, "unrelated networks", fontsize=5.6, color="#8E2B20")
+    xs = np.logspace(-7, 0, 50)
+    k_ref = float(np.median(list(kap.values())))
+    ax0.plot(xs, k_ref * xs, color="0.35", lw=0.9, ls=(0, (4, 2)), zorder=1)
+    ax0.text(2e-4, k_ref * 2e-4 * 1.6, r"$R_\theta=\kappa R_f$" "\n(local conditioning)",
+             fontsize=5.6, color="0.3")
+    for row in arms["teacher"]:
+        w = row["width"]
+        ax0.scatter(row["R_f"], row["R_theta"], s=5, alpha=0.55, linewidth=0,
+                    color=colour[w], label=f"$n{{=}}{w}$")
+    ax0.set_xscale("log")
+    ax0.set_yscale("log")
+    ax0.set_xlim(1e-4, 3.0)
+    ax0.set_ylim(1e-7, 3.0)
+    ax0.set_xlabel(r"functional residual $R_f$")
+    ax0.set_ylabel(r"orbit residual $R_\theta$")
+    ax0.set_title("(a)  independent students", loc="left")
+    ax0.legend(frameon=False, fontsize=5.4, loc="lower right", handletextpad=0.1,
+               labelspacing=0.15, borderpad=0.0, ncol=2, columnspacing=0.6)
+
+    # (b) the basin radius: warm-start recovery against the starting perturbation
+    eps_vals = sorted({r["eps_start"] for r in arms["warmstart"]})
+    for w in widths:
+        ys = [
+            next((r["recovered_frac"] for r in arms["warmstart"]
+                  if r["width"] == w and r["eps_start"] == e), np.nan)
+            for e in eps_vals
+        ]
+        ax1.plot(eps_vals, ys, marker="o", ms=3.0, lw=1.1, color=colour[w], label=f"$n{{=}}{w}$")
+    ax1.set_xscale("log")
+    ax1.set_xlabel(r"start distance $\varepsilon$ from the orbit")
+    ax1.set_ylabel("fraction returning")
+    ax1.set_ylim(-0.05, 1.05)
+    ax1.set_title("(b)  basin of the true orbit", loc="left")
+    ax1.legend(frameon=False, fontsize=5.4, loc="upper right", labelspacing=0.15,
+               borderpad=0.0, handletextpad=0.3)
+
+    # (c) local conditioning against width
+    ws = sorted(kap)
+    ax2.plot(ws, [kap[w] for w in ws], marker="s", ms=3.2, lw=1.1, color="#3B6EA5")
+    ax2.set_xscale("log", base=2)
+    ax2.set_yscale("log")
+    ax2.set_xticks(ws)
+    ax2.set_xticklabels([str(w) for w in ws], fontsize=6)
+    ax2.set_xlabel("width $n$")
+    ax2.set_ylabel(r"$\kappa = R_\theta / R_f$")
+    ax2.set_title("(c)  local conditioning", loc="left")
+
+    fig.tight_layout(w_pad=1.5)
+    save(fig, "fig5_s4e")
+
+
 def main() -> None:
     style()
     available = []
@@ -382,6 +456,7 @@ def main() -> None:
     fig_mechanism()
     fig_calibration()
     fig_template()
+    fig_s4e()
 
 
 if __name__ == "__main__":

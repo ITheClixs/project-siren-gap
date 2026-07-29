@@ -158,6 +158,57 @@ def gap_table(available) -> str:
     return "\n".join(lines)
 
 
+def s4e_table() -> str | None:
+    """The S4e anatomy: control, local conditioning, basin radius, independent students."""
+    path = ROOT / "results" / "s4e" / "s4e.json"
+    if not path.exists():
+        return None
+    arms = json.loads(path.read_text())["arms"]
+    if not {"planted", "sensitivity", "warmstart", "teacher", "null"} <= arms.keys():
+        return None
+
+    planted = {r["width"]: r for r in arms["planted"]}
+    sens = {r["width"]: r for r in arms["sensitivity"]}
+    teach = {r["width"]: r for r in arms["teacher"]}
+    null = {r["width"]: r for r in arms["null"]}
+    warm = {(r["width"], r["eps_start"]): r for r in arms["warmstart"]}
+    eps_small = min({r["eps_start"] for r in arms["warmstart"]})
+    widths = sorted(teach)
+
+    lines = [
+        r"\begin{table}[t]",
+        r"\centering\small",
+        rf"\caption{{\textbf{{S4e: the anatomy of deep identifiability at $L=2$.}} "
+        rf"\emph{{planted}} is the validity control (a known group element, undone). "
+        rf"$\kappa = R_\theta/R_f$ is the local condition number of the inverse map. "
+        rf"\emph{{basin}} is the fraction of optimiser runs that return to the true orbit when "
+        rf"started a relative $\varepsilon = {eps_small:g}$ away. The last three columns are "
+        rf"independent students fitted to a teacher's exact outputs: their best functional "
+        rf"residual, the orbit residual there, and --- for scale --- the orbit residual between "
+        rf"two \emph{{unrelated}} networks of the same shape.}}",
+        r"\label{tab:s4e}",
+        r"\begin{tabular}{@{}rrrrrrr@{}}",
+        r"\toprule",
+        r"& \multicolumn{2}{c}{controls} & & \multicolumn{3}{c}{independent students} \\",
+        r"\cmidrule(lr){2-3} \cmidrule(lr){5-7}",
+        r"width $n$ & planted $R_\theta$ & basin & $\kappa$ & best $R_f$ & $R_\theta$ there "
+        r"& unrelated $R_\theta$ \\",
+        r"\midrule",
+    ]
+    for w in widths:
+        b = warm.get((w, eps_small), {}).get("recovered_frac")
+        lines.append(
+            f"{w} & {planted[w]['R_theta_max']:.1e} & "
+            + (f"{b:.0%}".replace("%", r"\%") if b is not None else "---")
+            + f" & {sens[w]['ladder'][0]['kappa_median']:.4f}"
+            + f" & {teach[w]['R_f_min']:.1e}"
+            + f" & {teach[w]['R_theta_at_best_R_f']:.3f}"
+            + f" & {null[w]['R_theta_median']:.3f}" + r" \\"
+        )
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    return "\n".join(lines)
+
+
 def calibration_table() -> str:
     rows = list(csv.DictReader((ROOT / "docs" / "PREDICTION_OUTCOMES.csv").open()))
     iv = [r for r in rows if r["kind"] == "interval"]
@@ -255,6 +306,13 @@ def main() -> None:
     (OUT / "calibration_table.tex").write_text(calibration_table())
     for f in ("ladder_table", "gap_table", "calibration_table"):
         print(f"wrote {OUT / f}.tex")
+    s4e = s4e_table()
+    if s4e:
+        (OUT / "s4e_table.tex").write_text(s4e)
+        print(f"wrote {OUT / 's4e_table'}.tex")
+    else:
+        (OUT / "s4e_table.tex").write_text("% S4e results not present yet\n")
+        print("s4e_table: no results yet (placeholder written)")
     patch_readme(ladder_markdown(available))
 
 
