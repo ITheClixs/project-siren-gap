@@ -119,7 +119,7 @@ def recovery(means: dict[str, float], rung: str) -> float | None:
 
 
 def fig_ladder(available: list[tuple[str, str, str, dict]]) -> None:
-    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(6.9, 3.0), gridspec_kw={"width_ratios": [1.25, 1]})
+    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(5.5, 2.7), gridspec_kw={"width_ratios": [1.25, 1]})
 
     # (a) absolute accuracy per rung
     rows = [r for r in ACC_ORDER if any(r in m for *_, m in available)]
@@ -130,41 +130,48 @@ def fig_ladder(available: list[tuple[str, str, str, dict]]) -> None:
         ax0.barh(y + (k - (len(available) - 1) / 2) * h, vals, height=h * 0.92,
                  color=color, label=label, linewidth=0)
     ax0.axvline(10, color="0.35", lw=0.7, ls=(0, (3, 2)))
-    ax0.text(10.8, y[-1] - 0.05, "chance", fontsize=6.2, color="0.35", va="center")
+    ax0.text(10.8, y[0] + 0.62, "chance", fontsize=6.2, color="0.35", va="center")
     ax0.set_yticks(y)
     ax0.set_yticklabels([RUNG_LABEL[r] for r in rows])
     ax0.set_xlabel("test accuracy (\\%)" if matplotlib.rcParams["text.usetex"] else "test accuracy (%)")
     ax0.set_xlim(0, 100)
-    ax0.set_title("(a)  the ladder: what a matched reader recovers", loc="left")
-    ax0.legend(frameon=False, loc="lower right", handlelength=1.1)
+    ax0.set_title("(a)  what a matched reader recovers", loc="left")
+    ax0.legend(frameon=False, loc="lower right", handlelength=1.1, fontsize=6.6)
     ax0.tick_params(axis="y", length=0)
 
     # (b) recovery fraction against signal complexity — the crossover
-    methods = [
-        ("W5", r"W5  $\calign$ (alignment)", "#3B6EA5", "o", "-"),
-        ("W10", r"W10  exact $L{=}2$ invariants", "#4E9A6A", "D", "-"),
-        ("W4", r"W4  $\csort$ (template-free)", "#C4622D", "s", "-"),
-        ("W6", "W6  augmentation", "#9A9A9A", "^", (0, (3, 2))),
-        ("W7", "W7  $K$-marginalization", "#B8B8B8", "v", (0, (3, 2))),
-        ("W9", "W9  frame averaging", "#CFCFCF", "x", (0, (1, 2))),
+    exact = [
+        ("W5", r"W5  $c_{\mathrm{align}}$", "#3B6EA5", "o"),
+        ("W10", r"W10  invariants", "#4E9A6A", "D"),
+        ("W4", r"W4  $c_{\mathrm{sort}}$", "#C4622D", "s"),
     ]
     x = np.arange(len(available))
-    for rung, label, color, marker, ls in methods:
+    for rung, _, color, marker in [("W6", "", "#A8A8A8", "^"), ("W7", "", "#BEBEBE", "v"),
+                                   ("W9", "", "#D4D4D4", "x")]:
         vals = [recovery(m, rung) for *_, m in available]
         if all(v is None for v in vals):
             continue
-        ax1.plot(x, [np.nan if v is None else v for v in vals], marker=marker, ms=4.0,
-                 lw=1.2, ls=ls, color=color, label=label.replace(r"$\calign$", r"$c_{\mathrm{align}}$")
-                 .replace(r"$\csort$", r"$c_{\mathrm{sort}}$"))
+        ax1.plot(x, [np.nan if v is None else v for v in vals], marker=marker, ms=3.2,
+                 lw=1.0, ls=(0, (3, 2)), color=color, zorder=1)
+    for rung, label, color, marker in exact:
+        vals = [recovery(m, rung) for *_, m in available]
+        if all(v is None for v in vals):
+            continue
+        ax1.plot(x, [np.nan if v is None else v for v in vals], marker=marker, ms=4.2,
+                 lw=1.4, color=color, label=label, zorder=3)
     ax1.axhline(0, color="0.2", lw=0.6)
+    ax1.annotate("W6, W7, W9\n(inexact treatments)", xy=(x[-1] - 0.05, 0.09),
+                 xytext=(x[-1] - 0.75, 0.235), fontsize=6.0, color="0.45", ha="left",
+                 arrowprops=dict(arrowstyle="-", lw=0.5, color="0.6"))
     ax1.set_xticks(x)
-    ax1.set_xticklabels([lbl for _, lbl, _, _ in available], fontsize=7)
+    ax1.set_xticklabels([lbl.replace("FashionMNIST", "Fashion-\nMNIST") for _, lbl, _, _ in available],
+                        fontsize=6.6)
     ax1.set_xlim(-0.25, len(available) - 0.75)
     ax1.set_ylabel(r"recovery fraction $f$")
-    ax1.set_ylim(-0.06, 0.88)
-    ax1.set_title("(b)  what survives the change of signal", loc="left")
-    ax1.legend(frameon=False, loc="upper center", handlelength=1.8, ncol=1,
-               labelspacing=0.25, borderpad=0.1)
+    ax1.set_ylim(-0.06, 0.95)
+    ax1.set_title("(b)  the crossover", loc="left")
+    ax1.legend(frameon=False, loc="upper left", handlelength=1.4, labelspacing=0.2,
+               borderpad=0.0, fontsize=6.6)
 
     fig.tight_layout(w_pad=1.6)
     save(fig, "fig1_ladder")
@@ -178,7 +185,7 @@ def fig_mechanism() -> None:
     micro = __import__("02_microcosm_po8")
 
     census = json.loads((MICRO / "optimizer_census.json").read_text())
-    fig, axes = plt.subplots(1, 3, figsize=(6.9, 2.15))
+    fig, axes = plt.subplots(1, 3, figsize=(5.5, 1.95))
 
     # (a) profiled loss surface with the D_infty orbit of global minima
     ax = axes[0]
@@ -262,7 +269,7 @@ def fig_calibration() -> None:
         z_obs.append((obs - lo) / span if span else 0.0)
         hits.append(r["verdict"] == "HIT")
 
-    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(6.9, 2.6), gridspec_kw={"width_ratios": [1.7, 1]})
+    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(5.5, 2.4), gridspec_kw={"width_ratios": [1.7, 1]})
 
     y = np.arange(len(names))[::-1]
     ax0.axvspan(0, 1, color="#3B6EA5", alpha=0.12, lw=0)
@@ -326,7 +333,7 @@ def fig_template() -> None:
     labels = [pretty.get(k, k) for k, _ in items]
     fvals = [v["recovery_fraction"] for _, v in items]
 
-    fig, ax = plt.subplots(figsize=(3.35, 2.15))
+    fig, ax = plt.subplots(figsize=(3.5, 2.1))
     colors = ["#3B6EA5" if r"\theta_0" in lbl else "#9BB2CB" for lbl in labels]
     ax.barh(np.arange(len(fvals))[::-1], fvals, height=0.66, color=colors, linewidth=0)
     ax.axvline(0.5, color="#C0392B", lw=0.8, ls=(0, (3, 2)))

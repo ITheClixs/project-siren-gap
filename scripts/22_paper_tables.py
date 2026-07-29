@@ -189,6 +189,50 @@ def calibration_table() -> str:
     return "\n".join(lines)
 
 
+MD_LABEL = {
+    "W4": r"$c_\text{sort}$ — exact, template-free",
+    "W5": r"$c_\text{align}$ — exact, aligned to $\theta_0$",
+    "W10": r"exact $L{=}2$ invariants",
+    "W7-1/8": r"*control:* $K$ corpus, rows matched",
+}
+
+
+def ladder_markdown(available) -> str:
+    """The same table as ladder_table.tex, for the README (kept in sync by markers)."""
+    head = "| rung | feature map | " + " | ".join(
+        f"{lbl} | $f$" for _, lbl, _, _ in available
+    ) + " |"
+    sep = "|---|---|" + "".join(["---:|---:|" for _ in available])
+    lines = [head, sep]
+    for rung, desc, dagger in ROWS:
+        d = MD_LABEL.get(rung, desc)
+        d = (d.replace(r"\textbf{", "**").replace("}", "**") if r"\textbf" in d else d)
+        cells = []
+        for _, _, means, fracs in available:
+            cells.append(f"{means[rung]:.2f}" if rung in means else "—")
+            cells.append(frac(means, fracs, rung).replace("---", "—") if dagger else "—")
+        name = ("**" + rung + "**") if rung in ("W1", "W3", "W5") else rung
+        mark = " †" if dagger else ""
+        lines.append(f"| {name}{mark} | {d} | " + " | ".join(cells) + " |")
+    lines.append("")
+    lines.append("† acts on the random-init corpus. W4, W5, W10 are **exactly** "
+                 "function-preserving. Chance = 10.")
+    return "\n".join(lines)
+
+
+def patch_readme(markdown: str) -> None:
+    path = ROOT / "README.md"
+    start, end = "<!-- LADDER_TABLE:START -->", "<!-- LADDER_TABLE:END -->"
+    text = path.read_text()
+    if start not in text or end not in text:
+        print("README markers absent — skipping table injection")
+        return
+    head, rest = text.split(start, 1)
+    _, tail = rest.split(end, 1)
+    path.write_text(f"{head}{start}\n{markdown}\n{end}{tail}")
+    print(f"patched {path} between {start} / {end}")
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     available = []
@@ -205,6 +249,7 @@ def main() -> None:
     (OUT / "calibration_table.tex").write_text(calibration_table())
     for f in ("ladder_table", "gap_table", "calibration_table"):
         print(f"wrote {OUT / f}.tex")
+    patch_readme(ladder_markdown(available))
 
 
 if __name__ == "__main__":

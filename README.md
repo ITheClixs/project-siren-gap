@@ -1,36 +1,465 @@
-# PROJECT SIREN-GAP
+# How Much of the Weight-Space Perception Gap Is Symmetry?
 
-**The weight-space perception gap: symmetry, basins, and the limits of reading semantics from
-neural network parameters.**
+### An Exact Decomposition for Periodic-Activation Networks
 
-Dissertation-scale research program: why machine-learning systems fail to read semantics from the
-raw weights of independently trained implicit neural representations (INRs) — and whether that
-failure is nuisance variability (parameter symmetries + basin multiplicity) rather than an
-information deficit. Theory (the infinite-dihedral symmetry structure of sine networks, exact
-canonicalization, identifiability), instruments (canonicalizers, a D∞≀Sₙ-equivariant architecture,
-the INR-Bench dataset), six pre-registered empirical studies, and a FLOPs-matched adjudication
-against function- and render-access baselines.
+**Mehmet Demir Güven**
+Department of Computer Science, ETH Zürich · Zürich, Switzerland
 
-**Status: G0 complete** (literature deep scan, novelty gates passed, theory scoping). Next: G1
-(property tests T1–T9, throughput profiling, close-read memos). See `docs/LAB_NOTEBOOK.md`.
+📄 **[paper.pdf](paper/paper.pdf)** · 🔬 [pre-registrations](docs/prereg/) · 📓 [lab notebook](docs/LAB_NOTEBOOK.md) · 📊 [prediction ledger](docs/PREDICTION_OUTCOMES.csv) · 🧾 [claims](docs/CLAIMS.md)
 
-All computation: single MacBook Air (M4), PyTorch MPS/CPU. No cloud.
+---
 
-## Layout
+## Abstract
+
+A classifier reading the raw weights of independently fitted implicit neural representations
+(INRs) performs near chance, while the same classifier reading weights fitted from a *shared*
+initialization performs almost as well as it does on pixels. This **perception gap** is the
+central obstacle of weight-space learning, and it is usually attributed, without measurement, to
+parameter symmetry. This work tests that attribution.
+
+For sine networks we prove the exact per-neuron symmetry group is the infinite dihedral group
+$D_\infty$, so the layer group is $D_\infty \wr S_n$; we prove this group is **maximal** at one
+hidden layer (generic identifiability), that no continuous canonicalizer for it exists, and that
+complete invariants are informationally equivalent to function access. We then construct a finite
+family of **exact** invariants for two-layer sine networks by coupling the layers through the
+second-layer Gram matrix — closing a gap that per-neuron constructions leave open. Against this
+theory we run a pre-registered decomposition ladder on ~1.8M fitted INRs across MNIST,
+FashionMNIST and CIFAR-10.
+
+**An exact, function-preserving change of frame recovers ~63% of the gap.** Group augmentation,
+$K$-marginalization and frame averaging each recover under 6%. The residual third *provably* is
+not symmetry.
+
+---
+
+## 1. Introduction
+
+An implicit neural representation encodes a signal as the weights of a small network fitted to
+it [[1]](#ref1), [[2]](#ref2). Once a dataset of signals has become a dataset of *weight vectors*,
+it is natural to ask whether a downstream model can read semantics — a class label, a shape
+property — directly off those weights. A large and fast-moving literature builds architectures for
+exactly this [[3]](#ref3), [[4]](#ref4), [[5]](#ref5), [[6]](#ref6), [[7]](#ref7).
+
+The field runs into one stubborn empirical fact:
+
+> Fit every INR in a corpus from the **same** initialization, and a plain MLP reading the flattened
+> weights nearly matches a pixel classifier. Fit each INR from its **own** random initialization —
+> the setting any realistic collection of independently trained models is in — and the same reader
+> collapses to a few points above chance.
+
+We call the difference the **weight-space perception gap**. On MNIST it is **80.4 accuracy points**
+between two corpora of networks fitted to *the same images*, with the same architecture, differing
+only in whether the initialization was shared.
+
+The standard explanation is nuisance variability from parameter symmetry. It is plausible, it
+motivates most of the equivariant architectures above, and — to our knowledge — it had never been
+*measured* against the alternative: that independent fits land in genuinely different loss basins
+whose difference is **not** a group action, and therefore cannot be removed by any
+canonicalization, augmentation, or equivariant layer.
+
+This work measures it.
+
+---
+
+## 2. The symmetry group of sine networks
+
+A sine network in canonical form is
+
+$$h^0 = x, \qquad h^\ell = \sin\!\big(W^\ell h^{\ell-1} + b^\ell\big), \qquad f_\theta(x) = W^{L+1}h^L + b^{L+1}.$$
+
+For a hidden neuron write $w$ for its incoming row, $b$ for its bias, $u$ for its outgoing column.
+
+**Definition (per-neuron maps).**
+$\tau_k:(w,b,u)\mapsto(w,\,b+2\pi k,\,u)$; $\quad\rho:(w,b,u)\mapsto(w,\,b+\pi,\,-u)$;
+$\quad\sigma:(w,b,u)\mapsto(-w,\,-b,\,-u)$.
+
+**Lemma (normal form).** Every element of $\langle\tau_1,\rho,\sigma\rangle$ acts as
+
+$$g_{d,j}\colon (w,b,u)\ \longmapsto\ \big((-1)^d w,\ (-1)^d b + \pi j,\ (-1)^{d+j} u\big),\qquad d\in\{0,1\},\ j\in\mathbb{Z},$$
+
+with composition $g_{d_2,j_2}\circ g_{d_1,j_1}=g_{\,d_1\oplus d_2,\ j_2+(-1)^{d_2}j_1}$. Hence the
+per-neuron group is $\mathbb{Z}\rtimes\mathbb{Z}_2 = D_\infty$, the **infinite dihedral group**.
+
+**Theorem 1 (symmetry group).** The function is exactly preserved by every $g_{d,j}$ at every
+hidden neuron and every joint permutation of a layer's neurons, so
+
+$$G \;=\; \prod_{\ell=1}^{L} D_\infty \wr S_{n_\ell} \;=\; \prod_{\ell=1}^{L}\big(D_\infty^{\,n_\ell}\rtimes S_{n_\ell}\big)$$
+
+acts with $f_{g\cdot\theta}=f_\theta$, and distinct layers' actions commute.
+
+*Proof.* With $z=\langle w,h\rangle+b$,
+$(-1)^{d+j}u\sin\!\big((-1)^d z+\pi j\big)=(-1)^{d+j}(-1)^j(-1)^d u\sin z = u\sin z$. ∎
+
+> **Why the literature misses this.** The phase generators $g_{0,j}$ ($j\neq0$) are **affine**, not
+> linear. Classifications of weight-space symmetry restricted to monomial-matrix (linear) actions
+> [[8]](#ref8) provably cannot see them — which is exactly why their maximality question for the
+> sine case was left open.
+
+### 2.1 Identifiability, impossibility, and a ceiling on the field
+
+Let $\Theta_{\mathrm{gen}}$ be the parameters with all $w_i\neq0$, all $u_i\neq0$, and no parallel
+pair $w_j=\pm w_i$.
+
+**Theorem 2 (generic identifiability, $L=1$).** If $\theta,\theta'\in\Theta_{\mathrm{gen}}$ and
+$f_\theta=f_{\theta'}$ on some open set, then the widths agree and $\theta'=g\theta$ for a
+**unique** $g\in D_\infty\wr S_n$.
+
+The proof passes to the distributional Fourier transform, where the network is an atomic measure
+
+$$\widehat{f_\theta} \;=\; \beta\,\delta_0 \;+\; \sum_{i=1}^{n}\frac{u_i}{2\mathrm{i}}\Big(e^{\mathrm{i}b_i}\delta_{w_i} - e^{-\mathrm{i}b_i}\delta_{-w_i}\Big),$$
+
+whose $2n$ support points are distinct and nonzero exactly on $\Theta_{\mathrm{gen}}$. So
+$D_\infty\wr S_n$ is a **maximal** symmetry group at one hidden layer. The result is
+non-asymptotic: the only hypothesis is an explicit, *measurable* genericity condition, which we
+audit on every corpus.
+
+**Proposition 3 (no continuous canonicalization).** No continuous
+$\kappa:\Theta_{\mathrm{gen}}\to\Theta_{\mathrm{gen}}$ picks an orbit representative invariantly.
+*Proof:* the path $\theta_t=(1,t,1)$, $t\in[0,2\pi]$, has $\theta_{2\pi}=\tau_1\theta_0$, but
+continuity pins $d$ and $j$ constant, forcing a bias mismatch of $2\pi$. ∎
+
+This is the sine instance of the general obstruction of [[9]](#ref9), and it is *stronger* than the
+permutation case: for permutations the obstruction is confined to sorting-key ties, whereas the
+$\tau$-circle makes it global.
+
+**Proposition 4 (completeness is function access).** Any $G$-invariant, *complete* invariant
+factors through the realization map $\theta\mapsto f_\theta$.
+
+**Corollary.** A complete-invariant weight-space perceiver receives *exactly* the information of a
+function-space perceiver. Any advantage of weight access must be **computational** (amortization),
+or must come from deliberately **incomplete** invariants. This is a ceiling on the enterprise, not
+a refutation — but it means the justification has to be stated in the currency of compute.
+
+### 2.2 Exact invariants at depth two (new)
+
+The separating per-neuron invariant on $\{w\neq0,u\neq0\}$ is
+
+$$\Phi(w,b,u)=\Big(w\otimes w,\ \cos 2b,\ (\sin 2b)\,w,\ (\sin b)\,u,\ (\cos b)(w\otimes u)\Big),$$
+
+and note that the features one would *guess* — $\cos(2b)(w\otimes u)$, $\sin(2b)(w\otimes u)$ —
+are **not** invariant (wrong bias frequency for $\rho$; wrong parity for $\sigma$). Both are
+refuted numerically in the test suite.
+
+$\Phi$ is scoped to $L=1$: at depth two a hidden neuron's outgoing $u_i$ is a *column of a matrix
+the next layer's group also acts on*, so per-neuron constructions fail. **Our repair couples the
+layers through the second-layer Gram** $G_2=W_2^\top W_2$, which is invariant under the *entire*
+layer-2 group and picks up $\varepsilon_i\varepsilon_l$ under layer 1 with
+$\varepsilon_i=(-1)^{d_i+j_i}$. Since $\sin b_i$ carries exactly $\varepsilon_i$ and
+$\cos b_i\,w_i$ carries $\varepsilon_i$ after contraction, the matrices
+
+$$A=(\sin b_i\sin b_l)G_2,\qquad B=(\cos b_i w_i\cdot\cos b_l w_l)G_2,\qquad C=(\sin 2b_i w_i\cdot\sin 2b_l w_l)$$
+
+are sign-cancelling and transform as $M\mapsto PMP^\top$, so their **sorted eigenvalue spectra are
+invariant under the full product group**. Verified numerically at **3×10⁻⁷ relative** residual
+under random group elements (windings $|j|\le3$, non-trivial permutations) — fp32 round-off, not
+tolerance slack.
+
+---
+
+## 3. INR-Bench: corpora that differ in exactly one nuisance
+
+One SIREN per image ($L=2$, width 32, $\omega_0$ absorbed), under four protocols that intervene on
+the arguments of the fit map $F:(y,\theta_0,\xi)\mapsto\theta_T$:
+
+| protocol | $\theta_0$ | $\xi$ | isolates |
+|---|---|---|---|
+| `P-shared-det` | fixed | fixed | the ceiling: no nuisance at all |
+| `P-shared-stoch` | fixed | drawn | optimization noise alone |
+| `P-random` | drawn | drawn | the realistic, independently-fitted setting |
+| `P-random-K` | $K{=}8$ draws/image | drawn | the nuisance, sampled, for marginalization |
+
+**Quality gates.** A corpus is admitted only if a CNN trained on *renders* of the fitted INRs
+matches one trained on real pixels — so no rung can be explained by lost signal. All nine
+dataset×protocol cells pass, with render-vs-pixel gaps of −0.09 to +0.84 points and median render
+PSNR 39.2 dB (MNIST), 43.4 dB (FashionMNIST), 40.1 dB (CIFAR-10) on the shared-deterministic
+corpora.
+
+**Genericity is measured, not assumed.** Production fits satisfy $\Theta_{\mathrm{gen}}$, but
+*marginally*: with 32 first-layer directions in a 2-D input space, minimal parallel angles are
+3×10⁻⁴–2×10⁻³ rad, so orbits pass near the stratum where identifiability genuinely fails. That is
+a conditioning statement, and it is reported as one.
+
+**Scale.** 3 datasets × 4 protocols ≈ **1.8M fitted INRs**, all on a single Apple M4 laptop. The
+CIFAR-10 corpus alone is 540,000 fits and 15.4 h of wall-clock.
+
+---
+
+## 4. The decomposition ladder
+
+Thirteen **feature maps** over the same corpora, decoded by one frozen apparatus (matched MLP
+`[D→1024→512→256→10]`, GELU, dropout 0.1, AdamW 1e−3, early stop on a held-out INR split). Only
+the feature map changes.
+
+The quantity of interest is the **recovery fraction**
+
+$$f(\mathrm{W}k)\;=\;\frac{\mathrm{W}k-\mathrm{W3}}{\mathrm{W1}-\mathrm{W3}}\ \in[0,1],$$
+
+the share of the gap that feature map $k$ buys back. Absolute accuracies inherit the task ceiling;
+$f$ does not, which is what makes it comparable across datasets.
+
+> **Everything was pre-registered.** Rung definitions, hypotheses, point predictions with 80%
+> intervals, seed counts, exclusion rules and falsification conditions were frozen in committed,
+> hash-stamped documents *before any cell was computed*
+> ([S1](docs/prereg/S1.md) `8c029cf43f01a94c`, [addendum 01](docs/prereg/S1-addendum-01.md),
+> [CIFAR arm](docs/prereg/S1-cifar.md) `f7906fc6904c7c81`). Seed counts were sized from a
+> **measured** paired-difference SD (0.210 pts for fixed-matrix rungs, 0.721 for redraw-each-step
+> rungs) → $n=5$ and $n=15$; at $n=5$ the second class would have had TOST power 0.20.
+
+---
+
+## 5. Results
+
+![the ladder](paper/figures/fig1_ladder.png)
+
+**Figure 1.** (a) Absolute accuracy of the same frozen decoder on each feature map; the distance
+from W3 to W1 is the gap. (b) The recovery fraction, in which the task ceiling cancels.
+
+<!-- LADDER_TABLE:START -->
+| rung | feature map | MNIST | $f$ | FashionMNIST | $f$ | CIFAR-10 | $f$ |
+|---|---|---:|---:|---:|---:|---:|---:|
+| P0 | real pixels | 97.97 | — | 89.62 | — | 55.81 | — |
+| P1 | oracle render of the fit | 97.59 | — | 89.44 | — | 56.23 | — |
+| **W1** | raw weights, **shared init** | 94.36 | — | 82.97 | — | 44.29 | — |
+| W2 | raw weights, shared init + SGD noise | 95.04 | — | 83.67 | — | 45.19 | — |
+| **W3** | raw weights, **random init** | 13.92 | — | 12.66 | — | 12.64 | — |
+| W4 † | $c_\text{sort}$ — exact, template-free | 28.19 | 0.177 | 24.61 | 0.170 | 16.05 | 0.108 |
+| **W5** † | $c_\text{align}$ — exact, aligned to $\theta_0$ | 64.41 | 0.628 | 59.34 | 0.664 | 22.92 | 0.325 |
+| W10 † | exact $L{=}2$ invariants | 35.54 | 0.269 | 42.77 | 0.428 | 29.54 | 0.534 |
+| W6 † | bounded group augmentation | 18.12 | 0.054 | 14.86 | 0.032 | 16.57 | 0.124 |
+| W7 † | $K$-marginalization ($K{=}8$) | 17.75 | 0.048 | 15.05 | 0.034 | — | — |
+| W7-1/8 † | *control:* $K$ corpus, rows matched | 14.59 | 0.008 | 13.20 | 0.008 | — | — |
+| W9 † | frame averaging, $R{=}64$ | 14.13 | 0.003 | 12.12 | -0.008 | 12.68 | 0.001 |
+| W8 † | canonicalize, then augment | 10.27 | -0.045 | 10.20 | -0.035 | — | — |
+
+† acts on the random-init corpus. W4, W5, W10 are **exactly** function-preserving. Chance = 10.
+<!-- LADDER_TABLE:END -->
+
+### It is not decoder inadequacy
+
+P1 ≈ P0 (TOST equivalent at a 1.0-pt margin, $p=2.5\times10^{-5}$): fitting destroys no class
+information. W1 sits 3.2 pts below P1, which bounds decoder-vs-representation loss under *zero*
+nuisance. A decoder that were simply too weak could not be rescued by a function-preserving change
+of frame — and W5 rescues it by 50 points. **X1** settles it further: a decoder trained on W1
+features scores **10.7** on W3 features and 13.2 in reverse — chance. The two protocols are not
+differently-scaled versions of one representation.
+
+### Optimization noise is null
+
+W1 − W2 = **−0.68** (MNIST), **−0.70** (FashionMNIST). Stochastic fitting from a shared init is, if
+anything, marginally *better*. We had registered +2.0 pts [0, 6] and were wrong. **The entire gap
+is attributable to the initialization, not the trajectory.**
+
+### Two thirds of the gap is symmetry
+
+$f(\mathrm{W5}) = 0.628$ (MNIST), $0.664$ (FashionMNIST). We had registered **0.10**, with an 80%
+interval reaching only to 0.30, and a pre-committed rule stating that $f>0.5$ falsifies the
+"canonicalization is not enough" claim and requires it to be **rewritten, not softened**. It fired.
+
+The honest restatement is a better result than the registered one:
+
+$$\underbrace{\text{80.4-pt gap}}_{\text{MNIST}} \;=\; \underbrace{63\%\ \text{symmetry-orbit scatter}}_{\text{removable by an exact change of frame}}\;+\;\underbrace{37\%\ \text{residual}}_{\text{provably not symmetry}}$$
+
+The residual is *provably* not symmetry because $c_\text{align}$ changes no network's function at
+all.
+
+### The 0.18→0.63 span is canonicalizer quality, not information
+
+Template-free sorting recovers 0.177; aligning to a fixed reference network recovers 0.628. Both
+are exact elements of $G$. The difference is entirely *which orbit representative is chosen*.
+The practical message: the ceiling on frame choice is high, and current template-free
+canonicalization is far from it.
+
+### The alignment template does not matter
+
+![template sensitivity](paper/figures/fig4_template.png)
+
+**Figure 2.** A natural objection is that $\theta_0$ exists only because we built the corpus with a
+known shared init. Five templates say otherwise: an **unrelated** random init does marginally
+*better* (0.640) than the corpus's own (0.628), and every template clears 0.5. Alignment buys a
+*consistent frame*, and any fixed reference network supplies one. Secondary, unregistered
+observation: fitted INRs make **worse** templates than untrained ones (0.51–0.55 vs 0.60–0.64) —
+plausibly because a fitted network's neurons are specialized to its own image.
+
+### The tools the field reaches for do not work
+
+Augmentation 0.054/0.032 · marginalization 0.048/0.034 · frame averaging 0.003/−0.008. We had
+registered that marginalization would beat augmentation by 15 points; the observed difference is
+**−0.52 pts** ($p=.21$) — because *neither* works. Of W7's small gain, +3.2 pts is explained by its
+8× training rows alone (the W7 (1/8) control). And **W8 collapses to chance**: augmenting inside a
+canonical frame destroys the frame the decoder just gained.
+
+---
+
+## 6. Mechanism: the fit map never leaves its initialization
+
+![mechanism](paper/figures/fig2_mechanism.png)
+
+**Figure 3.** In a one-neuron microcosm where everything is computable — $g(t)=u\sin(wt+b)+c$
+fitted to $y(t)=A\sin(\omega t+\varphi)+c_0$ — profiling out $(u,c)$ gives a closed-form
+$\mathcal{L}^*(w,b)$, certified against quadrature to **5.6×10⁻¹⁶**. Its zero set is *exactly* the
+$D_\infty$ orbit, and it carries **19 spurious minima** besides.
+
+Two findings follow:
+
+1. **Basin capture is non-monotone** in the initialization range, peaking at range $\approx\omega$,
+   and this replicates across optimizer classes (global-capture 0.00/0.20/0.56/0.31 for converged
+   Adam, 0.00/0.18/0.58/0.33 for plain GD, 0.00/0.26/0.62/0.32 for Nelder–Mead, at ranges
+   2/5/10/20).
+2. **At the setting the corpora are actually fitted with** (Adam 1e−3, 300 steps), *every*
+   initialization ends unconverged, endpoint $\|\nabla\|\approx0.5$–$0.7$, and median
+   $|\Delta w|\approx0.24$ **independently of the initialization range**. The fit never leaves its
+   initialization's neighbourhood — the lazy regime [[10]](#ref10), [[11]](#ref11).
+
+Shared init ⇒ shared frame. Independent inits ⇒ independently scattered frames. That is the
+mechanism, and it predicts exactly the null W1−W2 rung we measured.
+
+> **A sub-claim of our own that was an artifact.** Our first census reported "100% degenerate-ridge
+> capture at range 2". Re-running under gradient methods rather than Nelder–Mead on the profiled
+> surface shows ridge capture is **0.00**: those runs are still *descending*, not sitting in a
+> $w\approx0$ basin. An `unconverged` class had to be added; without it we would have made a false
+> claim about the landscape. The headline non-monotonicity survives; the sub-claim does not.
+> ([CLAIMS](docs/CLAIMS.md) row 11 is corrected by row 12 rather than edited.)
+
+---
+
+## 7. Calibration: scoring our own forecasts
+
+![calibration](paper/figures/fig3_calibration.png)
+
+**Figure 4.** Because every prediction carried an interval, the program can be scored as a
+forecaster. Realized coverage is **9/14 = 64%** against a nominal 80% — the intervals were too
+*narrow*. More useful than the number is that the failures fall into exactly two modes:
+
+| id | quantity | registered | observed | mode |
+|---|---|---|---|---|
+| QG-3 | anchor gap W1−W3 | 30 [12, 45] | **80.4** | hedged mechanism |
+| QG-5 | CIFAR render PSNR (dB) | 27 [22, 32] | **40.1** | hedged mechanism |
+| H-S1-4c | recovery $f(\mathrm{W5})$ | 0.10 [0.02, 0.30] | **0.628** | hedged mechanism |
+| H-S1-3 | W1 − W2 | +2.0 [0, 6] | **−0.68** | nuisance was null |
+| H-S1-5 | (W7−W3) − (W6−W3) | +15 [5, 35] | **−0.52** | nuisance was null |
+
+**Mode 1** — hedging a registered mechanism toward priors from a different setting. All three err
+in the same direction: our own mechanism predicted an extreme and we hedged toward the middle
+because a neighbouring literature reported milder effects. Where we trusted the mechanism instead
+(the 80.4-pt gap, predicted to the decimal) the intervals hit.
+
+**Mode 2** — registering a contrast that *could not exist*: assuming a nuisance was present, then
+registering a difference between two ways of handling it. Both nuisances were null.
+
+This is reported because the alternative — reporting the hits — would misrepresent how much of the
+final story was anticipated.
+
+---
+
+## 8. Limitations
+
+- **Identifiability is proved only at $L=1$; every experiment here is $L=2$.** This is the weakest
+  link, stated as such. The deep case reduces to a Bessel–CP tensor decomposition with two open
+  lemmas ([memo](docs/THINKING/proof-memos/PO-2-deep-attempt.md)); the falsification protocol is an
+  exhaustive-alignment residual hunt at production width.
+- **Depth ≥3 invariants** need a Gram per successive layer and the parity bookkeeping compounds;
+  whether a finite family stays *separating* is unknown ([OPEN_PROBLEMS #4](docs/OPEN_PROBLEMS.md)).
+- **Eigenvalue pooling in W10 is deliberately lossy**; the 0.269-vs-0.628 span against
+  $c_\text{align}$ bounds, but does not identify, what it discards.
+- **The reader is a plain MLP** with no permutation structure, so W3 is floor-level partly by
+  construction. This is the intended reading of the rung; X1 and the canonicalization rungs are
+  what separate "the reader is weak" from "the representation is scrambled".
+- **Genericity holds marginally** (parallel angles ~3×10⁻⁴ rad).
+- **Single-device (Apple MPS)**; a CUDA replication of one headline table is owed.
+- **Widths 32–64**; Hungarian assignment is $O(n^3)$ per layer — an amortized or Sinkhorn path is
+  required before width 1024.
+
+---
+
+## 9. Reproduction
+
+```bash
+python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt
+make test                                             # property tests T1–T11
+
+.venv/bin/python scripts/03_generate_inrbench.py ...  # corpora (or use 05/08/16 wrappers)
+.venv/bin/python scripts/04_quality_gate.py  ...      # admission gates
+bash scripts/12_ladder_chain.sh                       # MNIST ladder
+bash scripts/17_g4_chain.sh                           # W5 sensitivity + FMNIST + CIFAR corpus
+bash scripts/20_cifar_ladder.sh                       # CIFAR-10 ladder
+
+.venv/bin/python scripts/21_paper_figures.py          # every figure above
+.venv/bin/python scripts/22_paper_tables.py           # every table above
+tectonic paper/paper.tex                              # paper.pdf
+```
+
+Scripts are numbered, idempotent and resumable (an existing ladder cell is skipped unless
+`--force`). All figures and tables in this README and in `paper.pdf` are regenerated from
+committed artifacts by scripts 21 and 22 — none are hand-edited.
+
+### Layout
 
 ```
 src/sirengap/    fitting/ symmetry/ canon/ models/ geometry/ data/ eval/ queue/
-tests/           property tests T1–T9 (CPU-runnable)
+tests/           property tests T1–T11 (CPU-runnable)
 configs/         one YAML per experiment, no hidden defaults
-scripts/         numbered idempotent entrypoints (00_lit_scan.sh, …)
-results/         committed per-seed CSVs + figures (raw shards gitignored)
-paper/           paperA/ paperB/ paperC/ thesis/
-docs/            LAB_NOTEBOOK, prereg/, THINKING/, ADVISOR_REVIEWS/, ledgers, RELATED_WORK, …
+scripts/         numbered idempotent entrypoints (00_lit_scan.sh … 22_paper_tables.py)
+results/         committed per-seed cells + figures (raw weight shards gitignored)
+paper/           paper.tex/pdf, figures/, tables/, thesis/ chapters
+docs/            LAB_NOTEBOOK, prereg/, THINKING/, ADVISOR_REVIEWS/, ledgers, RELATED_WORK
 ```
 
-Process transparency is part of the artifact: the lab notebook, prediction ledger,
-pre-registrations, and adversarial advisor reviews are committed alongside the code.
+**Process transparency is part of the artifact.** The lab notebook, the frozen pre-registrations
+with their hashes, the prediction ledger *including every miss*, the adversarial advisor reviews,
+and the open-problems list are committed alongside the code. Claims do not ship without a row in
+[`docs/CLAIMS.md`](docs/CLAIMS.md) naming their evidence artifact and status.
 
-## Make targets
+---
 
-`make test` · `make lit-scan` · (`demo`, `figures`, `thesis` arrive at later gates)
+## References
+
+<a id="ref1"></a>[1] V. Sitzmann, J. Martel, A. Bergman, D. Lindell, G. Wetzstein. *Implicit Neural Representations with Periodic Activation Functions.* NeurIPS 2020. [arXiv:2006.09661](https://arxiv.org/abs/2006.09661)
+
+<a id="ref2"></a>[2] B. Mildenhall, P. Srinivasan, M. Tancik, J. Barron, R. Ramamoorthi, R. Ng. *NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis.* ECCV 2020. [arXiv:2003.08934](https://arxiv.org/abs/2003.08934)
+
+<a id="ref3"></a>[3] A. Navon, A. Shamsian, I. Achituve, E. Fetaya, G. Chechik, H. Maron. *Equivariant Architectures for Learning in Deep Weight Spaces.* ICML 2023. [arXiv:2301.12780](https://arxiv.org/abs/2301.12780)
+
+<a id="ref4"></a>[4] A. Zhou, K. Yang, K. Burns, A. Cardace, Y. Jiang, S. Sokota, J. Z. Kolter, C. Finn. *Permutation Equivariant Neural Functionals.* NeurIPS 2023. [arXiv:2302.14040](https://arxiv.org/abs/2302.14040)
+
+<a id="ref5"></a>[5] D. Lim, H. Maron, M. T. Law, J. Lorraine, J. Lucas. *Graph Metanetworks for Processing Diverse Neural Architectures.* ICLR 2024. [arXiv:2312.04501](https://arxiv.org/abs/2312.04501)
+
+<a id="ref6"></a>[6] M. Kofinas et al. *Graph Neural Networks for Learning Equivariant Representations of Neural Networks.* ICLR 2024. [arXiv:2403.12143](https://arxiv.org/abs/2403.12143)
+
+<a id="ref7"></a>[7] K. Schürholt, M. W. Mahoney, D. Borth. *Towards Scalable and Versatile Weight Space Learning.* ICML 2024. [arXiv:2406.09997](https://arxiv.org/abs/2406.09997)
+
+<a id="ref8"></a>[8] H. Tran, T. Vo, T. Huu, T. M. Nguyen, N. Ho. *Monomial Matrix Group Equivariant Neural Functional Networks.* NeurIPS 2024. [arXiv:2409.11697](https://arxiv.org/abs/2409.11697)
+
+<a id="ref9"></a>[9] N. Dym, H. Lawrence, J. W. Siegel. *Equivariant Frames and the Impossibility of Continuous Canonicalization.* ICML 2024. [arXiv:2402.16077](https://arxiv.org/abs/2402.16077)
+
+<a id="ref10"></a>[10] A. Jacot, F. Gabriel, C. Hongler. *Neural Tangent Kernel: Convergence and Generalization in Neural Networks.* NeurIPS 2018. [arXiv:1806.07572](https://arxiv.org/abs/1806.07572)
+
+<a id="ref11"></a>[11] L. Chizat, E. Oyallon, F. Bach. *On Lazy Training in Differentiable Programming.* NeurIPS 2019. [arXiv:1812.07956](https://arxiv.org/abs/1812.07956)
+
+<a id="ref12"></a>[12] S. Papa, R. Valperga, D. Knigge, M. Kofinas, P. Lippe, J.-J. Sonke, E. Gavves. *How to Train Neural Field Representations: A Comprehensive Study and Benchmark.* CVPR 2024. [arXiv:2312.10531](https://arxiv.org/abs/2312.10531)
+
+<a id="ref13"></a>[13] A. Shamsian, A. Navon, D. W. Zhang, Y. Zhang, E. Fetaya, G. Chechik, H. Maron. *Improved Generalization of Weight Space Networks via Augmentations.* ICML 2024. [arXiv:2402.04081](https://arxiv.org/abs/2402.04081)
+
+<a id="ref14"></a>[14] S. K. Ainsworth, J. Hayase, S. Srinivasa. *Git Re-Basin: Merging Models modulo Permutation Symmetries.* ICLR 2023. [arXiv:2209.04836](https://arxiv.org/abs/2209.04836)
+
+<a id="ref15"></a>[15] O. Puny, M. Atzmon, H. Ben-Hamu, I. Misra, A. Grover, E. J. Smith, Y. Lipman. *Frame Averaging for Invariant and Equivariant Network Design.* ICLR 2022. [arXiv:2110.03336](https://arxiv.org/abs/2110.03336)
+
+<a id="ref16"></a>[16] L. De Luigi, A. Cardace, R. Spezialetti, P. Z. Ramirez, S. Salti, L. Di Stefano. *Deep Learning on Implicit Neural Representations of Shapes.* ICLR 2023. [arXiv:2302.05438](https://arxiv.org/abs/2302.05438)
+
+The full curated bibliography (60 entries with delta memos, access-model taxonomy, and
+scoop-watch) is in [`docs/RELATED_WORK.md`](docs/RELATED_WORK.md).
+
+---
+
+## Citation
+
+```bibtex
+@misc{guven2026perceptiongap,
+  title  = {How Much of the Weight-Space Perception Gap Is Symmetry?
+            An Exact Decomposition for Periodic-Activation Networks},
+  author = {G\"uven, Mehmet Demir},
+  year   = {2026},
+  note   = {Department of Computer Science, ETH Z\"urich}
+}
+```
+
+License: [MIT](LICENSE). All computation: a single MacBook Air (M4), PyTorch MPS/CPU. No cloud.
