@@ -1,0 +1,263 @@
+=== cifar ladder start Wed Jul 29 11:46:09 +03 2026 ===
+--- rung P0 Wed Jul 29 11:46:09 +03 2026 ---
+=== rung P0 ===
+  P0 seed 0: test 55.88 (val 56.70, 29 ep)
+  P0 seed 1: test 56.19 (val 57.42, 38 ep)
+  P0 seed 2: test 56.14 (val 56.96, 29 ep)
+  P0 seed 3: test 55.40 (val 56.96, 20 ep)
+  P0 seed 4: test 55.43 (val 57.30, 30 ep)
+  -> results/ladder/cifar10/P0.json (55.81 mean over 5 seeds)
+--- rung P1 Wed Jul 29 11:49:09 +03 2026 ---
+=== rung P1 ===
+  P1 seed 0: test 56.27 (val 57.50, 56 ep)
+  P1 seed 1: test 56.93 (val 57.98, 64 ep)
+  P1 seed 2: test 55.72 (val 56.54, 23 ep)
+  P1 seed 3: test 56.41 (val 57.80, 51 ep)
+  P1 seed 4: test 55.81 (val 56.88, 26 ep)
+  -> results/ladder/cifar10/P1.json (56.23 mean over 5 seeds)
+--- rung W1 Wed Jul 29 11:53:56 +03 2026 ---
+=== rung W1 ===
+  W1 seed 0: test 44.46 (val 44.70, 13 ep)
+  W1 seed 1: test 44.47 (val 45.30, 12 ep)
+  W1 seed 2: test 44.55 (val 45.18, 12 ep)
+  W1 seed 3: test 44.17 (val 45.20, 12 ep)
+  W1 seed 4: test 43.79 (val 44.64, 13 ep)
+  W1 label-shuffle control: 11.02
+  -> results/ladder/cifar10/W1.json (44.29 mean over 5 seeds)
+--- rung W2 Wed Jul 29 11:55:23 +03 2026 ---
+=== rung W2 ===
+  W2 seed 0: test 44.53 (val 46.10, 13 ep)
+  W2 seed 1: test 45.46 (val 47.14, 12 ep)
+  W2 seed 2: test 45.14 (val 46.36, 12 ep)
+  W2 seed 3: test 45.48 (val 46.22, 12 ep)
+  W2 seed 4: test 45.33 (val 46.70, 12 ep)
+  -> results/ladder/cifar10/W2.json (45.19 mean over 5 seeds)
+--- rung W3 Wed Jul 29 11:56:43 +03 2026 ---
+=== rung W3 ===
+  W3 seed 0: test 12.79 (val 13.02, 13 ep)
+  W3 seed 1: test 12.17 (val 12.80, 12 ep)
+  W3 seed 2: test 13.35 (val 13.06, 13 ep)
+  W3 seed 3: test 12.05 (val 12.70, 16 ep)
+  W3 seed 4: test 12.86 (val 13.42, 13 ep)
+  W3 label-shuffle control: 10.08
+  -> results/ladder/cifar10/W3.json (12.64 mean over 5 seeds)
+--- rung W4 Wed Jul 29 11:58:35 +03 2026 ---
+=== rung W4 ===
+  W4 seed 0: test 16.08 (val 15.70, 13 ep)
+  W4 seed 1: test 15.43 (val 15.42, 13 ep)
+  W4 seed 2: test 16.02 (val 15.74, 13 ep)
+  W4 seed 3: test 16.41 (val 15.80, 12 ep)
+  W4 seed 4: test 16.31 (val 15.98, 13 ep)
+  -> results/ladder/cifar10/W4.json (16.05 mean over 5 seeds)
+--- rung W5 Wed Jul 29 12:00:01 +03 2026 ---
+=== rung W5 ===
+  W5 seed 0: test 22.83 (val 21.92, 11 ep)
+  W5 seed 1: test 22.97 (val 22.40, 12 ep)
+  W5 seed 2: test 23.59 (val 22.52, 12 ep)
+  W5 seed 3: test 23.03 (val 22.66, 12 ep)
+  W5 seed 4: test 22.16 (val 22.06, 12 ep)
+  W5 label-shuffle control: 10.20
+  -> results/ladder/cifar10/W5.json (22.92 mean over 5 seeds)
+--- rung W10 Wed Jul 29 12:02:01 +03 2026 ---
+=== rung W10 ===
+  W10 seed 0: test 29.59 (val 30.28, 13 ep)
+  W10 seed 1: test 29.75 (val 30.34, 12 ep)
+  W10 seed 2: test 29.27 (val 30.12, 13 ep)
+  W10 seed 3: test 29.29 (val 29.72, 13 ep)
+  W10 seed 4: test 29.82 (val 30.52, 14 ep)
+  -> results/ladder/cifar10/W10.json (29.54 mean over 5 seeds)
+--- rung W9 Wed Jul 29 12:03:21 +03 2026 ---
+=== rung W9 ===
+  W9 seed 0: test 12.92 (val 13.56, 13 ep)
+  W9 seed 1: test 12.80 (val 14.12, 12 ep)
+  W9 seed 2: test 11.95 (val 13.02, 11 ep)
+  W9 seed 3: test 12.90 (val 13.10, 12 ep)
+  W9 seed 4: test 12.84 (val 13.76, 12 ep)
+  -> results/ladder/cifar10/W9.json (12.68 mean over 5 seeds)
+--- rung X1 Wed Jul 29 12:04:48 +03 2026 ---
+=== rung X1 ===
+  X1 seed 0: test 44.46 (val 44.70, 13 ep)
+  X1 seed 1: test 44.47 (val 45.30, 12 ep)
+  X1 seed 2: test 44.55 (val 45.18, 12 ep)
+  X1 seed 3: test 44.17 (val 45.20, 12 ep)
+  X1 seed 4: test 43.79 (val 44.64, 13 ep)
+  X1-rev seed 0: test 12.79 (val 13.02, 13 ep)
+  X1-rev seed 1: test 12.17 (val 12.80, 12 ep)
+  X1-rev seed 2: test 13.35 (val 13.06, 13 ep)
+  X1-rev seed 3: test 12.05 (val 12.70, 16 ep)
+  X1-rev seed 4: test 12.86 (val 13.42, 13 ep)
+  -> results/ladder/cifar10/X1.json (44.29 mean over 5 seeds)
+--- rung W6 Wed Jul 29 12:07:13 +03 2026 ---
+=== rung W6 ===
+  W6 seed 0: test 16.47 (val 16.54, 28 ep)
+  W6 seed 1: test 16.81 (val 17.18, 39 ep)
+  W6 seed 2: test 16.46 (val 16.98, 32 ep)
+  W6 seed 3: test 16.85 (val 17.18, 45 ep)
+  W6 seed 4: test 16.91 (val 17.00, 34 ep)
+  W6 seed 5: test 15.80 (val 16.76, 21 ep)
+  W6 seed 6: test 16.46 (val 16.90, 33 ep)
+  W6 seed 7: test 15.97 (val 16.38, 24 ep)
+  W6 seed 8: test 17.07 (val 17.20, 35 ep)
+  W6 seed 9: test 16.49 (val 16.86, 30 ep)
+  W6 seed 10: test 17.14 (val 17.60, 49 ep)
+  W6 seed 11: test 16.43 (val 16.68, 27 ep)
+  W6 seed 12: test 15.53 (val 16.84, 22 ep)
+  W6 seed 13: test 16.90 (val 16.90, 43 ep)
+  W6 seed 14: test 17.24 (val 17.42, 60 ep)
+  -> results/ladder/cifar10/W6.json (16.57 mean over 15 seeds)
+--- rung W8 Wed Jul 29 12:15:27 +03 2026 ---
+=== rung W8 ===
+  W8 seed 0: test 10.97 (val 11.24, 26 ep)
+  W8 seed 1: test 10.64 (val 11.28, 22 ep)
+  W8 seed 2: test 10.10 (val 10.96, 24 ep)
+  W8 seed 3: test 10.71 (val 11.30, 26 ep)
+  W8 seed 4: test 12.13 (val 12.78, 57 ep)
+  W8 seed 5: test 10.53 (val 10.90, 30 ep)
+  W8 seed 6: test 11.14 (val 11.32, 30 ep)
+  W8 seed 7: test 10.45 (val 10.68, 11 ep)
+  W8 seed 8: test 10.23 (val 10.88, 11 ep)
+  W8 seed 9: test 10.01 (val 10.62, 13 ep)
+  W8 seed 10: test 10.55 (val 11.82, 22 ep)
+  W8 seed 11: test 10.36 (val 10.80, 15 ep)
+  W8 seed 12: test 10.43 (val 10.90, 15 ep)
+  W8 seed 13: test 10.40 (val 10.82, 11 ep)
+  W8 seed 14: test 11.05 (val 11.02, 13 ep)
+  -> results/ladder/cifar10/W8.json (10.65 mean over 15 seeds)
+--- rung W7-1/8 Wed Jul 29 12:21:34 +03 2026 ---
+=== rung W7-1/8 ===
+  W7-1/8 seed 0: test 13.67 (val 13.70, 13 ep)
+  W7-1/8 seed 1: test 12.51 (val 13.16, 15 ep)
+  W7-1/8 seed 2: test 12.66 (val 13.22, 11 ep)
+  W7-1/8 seed 3: test 12.10 (val 12.68, 12 ep)
+  W7-1/8 seed 4: test 12.80 (val 12.92, 13 ep)
+  -> results/ladder/cifar10/W7-1-8.json (12.75 mean over 5 seeds)
+--- rung W7 Wed Jul 29 12:23:19 +03 2026 ---
+=== rung W7 ===
+  W7 seed 0: test 15.72 (val 16.10, 12 ep)
+  W7 seed 1: test 15.47 (val 16.14, 13 ep)
+  W7 seed 2: test 16.47 (val 15.92, 12 ep)
+  W7 seed 3: test 15.97 (val 15.86, 12 ep)
+  W7 seed 4: test 15.66 (val 15.54, 12 ep)
+  -> results/ladder/cifar10/W7.json (15.86 mean over 5 seeds)
+--- analysis Wed Jul 29 12:32:39 +03 2026 ---
+{
+  "means": {
+    "P0": 55.80799999999999,
+    "P1": 56.227999999999994,
+    "W1": 44.288000000000004,
+    "W10": 29.544,
+    "W2": 45.188,
+    "W3": 12.644,
+    "W4": 16.05,
+    "W5": 22.916,
+    "W6": 16.56866666666667,
+    "W7": 15.857999999999999,
+    "W7-1/8": 12.748000000000001,
+    "W8": 10.646666666666668,
+    "W9": 12.681999999999999,
+    "X1": 44.288000000000004
+  },
+  "recovery_fractions": {
+    "f_W4": {
+      "point": 0.10753453615112651,
+      "ci95": [
+        0.09443135259648192,
+        0.12299810349647926
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "f_W5": {
+      "point": 0.32442235106093853,
+      "ci95": [
+        0.3106842887255575,
+        0.33612439103935776
+      ],
+      "n": 5,
+      "interval_hit": false
+    },
+    "f_W6": {
+      "point": 0.12798229370116238,
+      "ci95": [
+        0.11177800144575603,
+        0.14342530773567796
+      ],
+      "n": 5,
+      "interval_hit": false
+    },
+    "f_W7": {
+      "point": 0.10145061950578885,
+      "ci95": [
+        0.09321742945839284,
+        0.11176424055347825
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "f_W9": {
+      "point": 0.0009108643045862567,
+      "ci95": [
+        -0.022201181916424534,
+        0.01920812890507511
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "f_W10": {
+      "point": 0.5340143036245948,
+      "ci95": [
+        0.5211024306763162,
+        0.5443904053563843
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "registered_f_W4": {
+      "point": 0.17,
+      "lo80": 0.08,
+      "hi80": 0.3
+    },
+    "registered_f_W5": {
+      "point": 0.62,
+      "lo80": 0.42,
+      "hi80": 0.78
+    },
+    "registered_f_W6": {
+      "point": 0.04,
+      "lo80": -0.02,
+      "hi80": 0.12
+    },
+    "registered_f_W7": {
+      "point": 0.04,
+      "lo80": -0.02,
+      "hi80": 0.12
+    },
+    "registered_f_W9": {
+      "point": 0.0,
+      "lo80": -0.03,
+      "hi80": 0.05
+    },
+    "registered_f_W10": {
+      "point": 0.38,
+      "lo80": 0.12,
+      "hi80": 0.62
+    }
+  }
+}
+
+registration: docs/prereg/S1-cifar.md (f7906fc6904c7c81), rows H-C1-*
+H-S1-1: obs +0.42 vs registered -0.40 [-2.0, 0.6] -> HIT, holm p=0.16
+H-S1-2: obs -11.94 vs registered -12.00 [-22.0, -5.0] -> HIT, holm p=2.8e-06
+H-S1-3: obs -0.90 vs registered -0.70 [-2.5, 1.0] -> HIT, holm p=0.074
+H-S1-4a: obs +31.64 vs registered +27.00 [14.0, 41.0] -> HIT, holm p=1.4e-07
+H-S1-5: obs -0.84 vs registered +0.00 [-2.0, 2.0] -> HIT, holm p=0.074
+H-S1-6: W10 29.54, interval [16.05, 22.916], outside by 6.63 -> MISS
+f_W4: 0.108 [0.09443135259648192, 0.12299810349647926] -> HIT
+f_W5: 0.324 [0.3106842887255575, 0.33612439103935776] -> MISS
+f_W6: 0.128 [0.11177800144575603, 0.14342530773567796] -> MISS
+f_W7: 0.101 [0.09321742945839284, 0.11176424055347825] -> HIT
+f_W9: 0.001 [-0.022201181916424534, 0.01920812890507511] -> HIT
+f_W10: 0.534 [0.5211024306763162, 0.5443904053563843] -> HIT
+
+written results/ladder/cifar10/S1_analysis.json and F9_waterfall.png
+=== cifar ladder complete Wed Jul 29 12:32:40 +03 2026 ===

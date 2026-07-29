@@ -1,14 +1,14 @@
 \begin{table}[t]
 \centering\small
-\caption{\textbf{The gap, and what survives an exact reframing.} The perception gap W1$-$W3 shrinks in absolute terms with the task ceiling, but the fraction an exact, function-preserving change of frame removes does not.}
+\caption{\textbf{The gap, and what an exact treatment of the group removes.} The perception gap W1$-$W3 shrinks in absolute terms with the task ceiling. The best \emph{exact}, function-preserving rung (W4, W5 or W10 --- the winner changes) is a certified lower bound on the symmetry-attributable share, so the last column is an \emph{upper} bound on what is not symmetry, not a measurement of it (Proposition~\ref{prop:bound}).}
 \label{tab:gap}
-\begin{tabular}{@{}lrrrrr@{}}
+\begin{tabular}{@{}lrrlrr@{}}
 \toprule
-dataset & ceiling P0 & gap W1$-$W3 & removed by $\calign$ & residual & residual share \\
+dataset & ceiling P0 & gap W1$-$W3 & best exact rung & removed & residual $\le$ \\
 \midrule
-MNIST & 97.97 & 80.43 & 50.49 & 29.95 & 37.2\% \\
-FashionMNIST & 89.62 & 70.31 & 46.69 & 23.63 & 33.6\% \\
-CIFAR-10 & 55.81 & 31.64 & 10.27 & 21.37 & 67.5\% \\
+MNIST & 97.97 & 80.43 & W5 $\calign$ & 50.49 & 37.2\% \\
+FashionMNIST & 89.62 & 70.31 & W5 $\calign$ & 46.69 & 33.6\% \\
+CIFAR-10 & 55.81 & 31.64 & W10 invariants & 16.90 & 46.6\% \\
 \bottomrule
 \end{tabular}
 \end{table}

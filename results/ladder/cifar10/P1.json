@@ -1,0 +1,30 @@
+{
+  "rung": "P1",
+  "notes": "oracle render of the fitted INR",
+  "feature_dim": 3072,
+  "n_train_rows": 45000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    56.27,
+    56.93,
+    55.72,
+    56.41,
+    55.81
+  ],
+  "mean": 56.227999999999994,
+  "ci95_bootstrap": [
+    55.86600000000001,
+    56.602
+  ],
+  "epochs_ran": [
+    56,
+    64,
+    23,
+    51,
+    26
+  ],
+  "wallclock_s": 266.90474700927734,
+  "linear_probe": 34.89,
+  "knn10_cosine": 42.33
+}

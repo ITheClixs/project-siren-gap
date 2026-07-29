@@ -1,0 +1,30 @@
+{
+  "rung": "W4",
+  "notes": "c_sort canonicalization",
+  "feature_dim": 1251,
+  "n_train_rows": 45000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    16.08,
+    15.43,
+    16.02,
+    16.41,
+    16.31
+  ],
+  "mean": 16.05,
+  "ci95_bootstrap": [
+    15.724,
+    16.311999999999998
+  ],
+  "epochs_ran": [
+    13,
+    13,
+    13,
+    12,
+    13
+  ],
+  "wallclock_s": 76.57413291931152,
+  "linear_probe": 12.69,
+  "knn10_cosine": 9.610000000000001
+}

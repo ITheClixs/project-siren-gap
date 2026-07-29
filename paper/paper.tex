@@ -89,9 +89,9 @@ finite family of \emph{exact} invariants for two-layer sine networks by coupling
 through the second-layer Gram matrix, closing a gap that per-neuron constructions leave open.
 Against this theory we run a pre-registered decomposition ladder on $1.84$M fitted INRs across
 MNIST, FashionMNIST and CIFAR-10. Exact, function-preserving reframing recovers $63\%$, $66\%$
-and $53\%$ of the gap; group augmentation, $K$-marginalization and frame averaging recover under
-$6\%$ everywhere. The gap is therefore largely --- but not wholly --- symmetry, and the standard
-treatments for it do essentially nothing. Two registered predictions failed informatively:
+and $53\%$ of the gap; group augmentation, $K$-marginalization and frame averaging never exceed
+$13\%$ and are under $6\%$ on the grayscale corpora. The gap is therefore largely --- but not
+wholly --- symmetry, and the standard treatments for it do essentially nothing. Two registered predictions failed informatively:
 alignment recovered six times more than forecast on grayscale, forcing a public rewrite of our own
 claim, and then only half as much on natural images. The two exact methods \emph{cross over} ---
 alignment dominates on grayscale, the invariant encoding on RGB --- a reversal our
@@ -162,12 +162,15 @@ computed; scored publicly, misses included.
 \paragraph{Headline result.} Transformations that change no network's function at all --- exact
 elements of $\Dinf \wr S_n$, applied either as an alignment to a fixed reference network or as an
 exact invariant encoding --- recover $63\%$, $66\%$ and $53\%$ of the perception gap on MNIST,
-FashionMNIST and CIFAR-10. The rest survives a provably function-preserving reframing and is
-therefore \emph{not} symmetry. Meanwhile the interventions the literature most often reaches for
+FashionMNIST and CIFAR-10. Because these transformations are exact, whatever they buy is provably
+reframing rather than added information, so those numbers are \emph{certified lower bounds} on the
+symmetry-attributable share of the gap, and the complements are upper bounds on what is not
+symmetry (\S\ref{sec:bounds}). Meanwhile the interventions the literature most often reaches for
 --- augmenting by group elements \citep{shamsian2024augmentations}, marginalizing over refits,
-averaging over a frame \citep{puny2022frame} --- each recover less than $6\%$ on every dataset.
-The gap is largely symmetry; symmetry is largely not being removed by the usual tools; and
-\emph{which} exact method wins changes with the signal (\S\ref{sec:crossover}).
+averaging over a frame \citep{puny2022frame} --- never exceed $13\%$ on any dataset and stay under
+$6\%$ on both grayscale ones. The gap is largely symmetry; symmetry is largely not being removed
+by the usual tools; and \emph{which} exact method wins changes with the signal
+(\S\ref{sec:crossover}).
 
 % =====================================================================================
 \section{Setting and the symmetry group}\label{sec:group}
@@ -280,6 +283,15 @@ impossible. In the vocabulary of maximal symmetry groups, $\Dinf\wr S_n$ is a ma
 group of the $L=1$ sine architecture. The result is \emph{non-asymptotic}: the only hypothesis is
 membership in $\Thgen$, an explicit and measurable condition.
 
+Theorem~\ref{thm:po2} is the periodic-activation entry in a classical line: permutation and sign
+for odd activations \citep{hechtnielsen1990algebraic}, uniqueness for minimal tanh networks
+\citep{sussmann1992uniqueness}, functional equivalence more generally
+\citep{kurkova1994functionally}, and reconstruction of sigmoid networks from their output via pole
+structure \citep{fefferman1994reconstructing} --- of which our Fourier-atom argument is the
+periodic analogue. What is new here is the \emph{phase} component: none of those groups contains a
+continuous family of bias shifts, and it is the $\tau$-circle that makes canonicalization globally
+obstructed (Proposition~\ref{prop:po5}) rather than obstructed only at ties.
+
 \begin{proposition}[No continuous canonicalization]\label{prop:po5}
 There is no continuous $\kappa : \Thgen \to \Thgen$ with $\kappa(\theta) \in \Orb(\theta)$ and
 $\kappa(g\theta) = \kappa(\theta)$ for all $g \in \langle\sigma,\rho,\tau\rangle$. One hidden
@@ -368,7 +380,8 @@ at $L \ge 3$ is open (\S\ref{sec:limits}).
 % =====================================================================================
 
 A decomposition needs corpora that differ in \emph{exactly} the nuisance under study. We fit one
-SIREN per image ($L=2$, width $32$, $\omega_0$ absorbed) under four protocols that intervene on
+SIREN per image of MNIST \citep{lecun1998mnist}, FashionMNIST \citep{xiao2017fashion} and CIFAR-10
+\citep{krizhevsky2009cifar} ($L=2$, width $32$, $\omega_0$ absorbed) under four protocols that intervene on
 the arguments of the fit map $F : (y, \theta_0, \xi) \mapsto \theta_T$, where $y$ is the target
 signal, $\theta_0$ the initialization and $\xi$ the optimization noise:
 
@@ -496,22 +509,31 @@ attributable to the initialization, not to the trajectory.
 $f(\mathrm{W5}) = 0.628$ (MNIST) and $0.664$ (FashionMNIST). We had registered $0.10$, with an
 $80\%$ interval reaching only to $0.30$, and a pre-committed rule stating that $f > 0.5$ falsifies
 the ``canonicalization is not enough'' claim and requires it to be \emph{rewritten, not softened}.
-It fired, and the restatement was: the gap decomposes into roughly $63\%$ symmetry-orbit scatter,
-removable by an exact and function-preserving reframing, plus a residual that no canonicalization
-can touch because $\calign$ changes no network's function.
+It fired, and the restatement was: at least $63\%$ of the gap is symmetry-orbit scatter, removable
+by an exact and function-preserving reframing.
 
 We then registered that restatement as a prediction for CIFAR-10 --- $f(\mathrm{W5}) = 0.62$,
 $80\%$ $[0.42, 0.78]$, with an explicit falsifier at $f < 0.30$ --- and it missed in the other
 direction: $f(\mathrm{W5}) = \mathbf{0.325}$, just clear of the falsification line. The two-thirds
 figure is a property of the grayscale corpora, not a law. What survives on all three datasets is
 the weaker and still substantial claim that \emph{an exact change of frame recovers between a
-third and two thirds of the gap, while every inexact treatment recovers under $6\%$}.
+third and two thirds of the gap, while no inexact treatment exceeds an eighth of it}.
 
 \paragraph{The 0.11-to-0.63 span is canonicalizer quality, not information.} Template-free
 sorting recovers $f = 0.177 / 0.170 / 0.108$; aligning to a fixed reference network recovers
 $0.628 / 0.664 / 0.325$. Both are exact elements of $G$; the difference is entirely which orbit
 representative is chosen. The practical message for architecture designers is that the ceiling on
 frame choice is high and current template-free canonicalization is nowhere near it.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.62\textwidth]{figures/fig4_template.pdf}
+\caption{\textbf{Alignment buys a consistent frame, not privileged knowledge.} $f(\mathrm{W5})$ on
+MNIST under five alignment templates. An \emph{unrelated} random initialization does marginally
+better than the corpus's own $\theta_0$, and every template clears the pre-registered
+falsification line at $0.5$. Exploratory, watermarked as such in the results.}
+\label{fig:template}
+\end{figure}
 
 \paragraph{The alignment template does not matter} (Fig.~\ref{fig:template}). A natural objection
 is that $\theta_0$ exists only because we built the corpus with a known shared initialization.
@@ -523,15 +545,72 @@ reference network supplies one. A secondary observation, unregistered: fitted IN
 a fitted network's neurons are specialized to its own image. The practical design note is to
 align to a random fixed network, never to a corpus member.
 
-\paragraph{The tools the field reaches for do not work.} Bounded group augmentation recovers
-$f = 0.054$ (MNIST) / $0.032$ (FMNIST); $K$-marginalization $0.048$ / $0.034$; frame averaging
-$0.003$ / $-0.008$. We had registered that marginalization would beat augmentation by
-$15$ points; the observed difference is $-0.52$ points ($p = .21$) because \emph{neither} works.
-Of W7's small gain, $+3.2$ points is explained by its $8\times$ training rows alone (W7-1/8
-control). And W8 --- canonicalize, then augment --- collapses to chance ($10.27$): augmenting
-inside a canonical frame destroys the frame the decoder just gained. Frame averaging's failure is
-the expected one: parity-odd coordinates cancel toward zero, so it is a lossy invariantization
-where W10 is an exact one.
+\input{tables/gap_table}
+
+\paragraph{The tools the field reaches for do not work.} Across MNIST / FashionMNIST / CIFAR-10:
+bounded group augmentation recovers $f = 0.054 / 0.032 / 0.128$; $K$-marginalization
+$0.048 / 0.034 / 0.101$; frame averaging $0.003 / -0.008 / 0.001$. The largest of these
+anywhere is $0.128$, against $0.534$ for the best exact treatment on the same corpus. We had
+registered that marginalization would beat augmentation by $15$ points on MNIST; the observed
+difference was $-0.52$ ($p = .21$) because \emph{neither} works, and the null replicates on both
+later datasets ($+0.16$, $-0.84$; registered $0.0\,[-2,+2]$ for CIFAR-10 and hit). Of W7's small
+gain, $+3.2$ points on MNIST and $+3.1$ on CIFAR-10 is explained by its $8\times$ training rows
+alone (the W7-1/8 control). And W8 --- canonicalize, then augment --- collapses to chance on all
+three ($10.27 / 10.20 / 10.65$): augmenting inside a canonical frame destroys the frame the
+decoder just gained. Frame averaging's failure is the expected one: parity-odd coordinates cancel
+toward zero, so it is a lossy invariantization where W10 is an exact one.
+
+The one place augmentation looks better is CIFAR-10, where its $0.128$ edges past $\csort$'s
+$0.108$ and past its own registered ceiling of $0.12$. We record it as a miss (H-C1-9) rather
+than round it away, but it does not change the ranking: an inexact treatment recovering an eighth
+of the gap where an exact one recovers a half is still the wrong tool.
+
+% =====================================================================================
+\section{What the ladder does and does not prove}\label{sec:bounds}
+% =====================================================================================
+
+It is worth being exact about the logical status of the recovery fractions, because the obvious
+reading of them is too strong.
+
+\begin{proposition}[Certified lower bound]\label{prop:bound}
+Let $c : \Theta \to \Theta$ satisfy $c(\theta) \in G\theta$ for every $\theta$ --- an
+\emph{exact} reframing, not necessarily a canonical one --- and let a fixed decoder score
+$\mathrm{W3}$ on raw parameters and $\mathrm{W}k$ on $c(\theta)$. Then $f(\mathrm{W}k)$ is a lower
+bound on the share of the gap attributable to the $G$-action.
+\end{proposition}
+
+\begin{proof}
+$c$ moves each parameter vector inside its own $G$-orbit, so $f_{c(\theta)} = f_\theta$ for all
+$\theta$: no function, and hence no information about the underlying signal, is created. Any
+accuracy the decoder gains is therefore attributable to the change of orbit representative alone.
+The bound is not tight because $c$ need not be canonical --- two parameter vectors in the same
+orbit may be sent to different representatives --- so a better exact reframing can only increase
+$f$.
+\end{proof}
+
+Two consequences, both of which we obey throughout.
+
+\emph{The recovered share is certified; the residual is not.} $f(\mathrm{W5}) = 0.628$ on MNIST
+means \emph{at least} $63\%$ of that gap is symmetry. It does \emph{not} follow that the other
+$37\%$ is basin multiplicity: a better choice of representative could claim part of it. What the
+residual bounds is the sum of (imperfect frame choice) $+$ (genuine non-group difference), and the
+program's own history is the cautionary example --- we improved the frame once, from $\csort$ to
+$\calign$, and the ``residual'' fell from $82\%$ to $37\%$.
+
+\emph{The invariant rung needs one extra caveat.} Proposition~\ref{prop:bound} is stated for
+reframings $c(\theta) \in G\theta$, which is what W4 and W5 are: a relabelling of the same
+coordinates, computing no new features. W10 is a $G$-invariant \emph{encoding}, so it likewise
+depends only on the orbit and creates no information about the signal --- but it is also a
+\emph{nonlinear} feature map (it contains $w \otimes w$, $(\sin b)u$, eigenvalue spectra), and a
+plain MLP on raw parameters cannot cheaply compute those. Part of W10's gain may therefore be
+feature engineering rather than group removal, and we do not claim its $0.534$ on CIFAR-10 as a
+certificate of the same strength as $\calign$'s $0.325$. Disentangling the two would need a
+non-invariant control with the same nonlinearities, which we have not run.
+
+Proposition~\ref{prop:po5} says no continuous exact canonicalizer exists at all, so closing the
+distance between the observed $f$ and the true symmetry share is a question about
+\emph{discontinuous} constructions and their sample efficiency, not about whether the information
+is there.
 
 % =====================================================================================
 \section{The crossover: alignment and invariance trade places}\label{sec:crossover}
@@ -559,6 +638,32 @@ structure than the $c = 1$ case, so the invariants built from it have more to se
 encoding grows from $D = 320$ to $D = 384$). That call resolved correctly. The companion call ---
 that the grayscale ordering $f(\mathrm{W5}) > f(\mathrm{W10})$ would persist, $P = 0.65$ ---
 resolved incorrectly, and the crossover is the reason.
+
+\paragraph{The registered mechanism is real but small (ablation).} P-C1-B attributed W10's rise to
+the three output channels. We can test that \emph{within} the CIFAR corpus, without new fitting,
+by changing only what the encoder is allowed to read (exploratory, not registered):
+
+\begin{center}\small
+\begin{tabular}{@{}llrr@{}}
+\toprule
+arm & what the encoder reads & $D$ & $f(\mathrm{W10})$ \\
+\midrule
+full        & all three output channels                & 384 & 0.534 \\
+truncated   & output channel 0 only                    & 320 & 0.457 \\
+averaged    & the three channels' mean                 & 320 & 0.425 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Truncating to one channel --- which restores exactly the grayscale encoding dimension --- costs
+only $0.077$. Against the $0.265$ rise from MNIST's $0.269$ to CIFAR's $0.534$, the channel count
+therefore explains about $29\%$; the other $71\%$ survives at $D = 320$ and is a property of the
+corpus, not of $c$. Our registered mechanism was right in direction and wrong in magnitude, and we
+say so rather than let the correct sign carry the whole explanation. (The \emph{averaged} arm is
+the useful control: it has the same dimension as \emph{truncated} and strictly more of the
+network's information, yet does \emph{worse}, so the effect is not ``more feature dimensions'' and
+not ``more information'' --- channel-averaging cancels the per-channel sign structure that
+$(\sin b_i)u_i$ exists to carry.)
 
 \paragraph{It is not that CIFAR's fits ran further.} The obvious confound is fit length: the
 CIFAR corpora were frozen at $1000$ steps against $300$ for the grayscale ones, and a fit that
@@ -705,6 +810,17 @@ sine instance. \citet{lim2024empirical} remove symmetries by \emph{architecture}
 by canonicalization on a fixed architecture, which is the complementary intervention and the one
 that leaves the function untouched.
 
+\paragraph{Concurrent 2026 work.} Three preprints bear directly on results here and are cited by
+identifier, since our engagement with them is through the close-read memos released with this code
+rather than through published versions: arXiv:2602.01083 proves approximation-theoretic
+universality for permutation-invariant weight-space networks, of which
+Proposition~\ref{prop:po6} is the exact, identifiability-based counterpart for the full sine
+group; arXiv:2604.23720 supplies the maximal-symmetry-group vocabulary in which
+Theorem~\ref{thm:po2} is stated; and arXiv:2605.08281 reports that in a meta-learned regime the
+bias column is a causal readout route while weight-space geometry does not predict reader accuracy
+--- a dissociation adversarial to the mechanism of \S\ref{sec:mechanism}, and named as such in our
+pre-registrations rather than discovered afterwards.
+
 \paragraph{INR corpora and the shared-initialization question.} inr2vec \citep{deluigi2023inr2vec}
 relies on shared-initialization corpora; \citet{papa2024howtotrain} intervene on fit
 hyperparameters and observe downstream deltas across a large benchmark. Their shared-versus-random
@@ -750,11 +866,12 @@ $O(n^3)$ per layer and an amortized or Sinkhorn path is required before this sca
 The weight-space perception gap is mostly, but not entirely, symmetry. For periodic-activation
 networks the responsible group is $\Dinf\wr S_n$ --- exactly, provably, and maximally at one
 hidden layer --- and the best exact, function-preserving treatment of it recovers $63\%$, $66\%$
-and $53\%$ of the gap on MNIST, FashionMNIST and CIFAR-10. What is left survives a transformation
-that provably changes no network's function, so it is a property of where independent fits land,
-not of how their coordinates are written. The tools the field most often applies to this problem
---- group augmentation, marginalization over refits, frame averaging --- each recover under $6\%$
-on every dataset.
+and $53\%$ of the gap on MNIST, FashionMNIST and CIFAR-10. Because those transformations preserve
+every network's function exactly, the numbers are certified lower bounds on the symmetry share,
+and their complements bound how much of the gap is instead a property of \emph{where independent
+fits land}. The tools the field most often applies to this problem
+--- group augmentation, marginalization over refits, frame averaging --- never exceed $13\%$ on
+any dataset, and stay under $6\%$ on both grayscale ones.
 
 Two things we did not expect, and would not have found without registering our expectations first.
 The symmetry-removable share is \emph{not} a constant: alignment to a fixed reference network

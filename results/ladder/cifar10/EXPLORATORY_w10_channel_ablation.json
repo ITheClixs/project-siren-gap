@@ -1,0 +1,76 @@
+{
+  "status": "EXPLORATORY \u2014 not pre-registered, not confirmatory evidence",
+  "question": "is W10's CIFAR advantage the c=3 output channels, or the images?",
+  "dataset": "cifar10",
+  "W1": 44.288000000000004,
+  "W3": 12.644,
+  "seeds": 5,
+  "arms": {
+    "full_c3": {
+      "feature_dim": 384,
+      "acc": [
+        29.59,
+        29.75,
+        29.27,
+        29.29,
+        29.82
+      ],
+      "mean": 29.544,
+      "ci95_bootstrap": [
+        29.342000000000002,
+        29.746
+      ],
+      "recovery_fraction": 0.5340143036245948,
+      "f_ci95": [
+        0.5211024306763162,
+        0.5443904053563843
+      ],
+      "linear_probe": 26.57,
+      "wallclock_s": 52.95429515838623
+    },
+    "truncated_c1": {
+      "feature_dim": 320,
+      "acc": [
+        26.97,
+        27.53,
+        27.38,
+        27.01,
+        26.67
+      ],
+      "mean": 27.112000000000002,
+      "ci95_bootstrap": [
+        26.858000000000004,
+        27.387999999999998
+      ],
+      "recovery_fraction": 0.457041825860348,
+      "f_ci95": [
+        0.44762966615553096,
+        0.46777417810844996
+      ],
+      "linear_probe": 24.23,
+      "wallclock_s": 45.09595489501953
+    },
+    "averaged_c1": {
+      "feature_dim": 320,
+      "acc": [
+        26.21,
+        25.49,
+        26.62,
+        26.22,
+        25.97
+      ],
+      "mean": 26.101999999999997,
+      "ci95_bootstrap": [
+        25.778,
+        26.410000000000004
+      ],
+      "recovery_fraction": 0.4252935538797929,
+      "f_ci95": [
+        0.4172434169136106,
+        0.4342390260577151
+      ],
+      "linear_probe": 22.98,
+      "wallclock_s": 46.29817509651184
+    }
+  }
+}

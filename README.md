@@ -26,9 +26,13 @@ second-layer Gram matrix — closing a gap that per-neuron constructions leave o
 theory we run a pre-registered decomposition ladder on ~1.8M fitted INRs across MNIST,
 FashionMNIST and CIFAR-10.
 
-**An exact, function-preserving change of frame recovers ~63% of the gap.** Group augmentation,
-$K$-marginalization and frame averaging each recover under 6%. The residual third *provably* is
-not symmetry.
+**Exact, function-preserving reframing recovers 63%, 66% and 53% of the gap** on the three
+datasets. Because the transformations preserve every network's function exactly, those are
+*certified lower bounds* on the symmetry-attributable share. Group augmentation,
+$K$-marginalization and frame averaging recover a small fraction of that everywhere. And the two
+exact methods **cross over**: alignment to a fixed reference dominates on grayscale (0.63, 0.66)
+and collapses on natural RGB (0.33), while the exact invariant encoding does the reverse (0.27,
+0.43, 0.53) — a reversal the pre-registration predicted from the encoding's algebra.
 
 ---
 
@@ -223,13 +227,13 @@ from W3 to W1 is the gap. (b) The recovery fraction, in which the task ceiling c
 | W2 | raw weights, shared init + SGD noise | 95.04 | — | 83.67 | — | 45.19 | — |
 | **W3** | raw weights, **random init** | 13.92 | — | 12.66 | — | 12.64 | — |
 | W4 † | $c_\text{sort}$ — exact, template-free | 28.19 | 0.177 | 24.61 | 0.170 | 16.05 | 0.108 |
-| **W5** † | $c_\text{align}$ — exact, aligned to $\theta_0$ | 64.41 | 0.628 | 59.34 | 0.664 | 22.92 | 0.325 |
+| **W5** † | $c_\text{align}$ — exact, aligned to $\theta_0$ | 64.41 | 0.628 | 59.34 | 0.664 | 22.92 | 0.324 |
 | W10 † | exact $L{=}2$ invariants | 35.54 | 0.269 | 42.77 | 0.428 | 29.54 | 0.534 |
-| W6 † | bounded group augmentation | 18.12 | 0.054 | 14.86 | 0.032 | 16.57 | 0.124 |
-| W7 † | $K$-marginalization ($K{=}8$) | 17.75 | 0.048 | 15.05 | 0.034 | — | — |
-| W7-1/8 † | *control:* $K$ corpus, rows matched | 14.59 | 0.008 | 13.20 | 0.008 | — | — |
+| W6 † | bounded group augmentation | 18.12 | 0.054 | 14.86 | 0.032 | 16.57 | 0.128 |
+| W7 † | $K$-marginalization ($K{=}8$) | 17.75 | 0.048 | 15.05 | 0.034 | 15.86 | 0.101 |
+| W7-1/8 † | *control:* $K$ corpus, rows matched | 14.59 | 0.008 | 13.20 | 0.008 | 12.75 | 0.003 |
 | W9 † | frame averaging, $R{=}64$ | 14.13 | 0.003 | 12.12 | -0.008 | 12.68 | 0.001 |
-| W8 † | canonicalize, then augment | 10.27 | -0.045 | 10.20 | -0.035 | — | — |
+| W8 † | canonicalize, then augment | 10.27 | -0.045 | 10.20 | -0.035 | 10.65 | -0.063 |
 
 † acts on the random-init corpus. W4, W5, W10 are **exactly** function-preserving. Chance = 10.
 <!-- LADDER_TABLE:END -->
@@ -243,31 +247,101 @@ of frame — and W5 rescues it by 50 points. **X1** settles it further: a decode
 features scores **10.7** on W3 features and 13.2 in reverse — chance. The two protocols are not
 differently-scaled versions of one representation.
 
-### Optimization noise is null
+### Optimization noise is null on all three datasets
 
-W1 − W2 = **−0.68** (MNIST), **−0.70** (FashionMNIST). Stochastic fitting from a shared init is, if
-anything, marginally *better*. We had registered +2.0 pts [0, 6] and were wrong. **The entire gap
-is attributable to the initialization, not the trajectory.**
+W1 − W2 = **−0.68** (MNIST), **−0.70** (FashionMNIST), **−0.90** (CIFAR-10). Stochastic fitting
+from a shared init is, if anything, marginally *better*. We had registered +2.0 pts [0, 6] on
+MNIST and were wrong; having learned that, we registered −0.7 [−2.5, +1.0] for CIFAR-10 and hit.
+**The gap is attributable to the initialization, not the trajectory.**
 
-### Two thirds of the gap is symmetry
+### Most of the gap is symmetry — but the share is not a constant
 
 $f(\mathrm{W5}) = 0.628$ (MNIST), $0.664$ (FashionMNIST). We had registered **0.10**, with an 80%
 interval reaching only to 0.30, and a pre-committed rule stating that $f>0.5$ falsifies the
 "canonicalization is not enough" claim and requires it to be **rewritten, not softened**. It fired.
 
-The honest restatement is a better result than the registered one:
+We then registered that restatement as a prediction for CIFAR-10 — $f = 0.62$, 80% [0.42, 0.78],
+with an explicit falsifier at $f<0.30$ — and it missed the *other* way: $f(\mathrm{W5}) =
+\mathbf{0.325}$, just clear of the falsification line. **The two-thirds figure is a property of
+the grayscale corpora, not a law.**
 
-$$\underbrace{\text{80.4-pt gap}}_{\text{MNIST}} \;=\; \underbrace{63\%\ \text{symmetry-orbit scatter}}_{\text{removable by an exact change of frame}}\;+\;\underbrace{37\%\ \text{residual}}_{\text{provably not symmetry}}$$
+### What the recovery fractions do and do not prove
 
-The residual is *provably* not symmetry because $c_\text{align}$ changes no network's function at
-all.
+> **Proposition.** Let $c$ be any *exact* reframing, $c(\theta) \in G\theta$. Then $f$ is a
+> **lower bound** on the share of the gap attributable to the group action.
+>
+> *Proof.* $c$ moves each parameter vector inside its own orbit, so $f_{c(\theta)} = f_\theta$: no
+> function, and hence no information about the signal, is created. Any accuracy gained is from the
+> change of representative alone. The bound is loose because $c$ need not be *canonical* — two
+> parameters in one orbit may land on different representatives — so a better exact reframing can
+> only raise $f$. ∎
 
-### The 0.18→0.63 span is canonicalizer quality, not information
+This matters for how the residual is read. $f(\mathrm{W5}) = 0.628$ means **at least** 63% of the
+MNIST gap is symmetry. It does *not* follow that the other 37% is basin multiplicity — a better
+representative could claim part of it. Our own history is the cautionary example: improving the
+frame once, from $c_\text{sort}$ to $c_\text{align}$, dropped the "residual" from 82% to 37%.
 
-Template-free sorting recovers 0.177; aligning to a fixed reference network recovers 0.628. Both
-are exact elements of $G$. The difference is entirely *which orbit representative is chosen*.
-The practical message: the ceiling on frame choice is high, and current template-free
-canonicalization is far from it.
+### The 0.11→0.63 span is canonicalizer quality, not information
+
+Template-free sorting recovers 0.177 / 0.170 / 0.108; aligning to a fixed reference network
+recovers 0.628 / 0.664 / 0.325. Both are exact elements of $G$. The difference is entirely *which
+orbit representative is chosen*. The practical message: the ceiling on frame choice is high, and
+current template-free canonicalization is nowhere near it.
+
+### The crossover: alignment and invariance trade places
+
+| | MNIST | FashionMNIST | CIFAR-10 |
+|---|---:|---:|---:|
+| $f(\mathrm{W5})$ — alignment to a fixed reference | 0.628 | 0.664 | **0.325** |
+| $f(\mathrm{W10})$ — exact $L{=}2$ invariants | 0.269 | 0.428 | **0.534** |
+
+Alignment halves; the invariant encoding nearly doubles and **overtakes** it on CIFAR-10. This was
+not found post-hoc. The CIFAR pre-registration carried an explicit probability call — $P=0.60$ that
+$f(\mathrm{W10})_\text{CIFAR} > 0.269$ — justified from the encoding's *algebra*: with $c=3$ output
+channels each neuron's outgoing $u_i\in\mathbb{R}^3$ carries strictly more $D_\infty$-visible
+structure than the $c=1$ case, so the invariants have more to see ($D$ grows 320 → 384). That call
+resolved correctly. The companion call, that the grayscale ordering would persist ($P=0.65$), did
+not — and the crossover is why.
+
+**The registered mechanism is real but small.** We can test P-C1-B's channel story *within* the
+CIFAR corpus, with no new fitting, by changing only what the encoder may read
+([`scripts/25_w10_channel_ablation.py`](scripts/25_w10_channel_ablation.py), exploratory):
+
+| arm | what the encoder reads | $D$ | $f(\mathrm{W10})$ |
+|---|---|---:|---:|
+| full | all three output channels | 384 | **0.534** |
+| truncated | output channel 0 only | 320 | 0.457 |
+| averaged | the three channels' mean | 320 | 0.425 |
+
+Truncating to one channel — restoring exactly the grayscale encoding dimension — costs only
+**0.077**. Against the 0.265 rise from MNIST's 0.269 to CIFAR's 0.534, the channel count explains
+about **29%**; the other 71% survives at $D=320$ and is a property of the corpus, not of $c$. Our
+registered mechanism was right in direction and wrong in magnitude, and we say so rather than let a
+correct sign carry the whole explanation. The *averaged* arm is the control that makes this
+readable: same dimension as *truncated*, strictly more of the network's information, yet **worse**
+— so the effect is neither "more dimensions" nor "more information". Channel-averaging cancels the
+per-channel sign structure that $(\sin b_i)u_i$ exists to carry.
+
+**It is not that CIFAR's fits ran further.** The obvious confound is fit length: CIFAR corpora were
+frozen at 1000 steps against 300 for grayscale, and a fit that travels further from $\theta_0$
+should be harder to align back to it. We measured travel directly, with no new fitting
+([`scripts/23_fit_travel.py`](scripts/23_fit_travel.py)):
+
+| | MNIST | FashionMNIST | CIFAR-10 |
+|---|---:|---:|---:|
+| steps | 300 | 300 | 1000 |
+| median $\lVert\theta_T-\theta_0\rVert/\lVert\theta_0\rVert$ | 0.186 | 0.191 | 0.187 |
+| median layer-1 direction cosine to init | 0.998 | 0.999 | 0.999 |
+
+Indistinguishable — CIFAR-10 is if anything the *least* moved. The extra 700 steps bought no extra
+displacement, so the drop in $f(\mathrm{W5})$ is not a fit-length artifact, and the laziness that
+makes alignment work at all is equally present everywhere.
+
+**Conjecture (not a finding).** $c_\text{align}$ matches neurons by correlating their layer-1
+*activations* against a template. That statistic is blind to the outgoing structure — exactly the
+part that grows with $c$, and exactly what W10's Gram coupling reads. So as more of a neuron's
+identity moves into its outgoing vector, activation matching identifies it less reliably while the
+invariants identify it better.
 
 ### The alignment template does not matter
 
@@ -282,11 +356,21 @@ plausibly because a fitted network's neurons are specialized to its own image.
 
 ### The tools the field reaches for do not work
 
-Augmentation 0.054/0.032 · marginalization 0.048/0.034 · frame averaging 0.003/−0.008. We had
-registered that marginalization would beat augmentation by 15 points; the observed difference is
-**−0.52 pts** ($p=.21$) — because *neither* works. Of W7's small gain, +3.2 pts is explained by its
-8× training rows alone (the W7 (1/8) control). And **W8 collapses to chance**: augmenting inside a
+Across MNIST / FashionMNIST / CIFAR-10: augmentation **0.054 / 0.032 / 0.128** · marginalization
+**0.048 / 0.034 / 0.101** · frame averaging **0.003 / −0.008 / 0.001**. The largest anywhere is
+0.128, against 0.534 for the best exact treatment on the same corpus.
+
+We had registered that marginalization would beat augmentation by 15 points on MNIST; the observed
+difference was **−0.52 pts** ($p=.21$) — because *neither* works — and the null replicates on both
+later datasets (+0.16, −0.84; registered 0.0 [−2, +2] for CIFAR-10 and hit). Of W7's small gain,
++3.2 pts (MNIST) and +3.1 (CIFAR-10) is explained by its 8× training rows alone (the W7-1/8
+control). And **W8 collapses to chance on all three** (10.27 / 10.20 / 10.65): augmenting inside a
 canonical frame destroys the frame the decoder just gained.
+
+The one place augmentation looks better is CIFAR-10, where 0.128 edges past $c_\text{sort}$'s 0.108
+*and* past its own registered ceiling of 0.12. We record it as a miss (H-C1-9) rather than round it
+away — but an inexact treatment recovering an eighth of the gap where an exact one recovers a half
+is still the wrong tool.
 
 ---
 
@@ -326,9 +410,9 @@ mechanism, and it predicts exactly the null W1−W2 rung we measured.
 
 ![calibration](paper/figures/fig3_calibration.png)
 
-**Figure 4.** Because every prediction carried an interval, the program can be scored as a
-forecaster. Realized coverage is **9/14 = 64%** against a nominal 80% — the intervals were too
-*narrow*. More useful than the number is that the failures fall into exactly two modes:
+**Figure 4.** Because every prediction carried an interval, the program is scored as a forecaster.
+Through the two grayscale arms, realized coverage was **9/14 = 64%** against a nominal 80% — the
+intervals were too *narrow*. More useful than the number: the failures fall into exactly two modes.
 
 | id | quantity | registered | observed | mode |
 |---|---|---|---|---|
@@ -346,13 +430,42 @@ because a neighbouring literature reported milder effects. Where we trusted the 
 **Mode 2** — registering a contrast that *could not exist*: assuming a nuisance was present, then
 registering a difference between two ways of handling it. Both nuisances were null.
 
-This is reported because the alternative — reporting the hits — would misrepresent how much of the
-final story was anticipated.
+### The CIFAR arm was registered with those lessons applied
+
+17 intervals and 3 probability calls frozen against a corpus with no decoded cell
+([`S1-cifar.md`](docs/prereg/S1-cifar.md), `f7906fc6904c7c81`), after an explicit decision to
+register *its own* magnitudes rather than inherit MNIST's. It scored **14 of 17 = 82%** against a
+nominal 80%.
+
+| miss | registered | observed | what it is |
+|---|---|---|---|
+| H-C1-8 · $f(\mathrm{W5})$ | 0.62 [0.42, 0.78] | **0.324** | the crossover |
+| H-C1-17 · W10 outside [W4, W5] | 0 [−3, +3] | **+6.63** | the crossover (bracket breaks upward) |
+| H-C1-9 · $f(\mathrm{W6})$ | 0.04 [−0.02, 0.12] | **0.128** | separate, small |
+
+Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
+correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
+grayscale ordering persists) wrong, Brier 0.4225. Program coverage is now **23/31 = 74%**.
+
+The two misses that matter are the paper's finding, not a footnote to it. And the category error
+that produced a *spurious* miss on the FashionMNIST arm is now blocked by the instrument rather
+than by careful writing: `14_ladder_analysis.py` carries a per-dataset registration table, and an
+arm with none of its own prints *not scored*.
+
+All of this is reported because the alternative — reporting the hits — would misrepresent how much
+of the final story was anticipated.
 
 ---
 
 ## 8. Limitations
 
+- **Signal complexity is confounded with two other things.** CIFAR-10 differs from the grayscale
+  corpora in image statistics, in output-channel count ($c=3$ vs $c=1$), *and* in fit budget (1000
+  vs 300 steps). The third is ruled out directly (travel is indistinguishable — see the crossover
+  section); the second is the mechanism the registration named for W10's rise. Separating the
+  first two needs a $c=1$ natural-image corpus (grayscale CIFAR) or a $c=3$ simple one. A
+  no-new-fitting ablation of the channel mechanism is wired
+  ([`scripts/25_w10_channel_ablation.py`](scripts/25_w10_channel_ablation.py)).
 - **Identifiability is proved only at $L=1$; every experiment here is $L=2$.** This is the weakest
   link, stated as such. The deep case reduces to a Bessel–CP tensor decomposition with two open
   lemmas ([memo](docs/THINKING/proof-memos/PO-2-deep-attempt.md)); the falsification protocol is an

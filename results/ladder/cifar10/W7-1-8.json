@@ -1,0 +1,30 @@
+{
+  "rung": "W7-1/8",
+  "notes": "W7 control: K corpus subsampled to one view per image (row-count matched)",
+  "feature_dim": 1251,
+  "n_train_rows": 45000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    13.67,
+    12.51,
+    12.66,
+    12.1,
+    12.8
+  ],
+  "mean": 12.748000000000001,
+  "ci95_bootstrap": [
+    12.346,
+    13.264000000000001
+  ],
+  "epochs_ran": [
+    13,
+    15,
+    11,
+    12,
+    13
+  ],
+  "wallclock_s": 79.06676197052002,
+  "linear_probe": 10.53,
+  "knn10_cosine": 10.66
+}

@@ -1,0 +1,30 @@
+{
+  "rung": "P0",
+  "notes": "real pixels",
+  "feature_dim": 3072,
+  "n_train_rows": 45000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    55.88,
+    56.19,
+    56.14,
+    55.4,
+    55.43
+  ],
+  "mean": 55.80799999999999,
+  "ci95_bootstrap": [
+    55.508,
+    56.10799999999999
+  ],
+  "epochs_ran": [
+    29,
+    38,
+    29,
+    20,
+    30
+  ],
+  "wallclock_s": 159.49306392669678,
+  "linear_probe": 33.02,
+  "knn10_cosine": 42.28
+}

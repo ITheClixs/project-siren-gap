@@ -1,6 +1,6 @@
 \begin{table}[t]
 \centering\small
-\caption{\textbf{Every registered interval that missed.} Realized coverage is 9/14 against a nominal 80\%. The misses fall into exactly two modes (last column): hedging a registered mechanism toward priors from another setting, and registering a contrast between two treatments of a nuisance that then turned out to be null, so that no contrast could exist at any magnitude.}
+\caption{\textbf{Every registered interval that missed.} Realized coverage is 23/31 against a nominal 80\%. The misses fall into exactly two modes (last column): hedging a registered mechanism toward priors from another setting, and registering a contrast between two treatments of a nuisance that then turned out to be null, so that no contrast could exist at any magnitude.}
 \label{tab:calibration}
 \begin{tabular}{@{}llrrl@{}}
 \toprule
@@ -11,6 +11,9 @@ QG-5 & CIFAR frozen-config median render PSNR dB & 27 [22, 32] & 40.1 & hedged m
 H-S1-3 & W1-W2 pts & 2.0 [0.0, 6.0] & -0.68 & nuisance was null \\
 H-S1-4c & canonicalization recovery f(W5) & 0.10 [0.02, 0.30] & 0.628 & hedged mechanism \\
 H-S1-5 & (W7-W3)-(W6-W3) pts & 15 [5, 35] & -0.52 & nuisance was null \\
+H-C1-8 & recovery fraction f(W5) c\_align to theta0 & 0.62 [0.42, 0.78] & 0.3244 & --- \\
+H-C1-9 & recovery fraction f(W6) bounded group augmentation & 0.04 [-0.02, 0.12] & 0.128 & --- \\
+H-C1-17 & W10 signed distance outside [W4 W5] accuracy points & 0.0 [-3, 3] & 6.628 & --- \\
 \bottomrule
 \end{tabular}
 \end{table}

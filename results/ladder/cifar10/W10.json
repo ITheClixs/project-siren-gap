@@ -1,0 +1,30 @@
+{
+  "rung": "W10",
+  "notes": "deep phase-invariant encoding (L=2, Ch3.6)",
+  "feature_dim": 384,
+  "n_train_rows": 45000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    29.59,
+    29.75,
+    29.27,
+    29.29,
+    29.82
+  ],
+  "mean": 29.544,
+  "ci95_bootstrap": [
+    29.342000000000002,
+    29.746
+  ],
+  "epochs_ran": [
+    13,
+    12,
+    13,
+    13,
+    14
+  ],
+  "wallclock_s": 69.04908895492554,
+  "linear_probe": 26.57,
+  "knn10_cosine": 10.9
+}

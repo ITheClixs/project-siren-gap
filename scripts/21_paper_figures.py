@@ -207,11 +207,11 @@ def fig_mechanism() -> None:
                label=r"$D_\infty$ orbit")
     ax.set_xlabel(r"frequency $w$")
     ax.set_ylabel(r"phase $b$")
-    ax.set_title(r"(a)  profiled loss $\mathcal{L}^*(w,b)$", loc="left")
+    ax.set_title(r"(a)  profiled loss", loc="left")
     ax.legend(frameon=True, framealpha=0.85, edgecolor="none", loc="upper right",
               handletextpad=0.3, borderpad=0.25)
     cb = fig.colorbar(im, ax=ax, pad=0.02, fraction=0.046)
-    cb.set_label(r"$\log_{10}\mathcal{L}^*$", fontsize=6.5)
+    cb.set_label(r"$\log_{10}\mathcal{L}^*$", fontsize=6)
     cb.ax.tick_params(labelsize=6)
 
     # (b) global-capture fraction vs init range, three optimizers + the Nelder-Mead reference
@@ -228,12 +228,13 @@ def fig_mechanism() -> None:
         vals = [src[f"{r}"]["frac_inits_reaching_global"] for r in ranges]
         ax.plot(ranges, vals, marker=marker, ms=3.2, lw=1.0, ls=ls, color=color, label=label)
     ax.axvline(7.0, color="0.35", lw=0.7, ls=(0, (3, 2)))
-    ax.text(7.3, 0.63, r"$\omega=7$", fontsize=6.4, color="0.35")
+    ax.text(7.3, 0.03, r"$\omega=7$", fontsize=6.4, color="0.35")
     ax.set_xlabel("initialization range")
-    ax.set_ylabel("fraction reaching the global orbit")
-    ax.set_title("(b)  basin capture is non-monotone", loc="left")
-    ax.set_ylim(-0.03, 0.72)
-    ax.legend(frameon=False, loc="upper left", handlelength=1.5)
+    ax.set_ylabel("fraction reaching global orbit", fontsize=7)
+    ax.set_title("(b)  basin capture", loc="left")
+    ax.set_ylim(-0.03, 0.92)
+    ax.legend(frameon=False, loc="upper left", handlelength=1.3, fontsize=5.4,
+              labelspacing=0.18, borderpad=0.0)
 
     # (c) laziness at the corpus setting
     ax = axes[2]
@@ -246,11 +247,12 @@ def fig_mechanism() -> None:
             marker="s", ms=3.2, lw=1.0, color="#3B6EA5", label="converged (5000 steps)")
     ax.set_xlabel("initialization range")
     ax.set_ylabel(r"median $|\Delta w|$ from init")
-    ax.set_title("(c)  the fit does not leave its init", loc="left")
-    ax.set_ylim(0, 1.85)
-    ax.legend(frameon=False, loc="upper left", handlelength=1.5)
+    ax.set_title("(c)  travel from init", loc="left")
+    ax.set_ylim(0, 2.05)
+    ax.legend(frameon=False, loc="upper left", handlelength=1.3, fontsize=5.4,
+              labelspacing=0.18, borderpad=0.0)
 
-    fig.tight_layout(w_pad=1.4)
+    fig.tight_layout(w_pad=1.9)
     save(fig, "fig2_mechanism")
 
 
@@ -261,51 +263,68 @@ def fig_calibration() -> None:
     rows = list(csv.DictReader((ROOT / "docs" / "PREDICTION_OUTCOMES.csv").open()))
     iv = [r for r in rows if r["kind"] == "interval"]
     # normalize each prediction to its own registered interval: 0 = lo80, 1 = hi80
-    names, z_obs, hits = [], [], []
+    names, z_obs, hits, arm = [], [], [], []
     for r in iv:
         lo, hi, obs = float(r["lo80"]), float(r["hi80"]), float(r["observed"])
         span = hi - lo
-        names.append(r["prediction"].split(" ")[0])
+        pid = r["prediction"].split(" ")[0]
+        names.append(pid)
         z_obs.append((obs - lo) / span if span else 0.0)
         hits.append(r["verdict"] == "HIT")
+        arm.append("cifar" if pid.startswith("H-C1") else "grayscale")
 
-    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(5.5, 2.4), gridspec_kw={"width_ratios": [1.7, 1]})
+    n_c = sum(a == "cifar" for a in arm)
+    n_g = len(arm) - n_c
+    hits_g = [h for h, a in zip(hits, arm) if a == "grayscale"]
+    hits_c = [h for h, a in zip(hits, arm) if a == "cifar"]
+
+    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(5.5, 4.0),
+                                   gridspec_kw={"width_ratios": [1.85, 1]})
 
     y = np.arange(len(names))[::-1]
     ax0.axvspan(0, 1, color="#3B6EA5", alpha=0.12, lw=0)
     ax0.axvline(0, color="0.5", lw=0.6)
     ax0.axvline(1, color="0.5", lw=0.6)
     for yi, z, hit in zip(y, z_obs, hits):
-        zc = np.clip(z, -0.65, 1.85)
-        ax0.plot([0.5, zc], [yi, yi], color="0.75", lw=0.7, zorder=1)
-        ax0.scatter([zc], [yi], s=17, zorder=2,
+        zc = float(np.clip(z, -0.65, 1.85))
+        ax0.plot([0.5, zc], [yi, yi], color="0.78", lw=0.6, zorder=1)
+        ax0.scatter([zc], [yi], s=14, zorder=2,
                     color="#3B6EA5" if hit else "#C0392B",
                     marker="o" if abs(z - zc) < 1e-9 else ">")
+    if n_c:
+        div = y[n_g] + 0.5
+        ax0.axhline(div, color="0.35", lw=0.6, ls=(0, (2, 2)))
+        ax0.text(-0.72, div + 0.55, f"grayscale arms — {sum(hits_g)}/{n_g}",
+                 fontsize=6, color="0.3", va="bottom")
+        ax0.text(-0.72, div - 0.55, f"CIFAR-10 arm — {sum(hits_c)}/{n_c}",
+                 fontsize=6, color="0.3", va="top")
     ax0.set_yticks(y)
-    ax0.set_yticklabels(names)
+    ax0.set_yticklabels(names, fontsize=5.4)
+    ax0.set_ylim(y[-1] - 0.8, y[0] + 1.8)
     ax0.set_xlim(-0.75, 1.95)
     ax0.set_xticks([0, 0.5, 1])
     ax0.set_xticklabels(["lo80", "point", "hi80"])
-    ax0.set_xlabel("observation, in units of its own registered 80\\% interval"
-                   if matplotlib.rcParams["text.usetex"]
-                   else "observation, in units of its own registered 80% interval")
+    ax0.set_xlabel("observation, in units of its own registered 80% interval")
     ax0.set_title("(a)  every registered interval, scored", loc="left")
     ax0.tick_params(axis="y", length=0)
-    ax0.text(1.9, y[-1] - 0.1, "arrow = off scale", fontsize=6, ha="right", color="0.45")
+    ax0.text(1.92, y[0] + 1.15, "arrow = off scale", fontsize=5.6, ha="right", color="0.45")
 
-    cov = float(np.mean(hits))
-    ax1.bar([0, 1], [0.80, cov], width=0.55, color=["#B8C6D9", "#3B6EA5"], linewidth=0)
-    ax1.set_xticks([0, 1])
-    ax1.set_xticklabels(["nominal", f"observed\n({sum(hits)}/{len(hits)})"])
-    ax1.set_ylim(0, 1.0)
-    ax1.set_ylabel("80\\% interval coverage" if matplotlib.rcParams["text.usetex"]
-                   else "80% interval coverage")
+    bars = [("nominal", 0.80, "#B8C6D9"),
+            (f"grayscale\n({sum(hits_g)}/{n_g})", float(np.mean(hits_g)), "#9BB2CB")]
+    if n_c:
+        bars.append((f"CIFAR-10\n({sum(hits_c)}/{n_c})", float(np.mean(hits_c)), "#3B6EA5"))
+    ax1.bar(range(len(bars)), [b[1] for b in bars], width=0.6,
+            color=[b[2] for b in bars], linewidth=0)
+    ax1.set_xticks(range(len(bars)))
+    ax1.set_xticklabels([b[0] for b in bars], fontsize=6.4)
+    ax1.set_ylim(0, 1.05)
+    ax1.set_ylabel("80% interval coverage")
     ax1.axhline(0.80, color="0.4", lw=0.7, ls=(0, (3, 2)))
-    ax1.set_title("(b)  the intervals are too narrow", loc="left")
-    for xi, v in zip([0, 1], [0.80, cov]):
-        ax1.text(xi, v + 0.025, f"{v:.0%}", ha="center", fontsize=7)
+    ax1.set_title("(b)  calibration, before and after", loc="left")
+    for xi, b in enumerate(bars):
+        ax1.text(xi, b[1] + 0.02, f"{b[1]:.0%}", ha="center", fontsize=7)
 
-    fig.tight_layout(w_pad=1.6)
+    fig.tight_layout(w_pad=1.4)
     save(fig, "fig3_calibration")
 
 

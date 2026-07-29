@@ -130,23 +130,29 @@ def gap_table(available) -> str:
     lines = [
         r"\begin{table}[t]",
         r"\centering\small",
-        r"\caption{\textbf{The gap, and what survives an exact reframing.} The perception gap "
-        r"W1$-$W3 shrinks in absolute terms with the task ceiling, but the fraction an exact, "
-        r"function-preserving change of frame removes does not.}",
+        r"\caption{\textbf{The gap, and what an exact treatment of the group removes.} The "
+        r"perception gap W1$-$W3 shrinks in absolute terms with the task ceiling. The best "
+        r"\emph{exact}, function-preserving rung (W4, W5 or W10 --- the winner changes) is a "
+        r"certified lower bound on the symmetry-attributable share, so the last column is an "
+        r"\emph{upper} bound on what is not symmetry, not a measurement of it "
+        r"(Proposition~\ref{prop:bound}).}",
         r"\label{tab:gap}",
-        r"\begin{tabular}{@{}lrrrrr@{}}",
+        r"\begin{tabular}{@{}lrrlrr@{}}",
         r"\toprule",
-        r"dataset & ceiling P0 & gap W1$-$W3 & removed by $\calign$ & residual & residual share \\",
+        r"dataset & ceiling P0 & gap W1$-$W3 & best exact rung & removed & residual $\le$ \\",
         r"\midrule",
     ]
     for _, label, m, _ in available:
-        if not {"P0", "W1", "W3", "W5"} <= m.keys():
+        if not {"P0", "W1", "W3", "W4", "W5"} <= m.keys():
             continue
         gap = m["W1"] - m["W3"]
-        removed = m["W5"] - m["W3"]
+        exact = {r: m[r] for r in ("W4", "W5", "W10") if r in m}
+        best = max(exact, key=exact.get)
+        removed = exact[best] - m["W3"]
+        name = {"W4": r"W4 $\csort$", "W5": r"W5 $\calign$", "W10": "W10 invariants"}[best]
         lines.append(
-            f"{label} & {m['P0']:.2f} & {gap:.2f} & {removed:.2f} "
-            f"& {gap - removed:.2f} & {1 - removed / gap:.1%}".replace("%", r"\%") + r" \\"
+            f"{label} & {m['P0']:.2f} & {gap:.2f} & {name} & {removed:.2f} "
+            f"& {1 - removed / gap:.1%}".replace("%", r"\%") + r" \\"
         )
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
     return "\n".join(lines)

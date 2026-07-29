@@ -140,11 +140,20 @@ def main() -> None:
 
     misses = [r["prediction"].split()[0] for r in out if r["verdict"] == "MISS"]
     briers = {r["prediction"].split()[0]: r["brier"] for r in out if r["kind"] == "probability"}
+    # H-C1-8 (f(W5) halved) and H-C1-17 (W10 leaves the bracket upward) are two views of the
+    # crossover; H-C1-9 is a separate, much smaller effect and is described separately.
+    crossover = [m for m in misses if m in ("H-C1-8", "H-C1-17")]
+    other = [m for m in misses if m not in crossover]
     scoreline = (
-        rf"It scored \textbf{{{n_hit} of {n_iv}}}, against $9/14$ before it --- and the "
-        rf"{'two' if len(misses) == 2 else str(len(misses))} misses "
-        rf"({', '.join(misses)}) are {'both' if len(misses) == 2 else 'all'} the same finding. "
-        rf"The three probability calls scored Brier "
+        rf"It scored \textbf{{{n_hit} of {n_iv}}} against a nominal $80\%$, where the two grayscale "
+        rf"arms had together scored $9/14$. "
+        + (rf"{' and '.join(crossover)} are two views of the same finding --- the crossover of "
+           rf"\S\ref{{sec:crossover}}. " if len(crossover) == 2 else "")
+        + (rf"The remaining miss, {other[0]}, is separate and small: bounded group augmentation "
+           rf"recovers marginally more on natural images than on grayscale ($0.128$ against a "
+           rf"registered ceiling of $0.12$), which does not change its ranking. "
+           if len(other) == 1 else "")
+        + r"The three probability calls scored Brier "
         + ", ".join(f"{k.split('-')[-1]}~{v}" for k, v in briers.items()) + ".\n"
     )
     tables = ROOT / "paper" / "tables"
