@@ -1,0 +1,5 @@
+planted  w=  2  R_theta max 2.194e-01 (4 sweeps)
+planted  w=  4  R_theta max 1.004e-01 (3 sweeps)
+planted  w=  8  R_theta max 9.343e-02 (4 sweeps)
+planted  w= 16  R_theta max 3.608e-08 (3 sweeps)
+planted  w= 32  R_theta max 3.237e-08 (3 sweeps)

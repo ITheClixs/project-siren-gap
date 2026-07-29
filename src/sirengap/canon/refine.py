@@ -44,6 +44,7 @@ from sirengap.canon.assign import hungarian
 from sirengap.constants import TOL_FUNC
 from sirengap.models.forward import max_functional_gap
 from sirengap.models.params import SirenParams, outgoing, replace_layer
+from sirengap.symmetry.dinf import apply, random_element
 
 
 @dataclass(frozen=True)
@@ -127,30 +128,27 @@ def _apply_layer_choice(
     return w, b, out_w
 
 
-def refine_alignment(
-    params: SirenParams,
-    target: SirenParams,
-    max_sweeps: int = 24,
-    tol: float = 1e-10,
-    check_preservation: bool = True,
-    probes: Tensor | None = None,
-) -> tuple[SirenParams, RefineDiagnostics]:
-    """Minimise ||g . params - target|| over g in G by exact per-layer coordinate descent.
+def _select(mask: Tensor, a: SirenParams, b: SirenParams) -> SirenParams:
+    """Per-INR choice: take `a` where mask is True, else `b`."""
 
-    `params` and `target` must have identical shapes. Returns the aligned parameters and a
-    trace. When `check_preservation` is set, the function is asserted unchanged on `probes`
-    (a default probe grid is drawn if none is given) — every move is in G, so any failure is
-    an implementation bug, not a modelling choice.
-    """
-    if params.widths() != target.widths():
-        raise ValueError(f"width mismatch: {params.widths()} vs {target.widths()}")
-    if params.batch != target.batch:
-        raise ValueError(f"batch mismatch: {params.batch} vs {target.batch}")
+    def pick(x: Tensor, y: Tensor) -> Tensor:
+        m = mask.view(-1, *([1] * (x.ndim - 1)))
+        return torch.where(m, x, y)
 
+    return SirenParams(
+        hidden=tuple((pick(wa, wb), pick(ba, bb)) for (wa, ba), (wb, bb) in zip(a.hidden, b.hidden)),
+        w_out=pick(a.w_out, b.w_out),
+        b_out=pick(a.b_out, b.b_out),
+    )
+
+
+def _descend(
+    params: SirenParams, target: SirenParams, max_sweeps: int, tol: float
+) -> tuple[SirenParams, int, list[Tensor], Tensor]:
+    """One coordinate-descent run to a fixed point. Returns (aligned, sweeps, trace, conv)."""
     result = params
-    start = param_distance(result, target)
     per_sweep: list[Tensor] = []
-    prev = start
+    prev = param_distance(result, target)
     sweeps_run = 0
     converged = torch.zeros(params.batch, dtype=torch.bool)
 
@@ -185,21 +183,73 @@ def refine_alignment(
         if bool(converged.all()):
             break
 
+    return result, sweeps_run, per_sweep, converged
+
+
+def refine_alignment(
+    params: SirenParams,
+    target: SirenParams,
+    max_sweeps: int = 24,
+    tol: float = 1e-10,
+    n_restarts: int = 12,
+    seed: int = 0,
+    max_windings: int = 3,
+    check_preservation: bool = True,
+    probes: Tensor | None = None,
+) -> tuple[SirenParams, RefineDiagnostics]:
+    """Minimise ||g . params - target|| over g in G.
+
+    Each restart runs coordinate descent (exact per layer) to a fixed point; the per-INR best
+    is kept. Restarts are needed: descent alone stalls in a joint local optimum on ~10% of
+    width-2 pairs, which is enough to break the planted-recovery control at n = 128 while
+    passing it at n = 16. Restart 0 is the identity so the result can never be worse than
+    plain descent.
+
+    Every move lies in G, so the function is preserved; with `check_preservation` that is
+    asserted on `probes` (a default grid is drawn if none is given).
+    """
+    if params.widths() != target.widths():
+        raise ValueError(f"width mismatch: {params.widths()} vs {target.widths()}")
+    if params.batch != target.batch:
+        raise ValueError(f"batch mismatch: {params.batch} vs {target.batch}")
+
+    start = param_distance(params, target)
+    gen = torch.Generator().manual_seed(seed)
+    best: SirenParams | None = None
+    best_dist: Tensor | None = None
+    sweeps_total, trace, conv = 0, [], torch.zeros(params.batch, dtype=torch.bool)
+
+    for restart in range(max(n_restarts, 1)):
+        launch = params
+        if restart > 0:
+            launch = apply(random_element(params, gen, max_windings=max_windings), params)
+        cand, sweeps, per_sweep, converged = _descend(launch, target, max_sweeps, tol)
+        dist = param_distance(cand, target)
+        sweeps_total += sweeps
+        if best is None:
+            best, best_dist, trace, conv = cand, dist, per_sweep, converged
+        else:
+            take = dist < best_dist
+            best = _select(take, cand, best)
+            best_dist = torch.minimum(dist, best_dist)
+            conv = conv | converged
+
+    assert best is not None and best_dist is not None
     if check_preservation:
         if probes is None:
             g = torch.linspace(-1.0, 1.0, 12, dtype=params.hidden[0][0].dtype)
             m = params.hidden[0][0].shape[2]
             probes = torch.stack(torch.meshgrid(*([g] * m), indexing="ij"), dim=-1).reshape(-1, m)
-        gap = max_functional_gap(params, result, probes.to(params.hidden[0][0].device))
+        gap = max_functional_gap(params, best, probes.to(params.hidden[0][0].device))
         if gap > TOL_FUNC:
             raise RuntimeError(f"refine_alignment broke the function: gap {gap:.2e} > {TOL_FUNC}")
 
-    return result, RefineDiagnostics(
-        sweeps=sweeps_run,
+    return best, RefineDiagnostics(
+        sweeps=sweeps_total,
         distance_start=start,
-        distance_final=prev,
-        per_sweep=tuple(per_sweep),
-        converged=converged,
+        distance_final=best_dist,
+        per_sweep=tuple(trace),
+        converged=conv,
     )
 
 
