@@ -435,3 +435,92 @@ the dataset-agnostic hypotheses transfer — the sign and nullity results (H-S1-
 bracket claim (H-S1-6, HIT), and the recovery fractions. **The FMNIST rows are therefore recorded as
 a replication of structure and are NOT added to the calibration ledger**; adding them would inflate
 the denominator with predictions that were never made about this dataset.
+
+---
+
+## G5 — the CIFAR-10 arm (2026-07-29)
+
+### Where the last session ended, and what had finished overnight
+
+The G4 chain (`scripts/17_g4_chain.sh`) completed at **05:44:16** on 2026-07-29 after ~15.4 h of
+detached wall-clock. All four CIFAR-10 protocols generated at the R-CIFAR-frozen config
+(w32 L2, 1000 steps, lr 1e−3): 60 000 INRs each for `P-random`, `P-shared-det`, `P-shared-stoch`
+and 360 000 for `P-random-K`. All three test-split gates pass — render-vs-real-pixel gaps
+**+0.25 / +0.30 / +0.84** pts at median PSNR **40.3 / 40.1 / 34.9** dB. Corpus total across the
+program is now **1 840 000 fitted INRs**.
+
+### The registration came first (and this time it counts)
+
+The FashionMNIST arm had been scored against MNIST-calibrated magnitudes and duly printed a fake
+MISS; the write-up caught it, and the rows were kept out of the calibration ledger. Doing that
+twice would be a habit. So `docs/prereg/S1-cifar.md` (**sha256-16 `f7906fc6904c7c81`**) was frozen
+*before any CIFAR cell existed* with **17 interval rows H-C1-1…17 and 3 probability calls
+P-C1-A/B/C of its own**, and those rows **do** enter the ledger.
+
+Two discipline notes recorded in the file itself so the freeze can be audited rather than trusted:
+an accuracy-producing invocation of `11_ladder.py --dataset cifar10 --rungs P0 W3` was started and
+**killed before it wrote any cell** (`results/ladder/cifar10/` was empty at freeze), and the
+instrument check that replaced it (`scripts/19_ladder_shapecheck.py`) prints only shape, row
+alignment, dtype and finiteness — no decoder, no accuracy.
+
+The category error is now blocked by the **instrument** rather than by prose:
+`14_ladder_analysis.py` carries a per-dataset registration table, and an arm with none of its own
+prints *not scored* instead of a verdict. (It also had a latent crash — it globbed its own
+`S1_analysis.json` output as if it were a rung cell, so any second run died with `KeyError: 'rung'`.)
+
+### Results
+
+| rung | P0 | P1 | W1 | W2 | W3 | W4 | W5 | W10 | W6 | W7 | W9 | W8 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| CIFAR-10 | 55.81 | 56.23 | 44.29 | 45.19 | 12.64 | 16.05 | 22.92 | 29.54 | 16.57 | — | 12.68 | 10.53 |
+
+**The headline is that the two-thirds law is not a law.** f(W5) = **0.325** against a registered
+0.62 [0.42, 0.78] — a clean MISS, and only just clear of the pre-committed falsifier at 0.30. The
+grayscale figure was a property of grayscale corpora.
+
+**And the two exact methods cross over.** f(W10) = **0.534** > f(W5) = 0.325, reversing MNIST
+(0.269 < 0.628) and FashionMNIST (0.428 < 0.664). This was *called in advance*: P-C1-B registered
+P = 0.60 that f(W10)\_CIFAR > f(W10)\_MNIST on the grounds that with c = 3 output channels each
+neuron's outgoing uᵢ ∈ ℝ³ carries strictly more D∞-visible structure than the c = 1 case (the
+encoding grows D 320 → 384). That resolved correctly; the companion call P-C1-A, that the
+grayscale ordering would persist (P = 0.65), resolved incorrectly, and the crossover is why. It
+also breaks H-C1-17: W10 leaves the [W4, W5] bracket **upward**, by 6.6 pts.
+
+**The obvious confound is dead, cheaply.** CIFAR was fitted for 1000 steps against 300 for the
+grayscale corpora, so "the fits travelled further from θ₀ and are harder to align back" is the
+first thing to check. `scripts/23_fit_travel.py` measures it with **no new fitting**: median
+relative travel ‖θ_T − θ₀‖/‖θ₀‖ = **0.186 / 0.191 / 0.187** and median layer-1 direction cosine to
+init = **0.998 / 0.999 / 0.999** (MNIST / FMNIST / CIFAR). Indistinguishable, and CIFAR is if
+anything the least moved. The extra 700 steps bought no extra displacement. PO-9 laziness is
+equally present everywhere; the f(W5) drop is not a fit-length artifact. *I had been about to
+spend ~5 h generating an MNIST-at-1000-steps corpus to test this; a 3-minute measurement on
+existing data answered it.*
+
+**Everything else replicates.** P1 ≈ P0 (in fact P1 is marginally *better*, +0.42 — the mild
+denoising a 40 dB render provides). W1 − W2 = −0.90: optimization noise is null on a third
+dataset. X1 is at chance both ways (10.4 forward, 12.0 reverse). W8 collapses to 10.53. W9
+recovers 0.001.
+
+### A logical overreach of my own, corrected
+
+I had written — here, in DEFENSE row 8, and in the first draft of the paper — that the residual
+after c_align is "provably not symmetry, because c_align preserves the function exactly". **That is
+wrong**, and it is the strong form of a claim whose weak form is right. c_align is an *exact* group
+element but a *heuristic* choice of representative: two parameter vectors in the same orbit can be
+sent to different representatives, so a better exact reframing can only raise f. What is proved is
+the other direction:
+
+> **f is a certified lower bound on the symmetry-attributable share**, because an exact reframing
+> creates no information about the signal; the complement is an *upper* bound on the non-symmetry
+> share, not a proof of it.
+
+Our own history is the cautionary example: improving the frame once, c_sort → c_align, dropped the
+"residual" from 82% to 37%. The paper now states this as a proposition (§6) with the caveat that
+W10 needs a further one — it is a *nonlinear* invariant feature map, so part of its gain may be
+feature engineering rather than group removal, and its 0.534 is not a certificate of the same
+strength as c_align's 0.325.
+
+### Deviations, waivers, compute
+
+**Deviations:** none. **Waivers:** none. **Compute this session:** CIFAR ladder ~1.2 h active on
+MPS; travel diagnostic ~3 min; figures/tables/paper build ~2 min. Test suite green (69 tests).
