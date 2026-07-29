@@ -131,3 +131,35 @@ $64\times64$ fitting grid, held-out probes on an $81\times81$ grid so that grid-
 mistaken for function-fitting. **Budget:** ≤ 1.5 h active. **Stopping rule:** if the confirmatory
 run exceeds 3 h, the $w=16$ and $w=32$ teacher cells drop to $n=32$ and this is logged as a
 deviation rather than hidden.
+
+---
+
+## Deviation log (appended 2026-07-30; the frozen text above is unchanged)
+
+**Deviation D1 — compute re-plan after the stopping rule fired.** The first confirmatory run was
+launched at $n=128$ for every arm and every width with 40 000 steps throughout. Its cost had been
+estimated at ~1.5 h (§7); the true cost is ~12 h, because the per-step time on MPS is dominated by
+*batch size* rather than width and was mis-estimated by a factor of ~20 (measured: 96 ms/step at
+$n=128$, $w=32$ on a $64\times64$ grid, against an assumed ~5 ms). The run was **killed at 6 h 55 m**
+with only the `planted` arm complete, and none of its numbers are used.
+
+§7's stopping rule anticipated this in kind but not in scale ("drop the $w=16$ and $w=32$ teacher
+cells to $n=32$"). The re-plan, logged here **before** the replacement run:
+
+| arm | frozen spec | re-plan | why |
+|---|---|---|---|
+| `teacher` | $n=128$, 40 000 steps | $n=128$ at $w\in\{2,4\}$; $n=64$ at $w=8$; $n=32$ at $w\in\{16,32\}$; steps unchanged | P-S4e-5/6/7 are registered at $w=2$, $n=128$, which is preserved exactly. §7's allowance is extended from $\{16,32\}$ to $\{8\}$ as well. |
+| `warmstart` | inherits 40 000 steps | **8 000 steps**, $n=32$ | 8 000 is the value of the declared pilot (§3) that produced the registered P-S4e-3/4 predictions, so scoring them at 8 000 steps is *more* faithful to what was registered than 40 000 would be. |
+| `sensitivity`, `null` | $n=128$ | $n=32$ | both report medians over a batch and involve no fitting; $n=32$ changes nothing but wall-clock. |
+
+**Nothing about the falsification criterion (§4), the void conditions (§4), the registered
+intervals (§5) or the outcome wording (§6) is changed.** Device remains MPS: it was measured at
+3–4$\times$ faster than CPU for this workload, so the cost was not a device-choice error.
+
+**Deviation D2 — restarts added to the alignment search.** The first launch tripped the §4 void
+condition (`planted` max $R_\theta = 0.22$ at $w=2$). Cause: plain per-layer coordinate descent
+stalls in a joint local optimum on ~10% of width-2 pairs — visible at $n=128$, invisible at the
+$n=16$ pilot scale. `refine_alignment` now takes the best of `n_restarts` descents (restart 0 is the
+identity, so it can never be worse). Planted recovery is now 0/128 failures at every width, max
+$4.3\times10^{-8}$. This strengthens the instrument in the direction that makes the hunt *harder* to
+pass — a smaller $R_\theta$ is a weaker case for a counterexample — so it cannot inflate the result.

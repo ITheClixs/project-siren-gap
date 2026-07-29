@@ -367,10 +367,18 @@ def main() -> None:
     ap.add_argument("--dataset", default="mnist")
     ap.add_argument("--n-images", type=int, default=64)
     ap.add_argument("--warm-eps", nargs="+", type=float, default=[1e-4, 1e-3, 1e-2])
+    ap.add_argument("--warm-steps", type=int, default=8000,
+                    help="warm-start fit length; the pilot value that produced P-S4e-3/4")
+    ap.add_argument("--warm-n", type=int, default=32)
+    ap.add_argument("--n-by-width", nargs="*", default=[],
+                    help="per-width student counts as W:N (e.g. 2:128 8:64 32:32); "
+                         "cost is dominated by batch size, not width")
     ap.add_argument("--root", default="data/inrbench")
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--out", default=str(OUT / "s4e.json"))
     args = ap.parse_args()
+    n_by_width = {int(k): int(v) for k, v in (s.split(":") for s in args.n_by_width)}
+    n_for = lambda w: n_by_width.get(w, args.n)  # noqa: E731
 
     report: dict = {
         "study": "S4e — deep identifiability falsification hunt (PO-2 conjecture 6.5)",
@@ -381,7 +389,7 @@ def main() -> None:
 
     if "planted" in args.arms:
         report["arms"]["planted"] = [
-            arm_planted(w, args.n, args.device) for w in args.widths
+            arm_planted(w, n_for(w), args.device) for w in args.widths
         ]
         for r in report["arms"]["planted"]:
             print(f"planted  w={r['width']:3d}  R_theta max {r['R_theta_max']:.3e} "
@@ -389,7 +397,8 @@ def main() -> None:
 
     if "warmstart" in args.arms:
         rows = [
-            arm_warmstart(w, args.n, args.steps, args.lr, args.grid_side, args.device, eps=e)
+            arm_warmstart(w, args.warm_n, args.warm_steps, args.lr, args.grid_side,
+                          args.device, eps=e)
             for w in args.widths
             for e in args.warm_eps
         ]
@@ -402,14 +411,14 @@ def main() -> None:
 
     if "sensitivity" in args.arms:
         ladder = (1e-4, 1e-3, 1e-2, 3e-2, 1e-1)
-        rows = [arm_sensitivity(w, args.n, args.grid_side, ladder) for w in args.widths]
+        rows = [arm_sensitivity(w, args.warm_n, args.grid_side, ladder) for w in args.widths]
         report["arms"]["sensitivity"] = rows
         for r in rows:
             k = [f"{x["kappa_median"]:.4f}" for x in r["ladder"]]
             print(f"sensit.  w={r['width']:3d}  kappa(median) over eps ladder: {k}", flush=True)
 
     if "null" in args.arms:
-        report["arms"]["null"] = [arm_null(w, args.n, args.device) for w in args.widths]
+        report["arms"]["null"] = [arm_null(w, args.warm_n, args.device) for w in args.widths]
         for r in report["arms"]["null"]:
             print(f"null     w={r['width']:3d}  R_theta median {r['R_theta_median']:.3f} "
                   f"min {r['R_theta_min']:.3f}", flush=True)
@@ -417,7 +426,7 @@ def main() -> None:
     if "teacher" in args.arms:
         rows = []
         for w in args.widths:
-            r = arm_teacher(w, args.n, args.steps, args.lr, args.grid_side, args.device)
+            r = arm_teacher(w, n_for(w), args.steps, args.lr, args.grid_side, args.device)
             rows.append(r)
             print(f"teacher  w={w:3d}  best R_f {r['R_f_min']:.3e}  "
                   f"R_theta there {r['R_theta_at_best_R_f']:.4f}  "
