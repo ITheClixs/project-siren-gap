@@ -43,3 +43,13 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-07-29,S1-CIFAR,P-C1-A probability separated ordering f(W5)>f(W10)>f(W4)>max(f(W6) f(W7) f(W9)) holds,"P=0.65",NA,NA,f7906fc6904c7c81
 2026-07-29,S1-CIFAR,P-C1-B probability f(W10)_CIFAR > f(W10)_MNIST=0.269 (c=3 channel mechanism),"P=0.60",NA,NA,f7906fc6904c7c81
 2026-07-29,S1-CIFAR,P-C1-C probability all three label-shuffle controls within 2 pts of chance,"P=0.75",NA,NA,f7906fc6904c7c81
+2026-07-29,S4e,P-S4e-1 planted control max R_theta worst width (pilot-informed),"5e-8",1e-9,1e-5,aa5426a4245bd22f
+2026-07-29,S4e,P-S4e-2 kappa median local condition number at w=32 (pilot-informed),"0.006",0.003,0.012,aa5426a4245bd22f
+2026-07-29,S4e,P-S4e-3 warmstart recovery fraction eps=1e-4 w=2 (pilot-informed),"0.85",0.55,1.00,aa5426a4245bd22f
+2026-07-29,S4e,P-S4e-4 warmstart recovery fraction eps=1e-4 w=32 (pilot-informed),"0.00",0.00,0.15,aa5426a4245bd22f
+2026-07-29,S4e,P-S4e-5 best R_f over independent students w=2 n=128 (pilot-informed),"3e-4",1e-6,3e-3,aa5426a4245bd22f
+2026-07-29,S4e,P-S4e-6 R_theta at the best-R_f independent student w=2 (pilot-informed),"0.35",0.05,0.65,aa5426a4245bd22f
+2026-07-29,S4e,P-S4e-7 independent-student recovery rate R_theta<0.05 at w=2 (pilot-informed),"0.02",0.00,0.15,aa5426a4245bd22f
+2026-07-29,S4e,P-S4e-8 production median R_theta same-image pairs MNIST w=32 (pilot-informed),"0.45",0.25,0.70,aa5426a4245bd22f
+2026-07-29,S4e,P-S4e-9 production median R_theta minus different-image null (pilot-informed),"0.00",-0.10,0.10,aa5426a4245bd22f
+2026-07-29,S4e,P-S4e-C probability the falsification criterion is met at some width,"P=0.15",NA,NA,aa5426a4245bd22f
