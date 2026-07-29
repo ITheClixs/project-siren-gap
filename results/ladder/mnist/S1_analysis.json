@@ -1,6 +1,7 @@
 {
   "dataset": "mnist",
   "prereg": "docs/prereg/S1.md (8c029cf43f01a94c) + addendum 01",
+  "scored": true,
   "means": {
     "P0": 97.974,
     "P1": 97.58800000000001,
@@ -35,7 +36,7 @@
   },
   "tests": {
     "H-S1-1": {
-      "statement": "P1 ~ P0 (TOST margin 1.0 pt); registered +0.1 [-0.4, +0.6]",
+      "statement": "P1 ~ P0 (TOST); is class information preserved by the fit?",
       "diff": {
         "n": 5,
         "mean_diff": -0.38600000000000134,
@@ -65,7 +66,7 @@
       "abs_error": 0.4860000000000013
     },
     "H-S1-2": {
-      "statement": "W1 - P1 residual; registered -3.8 [-6.5, -1.5]",
+      "statement": "W1 - P1 residual under zero nuisance",
       "diff": {
         "n": 5,
         "mean_diff": -3.2319999999999993,
@@ -89,7 +90,7 @@
       "abs_error": 0.5680000000000005
     },
     "H-S1-3": {
-      "statement": "W1 - W2 optimization-noise rung; registered +2.0 [0.0, +6.0]",
+      "statement": "W1 - W2 optimization-noise rung",
       "diff": {
         "n": 5,
         "mean_diff": -0.6839999999999975,
@@ -113,7 +114,7 @@
       "abs_error": 2.6839999999999975
     },
     "H-S1-4a": {
-      "statement": "W1 - W3 init/symmetry gap; registered +80.4 [79, 82]",
+      "statement": "W1 - W3 init/symmetry gap (the perception gap)",
       "diff": {
         "n": 5,
         "mean_diff": 80.434,
@@ -137,7 +138,7 @@
       "abs_error": 0.033999999999991815
     },
     "H-S1-5": {
-      "statement": "(W7 - W3) - (W6 - W3) = W7 - W6; registered +15 [+5, +35]",
+      "statement": "(W7 - W3) - (W6 - W3) = W7 - W6; marginalize vs group-augment",
       "diff": {
         "n": 5,
         "mean_diff": -0.5219999999999999,
@@ -221,7 +222,8 @@
         0.17492571072599583,
         0.1802586583221655
       ],
-      "n": 5
+      "n": 5,
+      "interval_hit": true
     },
     "f_W5": {
       "point": 0.6276695141890121,
@@ -229,7 +231,8 @@
         0.6231857574689001,
         0.632153270909124
       ],
-      "n": 5
+      "n": 5,
+      "interval_hit": false
     },
     "f_W6": {
       "point": 0.05409099277135106,
@@ -275,60 +278,60 @@
     }
   },
   "controls": {
-    "W6": {
+    "P0": {
       "label_shuffle_test_acc": null,
-      "linear_probe": null,
-      "knn10_cosine": null
+      "linear_probe": 91.61,
+      "knn10_cosine": 96.50999999999999
     },
     "P1": {
       "label_shuffle_test_acc": null,
       "linear_probe": 91.01,
       "knn10_cosine": 96.48
     },
-    "P0": {
-      "label_shuffle_test_acc": null,
-      "linear_probe": 91.61,
-      "knn10_cosine": 96.50999999999999
-    },
-    "W7": {
-      "label_shuffle_test_acc": null,
-      "linear_probe": 10.49,
-      "knn10_cosine": 9.42
-    },
     "W1": {
       "label_shuffle_test_acc": 10.65,
       "linear_probe": 88.9,
       "knn10_cosine": 84.09
-    },
-    "W2": {
-      "label_shuffle_test_acc": null,
-      "linear_probe": 88.84,
-      "knn10_cosine": 85.38
-    },
-    "W7-1/8": {
-      "label_shuffle_test_acc": null,
-      "linear_probe": 10.51,
-      "knn10_cosine": 10.02
-    },
-    "W3": {
-      "label_shuffle_test_acc": 11.03,
-      "linear_probe": 10.12,
-      "knn10_cosine": 10.489999999999998
     },
     "W10": {
       "label_shuffle_test_acc": null,
       "linear_probe": 32.77,
       "knn10_cosine": 15.299999999999999
     },
+    "W2": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 88.84,
+      "knn10_cosine": 85.38
+    },
+    "W3": {
+      "label_shuffle_test_acc": 11.03,
+      "linear_probe": 10.12,
+      "knn10_cosine": 10.489999999999998
+    },
     "W4": {
       "label_shuffle_test_acc": null,
       "linear_probe": 20.68,
       "knn10_cosine": 11.43
     },
-    "X1": {
+    "W5": {
+      "label_shuffle_test_acc": 9.79,
+      "linear_probe": 58.31,
+      "knn10_cosine": 13.3
+    },
+    "W6": {
       "label_shuffle_test_acc": null,
-      "linear_probe": 88.9,
-      "knn10_cosine": 84.09
+      "linear_probe": null,
+      "knn10_cosine": null
+    },
+    "W7-1/8": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 10.51,
+      "knn10_cosine": 10.02
+    },
+    "W7": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 10.49,
+      "knn10_cosine": 9.42
     },
     "W8": {
       "label_shuffle_test_acc": null,
@@ -340,10 +343,10 @@
       "linear_probe": 9.88,
       "knn10_cosine": 10.13
     },
-    "W5": {
-      "label_shuffle_test_acc": 9.79,
-      "linear_probe": 58.31,
-      "knn10_cosine": 13.3
+    "X1": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 88.9,
+      "knn10_cosine": 84.09
     }
   }
 }

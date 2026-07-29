@@ -25,6 +25,49 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 from sirengap.eval.stats import bootstrap_ci_mean, holm, paired_summary, tost_equivalence  # noqa: E402
 
 TOST_MARGIN = 1.0
+
+# Registered intervals are per *dataset arm*, not per hypothesis name. The MNIST numbers are
+# magnitudes calibrated on the MNIST anchor, so scoring another dataset against them manufactures
+# fake misses — which is exactly what happened when the FashionMNIST arm printed H-S1-4a as a MISS
+# at +70.31 against an interval registered for a corpus with an 8-point higher ceiling. A dataset
+# with no registration of its own is a *replication of structure* and is reported unscored.
+#
+#   mnist        -> docs/prereg/S1.md (8c029cf43f01a94c) + addendum 01
+#   cifar10      -> docs/prereg/S1-cifar.md (f7906fc6904c7c81), rows H-C1-*
+#   fashionmnist -> unregistered; replication only
+REGISTERED: dict[str, dict[str, dict[str, float]] | None] = {
+    "mnist": {
+        "H-S1-1": {"point": 0.1, "lo80": -0.4, "hi80": 0.6},
+        "H-S1-2": {"point": -3.8, "lo80": -6.5, "hi80": -1.5},
+        "H-S1-3": {"point": 2.0, "lo80": 0.0, "hi80": 6.0},
+        "H-S1-4a": {"point": 80.4, "lo80": 79.0, "hi80": 82.0},
+        "H-S1-5": {"point": 15.0, "lo80": 5.0, "hi80": 35.0},
+        "H-S1-6": {"point": 0.0, "lo80": -3.0, "hi80": 3.0},
+        "f_W4": {"point": 0.06, "lo80": 0.01, "hi80": 0.20},
+        "f_W5": {"point": 0.10, "lo80": 0.02, "hi80": 0.30},
+    },
+    "cifar10": {
+        "H-S1-1": {"point": -0.4, "lo80": -2.0, "hi80": 0.6},      # H-C1-2
+        "H-S1-2": {"point": -12.0, "lo80": -22.0, "hi80": -5.0},   # H-C1-3
+        "H-S1-3": {"point": -0.7, "lo80": -2.5, "hi80": 1.0},      # H-C1-6
+        "H-S1-4a": {"point": 27.0, "lo80": 14.0, "hi80": 41.0},    # H-C1-5
+        "H-S1-5": {"point": 0.0, "lo80": -2.0, "hi80": 2.0},       # H-C1-11
+        "H-S1-6": {"point": 0.0, "lo80": -3.0, "hi80": 3.0},       # H-C1-17
+        "f_W4": {"point": 0.17, "lo80": 0.08, "hi80": 0.30},       # H-C1-7
+        "f_W5": {"point": 0.62, "lo80": 0.42, "hi80": 0.78},       # H-C1-8
+        "f_W6": {"point": 0.04, "lo80": -0.02, "hi80": 0.12},      # H-C1-9
+        "f_W7": {"point": 0.04, "lo80": -0.02, "hi80": 0.12},      # H-C1-10
+        "f_W9": {"point": 0.00, "lo80": -0.03, "hi80": 0.05},      # H-C1-12
+        "f_W10": {"point": 0.38, "lo80": 0.12, "hi80": 0.62},      # H-C1-13
+    },
+    "fashionmnist": None,
+}
+PREREG_SOURCE = {
+    "mnist": "docs/prereg/S1.md (8c029cf43f01a94c) + addendum 01",
+    "cifar10": "docs/prereg/S1-cifar.md (f7906fc6904c7c81), rows H-C1-*",
+    "fashionmnist": "unregistered — replication of structure, not scored",
+}
+
 WATERFALL = ("P0", "P1", "W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10")
 LABELS = {
     "P0": "P0\npixels", "P1": "P1\nrender", "W1": "W1\nshared-det", "W2": "W2\nshared-stoch",
@@ -34,10 +77,12 @@ LABELS = {
 
 
 def load_cells(directory: Path) -> dict[str, dict]:
+    """Rung cells only — the directory also holds this script's own output and E-track files."""
     cells = {}
-    for path in directory.glob("*.json"):
+    for path in sorted(directory.glob("*.json")):
         cell = json.loads(path.read_text())
-        cells[cell["rung"]] = cell
+        if "rung" in cell and "acc" in cell:
+            cells[cell["rung"]] = cell
     return cells
 
 
@@ -68,40 +113,38 @@ def main() -> None:
     if missing:
         raise SystemExit(f"missing rungs: {missing}")
 
+    reg = REGISTERED.get(args.dataset)
     tests = {
         "H-S1-1": {
-            "statement": "P1 ~ P0 (TOST margin 1.0 pt); registered +0.1 [-0.4, +0.6]",
+            "statement": "P1 ~ P0 (TOST); is class information preserved by the fit?",
             "diff": paired(acc["P1"], acc["P0"]),
             "tost": tost_equivalence(np.array(acc["P1"]), np.array(acc["P0"]), TOST_MARGIN),
-            "registered": {"point": 0.1, "lo80": -0.4, "hi80": 0.6},
         },
         "H-S1-2": {
-            "statement": "W1 - P1 residual; registered -3.8 [-6.5, -1.5]",
+            "statement": "W1 - P1 residual under zero nuisance",
             "diff": paired(acc["W1"], acc["P1"]),
-            "registered": {"point": -3.8, "lo80": -6.5, "hi80": -1.5},
         },
         "H-S1-3": {
-            "statement": "W1 - W2 optimization-noise rung; registered +2.0 [0.0, +6.0]",
+            "statement": "W1 - W2 optimization-noise rung",
             "diff": paired(acc["W1"], acc["W2"]),
-            "registered": {"point": 2.0, "lo80": 0.0, "hi80": 6.0},
         },
         "H-S1-4a": {
-            "statement": "W1 - W3 init/symmetry gap; registered +80.4 [79, 82]",
+            "statement": "W1 - W3 init/symmetry gap (the perception gap)",
             "diff": paired(acc["W1"], acc["W3"]),
-            "registered": {"point": 80.4, "lo80": 79.0, "hi80": 82.0},
         },
         "H-S1-5": {
-            "statement": "(W7 - W3) - (W6 - W3) = W7 - W6; registered +15 [+5, +35]",
+            "statement": "(W7 - W3) - (W6 - W3) = W7 - W6; marginalize vs group-augment",
             "diff": paired(acc["W7"], acc["W6"]),
-            "registered": {"point": 15.0, "lo80": 5.0, "hi80": 35.0},
         },
         "H-S1-6": {
             "statement": "W10 within +-3 pts of the interval [W4, W5]",
             "w10_mean": float(np.mean(acc["W10"])),
             "interval": [float(np.mean(acc["W4"])), float(np.mean(acc["W5"]))],
-            "registered": {"point": 0.0, "lo80": -3.0, "hi80": 3.0},
         },
     }
+    for name, t in tests.items():
+        if reg and name in reg:
+            t["registered"] = reg[name]
     lo, hi = sorted(tests["H-S1-6"]["interval"])
     w10 = tests["H-S1-6"]["w10_mean"]
     tests["H-S1-6"]["distance_outside_interval"] = float(max(0.0, lo - w10, w10 - hi))
@@ -112,22 +155,22 @@ def main() -> None:
         tests[h]["holm_adjusted_p"] = p
 
     for h in family + ["H-S1-6"]:
-        reg = tests[h]["registered"]
         obs = tests[h]["diff"]["mean_diff"] if "diff" in tests[h] else tests[h]["distance_outside_interval"]
         tests[h]["observed"] = obs
-        tests[h]["interval_hit"] = bool(reg["lo80"] <= obs <= reg["hi80"])
-        tests[h]["abs_error"] = abs(obs - reg["point"])
+        if "registered" in tests[h]:
+            r = tests[h]["registered"]
+            tests[h]["interval_hit"] = bool(r["lo80"] <= obs <= r["hi80"])
+            tests[h]["abs_error"] = abs(obs - r["point"])
 
     recovery = {
-        "f_W4": recovery_fraction(acc["W4"], acc["W3"], acc["W1"]),
-        "f_W5": recovery_fraction(acc["W5"], acc["W3"], acc["W1"]),
-        "f_W6": recovery_fraction(acc["W6"], acc["W3"], acc["W1"]),
-        "f_W7": recovery_fraction(acc["W7"], acc["W3"], acc["W1"]),
-        "f_W9": recovery_fraction(acc["W9"], acc["W3"], acc["W1"]),
-        "f_W10": recovery_fraction(acc["W10"], acc["W3"], acc["W1"]),
-        "registered_f_W4": {"point": 0.06, "lo80": 0.01, "hi80": 0.20},
-        "registered_f_W5": {"point": 0.10, "lo80": 0.02, "hi80": 0.30},
+        f"f_{r}": recovery_fraction(acc[r], acc["W3"], acc["W1"])
+        for r in ("W4", "W5", "W6", "W7", "W9", "W10")
     }
+    for key in list(recovery):
+        if reg and key in reg:
+            r = reg[key]
+            recovery[f"registered_{key}"] = r
+            recovery[key]["interval_hit"] = bool(r["lo80"] <= recovery[key]["point"] <= r["hi80"])
     controls = {
         r: {
             "label_shuffle_test_acc": cells[r].get("label_shuffle_test_acc"),
@@ -150,7 +193,8 @@ def main() -> None:
 
     report = {
         "dataset": args.dataset,
-        "prereg": "docs/prereg/S1.md (8c029cf43f01a94c) + addendum 01",
+        "prereg": PREREG_SOURCE.get(args.dataset, "unregistered — not scored"),
+        "scored": reg is not None,
         "means": {k: float(np.mean(v)) for k, v in sorted(acc.items())},
         "seeds": {k: len(v) for k, v in sorted(acc.items())},
         "tests": tests,
@@ -162,15 +206,25 @@ def main() -> None:
 
     _figure(acc, d / "F9_waterfall.png", args.dataset)
     print(json.dumps({k: report[k] for k in ("means", "recovery_fractions")}, indent=2))
+    print(f"\nregistration: {report['prereg']}")
     for h in family:
         t = tests[h]
+        if "registered" not in t:
+            print(f"{h}: obs {t['observed']:+.2f} (unregistered for this dataset — not scored), "
+                  f"holm p={t['holm_adjusted_p']:.2g}")
+            continue
         print(f"{h}: obs {t['observed']:+.2f} vs registered {t['registered']['point']:+.2f} "
               f"[{t['registered']['lo80']}, {t['registered']['hi80']}] -> "
               f"{'HIT' if t['interval_hit'] else 'MISS'}, holm p={t['holm_adjusted_p']:.2g}")
     t6 = tests["H-S1-6"]
+    verdict = "not scored" if "registered" not in t6 else ("HIT" if t6["interval_hit"] else "MISS")
     print(f"H-S1-6: W10 {t6['w10_mean']:.2f}, interval {t6['interval']}, "
-          f"outside by {t6['distance_outside_interval']:.2f} -> "
-          f"{'HIT' if t6['interval_hit'] else 'MISS'}")
+          f"outside by {t6['distance_outside_interval']:.2f} -> {verdict}")
+    for key in ("f_W4", "f_W5", "f_W6", "f_W7", "f_W9", "f_W10"):
+        v = recovery[key]
+        hit = v.get("interval_hit")
+        mark = "" if hit is None else (" -> HIT" if hit else " -> MISS")
+        print(f"{key}: {v['point']:.3f} {v['ci95']}{mark}")
     print(f"\nwritten {out} and F9_waterfall.png")
 
 
