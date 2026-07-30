@@ -209,6 +209,52 @@ def s4e_table() -> str | None:
     return "\n".join(lines)
 
 
+def _psnr_of(dataset: str) -> str:
+    """Median render PSNR of the shared-init corpus, from its committed quality gate."""
+    g = ROOT / "results" / "inrbench" / f"{dataset}_P-shared-det_test_gate.json"
+    if not g.exists():
+        return "---"
+    return f"{json.loads(g.read_text())['psnr']['median']:.1f}"
+
+
+def gray_arm_table() -> str | None:
+    """Luminance CIFAR against the three primary corpora: images or channels?"""
+    order = [("mnist", "MNIST", 1), ("fashionmnist", "FashionMNIST", 1),
+             ("cifar10gray", "CIFAR-10 luminance", 1), ("cifar10", "CIFAR-10 RGB", 3)]
+    got = {k: load(k) for k, _, _ in order}
+    g = got.get("cifar10gray")
+    if not g or not {"W1", "W3", "W5", "W10"} <= g[0].keys():
+        return None
+    lines = [
+        r"\begin{table}[t]",
+        r"\centering\small",
+        r"\caption{\textbf{Images or channels?} Luminance CIFAR-10 is the identical images at the "
+        r"identical geometry, architecture and fit budget, with the output-channel count changed "
+        r"from three to one. If the RGB behaviour of W5 and W10 is driven by $c$, the luminance "
+        r"arm sits with the grayscale corpora; if by image statistics, it sits with RGB CIFAR. "
+        r"Median render PSNR is reported because dropping channels makes the fit "
+        r"over-parameterised, which is an unavoidable consequence of the intervention.}",
+        r"\label{tab:gray}",
+        r"\begin{tabular}{@{}lrrrrrr@{}}",
+        r"\toprule",
+        r"corpus & $c$ & PSNR (dB) & P0 & gap W1$-$W3 & $f(\mathrm{W5})$ & $f(\mathrm{W10})$ \\",
+        r"\midrule",
+    ]
+    for key, label, c in order:
+        v = got.get(key)
+        if not v:
+            continue
+        m, fr = v
+        if not {"W1", "W3"} <= m.keys():
+            continue
+        lines.append(
+            f"{label} & {c} & {_psnr_of(key)} & " + (f"{m['P0']:.2f}" if "P0" in m else "---")
+            + f" & {m['W1'] - m['W3']:.2f} & {frac(m, fr, 'W5')} & {frac(m, fr, 'W10')}" + r" \\"
+        )
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    return "\n".join(lines)
+
+
 def calibration_table() -> str:
     rows = list(csv.DictReader((ROOT / "docs" / "PREDICTION_OUTCOMES.csv").open()))
     iv = [r for r in rows if r["kind"] == "interval"]
@@ -306,6 +352,9 @@ def main() -> None:
     (OUT / "calibration_table.tex").write_text(calibration_table())
     for f in ("ladder_table", "gap_table", "calibration_table"):
         print(f"wrote {OUT / f}.tex")
+    gray = gray_arm_table()
+    (OUT / "gray_table.tex").write_text(gray or "% luminance-CIFAR arm not complete yet\n")
+    print(f"wrote {OUT / 'gray_table'}.tex" if gray else "gray_table: no results yet (placeholder)")
     s4e = s4e_table()
     if s4e:
         (OUT / "s4e_table.tex").write_text(s4e)

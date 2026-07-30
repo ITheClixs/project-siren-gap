@@ -454,6 +454,48 @@ def fig_s4e() -> None:
     save(fig, "fig5_s4e")
 
 
+def fig_channels() -> None:
+    """Images or channels? Luminance CIFAR against the three primary corpora.
+
+    Ordered by image complexity, with output-channel count annotated. If the CIFAR behaviour of
+    W5 and W10 is about c, the luminance arm sits with the grayscale corpora; if it is about
+    image statistics, it sits with RGB CIFAR.
+    """
+    order = [
+        ("mnist", "MNIST", 1),
+        ("fashionmnist", "Fashion-\nMNIST", 1),
+        ("cifar10gray", "CIFAR-10\nluminance", 1),
+        ("cifar10", "CIFAR-10\nRGB", 3),
+    ]
+    means = {k: load_means(k) for k, _, _ in order}
+    if means.get("cifar10gray") is None or not {"W1", "W3", "W5"} <= (means["cifar10gray"] or {}).keys():
+        print("skip fig6: luminance-CIFAR ladder not complete")
+        return
+
+    fig, ax = plt.subplots(figsize=(3.6, 2.5))
+    x = np.arange(len(order))
+    for rung, label, colour, marker in [
+        ("W5", r"W5  $c_{\mathrm{align}}$", "#3B6EA5", "o"),
+        ("W10", r"W10  invariants", "#4E9A6A", "D"),
+        ("W4", r"W4  $c_{\mathrm{sort}}$", "#C4622D", "s"),
+    ]:
+        vals = [recovery(means[k], rung) if means[k] else None for k, _, _ in order]
+        ax.plot(x, [np.nan if v is None else v for v in vals], marker=marker, ms=4.2,
+                lw=1.4, color=colour, label=label)
+    ax.axvspan(2.5, 3.5, color="0.85", alpha=0.45, lw=0)
+    ax.text(3.0, 0.86, "$c=3$", fontsize=6.2, ha="center", color="0.35")
+    ax.text(1.0, 0.86, "$c=1$", fontsize=6.2, ha="center", color="0.35")
+    ax.set_xticks(x)
+    ax.set_xticklabels([lbl for _, lbl, _ in order], fontsize=6.4)
+    ax.set_xlim(-0.3, len(order) - 0.7)
+    ax.set_ylim(-0.05, 0.95)
+    ax.set_ylabel(r"recovery fraction $f$")
+    ax.set_title("images or channels?", loc="left")
+    ax.legend(frameon=False, loc="center left", fontsize=6.4, labelspacing=0.2, borderpad=0.0)
+    fig.tight_layout()
+    save(fig, "fig6_channels")
+
+
 def main() -> None:
     style()
     available = []
@@ -470,6 +512,7 @@ def main() -> None:
     fig_calibration()
     fig_template()
     fig_s4e()
+    fig_channels()
 
 
 if __name__ == "__main__":
