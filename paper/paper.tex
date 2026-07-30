@@ -95,8 +95,11 @@ wholly --- symmetry, and the standard treatments for it do essentially nothing. 
 alignment recovered six times more than forecast on grayscale, forcing a public rewrite of our own
 claim, and then only half as much on natural images. The two exact methods \emph{cross over} ---
 alignment dominates on grayscale, the invariant encoding on RGB --- a reversal our
-pre-registration predicted from the encoding's algebra. We report the program's own forecast
-calibration throughout.
+pre-registration predicted from the encoding's algebra. Finally we hunt for a counterexample to
+identifiability at depth two and find none: one student recovers its teacher's parameters to seven
+significant figures at width two, while at production width the optimiser leaves the true orbit
+even when started on it. Identifiability survives; at production width it has no empirical content.
+We report the program's own forecast calibration throughout, misses included.
 \end{minipage}
 \end{center}
 \vskip 1.2em
@@ -155,8 +158,9 @@ of exactly invariant features, certified numerically to $3\times10^{-7}$ relativ
 feature maps applied to the same corpora and decoded by one frozen apparatus separate the gap
 into what an exact change of frame removes and what it cannot. Registered before any cell was
 computed; scored publicly, misses included.
-\item \textbf{A mechanism} (\S\ref{sec:mechanism}) and \textbf{a calibration audit}
-(\S\ref{sec:calibration}) of the program's own forecasts.
+\item \textbf{A mechanism} (\S\ref{sec:mechanism}), \textbf{a falsification hunt against
+identifiability at depth two} (\S\ref{sec:s4e}) built on an exact minimiser over $G$, and
+\textbf{a calibration audit} (\S\ref{sec:calibration}) of the program's own forecasts.
 \end{enumerate}
 
 \paragraph{Headline result.} Transformations that change no network's function at all --- exact
@@ -291,6 +295,20 @@ structure \citep{fefferman1994reconstructing} --- of which our Fourier-atom argu
 periodic analogue. What is new here is the \emph{phase} component: none of those groups contains a
 continuous family of bias shifts, and it is the $\tau$-circle that makes canonicalization globally
 obstructed (Proposition~\ref{prop:po5}) rather than obstructed only at ties.
+
+\begin{conjecture}[Deep case]\label{conj:deep}
+For $L\ge2$, off a proper analytic subset of parameter space, $f_\theta = f_{\theta'}$ implies
+$\theta' = g\theta$ for some $g\in G$.
+\end{conjecture}
+
+Our own attempt on Conjecture~\ref{conj:deep} reduces it, via Jacobi--Anger, to the uniqueness of a
+CP decomposition in a Bessel basis, and stalls on two lemmas: generic full column rank of the
+Bessel--Vandermonde matrices $[J_k(x_j)]$, and control of the infinite tail when the decomposition
+is identified from finitely many observed coefficients. The rank lemma is numerically supported and
+looks completable; the same numerics show the system is severely ill-conditioned by $n=5$
+($\min|\det|$ falling from $4.4\times10^{-3}$ to $4.4\times10^{-13}$ between $n=2$ and $n=5$), which
+is what motivated attacking the conjecture empirically instead (\S\ref{sec:s4e}). The attempt is
+released as a proof memo rather than buried.
 
 \begin{proposition}[No continuous canonicalization]\label{prop:po5}
 There is no continuous $\kappa : \Thgen \to \Thgen$ with $\kappa(\theta) \in \Orb(\theta)$ and
@@ -738,6 +756,95 @@ landscape. The headline non-monotonicity survives; the sub-claim does not.
 \end{remark}
 
 % =====================================================================================
+\section{Does identifiability have empirical content at depth two?}\label{sec:s4e}
+% =====================================================================================
+
+Everything above rests on a theorem proved at $L=1$ while every experiment is $L=2$. The
+pre-registered attack on that gap (S4e) asks the question empirically: if two two-layer sine
+networks realise nearly the same function, are their parameters nearly related by an element of
+$G$?
+
+\paragraph{The instrument, and the control that makes it non-vacuous.} A large residual after
+$\calign$ proves nothing, because $\calign$ is a heuristic choice of representative. We therefore
+minimise over the group directly. Given the other layers fixed, the optimum for one layer is
+\emph{exact}: the per-neuron $\Dinf$ cost
+$\|(-1)^dw_i - w^*_t\|^2 + ((-1)^db_i + \pi j - b^*_t)^2 + \|(-1)^{d+j}u_i - u^*_t\|^2$
+depends on $j$ only through its parity, so four $(d,\text{parity})$ cases give the exact minimum
+over the whole infinite group, and the permutation is then a Hungarian assignment on those
+per-pair minima. Layers are swept by coordinate descent from several restarts.
+
+The control is planted recovery: take $\theta$, apply a known $g$, and demand the search return
+machine zero. It does, at every width, to $\approx4\times10^{-8}$ relative. This control earned its
+place --- the first confirmatory launch \emph{failed} it (coordinate descent stalls on about
+$10\%$ of width-2 pairs), which tripped the registration's own void condition, and that run was
+discarded rather than reported. Restarts fixed it.
+
+\input{tables/s4e_table}
+
+\paragraph{Local recovery is well conditioned; the basin is not.} Perturbing a network by a
+relative $\varepsilon$ and measuring both residuals gives $\kappa = R_\theta/R_f$, the local
+condition number of the inverse map. It is \emph{small} and \emph{decreases} with width
+($0.042 \to 0.0055$ from $n=2$ to $n=32$), so the forward map $\theta\mapsto f$ is strongly
+expansive and local recovery is easy --- the opposite of what the Bessel--Vandermonde
+ill-conditioning in our own proof memo might suggest, and a distinction worth keeping: that
+determinant governs the \emph{global} recovery system, not the local Jacobian. What collapses with
+width instead is the \emph{basin}. Started a distance $\varepsilon=10^{-5}$ from the true orbit,
+$78$--$91\%$ of runs return to it at $n\le8$, $44\%$ at $n=16$, and \textbf{none} at $n=32$, where
+the optimiser instead walks from $R_\theta = 10^{-5}$ out to $1.3\times10^{-1}$ while the function
+barely improves. That is not a training-budget artifact: a control at five times the step count
+leaves it unchanged ($0\%$ at $n=32$, identical $R_f$ floor; open markers in
+Fig.~\ref{fig:s4e}b).
+
+\paragraph{Independent restarts witness the orbit only at the smallest width.} At $n=2$, one of
+$128$ students converged to $R_f = 5.9\times10^{-8}$ and, after optimal alignment, agreed with its
+teacher to $R_\theta = 1.2\times10^{-7}$ --- float32 relative epsilon, a maximum per-coordinate
+relative disagreement of $2.8\times10^{-6}$, and $2.6\times10^{-7}$ of the unrelated-network scale
+at that width. That is recovery to six or seven significant figures, and it is direct positive
+evidence for Conjecture~\ref{conj:deep}. At every larger width no restart came close: the best
+functional residual jumps to $10^{-2}$ and the orbit residual sits in the band occupied by
+\emph{entirely unrelated} networks (Fig.~\ref{fig:s4e}a). Combined with the warm-start arm, which
+returns $78$--$91\%$ of the time at those same widths when started \emph{inside} the basin, the
+reading is specific: the basin does not become shallower with width, its \emph{volume} collapses
+relative to what random initialisation samples.
+
+\paragraph{The registered criterion fired, and it was wrong to.} Read literally, that $n=2$ student
+satisfies the pre-registered falsification criterion: $R_f < 10^{-5}$ and
+$R_\theta = 1.2\times10^{-7} > 20\kappa R_f = 5.0\times10^{-8}$. It is a false positive, and the
+criterion is at fault in two independent ways. It is \emph{ratio-only with no absolute floor}, so
+as $R_f$ approaches machine epsilon the threshold falls below the smallest residual a float32
+aligner can represent and \emph{any} exact recovery fires it. And $\kappa$ is the \emph{wrong null}
+for an optimiser residual: it was measured on random perturbation directions, whereas a minimiser's
+residual lies in the flattest directions of the loss --- exactly where $R_f$ is least sensitive to
+$R_\theta$ --- so $R_\theta/R_f > \kappa$ is expected for any converged minimiser ($2.10$ observed
+against $\kappa = 0.042$). We report the firing, the defect, and a post-hoc amendment adding an
+absolute floor $R_\theta > 10^{-3}$, marked as post-hoc with the frozen text unaltered, and score
+the registered probability call against the criterion \emph{as written}.
+
+\paragraph{The production arm.} At production width, two independent fits \emph{of the same image}
+sit at $R_\theta = 0.279$ after optimal alignment. Two fits of \emph{different} images sit at
+$0.280$. The difference is $-0.001$. Modulo the entire symmetry group, a same-image pair is no
+closer than an unrelated pair --- which is the S1 ladder's W1-versus-W3 gap seen from parameter
+space rather than from a decoder.
+
+\paragraph{What this licenses.} Conjecture~\ref{conj:deep} survives, with one width's worth of
+direct positive evidence and no counterexample. But identifiability at $L=2$ has \emph{no empirical
+content at production width}: the configuration that would witness it is not reachable, and the
+optimiser will leave the true orbit even when placed on it. The honest statement for Ch.~1 is that
+the $L=1$ theorem is the guarantee we have, and that the $L=2$ corpora this paper decodes are
+governed by basin structure rather than by identifiability.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig5_s4e.pdf}
+\caption{\textbf{S4e: identifiability versus reachability at $L=2$.} (a) Independent students
+fitted to a teacher's exact outputs: orbit residual against functional residual, with the local
+conditioning line $R_\theta = \kappa R_f$ and the band occupied by unrelated networks. (b) The
+fraction of runs that return to the true orbit when started a relative distance $\varepsilon$ from
+it --- the basin collapses with width. (c) The local condition number $\kappa$ against width.}
+\label{fig:s4e}
+\end{figure}
+
+% =====================================================================================
 \section{Calibration of the program's own forecasts}\label{sec:calibration}
 % =====================================================================================
 
@@ -782,6 +889,23 @@ W4 and W5'' broke \emph{upward} because W10 overtook W5. Both are the crossover 
 \S\ref{sec:crossover}, seen from the registration's point of view. Meanwhile the probability call
 that ran on the encoding's algebra rather than on extrapolation --- $f(\mathrm{W10})$ would rise
 with the output-channel count --- resolved correctly.
+
+\paragraph{S4e, and a failure mode neither mode covers.} The identifiability hunt registered nine
+intervals and scored \textbf{7/9}. Its two misses are one event: the best functional residual at
+$n=2$ came in at $5.9\times10^{-8}$ against a registered $3\times10^{-4}\,[10^{-6}, 3\times10^{-3}]$,
+and the orbit residual there at $1.2\times10^{-7}$ against $0.35\,[0.05, 0.65]$ --- because the
+pilot that informed both predictions used $n=32$ restarts and never sampled the global basin, while
+the confirmatory run at $n=128$ did. Those rows were flagged \emph{pilot-informed} in the ledger
+before the run for exactly this reason, and they are the argument for that flag: an under-powered
+pilot mispredicts the powered run, and in this case in the direction that made the result better.
+
+S4e also exposed a third failure mode, which is about \emph{criteria} rather than point
+predictions: a pre-registered threshold can be under-specified in a way only data reveals
+(\S\ref{sec:s4e}, the missing absolute floor). The lesson we take is that a registered criterion
+should be checked against its instrument's resolution at registration time, and that is now part of
+the template.
+
+Running coverage across the program is $30/40 = 75\%$ against a nominal $80\%$.
 
 We report all of this because the alternative, reporting the hits, would misrepresent how much of
 the final story was anticipated.
@@ -843,11 +967,13 @@ W10's rise --- but the first two remain entangled, and separating them needs a $
 corpus (grayscale CIFAR) or a $c=3$ simple one. That is one corpus generation, and it is the next
 experiment we would run.
 
-\textbf{Identifiability is proved only at $L=1$, and every experiment here is $L=2$.} This is the
-program's weakest link and we state it as such: Theorem~\ref{thm:po2}'s guarantee and our corpora
-do not yet meet. The deep case reduces to a Bessel--CP tensor decomposition with two open lemmas;
-the falsification protocol is an exhaustive-alignment residual hunt on repeated same-image fits at
-production width. \textbf{Depth $\ge 3$ invariants} need a Gram per successive layer and the
+\textbf{Identifiability is proved only at $L=1$, and every experiment here is $L=2$.} This remains
+the program's weakest theoretical link: Theorem~\ref{thm:po2}'s guarantee and our corpora do not
+meet. S4e (\S\ref{sec:s4e}) closed the empirical half of the question --- the conjecture survives
+with positive evidence at $n=2$ and no counterexample --- but not the proof: the deep case still
+reduces to a Bessel--CP tensor decomposition with two open lemmas. S4e's own contribution to the
+limitation is that it shows the question cannot be settled empirically at production width, so the
+remaining route is analytic. \textbf{Depth $\ge 3$ invariants} need a Gram per successive layer and the
 parity bookkeeping compounds; whether a finite family stays separating is unknown.
 \textbf{Eigenvalue pooling in W10 is deliberately lossy}, and the $0.269$-versus-$0.628$ span
 against $\calign$ bounds --- but does not identify --- what it discards. \textbf{The reader is a

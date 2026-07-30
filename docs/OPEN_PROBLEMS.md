@@ -5,7 +5,14 @@ Sub-questions not yet resolved, each with the best partial attack. ≥ 10 requir
 1. **PO-2 deep-case identifiability (L ≥ 2 sine).** Best attack: Jacobi–Anger spectral-lattice
    peeling (scoping memo §5, Strategy B′). Blockers: generic non-cancellation of Bessel-coefficient
    sums across neurons; lattice-basis recovery from truncated spectra; folding rational-independence
-   into "generic". Fallback wired: S4e falsification hunt on production L=2 nets.
+   into "generic". **S4e has now reported (2026-07-30) and the empirical fallback is spent:** the
+   conjecture survives with direct positive evidence at width 2 (a student recovered its teacher to
+   6–7 significant figures) and no counterexample at any width, but the question is *not decidable
+   empirically at production width* — the basin's volume collapses to 0% recovery at w=32 even from
+   a start on the orbit, unchanged at 5x the step count, while local conditioning stays good
+   (kappa = 0.0055). So the two open lemmas are the only remaining route, and the Bessel-Vandermonde
+   ill-conditioning that motivated deferring them turns out to be a statement about the *global*
+   recovery system, not the local Jacobian — which the measured kappa now separates cleanly.
 2. **Operational "effective orbit volume" for P-B.** Proposal: |G_eff| = n!·2ⁿ·(R_b/π)ⁿ with R_b =
    95% inter-quantile bias range measured post-fit per protocol/dataset. Alternative candidate:
    description length of the canonicalization data (bits to encode g given θ). Must be fixed before

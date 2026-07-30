@@ -1,2 +1,9 @@
 === budget control: waiting for the confirmatory run Thu Jul 30 02:00:39 +03 2026 ===
 === confirmatory run finished; starting Thu Jul 30 02:39:41 +03 2026 ===
+warmst.  w= 16 eps=1e-05  R_f 6.7e-04->1.5e-04  R_theta 1.1e-05->4.3e-02  recovered 31%
+warmst.  w= 16 eps=1e-04  R_f 6.7e-03->1.5e-04  R_theta 1.1e-04->6.9e-02  recovered 31%
+warmst.  w= 32 eps=1e-05  R_f 1.5e-03->2.0e-03  R_theta 1.0e-05->1.3e-01  recovered 0%
+warmst.  w= 32 eps=1e-04  R_f 1.5e-02->1.9e-03  R_theta 1.0e-04->1.3e-01  recovered 0%
+
+wrote results/s4e/budget_control.json
+=== budget control complete Thu Jul 30 03:18:05 +03 2026 ===

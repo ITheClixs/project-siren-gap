@@ -182,7 +182,7 @@ def s4e_table() -> str | None:
         rf"\emph{{planted}} is the validity control (a known group element, undone). "
         rf"$\kappa = R_\theta/R_f$ is the local condition number of the inverse map. "
         rf"\emph{{basin}} is the fraction of optimiser runs that return to the true orbit when "
-        rf"started a relative $\varepsilon = {eps_small:g}$ away. The last three columns are "
+        rf"started a relative $\varepsilon = 10^{{{int(round(__import__('math').log10(eps_small)))}}}$ away. The last three columns are "
         rf"independent students fitted to a teacher's exact outputs: their best functional "
         rf"residual, the orbit residual there, and --- for scale --- the orbit residual between "
         rf"two \emph{{unrelated}} networks of the same shape.}}",

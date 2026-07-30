@@ -36,3 +36,13 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-07-29,P-C1-A probability separated ordering f(W5)>f(W10)>f(W4)>max(f(W6) f(W7) f(W9)),probability,0.65,,,0,—,,0.4225,observed f(W5)=0.324 f(W10)=0.534 f(W4)=0.108; the two exact methods cross over
 2026-07-29,P-C1-B probability f(W10)_CIFAR > f(W10)_MNIST=0.269 (c=3 channel mechanism),probability,0.6,,,1,—,,0.16,observed f(W10)=0.534; mechanism call resolved correctly
 2026-07-29,P-C1-C probability all three label-shuffle controls within 2 pts of chance,probability,0.75,,,1,—,,0.0625,"shuffles {'W1': 11.02, 'W3': 10.08, 'W5': 10.2}"
+2026-07-29,P-S4e-1 planted control max R_theta worst width (pilot-informed),interval,5e-08,1e-09,1e-05,0.0,HIT,0.0,,
+2026-07-29,P-S4e-2 kappa median local condition number at w=32 (pilot-informed),interval,0.006,0.003,0.012,0.00551,HIT,0.00049,,eps=1e-4 rung of the ladder
+2026-07-29,P-S4e-3 warmstart recovery fraction eps=1e-4 w=2 (pilot-informed),interval,0.85,0.55,1.0,0.78125,HIT,0.06875,,
+2026-07-29,P-S4e-4 warmstart recovery fraction eps=1e-4 w=32 (pilot-informed),interval,0.0,0.0,0.15,0.0,HIT,0.0,,
+2026-07-29,P-S4e-5 best R_f over independent students w=2 (pilot-informed),interval,0.0003,1e-06,0.003,0.0,MISS,0.0003,,
+2026-07-29,P-S4e-6 R_theta at the best-R_f independent student w=2 (pilot-informed),interval,0.35,0.05,0.65,0.0,MISS,0.35,,
+2026-07-29,P-S4e-7 independent-student recovery rate R_theta<0.05 at w=2 (pilot-informed),interval,0.02,0.0,0.15,0.015625,HIT,0.004375,,
+2026-07-29,P-S4e-8 production median R_theta same-image pairs w=32 (pilot-informed),interval,0.45,0.25,0.7,0.278772,HIT,0.171228,,mnist
+2026-07-29,P-S4e-9 production median R_theta minus different-image null (pilot-informed),interval,0.0,-0.1,0.1,-0.001333,HIT,0.001333,,
+2026-07-29,P-S4e-C probability the falsification criterion is met at some width,probability,0.15,,,1,—,,0.7225,conjecture 6.5 dies if 1

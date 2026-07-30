@@ -81,3 +81,20 @@ full path ≈ 195–225 h — both inside the 350 h budget; full-CIFAR decision 
 ## Justifications for > 10 h jobs
 
 (none yet)
+
+## S4e actuals (2026-07-29/30)
+
+| item | wallclock | note |
+|---|---|---|
+| killed launch #1 | ~1 min | tripped the prereg void condition (planted control); numbers discarded |
+| killed launch #2 | **6 h 55 m** | blew the 3 h stopping rule; numbers discarded. Cause: per-step cost mis-estimated ~20x |
+| confirmatory run | ~40 min | 5 widths, per-width batch sizes after deviation D1 |
+| budget control (5x steps, w=16/32) | ~38 min | exploratory; separates basin size from training budget |
+| candidate verification | ~5 min | adjudicates the falsification candidate from parameters |
+
+**Measured, and worth keeping:** fitting cost on MPS is dominated by **batch size, not width** —
+96 ms/step at n=128/w=32 on a 64x64 grid, against 19.7 ms at n=32/w=32 and 34.5 ms at n=128/w=8.
+So w=8 at n=128 is *more* expensive than w=32 at n=32. MPS measured 3-4x faster than CPU for this
+workload (27 vs 78 ms/step at n=32), so the earlier over-run was a scale error, not a device error.
+Lesson for future projections: benchmark one step at the intended (n, width) before projecting, and
+project from batch size first.

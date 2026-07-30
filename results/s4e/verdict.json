@@ -1,0 +1,19 @@
+{
+  "prereg": "docs/prereg/S4e.md (aa5426a4245bd22f)",
+  "void_conditions": [],
+  "falsification": {
+    "criterion_met": true,
+    "candidates": [
+      {
+        "width": 2,
+        "student": 70,
+        "R_f": 5.869855002060831e-08,
+        "R_theta": 1.2191200937650137e-07,
+        "kappa": 0.04219363257288933,
+        "threshold": 4.9534101042618246e-08
+      }
+    ],
+    "n_students_below_R_f_threshold": 1
+  },
+  "intervals_hit": "7/9"
+}

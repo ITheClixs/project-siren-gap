@@ -32,3 +32,19 @@ channel ablation of the W10 encoding (`scripts/25_w10_channel_ablation.py`, wire
 CIFAR corpus at c = 1 (one corpus generation). Until one of them lands, "the recovery fractions
 depend on signal complexity" is stated as an observation across three corpora, not as an isolated
 effect of complexity.
+
+
+**S4e closes the empirical half of row 15 (2026-07-30).** PO-2's deep case was named the weakest
+theoretical link at G4/G5. S4e now reports: **Conjecture 6.5 survives** — at w=2 an independent
+student fitted to a teacher's exact outputs recovered the teacher's parameters to 6–7 significant
+figures (R_f 5.9e−08, R_θ 1.2e−07 after optimal alignment over G), and no counterexample was found
+at any width. But the same study shows the question **cannot be settled empirically at production
+width**: the basin's volume collapses (0% of runs return to the true orbit at w=32 even when started
+on it, unchanged at 5× the step count), so the configuration that would witness identifiability is
+unreachable. Local conditioning is *good* (κ = 0.0055 at w=32), which rules out "the inverse problem
+is locally ill-conditioned" as the explanation and leaves basin geometry.
+
+So row 15's weakest link is now precisely stated rather than merely named: **the L=2 corpora this
+program decodes are governed by basin structure, not by identifiability, and the remaining route to
+the theorem is analytic (the two open lemmas of the proof memo), not empirical.** The empirical
+fallback that G2 wired in has been spent, and it reported.

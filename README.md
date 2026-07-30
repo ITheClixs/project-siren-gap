@@ -34,6 +34,11 @@ exact methods **cross over**: alignment to a fixed reference dominates on graysc
 and collapses on natural RGB (0.33), while the exact invariant encoding does the reverse (0.27,
 0.43, 0.53) — a reversal the pre-registration predicted from the encoding's algebra.
 
+Finally we hunt for a counterexample to identifiability at depth two and find none: one student
+recovers its teacher's parameters to **seven significant figures** at width 2, while at production
+width the optimiser leaves the true orbit even when started on it. Identifiability survives; at
+production width it has **no empirical content**.
+
 ---
 
 ## 1. Introduction
@@ -406,7 +411,94 @@ mechanism, and it predicts exactly the null W1−W2 rung we measured.
 
 ---
 
-## 7. Calibration: scoring our own forecasts
+## 7. S4e: does identifiability have empirical content at depth two?
+
+Everything above rests on a theorem proved at $L=1$ while every experiment is $L=2$. **S4e** is the
+pre-registered attack on that gap ([`docs/prereg/S4e.md`](docs/prereg/S4e.md), `aa5426a4245bd22f`):
+if two two-layer sine networks realise nearly the same function, are their parameters nearly
+related by an element of $G$?
+
+**The instrument.** A large residual after $c_\text{align}$ proves nothing — it is a *heuristic*
+choice of representative. So we minimise over the group directly
+([`canon/refine.py`](src/sirengap/canon/refine.py)). Given the other layers fixed, one layer's
+optimum is **exact**: the per-neuron cost
+
+$$\lVert(-1)^d w_i - w^*_t\rVert^2 + ((-1)^d b_i + \pi j - b^*_t)^2 + \lVert(-1)^{d+j}u_i - u^*_t\rVert^2$$
+
+depends on $j$ only through its **parity**, so four $(d,\text{parity})$ cases give the exact minimum
+over the whole *infinite* group $D_\infty$; the permutation is then a Hungarian assignment on those
+per-pair minima. Layers are swept by coordinate descent from several restarts.
+
+**The control that makes it non-vacuous.** Plant a known $g$ and demand the search return machine
+zero. It does — and it earned its place: the *first* confirmatory launch **failed** it (coordinate
+descent stalls on ~10% of width-2 pairs), which tripped the registration's own void condition. That
+run was **discarded, not reported**; restarts fixed it.
+
+![S4e](paper/figures/fig5_s4e.png)
+
+**Figure 5.** (a) Independent students fitted to a teacher's exact outputs: orbit residual against
+functional residual, with the local-conditioning line and the band occupied by *unrelated*
+networks. (b) The fraction of runs that return to the true orbit when started a relative distance
+$\varepsilon$ away — the basin collapses with width. (c) The local condition number vs width.
+
+### Results
+
+| width $n$ | planted $R_\theta$ | basin | $\kappa$ | best $R_f$ | $R_\theta$ there | unrelated $R_\theta$ |
+|---:|---:|---:|---:|---:|---:|---:|
+| 2 | 4.3e-08 | 78% | 0.0422 | **5.9e-08** | **0.000** | 0.468 |
+| 4 | 3.7e-08 | 91% | 0.0351 | 1.6e-02 | 0.319 | 0.451 |
+| 8 | 3.0e-08 | 91% | 0.0198 | 1.1e-02 | 0.475 | 0.368 |
+| 16 | 3.1e-08 | 44% | 0.0146 | 7.9e-03 | 0.353 | 0.292 |
+| 32 | 3.3e-08 | **0%** | 0.0055 | 1.2e-03 | 0.334 | 0.233 |
+
+**(i) Local recovery is *well* conditioned.** $\kappa$ falls 0.042 → 0.0055 with width, so the
+forward map is strongly expansive. Opposite of what the Bessel–Vandermonde ill-conditioning in our
+own proof memo suggests — and the distinction matters: that determinant governs the **global**
+recovery system, not the local Jacobian.
+
+**(ii) The basin's *volume* collapses, not its depth.** Started *inside* it, 78–91% of runs return
+at $n\le8$, 44% at $n=16$, **none** at $n=32$ — where the optimiser walks from $R_\theta=10^{-5}$
+out to $1.3\times10^{-1}$ while the function barely improves. **Not a budget artifact**: a control
+at 5× the step count gives identical results
+([`28_s4e_budget_control.sh`](scripts/28_s4e_budget_control.sh)).
+
+**(iii) One student recovered its teacher exactly.** At $n=2$, 1 of 128 students hit
+$R_f=5.9\times10^{-8}$ and, after optimal alignment, agreed to $R_\theta=1.2\times10^{-7}$ — float32
+epsilon, max per-coordinate relative disagreement $2.8\times10^{-6}$, i.e. **6–7 significant
+figures**. Direct positive evidence for the conjecture. No larger width came close.
+
+**(iv) Production arm.** Two independent fits *of the same image* sit at $R_\theta = 0.279$; two
+fits of *different* images at $0.280$. Difference **−0.001**. Modulo the entire group, a same-image
+pair is no closer than an unrelated pair — the W1-vs-W3 gap seen from parameter space.
+
+### The registered criterion fired, and it was wrong to
+
+Read literally, that $n=2$ student satisfies §4: $R_f<10^{-5}$ **and**
+$R_\theta = 1.2\times10^{-7} > 20\kappa R_f = 5.0\times10^{-8}$. It's a **false positive**, and the
+criterion is at fault twice:
+
+1. **Ratio-only, no absolute floor.** As $R_f\to$ machine epsilon, $20\kappa R_f$ falls *below* the
+   smallest residual a float32 aligner can represent. *Any* exact recovery fires it.
+2. **$\kappa$ is the wrong null.** Measured on *random* directions; a minimiser's residual lies in
+   the **flattest** directions of the loss — exactly where $R_f$ is least sensitive to $R_\theta$ —
+   so $R_\theta/R_f > \kappa$ is expected for any converged minimiser (2.10 vs 0.042).
+
+A ratio against the planted control doesn't rescue it either: for a *single* INR the planted pair
+aligns to exactly 0.0, so that ratio divides by zero. Adjudication has to be absolute
+([`29_s4e_verify_candidate.py`](scripts/29_s4e_verify_candidate.py)).
+
+Amendment **A1** adds a floor ($R_\theta>10^{-3}$), is marked **post-hoc**, leaves frozen §4
+untouched, and the probability call is still scored against the criterion **as written** — it fired,
+Brier 0.7225. Moving that goalpost quietly is the failure this whole apparatus exists to prevent.
+
+**Verdict.** Conjecture 6.5 **survives**, with one width's direct positive evidence and no
+counterexample. But identifiability at $L=2$ has **no empirical content at production width**: the
+configuration that would witness it is unreachable, and the optimiser leaves the true orbit even
+when placed on it. The remaining route is analytic, not empirical. **7/9 intervals hit.**
+
+---
+
+## 8. Calibration: scoring our own forecasts
 
 ![calibration](paper/figures/fig3_calibration.png)
 
@@ -445,19 +537,27 @@ nominal 80%.
 
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
-grayscale ordering persists) wrong, Brier 0.4225. Program coverage is now **23/31 = 74%**.
+grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; with S4e's nine rows it is
+**30/40 = 75%** (grayscale 9/14, CIFAR 14/17, S4e 7/9).
 
 The two misses that matter are the paper's finding, not a footnote to it. And the category error
 that produced a *spurious* miss on the FashionMNIST arm is now blocked by the instrument rather
 than by careful writing: `14_ladder_analysis.py` carries a per-dataset registration table, and an
 arm with none of its own prints *not scored*.
 
+**S4e added a third failure mode**, about *criteria* rather than point predictions: a registered
+threshold can be under-specified in a way only data reveals (the missing absolute floor, §7). Its
+two interval misses are one event — the $n=32$ pilot that informed them never sampled the global
+basin while the $n=128$ run did, which is exactly why those rows were flagged `pilot-informed`
+before the run. Checking a criterion against its instrument's resolution at registration time is now
+part of the template.
+
 All of this is reported because the alternative — reporting the hits — would misrepresent how much
 of the final story was anticipated.
 
 ---
 
-## 8. Limitations
+## 9. Limitations
 
 - **Signal complexity is confounded with two other things.** CIFAR-10 differs from the grayscale
   corpora in image statistics, in output-channel count ($c=3$ vs $c=1$), *and* in fit budget (1000
@@ -484,7 +584,7 @@ of the final story was anticipated.
 
 ---
 
-## 9. Reproduction
+## 10. Reproduction
 
 ```bash
 python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt

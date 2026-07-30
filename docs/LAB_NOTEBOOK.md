@@ -524,3 +524,123 @@ strength as c_align's 0.325.
 
 **Deviations:** none. **Waivers:** none. **Compute this session:** CIFAR ladder ~1.2 h active on
 MPS; travel diagnostic ~3 min; figures/tables/paper build ~2 min. Test suite green (69 tests).
+
+---
+
+## S4e — the deep-identifiability hunt (2026-07-29/30)
+
+DEFENSE row 15 has named PO-2's deep case as the weakest theoretical link since G4: the
+identifiability theorem is proved at L=1 while every empirical result in the program is L=2. S4e is
+the pre-committed empirical attack, registered in `docs/prereg/S4e.md`
+(**sha256-16 `aa5426a4245bd22f`**) with the falsification criterion, the void conditions and the
+permitted conclusions all fixed before the run.
+
+### New instrument: an exact minimiser over G
+
+`c_align` is a *heuristic* choice of orbit representative, so its residual cannot answer "is there
+**any** g ∈ G bringing these two together?". `src/sirengap/canon/refine.py` answers that directly,
+and the minimisation is **exact per layer** given the others fixed:
+
+- the per-neuron D∞ cost ‖(−1)^d w_i − w*_t‖² + ((−1)^d b_i + πj − b*_t)² + ‖(−1)^{d+j} u_i − u*_t‖²
+  depends on j **only through its parity**, so four (d, parity) cases give the exact minimum over
+  the whole *infinite* group;
+- the permutation is then a Hungarian assignment on those per-pair minima;
+- layers interact only through the shared W_{l+1}, so they are swept by coordinate descent.
+
+T12 (13 cases) is the control that makes the hunt non-vacuous: planted elements are undone to
+< 1e−6 relative at L = 1, 2, 3, with c = 3, at windings up to 12. One bug found: `canon.assign.
+hungarian` **maximises a score** and was being handed a cost.
+
+### Two process failures, both caught by the apparatus rather than by luck
+
+**The void condition fired.** The first confirmatory launch returned planted max R_θ = 0.22 at
+w = 2 — plain coordinate descent stalls in a joint local optimum on ~10% of width-2 pairs, which is
+invisible at the n = 16 pilot scale and fatal at n = 128. Prereg §4 declares that void. Diagnosed
+(best of 20 restarts → residual *exactly* 0, so the group search was never the limitation), fixed by
+restarts, re-verified at 0/128 failures every width. **That run's numbers are not used.**
+
+**The stopping rule fired.** The second launch was killed at **6 h 55 m** against a 3 h budget.
+Cause: I estimated ~5 ms/step, the truth is 96 ms/step at n = 128, w = 32 — and the cost is
+dominated by **batch size, not width** (w = 8 at n = 128 costs more than w = 32 at n = 32), which I
+had backwards. Benchmarked rather than re-guessed: MPS is 3–4× faster than CPU here, so the device
+was never the problem. Deviations D1/D2 appended to the prereg; frozen text untouched; no numbers
+from the killed runs used.
+
+### Results (confirmatory, `results/s4e/s4e.json`)
+
+| w | planted R_θ | basin (ε=1e−5) | κ | best R_f | R_θ there | unrelated R_θ |
+|---|---|---|---|---|---|---|
+| 2 | 4.3e−08 | 78% | 0.0422 | **5.9e−08** | **1.2e−07** | 0.468 |
+| 4 | 3.7e−08 | 91% | 0.0351 | 1.6e−02 | 0.319 | 0.451 |
+| 8 | 3.0e−08 | 91% | 0.0198 | 1.1e−02 | 0.475 | 0.368 |
+| 16 | 3.1e−08 | 44% | 0.0146 | 7.9e−03 | 0.353 | 0.292 |
+| 32 | 3.3e−08 | **0%** | 0.0055 | 1.2e−03 | 0.334 | 0.233 |
+
+**κ falls with width** (0.042 → 0.0055): the forward map θ ↦ f is strongly *expansive*, so local
+recovery is **well** conditioned. This is the opposite of the naive reading of the proof memo's
+Bessel–Vandermonde collapse, and the distinction has to be kept — that determinant governs the
+*global* recovery system, not the local Jacobian. Registered directional claim (b) **holds**;
+claim (a), monotone basin decay, **fails** (78% at w=2 < 91% at w=4).
+
+**The basin's volume collapses, not its depth.** Started *inside* the basin, 78–91% of runs return
+at w ≤ 8, 44% at w = 16, none at w = 32 — where the optimiser walks from R_θ = 1e−5 out to 1.3e−1
+while the function barely improves. A budget control at **5× the step count** changes nothing
+(`scripts/28_s4e_budget_control.sh`: 0% at w=32, identical R_f floor), so this is not
+under-training. Meanwhile *independent* restarts find the basin only at w = 2. Those two arms
+together are what license the specific claim; neither alone would.
+
+**One student recovered its teacher exactly.** At w = 2, 1 of 128 students reached
+R_f = 5.9e−08 and aligned to R_θ = 1.2e−07 — float32 relative epsilon, max per-coordinate relative
+disagreement 2.8e−06, i.e. **6–7 significant figures**, and 2.6e−07 of the unrelated-network scale.
+Direct positive evidence for Conjecture 6.5.
+
+**Production arm.** Same-image K-fit pairs at w = 32: R_θ = 0.279 after optimal alignment.
+Different-image pairs: 0.280. Difference **−0.001**. Modulo the entire group, two fits of the same
+image are no closer than two fits of different images — the W1-vs-W3 gap seen from parameter space
+instead of through a decoder. (Their R_f is 0.73, so these pairs are nowhere near function-equal;
+the arm characterises the corpus, it does not test the conjecture.)
+
+### The registered criterion fired, and it was wrong to
+
+Read literally, the w = 2 student meets §4: R_f < 1e−5 **and** R_θ = 1.2e−07 > 20κR_f = 5.0e−08. It
+is a **false positive**, and the criterion is defective in two independent ways:
+
+1. **Ratio-only, no absolute floor.** As R_f → machine epsilon, 20κR_f falls *below* the smallest
+   residual a float32 aligner can represent (1.19e−07). Any *exact* recovery fires it.
+2. **κ is the wrong null for an optimiser residual.** κ was measured on *random* perturbation
+   directions; a minimiser's residual lies in the **flattest** directions of the loss, exactly where
+   R_f is least sensitive to R_θ. So R_θ/R_f > κ is *expected* for any converged minimiser (2.10
+   observed against 0.042), and the ratio cannot separate "different configuration" from "same
+   orbit, found by descent".
+
+A ratio against the planted control does not repair it either: for a *single* INR the planted pair
+aligns to exactly 0.0 (the 4.3e−08 in §5 is a max over 128 INRs), so that ratio divides by zero. My
+first verification script did exactly that and printed "GENUINE COUNTEREXAMPLE" — a bug in the
+script, caught before it reached any document. Adjudication has to be **absolute**
+(`scripts/29_s4e_verify_candidate.py`).
+
+Amendment **A1** adds R_θ > 1e−3, is marked **post-hoc**, leaves §4 as frozen, and P-S4e-C is still
+scored against the criterion **as written** (fired ⇒ observed 1, Brier 0.7225). Quietly editing §4
+would have been the one unrecoverable move here.
+
+### Verdict and calibration
+
+**Conjecture 6.5 survives** — one width's direct positive evidence, no counterexample. But
+identifiability at L = 2 has **no empirical content at production width**: the configuration that
+would witness it is unreachable, and the optimiser leaves the true orbit even when placed on it. The
+remaining route is analytic, not empirical, which retires S4e as the answer to DEFENSE row 15 and
+hands the question back to the two open lemmas.
+
+**7/9 intervals hit.** Both misses are one event: P-S4e-5 (best R_f, registered 3e−4 [1e−6, 3e−3],
+observed 5.9e−08) and P-S4e-6 (R_θ there, registered 0.35 [0.05, 0.65], observed 1.2e−07), because
+the n = 32 pilot that informed them never sampled the global basin while the n = 128 run did. Those
+rows were flagged `pilot-informed` in the ledger *before* the run for exactly this risk. Program
+coverage is now **30/40 = 75%** (grayscale 9/14, CIFAR 14/17, S4e 7/9).
+
+**A third calibration failure mode, new this session:** a registered *criterion* — not a point
+prediction — can be under-specified in a way only data reveals. Checking a criterion against its
+instrument's resolution at registration time is now part of the template.
+
+**Deviations:** D1, D2, A1, all logged in the prereg. **Waivers:** none. **Compute:** ~7 h wasted on
+the killed run, ~40 min for the confirmatory run, ~40 min for the budget control, ~5 min for the
+candidate verification.
