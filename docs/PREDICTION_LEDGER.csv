@@ -53,3 +53,16 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-07-29,S4e,P-S4e-8 production median R_theta same-image pairs MNIST w=32 (pilot-informed),"0.45",0.25,0.70,aa5426a4245bd22f
 2026-07-29,S4e,P-S4e-9 production median R_theta minus different-image null (pilot-informed),"0.00",-0.10,0.10,aa5426a4245bd22f
 2026-07-29,S4e,P-S4e-C probability the falsification criterion is met at some width,"P=0.15",NA,NA,aa5426a4245bd22f
+2026-07-30,S1-gray,H-G1-1 P0 real-pixel MLP test accuracy pct,"47.0",41,53,b84b660829aa6d40
+2026-07-30,S1-gray,H-G1-2 P1-P0 accuracy points,"0.2",-1.0,1.5,b84b660829aa6d40
+2026-07-30,S1-gray,H-G1-3 W1 test accuracy pct,"38.0",28,46,b84b660829aa6d40
+2026-07-30,S1-gray,H-G1-4 W3 test accuracy pct,"12.5",10.5,16.0,b84b660829aa6d40
+2026-07-30,S1-gray,H-G1-5 W1-W3 perception gap accuracy points,"25.5",14,36,b84b660829aa6d40
+2026-07-30,S1-gray,H-G1-6 recovery fraction f(W5) c_align (the discriminator),"0.45",0.28,0.66,b84b660829aa6d40
+2026-07-30,S1-gray,H-G1-7 recovery fraction f(W10) exact L=2 invariants,"0.45",0.26,0.60,b84b660829aa6d40
+2026-07-30,S1-gray,H-G1-8 recovery fraction f(W4) template-free c_sort,"0.13",0.06,0.24,b84b660829aa6d40
+2026-07-30,S1-gray,H-G1-9 recovery fraction f(W9) frame averaging,"0.00",-0.03,0.05,b84b660829aa6d40
+2026-07-30,S1-gray,H-G1-10 median render PSNR dB,"59.5",55,63,b84b660829aa6d40
+2026-07-30,S1-gray,P-G-A probability f(W5)>0.50 (paper section 9 conjecture substantially right),"P=0.35",NA,NA,b84b660829aa6d40
+2026-07-30,S1-gray,P-G-B probability f(W10)<f(W5) i.e. the crossover reverses at c=1,"P=0.45",NA,NA,b84b660829aa6d40
+2026-07-30,S1-gray,P-G-C probability all three label-shuffle controls within 2 pts of chance,"P=0.80",NA,NA,b84b660829aa6d40

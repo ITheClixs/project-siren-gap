@@ -160,7 +160,16 @@ DATASET_SPECS: dict[str, DatasetSpec] = {
     ),
     # CIFAR-10 keeps the same 5000-image INR validation split, taken off a 50k train file.
     "cifar10": DatasetSpec("cifar10", side=32, channels=3, n_train_file=50000, val_start=45000),
+    # Luminance CIFAR-10: identical images, identical geometry, c = 1 instead of c = 3. Exists to
+    # separate "natural image statistics" from "output-channel count", which are confounded in
+    # every comparison between the CIFAR-10 corpora and the grayscale ones (S1-gray prereg).
+    "cifar10gray": DatasetSpec(
+        "cifar10gray", side=32, channels=1, n_train_file=50000, val_start=45000
+    ),
 }
+
+# ITU-R BT.601 luma, the standard RGB -> grayscale conversion
+_LUMA = (0.299, 0.587, 0.114)
 
 
 def spec_of(name: str) -> DatasetSpec:
@@ -178,4 +187,9 @@ def load_dataset(name: str, split: str) -> tuple[torch.Tensor, torch.Tensor]:
         raise ValueError(f"unknown split {split}")
     if name == "cifar10":
         return load_cifar10(split)
+    if name == "cifar10gray":
+        x, y = load_cifar10(split)
+        # x is [N, P, 3] in [-1, 1]; luma is affine in the channels, so the range is preserved
+        w = torch.tensor(_LUMA, dtype=x.dtype)
+        return (x * w).sum(dim=2, keepdim=True), y
     return load_idx_dataset(name, split)
