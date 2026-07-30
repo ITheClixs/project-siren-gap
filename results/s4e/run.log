@@ -1,5 +1,43 @@
-planted  w=  2  R_theta max 2.194e-01 (4 sweeps)
-planted  w=  4  R_theta max 1.004e-01 (3 sweeps)
-planted  w=  8  R_theta max 9.343e-02 (4 sweeps)
-planted  w= 16  R_theta max 3.608e-08 (3 sweeps)
-planted  w= 32  R_theta max 3.237e-08 (3 sweeps)
+planted  w=  2  R_theta max 4.258e-08 (41 sweeps)
+planted  w=  4  R_theta max 3.689e-08 (38 sweeps)
+planted  w=  8  R_theta max 3.019e-08 (35 sweeps)
+planted  w= 16  R_theta max 3.099e-08 (36 sweeps)
+planted  w= 32  R_theta max 3.318e-08 (36 sweeps)
+warmst.  w=  2 eps=1e-05  R_f 2.8e-04->6.0e-07  R_theta 1.1e-05->2.8e-05  recovered 78%
+warmst.  w=  2 eps=1e-04  R_f 2.8e-03->6.9e-07  R_theta 1.1e-04->4.1e-05  recovered 78%
+warmst.  w=  2 eps=1e-03  R_f 2.8e-02->9.9e-07  R_theta 1.1e-03->4.4e-05  recovered 72%
+warmst.  w=  2 eps=1e-02  R_f 2.9e-01->1.4e-03  R_theta 1.1e-02->3.1e-02  recovered 9%
+warmst.  w=  4 eps=1e-05  R_f 3.4e-04->6.1e-07  R_theta 1.1e-05->1.3e-05  recovered 91%
+warmst.  w=  4 eps=1e-04  R_f 3.4e-03->6.2e-07  R_theta 1.1e-04->1.3e-05  recovered 91%
+warmst.  w=  4 eps=1e-03  R_f 3.4e-02->4.8e-07  R_theta 1.1e-03->9.7e-06  recovered 94%
+warmst.  w=  4 eps=1e-02  R_f 3.4e-01->1.7e-03  R_theta 1.1e-02->3.0e-02  recovered 9%
+warmst.  w=  8 eps=1e-05  R_f 5.8e-04->2.0e-06  R_theta 1.0e-05->2.6e-05  recovered 91%
+warmst.  w=  8 eps=1e-04  R_f 5.8e-03->1.9e-06  R_theta 1.0e-04->2.4e-05  recovered 91%
+warmst.  w=  8 eps=1e-03  R_f 5.8e-02->2.1e-06  R_theta 1.0e-03->2.8e-05  recovered 84%
+warmst.  w=  8 eps=1e-02  R_f 5.8e-01->2.7e-03  R_theta 1.0e-02->3.4e-02  recovered 3%
+warmst.  w= 16 eps=1e-05  R_f 6.7e-04->6.2e-05  R_theta 1.1e-05->2.2e-03  recovered 44%
+warmst.  w= 16 eps=1e-04  R_f 6.7e-03->7.1e-05  R_theta 1.1e-04->2.9e-03  recovered 41%
+warmst.  w= 16 eps=1e-03  R_f 6.8e-02->7.9e-05  R_theta 1.1e-03->3.0e-03  recovered 34%
+warmst.  w= 16 eps=1e-02  R_f 6.8e-01->3.4e-03  R_theta 1.1e-02->5.0e-02  recovered 0%
+warmst.  w= 32 eps=1e-05  R_f 1.5e-03->1.7e-03  R_theta 1.0e-05->9.1e-02  recovered 0%
+warmst.  w= 32 eps=1e-04  R_f 1.5e-02->1.8e-03  R_theta 1.0e-04->9.2e-02  recovered 0%
+warmst.  w= 32 eps=1e-03  R_f 1.5e-01->1.6e-03  R_theta 1.0e-03->8.2e-02  recovered 0%
+warmst.  w= 32 eps=1e-02  R_f 1.5e+00->4.0e-03  R_theta 1.0e-02->9.8e-02  recovered 0%
+sensit.  w=  2  kappa(median) over eps ladder: ['0.0422', '0.0329', '0.0266', '0.0235', '0.0362']
+sensit.  w=  4  kappa(median) over eps ladder: ['0.0351', '0.0279', '0.0248', '0.0215', '0.0264']
+sensit.  w=  8  kappa(median) over eps ladder: ['0.0198', '0.0178', '0.0148', '0.0167', '0.0174']
+sensit.  w= 16  kappa(median) over eps ladder: ['0.0146', '0.0134', '0.0138', '0.0172', '0.0155']
+sensit.  w= 32  kappa(median) over eps ladder: ['0.0055', '0.0065', '0.0059', '0.0069', '0.0065']
+null     w=  2  R_theta median 0.468 min 0.171
+null     w=  4  R_theta median 0.451 min 0.223
+null     w=  8  R_theta median 0.368 min 0.232
+null     w= 16  R_theta median 0.292 min 0.229
+null     w= 32  R_theta median 0.233 min 0.177
+teacher  w=  2  best R_f 5.870e-08  R_theta there 0.0000  median R_theta 0.4408  (263s)
+teacher  w=  4  best R_f 1.619e-02  R_theta there 0.3191  median R_theta 0.4152  (476s)
+teacher  w=  8  best R_f 1.071e-02  R_theta there 0.4754  median R_theta 0.3689  (529s)
+teacher  w= 16  best R_f 7.869e-03  R_theta there 0.3528  median R_theta 0.3148  (384s)
+teacher  w= 32  best R_f 1.155e-03  R_theta there 0.3343  median R_theta 0.2897  (692s)
+production mnist: R_f median 0.7348, R_theta median 0.2788 (null 0.2801)
+
+wrote results/s4e/s4e.json

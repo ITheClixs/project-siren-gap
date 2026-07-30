@@ -1,0 +1,36 @@
+{
+  "width": 2,
+  "best_student": 70,
+  "R_f": 5.869855002060831e-08,
+  "stats": [
+    {
+      "label": "best student, aligned",
+      "max_abs_diff": 2.5033950805664062e-06,
+      "median_abs_diff": 4.76837158203125e-07,
+      "max_rel_diff": 2.7698520170815755e-06,
+      "relative_norm": 1.231660746725538e-07,
+      "param_norm": 27.199323654174805,
+      "n_coords_beyond_1e6_eps": 0
+    },
+    {
+      "label": "planted pair (exact by construction)",
+      "max_abs_diff": 0.0,
+      "median_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "relative_norm": 0.0,
+      "param_norm": 27.199323654174805,
+      "n_coords_beyond_1e6_eps": 0
+    }
+  ],
+  "R_theta": 1.231660746725538e-07,
+  "absolute_floor": 0.001,
+  "unrelated_scale_at_width": 0.4681701064109802,
+  "fraction_of_unrelated_scale": 2.630797502573418e-07,
+  "R_theta_over_R_f": 2.09828138223707,
+  "float32_relative_epsilon": 1.19e-07,
+  "criterion_defects": [
+    "ratio-only with no absolute floor: fires on any exact recovery as R_f -> eps",
+    "kappa measured on random directions under-predicts an optimiser's anisotropic residual, so R_theta/R_f > kappa is expected for any minimiser"
+  ],
+  "verdict": "FALSE POSITIVE \u2014 exact recovery. The candidate agrees with its teacher to 1.23e-07 relative (2.6e-07 of the unrelated-network scale at this width), i.e. to 6-7 significant figures. The frozen criterion fired because it is ratio-only with no absolute floor, and because kappa was measured on random perturbation directions while an optimiser residual lies in the flattest directions of the loss, where R_f is least sensitive to R_theta. Positive support for Conjecture 6.5, not a refutation of it."
+}

@@ -163,3 +163,45 @@ $n=16$ pilot scale. `refine_alignment` now takes the best of `n_restarts` descen
 identity, so it can never be worse). Planted recovery is now 0/128 failures at every width, max
 $4.3\times10^{-8}$. This strengthens the instrument in the direction that makes the hunt *harder* to
 pass — a smaller $R_\theta$ is a weaker case for a counterexample — so it cannot inflate the result.
+
+---
+
+## Post-hoc amendment A1 (2026-07-30) — the falsification criterion was under-specified
+
+**This amendment was written after seeing the confirmatory data. It is recorded as post-hoc and
+the frozen §4 text is left exactly as registered.** Reporting it any other way would be moving a
+goalpost silently, which is the specific failure this whole apparatus exists to prevent.
+
+**What happened.** The confirmatory run produced one candidate meeting §4 as written: at $w=2$,
+student 70 with $R_f = 5.87\times10^{-8}$ and $R_\theta = 1.23\times10^{-7}$ against a threshold
+$20\kappa R_f = 4.95\times10^{-8}$. Taken literally, §4 says Conjecture 6.5 is dead. It is not, and
+the criterion is at fault in two independent ways:
+
+1. **Ratio-only, no absolute floor.** As $R_f \to$ machine epsilon, $20\kappa R_f$ falls *below*
+   the smallest residual a float32 aligner can represent ($\approx1.19\times10^{-7}$ relative).
+   Any *exact* recovery therefore fires the criterion. The candidate's $R_\theta$ is
+   $1.23\times10^{-7}$ — float32 epsilon — with a maximum per-coordinate relative disagreement of
+   $2.8\times10^{-6}$, i.e. agreement to six or seven significant figures, and
+   $2.6\times10^{-7}$ of the unrelated-network scale at that width ($0.468$).
+2. **$\kappa$ is the wrong null for an optimiser residual.** $\kappa$ was measured by perturbing in
+   *random* directions. A minimiser's residual is not random: it lies in the flattest directions of
+   the loss, which are exactly the directions where $R_f$ is least sensitive to $R_\theta$. So
+   $R_\theta/R_f > \kappa$ is *expected* for any converged minimiser (observed here: $2.10$ against
+   $\kappa = 0.042$), and the ratio cannot by itself separate "different configuration" from
+   "same orbit, found by descent".
+
+**Amended criterion, for any future arm.** A counterexample additionally requires
+$R_\theta > 10^{-3}$ — four orders of magnitude above float32 epsilon, and still four orders below
+the unrelated-network scale, so it remains a demanding test. Under the amended criterion the
+candidate is **not** a counterexample and the run's verdict is §6 outcome **(3)**: positive
+empirical support at $w=2$, stated as support and not as proof.
+
+**A ratio against the `planted` control does not repair this either**, which is worth recording:
+for a single INR the planted pair aligns to *exactly* $0.0$, so that ratio is a division by zero.
+The $4.3\times10^{-8}$ quoted for `planted` in §5 is a maximum over 128 INRs, not one pair's
+residual. Adjudication has to be against an absolute scale, which is what A1 supplies.
+
+**What does not change.** The void conditions, the registered intervals and their scoring, and the
+outcome wording of §6 all stand. P-S4e-C is scored against §4 **as frozen** (criterion met, so
+observed $= 1$, Brier $0.7225$) with this amendment recorded alongside it, rather than rescored
+under A1 — the registered call was about the criterion as written, and it fired.
