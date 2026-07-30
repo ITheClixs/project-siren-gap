@@ -1,0 +1,219 @@
+{
+  "dataset": "cifar10gray",
+  "prereg": "docs/prereg/S1-gray.md (b84b660829aa6d40), rows H-G1-* \u2014 PARTIAL ladder",
+  "scored": true,
+  "partial_arm": true,
+  "rungs_run": [
+    "P0",
+    "P1",
+    "W1",
+    "W10",
+    "W3",
+    "W4",
+    "W5",
+    "W9"
+  ],
+  "means": {
+    "P0": 47.502,
+    "P1": 47.763999999999996,
+    "W1": 38.164,
+    "W10": 24.154,
+    "W3": 10.544,
+    "W4": 12.156,
+    "W5": 19.488,
+    "W9": 10.542000000000002
+  },
+  "seeds": {
+    "P0": 5,
+    "P1": 5,
+    "W1": 5,
+    "W10": 5,
+    "W3": 5,
+    "W4": 5,
+    "W5": 5,
+    "W9": 5
+  },
+  "tests": {
+    "H-S1-1": {
+      "statement": "P1 ~ P0 (TOST); is class information preserved by the fit?",
+      "diff": {
+        "n": 5,
+        "mean_diff": 0.26200000000000045,
+        "ci95": [
+          -0.4652696434096757,
+          0.9892696434096766
+        ],
+        "t_p": 0.37380713022790624,
+        "wilcoxon_p": 0.625,
+        "cohen_d": 0.4473113520924645,
+        "paired_on_seeds": 5
+      },
+      "tost": {
+        "margin": 1.0,
+        "p_lower": 0.004268193620759919,
+        "p_upper": 0.023977096728288308,
+        "equivalent_at_05": true
+      },
+      "registered": {
+        "point": 0.2,
+        "lo80": -1.0,
+        "hi80": 1.5
+      },
+      "holm_adjusted_p": 0.37380713022790624,
+      "observed": 0.26200000000000045,
+      "interval_hit": true,
+      "abs_error": 0.062000000000000444
+    },
+    "H-S1-2": {
+      "statement": "W1 - P1 residual under zero nuisance",
+      "diff": {
+        "n": 5,
+        "mean_diff": -9.599999999999998,
+        "ci95": [
+          -10.336307797868315,
+          -8.86369220213168
+        ],
+        "t_p": 3.47649246644859e-06,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": -16.188847133312485,
+        "paired_on_seeds": 5
+      },
+      "holm_adjusted_p": 6.95298493289718e-06,
+      "observed": -9.599999999999998
+    },
+    "H-S1-4a": {
+      "statement": "W1 - W3 init/symmetry gap (the perception gap)",
+      "diff": {
+        "n": 5,
+        "mean_diff": 27.619999999999997,
+        "ci95": [
+          26.819776692816166,
+          28.42022330718383
+        ],
+        "t_p": 7.109347861588491e-08,
+        "wilcoxon_p": 0.0625,
+        "cohen_d": 42.85648683625462,
+        "paired_on_seeds": 5
+      },
+      "registered": {
+        "point": 25.5,
+        "lo80": 14.0,
+        "hi80": 36.0
+      },
+      "holm_adjusted_p": 2.1328043584765473e-07,
+      "observed": 27.619999999999997,
+      "interval_hit": true,
+      "abs_error": 2.1199999999999974
+    },
+    "H-S1-6": {
+      "statement": "W10 within +-3 pts of the interval [W4, W5]",
+      "w10_mean": 24.154,
+      "interval": [
+        12.156,
+        19.488
+      ],
+      "distance_outside_interval": 4.666,
+      "observed": 4.666
+    }
+  },
+  "recovery_fractions": {
+    "f_W4": {
+      "point": 0.058189822164290264,
+      "ci95": [
+        0.04136016583152595,
+        0.06843228567226631
+      ],
+      "n": 5,
+      "interval_hit": false
+    },
+    "f_W5": {
+      "point": 0.32384673487403515,
+      "ci95": [
+        0.319120695352999,
+        0.3285727743950713
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "f_W9": {
+      "point": -0.00027651071590399575,
+      "ci95": [
+        -0.012076975224531905,
+        0.009974278661660698
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "f_W10": {
+      "point": 0.4928677427806479,
+      "ci95": [
+        0.47812996536048014,
+        0.5050901090823763
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "registered_f_W4": {
+      "point": 0.13,
+      "lo80": 0.06,
+      "hi80": 0.24
+    },
+    "registered_f_W5": {
+      "point": 0.45,
+      "lo80": 0.28,
+      "hi80": 0.66
+    },
+    "registered_f_W9": {
+      "point": 0.0,
+      "lo80": -0.03,
+      "hi80": 0.05
+    },
+    "registered_f_W10": {
+      "point": 0.45,
+      "lo80": 0.26,
+      "hi80": 0.6
+    }
+  },
+  "controls": {
+    "P0": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 24.34,
+      "knn10_cosine": 35.160000000000004
+    },
+    "P1": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 24.34,
+      "knn10_cosine": 35.13
+    },
+    "W1": {
+      "label_shuffle_test_acc": 10.58,
+      "linear_probe": 33.7,
+      "knn10_cosine": 16.619999999999997
+    },
+    "W10": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 20.84,
+      "knn10_cosine": 10.99
+    },
+    "W3": {
+      "label_shuffle_test_acc": 9.71,
+      "linear_probe": 10.18,
+      "knn10_cosine": 9.790000000000001
+    },
+    "W4": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 11.68,
+      "knn10_cosine": 9.45
+    },
+    "W5": {
+      "label_shuffle_test_acc": 10.22,
+      "linear_probe": 16.93,
+      "knn10_cosine": 10.51
+    },
+    "W9": {
+      "label_shuffle_test_acc": null,
+      "linear_probe": 10.13,
+      "knn10_cosine": 10.13
+    }
+  }
+}

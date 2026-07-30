@@ -111,3 +111,40 @@ controls at W1/W3/W5, no row-wise INR exclusion. Scoring uses the per-dataset re
 **Budget:** corpus generation measured at $12.2$ fits/s $\Rightarrow$ $120{,}000$ fits $\approx3.2$ h
 derated; ladder $\approx30$ min. **Stopping rule:** if generation exceeds 6 h, `P-random` is
 truncated to 20k train images and the reduced $n$ is reported in the table rather than hidden.
+
+---
+
+## Deviation log (appended 2026-07-30)
+
+**D1 — the quality gates ran *after* the ladder, not before.** `scripts/30_cifar_gray_corpus.sh`
+invoked `04_quality_gate.py` with `--corpus/--split/--epochs`; the script takes
+`--dir/--eval-split/--gate-epochs`. Both gate invocations therefore died on an argparse error and
+printed `GATE FAILED`, which was a *script* failure and not a gate rejection. The chained ladder
+(`31_cifar_gray_ladder.sh`) checked only that the corpus log reported completion, so it ran on
+corpora whose gates had not been evaluated.
+
+The gates were then run by hand and **both pass**: render-vs-real-pixel gaps of $+0.04$
+(`P-shared-det`) and $-0.01$ (`P-random`) points, median PSNR $59.8$ and $60.0$\,dB,
+corr(PSNR, label) $-0.005$ and $-0.020$. The corpora were therefore admissible throughout and the
+cells stand.
+
+Recorded because the *ordering* was wrong even though the outcome was not, and because two things
+should be said plainly: (i) a gate result is a property of the corpus and cannot be influenced by
+having seen ladder numbers, so there is no selection risk here; (ii) while diagnosing the failure I
+saw the tail of the ladder log, which included `f_W9` and `f_W10`, before the gates were confirmed.
+The registered predictions were frozen long before either.
+
+**Fix owed:** the chain scripts should gate on the gate, not on the corpus log. `31_*.sh` is
+amended to require a passing gate JSON for every protocol before starting.
+
+**D2 — §2's declared pre-freeze exposure overstates what existed.** §2 says "the corpora were
+generated and their quality gates run before this file was written", copied from the `S1-cifar.md`
+template without checking. That is **false**: this file was frozen at 12:52 on 2026-07-30, four
+minutes after corpus generation *started* (12:48) and nearly four hours before it finished (16:44).
+At freeze time only a handful of shards existed and no gate had been attempted.
+
+The error runs in the conservative direction — it declares *more* pre-freeze exposure than actually
+occurred, so the registration is stronger than advertised rather than weaker — but a declaration of
+exposure is exactly the kind of statement that has to be true, so it is corrected here rather than
+left to be discovered. What §2 should have said: the pilot-shard PSNR values ($59.1$–$60.0$\,dB from
+a 256-image smoke run) had been seen, and nothing else.

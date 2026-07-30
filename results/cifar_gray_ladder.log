@@ -1,0 +1,153 @@
+=== waiting for the grayscale corpus Thu Jul 30 12:54:50 +03 2026 ===
+=== corpus complete; ladder start Thu Jul 30 16:44:59 +03 2026 ===
+--- rung P0 Thu Jul 30 16:44:59 +03 2026 ---
+=== rung P0 ===
+  P0 seed 0: test 47.69 (val 49.14, 24 ep)
+  P0 seed 1: test 47.19 (val 48.62, 20 ep)
+  P0 seed 2: test 47.86 (val 49.12, 20 ep)
+  P0 seed 3: test 47.37 (val 49.56, 21 ep)
+  P0 seed 4: test 47.40 (val 49.24, 24 ep)
+  -> results/ladder/cifar10gray/P0.json (47.50 mean over 5 seeds)
+--- rung P1 Thu Jul 30 16:47:06 +03 2026 ---
+=== rung P1 ===
+  P1 seed 0: test 47.91 (val 49.04, 20 ep)
+  P1 seed 1: test 48.05 (val 49.80, 26 ep)
+  P1 seed 2: test 47.63 (val 50.26, 40 ep)
+  P1 seed 3: test 48.22 (val 49.64, 32 ep)
+  P1 seed 4: test 47.01 (val 48.96, 16 ep)
+  -> results/ladder/cifar10gray/P1.json (47.76 mean over 5 seeds)
+--- rung W1 Thu Jul 30 16:49:33 +03 2026 ---
+=== rung W1 ===
+  W1 seed 0: test 37.60 (val 39.12, 11 ep)
+  W1 seed 1: test 38.63 (val 40.22, 12 ep)
+  W1 seed 2: test 38.62 (val 40.30, 12 ep)
+  W1 seed 3: test 38.08 (val 39.34, 13 ep)
+  W1 seed 4: test 37.89 (val 39.56, 12 ep)
+  W1 label-shuffle control: 10.58
+  -> results/ladder/cifar10gray/W1.json (38.16 mean over 5 seeds)
+--- rung W3 Thu Jul 30 16:51:06 +03 2026 ---
+=== rung W3 ===
+  W3 seed 0: test 10.71 (val 11.34, 13 ep)
+  W3 seed 1: test 10.47 (val 12.00, 20 ep)
+  W3 seed 2: test 10.22 (val 11.04, 15 ep)
+  W3 seed 3: test 10.92 (val 11.62, 23 ep)
+  W3 seed 4: test 10.40 (val 11.86, 16 ep)
+  W3 label-shuffle control: 9.71
+  -> results/ladder/cifar10gray/W3.json (10.54 mean over 5 seeds)
+--- rung W4 Thu Jul 30 16:53:05 +03 2026 ---
+=== rung W4 ===
+  W4 seed 0: test 12.37 (val 12.92, 12 ep)
+  W4 seed 1: test 12.44 (val 12.96, 11 ep)
+  W4 seed 2: test 12.10 (val 12.88, 16 ep)
+  W4 seed 3: test 11.60 (val 12.76, 32 ep)
+  W4 seed 4: test 12.27 (val 13.40, 15 ep)
+  -> results/ladder/cifar10gray/W4.json (12.16 mean over 5 seeds)
+--- rung W5 Thu Jul 30 16:54:51 +03 2026 ---
+=== rung W5 ===
+  W5 seed 0: test 19.58 (val 19.30, 11 ep)
+  W5 seed 1: test 19.53 (val 19.14, 12 ep)
+  W5 seed 2: test 19.38 (val 19.86, 12 ep)
+  W5 seed 3: test 19.47 (val 19.04, 11 ep)
+  W5 seed 4: test 19.48 (val 20.04, 12 ep)
+  W5 label-shuffle control: 10.22
+  -> results/ladder/cifar10gray/W5.json (19.49 mean over 5 seeds)
+--- rung W10 Thu Jul 30 16:56:18 +03 2026 ---
+=== rung W10 ===
+  W10 seed 0: test 23.86 (val 24.16, 13 ep)
+  W10 seed 1: test 23.63 (val 24.46, 13 ep)
+  W10 seed 2: test 24.28 (val 24.48, 12 ep)
+  W10 seed 3: test 24.49 (val 24.42, 12 ep)
+  W10 seed 4: test 24.51 (val 24.62, 13 ep)
+  -> results/ladder/cifar10gray/W10.json (24.15 mean over 5 seeds)
+--- rung W9 Thu Jul 30 16:57:34 +03 2026 ---
+=== rung W9 ===
+  W9 seed 0: test 10.12 (val 11.38, 21 ep)
+  W9 seed 1: test 10.40 (val 11.30, 22 ep)
+  W9 seed 2: test 10.72 (val 11.16, 13 ep)
+  W9 seed 3: test 10.88 (val 11.80, 13 ep)
+  W9 seed 4: test 10.59 (val 11.04, 12 ep)
+  -> results/ladder/cifar10gray/W9.json (10.54 mean over 5 seeds)
+--- analysis Thu Jul 30 16:59:36 +03 2026 ---
+{
+  "means": {
+    "P0": 47.502,
+    "P1": 47.763999999999996,
+    "W1": 38.164,
+    "W10": 24.154,
+    "W3": 10.544,
+    "W4": 12.156,
+    "W5": 19.488,
+    "W9": 10.542000000000002
+  },
+  "recovery_fractions": {
+    "f_W4": {
+      "point": 0.058189822164290264,
+      "ci95": [
+        0.04136016583152595,
+        0.06843228567226631
+      ],
+      "n": 5,
+      "interval_hit": false
+    },
+    "f_W5": {
+      "point": 0.32384673487403515,
+      "ci95": [
+        0.319120695352999,
+        0.3285727743950713
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "f_W9": {
+      "point": -0.00027651071590399575,
+      "ci95": [
+        -0.012076975224531905,
+        0.009974278661660698
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "f_W10": {
+      "point": 0.4928677427806479,
+      "ci95": [
+        0.47812996536048014,
+        0.5050901090823763
+      ],
+      "n": 5,
+      "interval_hit": true
+    },
+    "registered_f_W4": {
+      "point": 0.13,
+      "lo80": 0.06,
+      "hi80": 0.24
+    },
+    "registered_f_W5": {
+      "point": 0.45,
+      "lo80": 0.28,
+      "hi80": 0.66
+    },
+    "registered_f_W9": {
+      "point": 0.0,
+      "lo80": -0.03,
+      "hi80": 0.05
+    },
+    "registered_f_W10": {
+      "point": 0.45,
+      "lo80": 0.26,
+      "hi80": 0.6
+    }
+  }
+}
+
+registration: docs/prereg/S1-gray.md (b84b660829aa6d40), rows H-G1-* — PARTIAL ladder
+H-S1-1: obs +0.26 vs registered +0.20 [-1.0, 1.5] -> HIT, holm p=0.37
+H-S1-2: obs -9.60 (unregistered for this dataset — not scored), holm p=7e-06
+H-S1-4a: obs +27.62 vs registered +25.50 [14.0, 36.0] -> HIT, holm p=2.1e-07
+H-S1-6: W10 24.15, interval [12.156, 19.488], outside by 4.67 -> not scored
+f_W4: 0.058 [0.04136016583152595, 0.06843228567226631] -> MISS
+f_W5: 0.324 [0.319120695352999, 0.3285727743950713] -> HIT
+f_W9: -0.000 [-0.012076975224531905, 0.009974278661660698] -> HIT
+f_W10: 0.493 [0.47812996536048014, 0.5050901090823763] -> HIT
+
+written results/ladder/cifar10gray/S1_analysis.json and F9_waterfall.png
+=== cifar10gray ladder complete Thu Jul 30 16:59:37 +03 2026 ===

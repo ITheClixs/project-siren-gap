@@ -2,6 +2,23 @@
   "dataset": "mnist",
   "prereg": "docs/prereg/S1.md (8c029cf43f01a94c) + addendum 01",
   "scored": true,
+  "partial_arm": false,
+  "rungs_run": [
+    "P0",
+    "P1",
+    "W1",
+    "W10",
+    "W2",
+    "W3",
+    "W4",
+    "W5",
+    "W6",
+    "W7",
+    "W7-1/8",
+    "W8",
+    "W9",
+    "X1"
+  ],
   "means": {
     "P0": 97.974,
     "P1": 97.58800000000001,

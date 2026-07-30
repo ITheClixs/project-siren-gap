@@ -46,3 +46,16 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-07-29,P-S4e-8 production median R_theta same-image pairs w=32 (pilot-informed),interval,0.45,0.25,0.7,0.278772,HIT,0.171228,,mnist
 2026-07-29,P-S4e-9 production median R_theta minus different-image null (pilot-informed),interval,0.0,-0.1,0.1,-0.001333,HIT,0.001333,,
 2026-07-29,P-S4e-C probability the falsification criterion is met at some width,probability,0.15,,,1,—,,0.7225,conjecture 6.5 dies if 1
+2026-07-30,H-G1-1 P0 real-pixel MLP test accuracy pct,interval,47.0,41,53,47.502,HIT,0.502,,
+2026-07-30,H-G1-2 P1-P0 accuracy points,interval,0.2,-1.0,1.5,0.262,HIT,0.062,,
+2026-07-30,H-G1-3 W1 test accuracy pct,interval,38.0,28,46,38.164,HIT,0.164,,
+2026-07-30,H-G1-4 W3 test accuracy pct,interval,12.5,10.5,16.0,10.544,HIT,1.956,,at the lower edge
+2026-07-30,H-G1-5 W1-W3 perception gap accuracy points,interval,25.5,14,36,27.62,HIT,2.12,,
+2026-07-30,H-G1-6 recovery fraction f(W5) c_align (the discriminator),interval,0.45,0.28,0.66,0.3238,HIT,0.1262,,identical to RGB CIFAR's 0.324 at c=3
+2026-07-30,H-G1-7 recovery fraction f(W10) exact L=2 invariants,interval,0.45,0.26,0.6,0.4929,HIT,0.0429,,close to RGB CIFAR's 0.534
+2026-07-30,H-G1-8 recovery fraction f(W4) template-free c_sort,interval,0.13,0.06,0.24,0.0582,MISS,0.0718,,misses the lower edge by 0.002
+2026-07-30,H-G1-9 recovery fraction f(W9) frame averaging,interval,0.0,-0.03,0.05,-0.0003,HIT,0.0003,,
+2026-07-30,H-G1-10 median render PSNR dB,interval,59.5,55,63,59.7682,HIT,0.2682,,
+2026-07-30,P-G-A probability f(W5)>0.50 (paper section 9 conjecture substantially right),probability,0.35,,,0,—,,0.1225,observed f(W5)=0.324 at c=1 against 0.324 at c=3 — unchanged
+2026-07-30,P-G-B probability f(W10)<f(W5) i.e. the crossover reverses at c=1,probability,0.45,,,0,—,,0.2025,crossover persists: f(W10)=0.493 > f(W5)=0.324
+2026-07-30,P-G-C probability all three label-shuffle controls within 2 pts of chance,probability,0.8,,,1,—,,0.04,"shuffles [10.58, 9.71, 10.22]"

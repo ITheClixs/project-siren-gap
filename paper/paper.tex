@@ -694,20 +694,42 @@ $0.999$ respectively --- CIFAR-10 is if anything the \emph{least} moved. The ext
 not translate into extra displacement, so the drop in $f(\mathrm{W5})$ is not a fit-length
 artifact and the laziness that makes alignment work at all is equally present everywhere.
 
-\paragraph{What we think is happening, stated as a conjecture.} $\calign$ matches neurons by
-correlating their layer-1 \emph{activations} on probe coordinates against a template. That
-statistic is blind to the outgoing structure --- exactly the part that grows with $c$, and exactly
-what W10's Gram coupling reads. So as more of a neuron's identity moves into its outgoing vector,
-activation matching identifies it less reliably while the invariants identify it better. This
-predicts that an alignment cost augmented with an outgoing-weight term should recover part of the
-CIFAR shortfall; that experiment is not run here and the claim is registered as a conjecture, not
-a finding.
+\paragraph{It is not the output-channel count either --- a conjecture of ours, tested and
+withdrawn.} An earlier draft of this paper conjectured a mechanism: $\calign$ matches neurons by
+correlating their layer-1 \emph{activations}, a statistic blind to the outgoing structure --- which
+is exactly the part that grows with $c$, and exactly what W10's Gram coupling reads. That predicts
+alignment should recover once $c=1$. We registered it as a falsifiable prediction
+(\texttt{S1-gray}, probability calls at $0.35$ and $0.45$) and built the corpus that tests it:
+\textbf{luminance CIFAR-10}, the identical images at the identical geometry, architecture and fit
+budget, with the output-channel count changed from three to one.
+
+\input{tables/gray_table}
+
+The conjecture is \textbf{wrong}, and the registration fixed in advance that it would then be
+withdrawn rather than softened. At $c=1$ the recovery fraction is $f(\mathrm{W5}) = 0.324$ ---
+\emph{identical}, to three decimals, to the $0.324$ measured at $c=3$ on the same images --- and the
+crossover does not reverse ($f(\mathrm{W10}) = 0.493$, still above W5). Luminance CIFAR behaves like
+RGB CIFAR, not like the grayscale corpora. Both probability calls resolved against us.
+
+The arm also removes the alternative explanation we owed. Dropping channels makes the fit
+over-parameterised, taking median render PSNR from $40$\,dB to $59.8$\,dB --- so this corpus is
+fitted \emph{much more accurately} than MNIST's $39.2$\,dB and still aligns far worse. Higher
+fidelity does not buy alignment recovery.
+
+\paragraph{What survives.} Three candidate causes for the cross-dataset behaviour have now been
+tested and eliminated: fit length (parameter travel is identical across corpora), output-channel
+count (this arm), and render fidelity (this arm, in the helpful direction). What remains is image
+statistics --- natural scenes versus centred strokes and silhouettes --- and we deliberately do not
+offer a replacement mechanism here. The one we did offer was specific, well-motivated by the
+algebra, and false; the appropriate response is to report the eliminations and name the experiment
+that would identify the cause, not to supply a second story on the same evidence.
 
 \paragraph{The practical reading.} On low-complexity grayscale corpora, choosing a good orbit
 representative is the dominant lever and an exact invariant front-end is a poor second. On natural
-RGB images the ranking reverses. A weight-space method that fixes one strategy will therefore look
-much better on some benchmarks than others for reasons that have nothing to do with its reader
-architecture.
+images the ranking reverses, at either channel count. A weight-space method that fixes one strategy
+will therefore look much better on some benchmarks than others for reasons that have nothing to do
+with its reader architecture --- and, as this arm shows, nothing to do with the obvious surface
+properties of the corpus either.
 
 % =====================================================================================
 \section{Mechanism: the fit map does not leave its initialization}\label{sec:mechanism}

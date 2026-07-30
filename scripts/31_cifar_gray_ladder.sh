@@ -21,9 +21,15 @@ gen_running() { pgrep -fl "03_generate_inrbench|04_quality_gate" 2>/dev/null | g
 {
   echo "=== waiting for the grayscale corpus $(date) ==="
   while gen_running; do sleep 60; done
-  if ! grep -q "grayscale CIFAR corpus complete" results/cifar_gray_corpus.log 2>/dev/null; then
-    echo "!! corpus did not report complete; not starting the ladder"; exit 1
-  fi
+  # Gate on the *gate*, not on the corpus log: a corpus that has not passed its quality gate is
+  # not admissible (S1 section 6), and the first run of this script started the ladder on
+  # ungated corpora because it only checked that generation had finished (deviation D1).
+  for proto in P-shared-det P-random; do
+    g="results/inrbench/cifar10gray_${proto}_test_gate.json"
+    if ! $PY -c "import json,sys; sys.exit(0 if json.load(open('$g'))['gate']['passes'] else 1)" 2>/dev/null; then
+      echo "!! $proto has no passing quality gate ($g); not starting the ladder"; exit 1
+    fi
+  done
   echo "=== corpus complete; ladder start $(date) ==="
   for r in $RUNGS; do
     echo "--- rung $r $(date) ---"
