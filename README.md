@@ -342,11 +342,33 @@ Indistinguishable — CIFAR-10 is if anything the *least* moved. The extra 700 s
 displacement, so the drop in $f(\mathrm{W5})$ is not a fit-length artifact, and the laziness that
 makes alignment work at all is equally present everywhere.
 
-**Conjecture (not a finding).** $c_\text{align}$ matches neurons by correlating their layer-1
-*activations* against a template. That statistic is blind to the outgoing structure — exactly the
-part that grows with $c$, and exactly what W10's Gram coupling reads. So as more of a neuron's
-identity moves into its outgoing vector, activation matching identifies it less reliably while the
-invariants identify it better.
+**It is not the output-channel count either — a conjecture of ours, tested and withdrawn.** An
+earlier version of this README conjectured that $c_\text{align}$ matches on layer-1 *activations*, a
+statistic blind to the outgoing structure — exactly the part that grows with $c$ — so alignment
+should recover once $c=1$. We registered that as a falsifiable prediction
+([`S1-gray.md`](docs/prereg/S1-gray.md), `b84b660829aa6d40`, two probability calls at 0.35 and 0.45)
+and built the corpus that tests it: **luminance CIFAR-10** — identical images, geometry,
+architecture and 1000-step budget, with $c$ changed from 3 to 1.
+
+![images or channels](paper/figures/fig6_channels.png)
+
+**Figure 6.** The conjecture is **wrong**. At $c=1$, $f(\mathrm{W5}) = 0.324$ against $0.324$ at
+$c=3$ *on the same images* — identical to three decimals — and the crossover does not reverse
+($f(\mathrm{W10}) = 0.493$, still above W5). Luminance CIFAR behaves like RGB CIFAR, not like the
+grayscale corpora. The drop happens at the **image-statistics** boundary, not the channel boundary.
+**9/10 intervals hit; both probability calls resolved against the conjecture.** The registration
+pre-committed that this outcome means withdrawal, not softening — so it is withdrawn.
+
+**And higher fidelity does not help either.** Dropping channels makes the fit over-parameterised
+(1185 params to 1024 targets) and lifts median PSNR from 40.1 dB to **59.8 dB**. So this corpus is
+fitted *more accurately* than MNIST (39.2 dB) and still aligns *far worse* (0.324 vs 0.628). That
+kills the "the fit is simply easier" reading the registration named as owed.
+
+**What survives — and what we decline to say.** Three candidate causes are now eliminated: fit
+length, output-channel count, and render fidelity. What remains is image statistics. We deliberately
+do **not** offer a replacement mechanism. The one we offered was specific, well-motivated by the
+algebra, and false; the appropriate response is to report the eliminations and name the experiment
+that would identify the cause, not to supply a second story on the same evidence.
 
 ### The alignment template does not matter
 
@@ -538,7 +560,7 @@ nominal 80%.
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
 grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; with S4e's nine rows it is
-**30/40 = 75%** (grayscale 9/14, CIFAR 14/17, S4e 7/9).
+**39/50 = 78%** (grayscale 9/14, CIFAR 14/17, S4e 7/9, luminance-CIFAR 9/10).
 
 The two misses that matter are the paper's finding, not a footnote to it. And the category error
 that produced a *spurious* miss on the FashionMNIST arm is now blocked by the instrument rather

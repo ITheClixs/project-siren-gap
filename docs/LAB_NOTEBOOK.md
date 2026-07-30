@@ -644,3 +644,75 @@ instrument's resolution at registration time is now part of the template.
 **Deviations:** D1, D2, A1, all logged in the prereg. **Waivers:** none. **Compute:** ~7 h wasted on
 the killed run, ~40 min for the confirmatory run, ~40 min for the budget control, ~5 min for the
 candidate verification.
+
+---
+
+## Luminance-CIFAR arm — a conjecture of ours, tested and withdrawn (2026-07-30)
+
+The paper's two headline cross-dataset findings — alignment recovery halving on CIFAR, and the
+crossover where the exact invariant encoding overtakes it — were confounded across three axes:
+image statistics, output-channel count, and fit budget. Axis 3 was already dead (measured travel
+0.186/0.191/0.187). This arm kills axis 2 by fitting **luminance CIFAR-10**: the identical images at
+the identical geometry, architecture and 1000-step budget, with c = 3 → 1.
+
+It was registered (`docs/prereg/S1-gray.md`, **b84b660829aa6d40**) specifically to test a mechanism
+**this program had already put in print** — §9 of the paper conjectured that c_align matches on
+layer-1 activations, a statistic blind to the outgoing structure that grows with c, so alignment
+should recover at c = 1. Two probability calls carried it, both registered below even odds
+(P-G-A = 0.35, P-G-B = 0.45), and §5 pre-committed the wording for every outcome including the one
+that withdraws the conjecture.
+
+### Result: the conjecture is wrong
+
+| corpus | c | PSNR | P0 | gap W1−W3 | f(W5) | f(W10) |
+|---|---|---|---|---|---|---|
+| MNIST | 1 | 39.2 dB | 97.97 | 80.43 | **0.628** | 0.269 |
+| FashionMNIST | 1 | 43.4 dB | 89.62 | 70.31 | **0.664** | 0.428 |
+| **CIFAR-10 luminance** | **1** | **59.8 dB** | 47.50 | 27.62 | **0.324** | **0.493** |
+| CIFAR-10 RGB | 3 | 40.1 dB | 55.81 | 31.64 | **0.324** | **0.534** |
+
+f(W5) at c = 1 is **0.324** against **0.324** at c = 3 on the same images — identical to three
+decimals. The crossover does not reverse (f(W10) = 0.493 > f(W5)). **Luminance CIFAR behaves like
+RGB CIFAR, not like the grayscale corpora.** Both probability calls resolved against me; **9/10
+intervals hit** (the miss is f(W4) = 0.058 against a lower edge of 0.06 — by 0.002).
+
+Per §5 the conjecture is **withdrawn from the paper, not softened**. That is done.
+
+### The arm also kills the alternative explanation it owed
+
+§5 required that, if the result had come out the other way, I state the rival reading — "the fit is
+simply easier at c = 1, so alignment works better". It came out this way instead, and the same
+number now refutes that rival directly: dropping channels makes the fit **over-parameterised**
+(1185 params to 1024 targets) and takes median PSNR from 40 dB to **59.8 dB**. So this corpus is
+fitted *far more accurately* than MNIST's 39.2 dB and still aligns *far worse*. **Higher fidelity
+does not buy alignment recovery.**
+
+### What I will and will not say now
+
+Eliminated: fit length, output-channel count, render fidelity. What remains is image statistics.
+**I am deliberately not offering a replacement mechanism.** The one I offered was specific,
+motivated by the encoding's algebra, and false. Supplying a second story on the same evidence,
+immediately after the first was falsified, is how a programme talks itself into a narrative. The
+paper reports the eliminations and names the experiment that would identify the cause.
+
+### Two deviations, logged rather than hidden
+
+**D1 — the gates ran after the ladder.** `30_cifar_gray_corpus.sh` called `04_quality_gate.py` with
+`--corpus/--split/--epochs` where it takes `--dir/--eval-split/--gate-epochs`, so both gate calls
+died on argparse and printed `GATE FAILED` — a *script* failure, not a gate rejection. The chained
+ladder checked only that the corpus log said "complete", so it ran on ungated corpora. Gates were
+then run by hand and **both pass** (gaps +0.04 and −0.01 pts, PSNR 59.8/60.0, leakage ≈ 0), so the
+corpora were admissible throughout and the cells stand. Recorded anyway, because the ordering was
+wrong even though the outcome was not; and noted that while diagnosing I saw the log tail including
+f_W9 and f_W10 before the gates were confirmed. A gate result is a property of the corpus and cannot
+be influenced by having seen ladder numbers, so there is no selection risk — but the chain now gates
+on a passing gate JSON rather than on the corpus log.
+
+**D2 — the frozen prereg overstated its own pre-freeze exposure.** §2 said the corpora and gates
+existed before the file was written, copied from the `S1-cifar.md` template. False: the file was
+frozen at 12:52, four minutes after generation *started* and four hours before it finished. The
+error runs conservative — it declares more exposure than occurred — but a declaration of exposure
+has to be true, so it is corrected in the deviation log.
+
+**Compute:** 3.9 h generation (120k fits, throttling from 12.2 to 9.1 fits/s), ~15 min ladder,
+~10 min gates.
