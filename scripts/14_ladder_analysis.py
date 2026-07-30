@@ -60,13 +60,25 @@ REGISTERED: dict[str, dict[str, dict[str, float]] | None] = {
         "f_W9": {"point": 0.00, "lo80": -0.03, "hi80": 0.05},      # H-C1-12
         "f_W10": {"point": 0.38, "lo80": 0.12, "hi80": 0.62},      # H-C1-13
     },
+    "cifar10gray": {
+        # S1-gray.md (b84b660829aa6d40), rows H-G1-*. Only the rungs this partial arm runs.
+        "H-S1-1": {"point": 0.2, "lo80": -1.0, "hi80": 1.5},        # H-G1-2
+        "H-S1-4a": {"point": 25.5, "lo80": 14.0, "hi80": 36.0},     # H-G1-5
+        "f_W4": {"point": 0.13, "lo80": 0.06, "hi80": 0.24},        # H-G1-8
+        "f_W5": {"point": 0.45, "lo80": 0.28, "hi80": 0.66},        # H-G1-6
+        "f_W9": {"point": 0.00, "lo80": -0.03, "hi80": 0.05},       # H-G1-9
+        "f_W10": {"point": 0.45, "lo80": 0.26, "hi80": 0.60},       # H-G1-7
+    },
     "fashionmnist": None,
 }
 PREREG_SOURCE = {
     "mnist": "docs/prereg/S1.md (8c029cf43f01a94c) + addendum 01",
     "cifar10": "docs/prereg/S1-cifar.md (f7906fc6904c7c81), rows H-C1-*",
+    "cifar10gray": "docs/prereg/S1-gray.md (b84b660829aa6d40), rows H-G1-* — PARTIAL ladder",
     "fashionmnist": "unregistered — replication of structure, not scored",
 }
+# arms that deliberately omit rungs; the analysis must not demand the full set
+PARTIAL_ARMS = {"cifar10gray": ("P0", "P1", "W1", "W3", "W4", "W5", "W9", "W10")}
 
 WATERFALL = ("P0", "P1", "W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10")
 LABELS = {
@@ -109,52 +121,67 @@ def main() -> None:
     d = Path(args.root) / args.dataset
     cells = load_cells(d)
     acc = {k: v["acc"] for k, v in cells.items()}
-    missing = [r for r in ("P0", "P1", "W1", "W2", "W3", "W4", "W5", "W6", "W7", "W10") if r not in acc]
+    required = PARTIAL_ARMS.get(
+        args.dataset, ("P0", "P1", "W1", "W2", "W3", "W4", "W5", "W6", "W7", "W10")
+    )
+    missing = [r for r in required if r not in acc]
     if missing:
         raise SystemExit(f"missing rungs: {missing}")
+    partial = args.dataset in PARTIAL_ARMS
 
     reg = REGISTERED.get(args.dataset)
-    tests = {
-        "H-S1-1": {
+    have = acc.keys().__contains__
+
+    def add(name: str, needs: tuple[str, ...], build):
+        """Register a test only when this arm actually ran the rungs it needs."""
+        return build() if all(have(r) for r in needs) else None
+
+    tests = {}
+    for name, needs, build in [
+        ("H-S1-1", ("P1", "P0"), lambda: {
             "statement": "P1 ~ P0 (TOST); is class information preserved by the fit?",
             "diff": paired(acc["P1"], acc["P0"]),
             "tost": tost_equivalence(np.array(acc["P1"]), np.array(acc["P0"]), TOST_MARGIN),
-        },
-        "H-S1-2": {
+        }),
+        ("H-S1-2", ("W1", "P1"), lambda: {
             "statement": "W1 - P1 residual under zero nuisance",
             "diff": paired(acc["W1"], acc["P1"]),
-        },
-        "H-S1-3": {
+        }),
+        ("H-S1-3", ("W1", "W2"), lambda: {
             "statement": "W1 - W2 optimization-noise rung",
             "diff": paired(acc["W1"], acc["W2"]),
-        },
-        "H-S1-4a": {
+        }),
+        ("H-S1-4a", ("W1", "W3"), lambda: {
             "statement": "W1 - W3 init/symmetry gap (the perception gap)",
             "diff": paired(acc["W1"], acc["W3"]),
-        },
-        "H-S1-5": {
+        }),
+        ("H-S1-5", ("W7", "W6"), lambda: {
             "statement": "(W7 - W3) - (W6 - W3) = W7 - W6; marginalize vs group-augment",
             "diff": paired(acc["W7"], acc["W6"]),
-        },
-        "H-S1-6": {
+        }),
+        ("H-S1-6", ("W10", "W4", "W5"), lambda: {
             "statement": "W10 within +-3 pts of the interval [W4, W5]",
             "w10_mean": float(np.mean(acc["W10"])),
             "interval": [float(np.mean(acc["W4"])), float(np.mean(acc["W5"]))],
-        },
-    }
+        }),
+    ]:
+        built = add(name, needs, build)
+        if built is not None:
+            tests[name] = built
     for name, t in tests.items():
         if reg and name in reg:
             t["registered"] = reg[name]
-    lo, hi = sorted(tests["H-S1-6"]["interval"])
-    w10 = tests["H-S1-6"]["w10_mean"]
-    tests["H-S1-6"]["distance_outside_interval"] = float(max(0.0, lo - w10, w10 - hi))
+    if "H-S1-6" in tests:
+        lo, hi = sorted(tests["H-S1-6"]["interval"])
+        w10 = tests["H-S1-6"]["w10_mean"]
+        tests["H-S1-6"]["distance_outside_interval"] = float(max(0.0, lo - w10, w10 - hi))
 
-    family = ["H-S1-1", "H-S1-2", "H-S1-3", "H-S1-4a", "H-S1-5"]
+    family = [h for h in ("H-S1-1", "H-S1-2", "H-S1-3", "H-S1-4a", "H-S1-5") if h in tests]
     adjusted = holm([tests[h]["diff"]["t_p"] for h in family])
     for h, p in zip(family, adjusted):
         tests[h]["holm_adjusted_p"] = p
 
-    for h in family + ["H-S1-6"]:
+    for h in family + (["H-S1-6"] if "H-S1-6" in tests else []):
         obs = tests[h]["diff"]["mean_diff"] if "diff" in tests[h] else tests[h]["distance_outside_interval"]
         tests[h]["observed"] = obs
         if "registered" in tests[h]:
@@ -165,6 +192,7 @@ def main() -> None:
     recovery = {
         f"f_{r}": recovery_fraction(acc[r], acc["W3"], acc["W1"])
         for r in ("W4", "W5", "W6", "W7", "W9", "W10")
+        if r in acc
     }
     for key in list(recovery):
         if reg and key in reg:
@@ -195,6 +223,8 @@ def main() -> None:
         "dataset": args.dataset,
         "prereg": PREREG_SOURCE.get(args.dataset, "unregistered — not scored"),
         "scored": reg is not None,
+        "partial_arm": partial,
+        "rungs_run": sorted(acc),
         "means": {k: float(np.mean(v)) for k, v in sorted(acc.items())},
         "seeds": {k: len(v) for k, v in sorted(acc.items())},
         "tests": tests,
@@ -216,11 +246,12 @@ def main() -> None:
         print(f"{h}: obs {t['observed']:+.2f} vs registered {t['registered']['point']:+.2f} "
               f"[{t['registered']['lo80']}, {t['registered']['hi80']}] -> "
               f"{'HIT' if t['interval_hit'] else 'MISS'}, holm p={t['holm_adjusted_p']:.2g}")
-    t6 = tests["H-S1-6"]
-    verdict = "not scored" if "registered" not in t6 else ("HIT" if t6["interval_hit"] else "MISS")
-    print(f"H-S1-6: W10 {t6['w10_mean']:.2f}, interval {t6['interval']}, "
-          f"outside by {t6['distance_outside_interval']:.2f} -> {verdict}")
-    for key in ("f_W4", "f_W5", "f_W6", "f_W7", "f_W9", "f_W10"):
+    if "H-S1-6" in tests:
+        t6 = tests["H-S1-6"]
+        verdict = "not scored" if "registered" not in t6 else ("HIT" if t6["interval_hit"] else "MISS")
+        print(f"H-S1-6: W10 {t6['w10_mean']:.2f}, interval {t6['interval']}, "
+              f"outside by {t6['distance_outside_interval']:.2f} -> {verdict}")
+    for key in [k for k in ("f_W4", "f_W5", "f_W6", "f_W7", "f_W9", "f_W10") if k in recovery]:
         v = recovery[key]
         hit = v.get("interval_hit")
         mark = "" if hit is None else (" -> HIT" if hit else " -> MISS")
