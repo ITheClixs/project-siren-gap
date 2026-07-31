@@ -981,6 +981,19 @@ data-generating process, and are reference points rather than rungs.
 \section{Limitations and open problems}\label{sec:limits}
 % =====================================================================================
 
+\textbf{W11a is a member of the equivariant family, not its strongest member.} Our
+permutation-equivariant reader is two rounds of bipartite message passing with mean/max pooling,
+capacity-matched to the frozen decoder. Published architectures in this family are richer: NFN's
+equivariant linear layers realise many more parameter-sharing patterns between weight-space
+tensors than message passing does, and graph metanetworks operate on the full computation graph
+with positional encodings and per-edge features we do not use. So a result in which W11a falls
+short of an exact change of frame bounds \emph{this} construction at \emph{this} capacity on
+\emph{one} corpus; it is not a proof that equivariance cannot close the gap, and we do not state it
+as one. What it does establish is that the obvious equivariant construction, given the same
+parameter budget as the decoder it replaces, does not substitute for choosing a good orbit
+representative --- and that the phase component of $G$, which none of these architectures covers
+for sine networks, is a plausible reason.
+
 \textbf{Signal complexity is confounded with two other things.} CIFAR-10 differs from the
 grayscale corpora in image statistics, in output channel count ($c=3$ vs $c=1$) and in fit budget
 ($1000$ vs $300$ steps). We ruled out the third directly (\S\ref{sec:crossover}: parameter travel
