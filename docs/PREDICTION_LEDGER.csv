@@ -66,3 +66,11 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-07-30,S1-gray,P-G-A probability f(W5)>0.50 (paper section 9 conjecture substantially right),"P=0.35",NA,NA,b84b660829aa6d40
 2026-07-30,S1-gray,P-G-B probability f(W10)<f(W5) i.e. the crossover reverses at c=1,"P=0.45",NA,NA,b84b660829aa6d40
 2026-07-30,S1-gray,P-G-C probability all three label-shuffle controls within 2 pts of chance,"P=0.80",NA,NA,b84b660829aa6d40
+2026-07-31,S1-W11,H-W11-1 recovery fraction f(W11a) perm-equivariant on raw weights (pilot-informed),"0.26",0.14,0.42,e3bbc081a5810956
+2026-07-31,S1-W11,H-W11-2 recovery fraction f(W11b) invariants + learned pooling (pilot-informed),"0.44",0.30,0.62,e3bbc081a5810956
+2026-07-31,S1-W11,H-W11-3 W11a test accuracy pct (pilot-informed),"34.5",25,48,e3bbc081a5810956
+2026-07-31,S1-W11,H-W11-4 W11b test accuracy pct (pilot-informed),"49.3",38,64,e3bbc081a5810956
+2026-07-31,S1-W11,H-W11-5 f(W11b)-f(W10) the pooling question (pilot-informed),"0.17",0.02,0.34,e3bbc081a5810956
+2026-07-31,S1-W11,P-W11-A probability f(W11a)<f(W5) i.e. frame choice beats reader architecture,"P=0.75",NA,NA,e3bbc081a5810956
+2026-07-31,S1-W11,P-W11-B probability f(W11b)>f(W10) i.e. learned pooling beats eigenvalue spectra,"P=0.70",NA,NA,e3bbc081a5810956
+2026-07-31,S1-W11,P-W11-C probability f(W11b)>f(W5) i.e. invariant reader overtakes alignment,"P=0.30",NA,NA,e3bbc081a5810956
