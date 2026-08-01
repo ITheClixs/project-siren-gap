@@ -1,0 +1,14 @@
+  W11a seed 0: test 35.01 (val 35.78, 9 ep)
+  W11a seed 1: test 36.01 (val 36.38, 14 ep)
+  W11a seed 2: test 34.51 (val 35.40, 14 ep)
+  W11a seed 3: test 35.55 (val 35.72, 15 ep)
+  W11a seed 4: test 35.23 (val 36.04, 14 ep)
+W11a: 35.26  f=0.2653  params=1,879,874  (2186s)
+  W11b seed 0: test 56.02 (val 56.62, 10 ep)
+  W11b seed 1: test 55.63 (val 56.48, 10 ep)
+  W11b seed 2: test 56.09 (val 56.86, 12 ep)
+  W11b seed 3: test 56.34 (val 57.08, 12 ep)
+  W11b seed 4: test 57.13 (val 57.16, 12 ep)
+W11b: 56.24  f=0.5261  params=1,845,210  (2924s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W11.json

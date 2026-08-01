@@ -30,9 +30,13 @@ Sub-questions not yet resolved, each with the best partial attack. ≥ 10 requir
    rung W10 (35.54, f = 0.269 — it beats the template-free canonicalizer).
    **Still open for L ≥ 3:** the same trick needs a Gram per successive layer and the parity
    bookkeeping compounds; whether a finite invariant family stays *separating* at depth is unknown.
-   Also open: whether the eigenvalue-spectrum pooling loses separating power relative to a full
+   ~~Also open: whether the eigenvalue-spectrum pooling loses separating power relative to a full
    equivariant treatment (NFN-style), which is what the 0.269-vs-0.628 span against c_align hints
-   at but does not establish.
+   at but does not establish.~~ **Answered (rung W11, 2026-08-02).** Feeding the *same* invariants
+   to a permutation-equivariant reader with learned pooling gives f = 0.526 against W10's 0.269, so
+   of the 0.359 shortfall to c_align's 0.628, **72% (0.257) is the eigenvalue pooling and 28%
+   (0.102) is the invariants' incompleteness**. The pooling was the binding constraint, and a
+   G-invariant equivariant reader gets within 0.10 of alignment while needing no template.
 5. **MPS determinism of P-shared-det.** Unknown whether refit-same-image weight distance ≈ 0 holds
    on MPS (T9). Attack: measure; if nondeterministic, CPU fallback for the P-shared-det corpus and
    document the MPS residual as an instrument note.

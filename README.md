@@ -34,6 +34,11 @@ exact methods **cross over**: alignment to a fixed reference dominates on graysc
 and collapses on natural RGB (0.33), while the exact invariant encoding does the reverse (0.27,
 0.43, 0.53) — a reversal the pre-registration predicted from the encoding's algebra.
 
+A capacity-matched permutation-equivariant reader — the coverage the field has for sine networks —
+recovers **0.265**, less than half of what reframing does; but the same equivariant machinery over
+our exact invariants reaches **0.526**, showing the invariant encoding's shortfall was **72% pooling
+and only 28% incompleteness**.
+
 Finally we hunt for a counterexample to identifiability at depth two and find none: one student
 recovers its teacher's parameters to **seven significant figures** at width 2, while at production
 width the optimiser leaves the true orbit even when started on it. Identifiability survives; at
@@ -433,7 +438,51 @@ mechanism, and it predicts exactly the null W1−W2 rung we measured.
 
 ---
 
-## 7. S4e: does identifiability have empirical content at depth two?
+## 7. Reader architecture against frame choice
+
+Every rung above changes the *feature map* and freezes the *reader*. That's what makes the
+decomposition interpretable — and it's the obvious objection, because the field doesn't read weights
+with a plain MLP, it builds permutation-equivariant architectures. **W11** supplies the missing
+comparison, pre-registered ([`S1-w11.md`](docs/prereg/S1-w11.md), `e3bbc081a5810956`).
+
+- **W11a** — bipartite message passing on raw weights. $S_n$-equivariant, **not** $D_\infty$-invariant.
+  That negative property is *asserted by test*: it's exactly the coverage the DWSNets/NFN/GMN family
+  has for sine networks, whose phase generators are affine and outside every monomial-matrix action.
+- **W11b** — W10's **own** invariants, fed to an equivariant reader with **learned** pooling instead
+  of sorted eigenvalue spectra.
+
+Both sized *by rule* to the frozen decoder's 1,873,162 params (within 1.5%), so no row loses for
+being smaller.
+
+| rung | construction | reader | acc | $f$ |
+|---|---|---|---:|---:|
+| W4 | $c_\text{sort}$ | matched MLP | 28.19 | 0.177 |
+| **W11a** | perm-equivariant, raw weights | graph (1.88M) | **35.26** | **0.265** |
+| W10 | exact invariants, eigenvalue pooling | matched MLP | 35.54 | 0.269 |
+| **W11b** | same invariants, **learned** pooling | graph (1.85M) | **56.24** | **0.526** |
+| W5 | $c_\text{align}$ | matched MLP | 64.41 | 0.628 |
+
+**Frame choice wins, at matched capacity.** W11a (0.265) lands essentially on W10 (0.269) and less
+than half of $c_\text{align}$ (0.628). The paper's central practical claim survives its first real
+test. Bounded, and stated as bounded: one construction, one capacity, one corpus — and that
+limitation was committed *before* the number arrived, so the bound couldn't be drawn only when
+convenient.
+
+**OPEN_PROBLEMS #4 closed, with a split.** Keeping the invariants and changing *only* the pooling
+takes $f$ from 0.269 to 0.526. Of the 0.359 shortfall to $c_\text{align}$:
+
+$$\underbrace{0.257\ (72\%)}_{\text{eigenvalue pooling}} \;+\; \underbrace{0.102\ (28\%)}_{\text{invariants' incompleteness}}$$
+
+The pooling was the binding constraint. That reframes the recommendation: the useful object is a
+**$G$-invariant equivariant reader** — no template, no assignment problem, within 0.10 of alignment.
+It also partly answers the O($n^3$) Hungarian scaling problem: the answer may be to stop aligning.
+
+**5/5 intervals hit**; all three probability calls resolved as registered, including the one that
+would have withdrawn the practical claim.
+
+---
+
+## 8. S4e: does identifiability have empirical content at depth two?
 
 Everything above rests on a theorem proved at $L=1$ while every experiment is $L=2$. **S4e** is the
 pre-registered attack on that gap ([`docs/prereg/S4e.md`](docs/prereg/S4e.md), `aa5426a4245bd22f`):
@@ -520,7 +569,7 @@ when placed on it. The remaining route is analytic, not empirical. **7/9 interva
 
 ---
 
-## 8. Calibration: scoring our own forecasts
+## 9. Calibration: scoring our own forecasts
 
 ![calibration](paper/figures/fig3_calibration.png)
 
@@ -560,7 +609,7 @@ nominal 80%.
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
 grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; with S4e's nine rows it is
-**39/50 = 78%** (grayscale 9/14, CIFAR 14/17, S4e 7/9, luminance-CIFAR 9/10).
+**44/55 = 80%** — exactly nominal (grayscale 9/14, CIFAR 14/17, S4e 7/9, luminance 9/10, W11 5/5).
 
 The two misses that matter are the paper's finding, not a footnote to it. And the category error
 that produced a *spurious* miss on the FashionMNIST arm is now blocked by the instrument rather
@@ -579,7 +628,7 @@ of the final story was anticipated.
 
 ---
 
-## 9. Limitations
+## 10. Limitations
 
 - **Signal complexity is confounded with two other things.** CIFAR-10 differs from the grayscale
   corpora in image statistics, in output-channel count ($c=3$ vs $c=1$), *and* in fit budget (1000
@@ -606,7 +655,7 @@ of the final story was anticipated.
 
 ---
 
-## 10. Reproduction
+## 11. Reproduction
 
 ```bash
 python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt

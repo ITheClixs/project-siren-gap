@@ -59,3 +59,11 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-07-30,P-G-A probability f(W5)>0.50 (paper section 9 conjecture substantially right),probability,0.35,,,0,—,,0.1225,observed f(W5)=0.324 at c=1 against 0.324 at c=3 — unchanged
 2026-07-30,P-G-B probability f(W10)<f(W5) i.e. the crossover reverses at c=1,probability,0.45,,,0,—,,0.2025,crossover persists: f(W10)=0.493 > f(W5)=0.324
 2026-07-30,P-G-C probability all three label-shuffle controls within 2 pts of chance,probability,0.8,,,1,—,,0.04,"shuffles [10.58, 9.71, 10.22]"
+2026-07-31,H-W11-1 recovery fraction f(W11a) (pilot-informed),interval,0.26,0.14,0.42,0.2653,HIT,0.0053,,"vs c_sort 0.177, c_align 0.628"
+2026-07-31,H-W11-2 recovery fraction f(W11b) (pilot-informed),interval,0.44,0.3,0.62,0.5261,HIT,0.0861,,vs W10 0.269
+2026-07-31,H-W11-3 W11a test accuracy pct (pilot-informed),interval,34.5,25,48,35.262,HIT,0.762,,"1,879,874 params at width 424"
+2026-07-31,H-W11-4 W11b test accuracy pct (pilot-informed),interval,49.3,38,64,56.242,HIT,6.942,,"1,845,210 params at width 288"
+2026-07-31,H-W11-5 f(W11b)-f(W10) the pooling question (pilot-informed),interval,0.17,0.02,0.34,0.2574,HIT,0.0874,,
+2026-07-31,P-W11-A probability f(W11a)<f(W5) i.e. frame choice beats reader architecture,probability,0.75,,,1,—,,0.0625,f(W11a)=0.265 vs f(W5)=0.628
+2026-07-31,P-W11-B probability f(W11b)>f(W10) i.e. learned pooling beats eigenvalue spectra,probability,0.7,,,1,—,,0.09,f(W11b)=0.526 vs f(W10)=0.269
+2026-07-31,P-W11-C probability f(W11b)>f(W5) i.e. invariant reader overtakes alignment,probability,0.3,,,0,—,,0.09,f(W11b)=0.526 vs f(W5)=0.628

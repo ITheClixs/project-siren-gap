@@ -255,6 +255,49 @@ def gray_arm_table() -> str | None:
     return "\n".join(lines)
 
 
+def w11_table() -> str | None:
+    """W11: reader architecture against frame choice, and the pooling split."""
+    d = ROOT / "results" / "ladder" / "mnist"
+    if not (d / "W11.json").exists() or not (d / "S1_analysis.json").exists():
+        return None
+    v = json.loads((d / "W11.json").read_text())["variants"]
+    fr = json.loads((d / "S1_analysis.json").read_text())["recovery_fractions"]
+    means = json.loads((d / "S1_analysis.json").read_text())["means"]
+    rows = [
+        ("W3", "raw weights, random init", "matched MLP", means["W3"], 0.0, 1873162),
+        ("W4", r"$\csort$ (exact reframing)", "matched MLP", means["W4"], fr["f_W4"]["point"], 1873162),
+        ("W11a", "permutation-equivariant, raw weights", "graph reader",
+         v["W11a"]["mean"], v["W11a"]["recovery_fraction"], v["W11a"]["reader_params"]),
+        ("W10", "exact invariants, eigenvalue pooling", "matched MLP",
+         means["W10"], fr["f_W10"]["point"], 987402),
+        ("W11b", "same invariants, learned pooling", "graph reader",
+         v["W11b"]["mean"], v["W11b"]["recovery_fraction"], v["W11b"]["reader_params"]),
+        ("W5", r"$\calign$ (exact reframing)", "matched MLP", means["W5"], fr["f_W5"]["point"], 1873162),
+        ("W1", "raw weights, shared init", "matched MLP", means["W1"], 1.0, 1873162),
+    ]
+    lines = [
+        r"\begin{table}[t]",
+        r"\centering\small",
+        r"\caption{\textbf{Reader architecture against frame choice} (MNIST, \texttt{P-random}). "
+        r"W11a is the equivariant coverage the field has for sine networks; W11b feeds W10's own "
+        r"invariants to an equivariant reader with \emph{learned} pooling instead of sorted "
+        r"eigenvalue spectra. Reader parameter counts are matched to the frozen decoder by rule, so "
+        r"no row loses for being smaller. The W10$\to$W11b$\to$W5 chain splits the invariant "
+        r"encoding's shortfall into a pooling part and an incompleteness part.}",
+        r"\label{tab:w11}",
+        r"\begin{tabular}{@{}llrrr@{}}",
+        r"\toprule",
+        r"rung & construction & reader & acc. (\%) & $f$ \\",
+        r"\midrule",
+    ]
+    for name, desc, reader, acc, f, npar in rows:
+        lines.append(f"{name} & {desc} & {reader} ({npar/1e6:.2f}M) & {acc:.2f} & {f:.3f}" + r" \\")
+        if name in ("W11a", "W11b"):
+            lines.append(r"\midrule")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    return "\n".join(lines)
+
+
 def calibration_table() -> str:
     rows = list(csv.DictReader((ROOT / "docs" / "PREDICTION_OUTCOMES.csv").open()))
     iv = [r for r in rows if r["kind"] == "interval"]
@@ -352,6 +395,9 @@ def main() -> None:
     (OUT / "calibration_table.tex").write_text(calibration_table())
     for f in ("ladder_table", "gap_table", "calibration_table"):
         print(f"wrote {OUT / f}.tex")
+    w11 = w11_table()
+    (OUT / "w11_table.tex").write_text(w11 or "% W11 not run yet\n")
+    print(f"wrote {OUT / 'w11_table'}.tex" if w11 else "w11_table: no results yet")
     gray = gray_arm_table()
     (OUT / "gray_table.tex").write_text(gray or "% luminance-CIFAR arm not complete yet\n")
     print(f"wrote {OUT / 'gray_table'}.tex" if gray else "gray_table: no results yet (placeholder)")

@@ -716,3 +716,58 @@ has to be true, so it is corrected in the deviation log.
 
 **Compute:** 3.9 h generation (120k fits, throttling from 12.2 to 9.1 fits/s), ~15 min ladder,
 ~10 min gates.
+
+---
+
+## Rung W11 — reader architecture against frame choice (2026-08-02)
+
+The ladder's design — change the feature map, freeze the reader — is what makes it interpretable
+and is also its most exposed flank: the field does not read weights with a plain MLP. W11 supplies
+the comparison, pre-registered at **e3bbc081a5810956** with §5 fixing the wording for every outcome
+including the one that withdraws the paper's practical claim.
+
+**Two readers** (`src/sirengap/models/readers.py`, T13 with 12 cases):
+- **W11a** bipartite message passing on raw weights, S_n-equivariant, **not** D∞-invariant. That
+  negative property is asserted by test, because it is exactly the coverage the DWSNets/NFN/GMN
+  family has for sine networks — the phase generators are affine and outside every monomial-matrix
+  action. If W11a had accidentally become D∞-invariant it would have stopped answering the question.
+- **W11b** W10's *own* invariants with **learned** equivariant pooling in place of sorted
+  eigenvalue spectra.
+
+**Capacity matched by rule, not by tuning:** widths chosen as the closest parameter count to the
+frozen decoder's 1,873,162 → 424 (W11a, +0.4%) and 288 (W11b, −1.5%). No row loses for being smaller.
+
+### Results (MNIST, P-random, 5 seeds) — 5/5 intervals hit
+
+| rung | construction | reader | acc | f |
+|---|---|---|---|---|
+| W4 | c_sort | matched MLP | 28.19 | 0.177 |
+| **W11a** | perm-equivariant, raw weights | graph (1.88M) | **35.26** | **0.265** |
+| W10 | exact invariants, eigenvalue pooling | matched MLP | 35.54 | 0.269 |
+| **W11b** | same invariants, learned pooling | graph (1.85M) | **56.24** | **0.526** |
+| W5 | c_align | matched MLP | 64.41 | 0.628 |
+
+**The paper's practical claim survives its first real test.** W11a at 0.265 lands essentially on
+W10 (0.269) and less than half of c_align (0.628). A capacity-matched equivariant reader on raw
+weights does not substitute for choosing a good orbit representative. Bounded, and stated as
+bounded: one construction, one capacity, one corpus — and the limitation naming W11a as a
+*simplified* member of the family was committed **before** the number arrived, deliberately, so the
+bound could not be drawn only when convenient.
+
+**OPEN_PROBLEMS #4 is closed, with a split.** Keeping the invariants and changing only the pooling
+takes f from 0.269 to 0.526. Of the 0.359 shortfall to c_align: **72% (0.257) was the eigenvalue
+pooling, 28% (0.102) is the invariants' incompleteness.** The pooling was the binding constraint.
+
+That reframes the practical recommendation: the useful object is a **G-invariant equivariant
+reader** — no template, no assignment problem, within 0.10 of alignment. It also partly answers
+DEFENSE row 7 (Hungarian is O(n³) at width 1024): the answer may be to stop aligning.
+
+**Calibration.** 5/5 intervals; P-W11-A (frame choice beats reader architecture) and P-W11-B
+(learned pooling beats eigenvalue spectra) both resolved as registered, P-W11-C (invariant reader
+overtakes alignment) correctly registered low at 0.30 and did not happen. Program coverage is now
+**44/55 = 80%**, exactly nominal for the first time.
+
+**Deviations:** none. **Compute:** 36 min (W11a) + 49 min (W11b), inside the 3 h/variant rule.
+An implementation note worth keeping: W11b's first form gated every feature channel per edge, a
+[B,n,n,width] tensor that is ~800 MB at width 384; restructured to multi-relational messages,
+[B,n,n,8], which is exactly as permutation-covariant and ~200× smaller.
