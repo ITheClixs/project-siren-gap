@@ -9,7 +9,10 @@ cd "$(dirname "$0")/.."
 PY=.venv/bin/python
 LOG=results/s6/run_remaining.log
 
-busy() { pgrep -f "37_orbit_intervention" >/dev/null; }
+# NOTE: a bare `pgrep -f <literal>` also matches any polling shell whose command line
+# contains that literal -- including this one, and including an interactive waiter.
+# That deadlocked this chain once. Match the python process itself.
+busy() { pgrep -fl "37_orbit_intervention" 2>/dev/null | grep -q "[.]venv/bin/python\|Python.app"; }
 
 {
   echo "=== waiting for the earlier S6 arms $(date) ==="
