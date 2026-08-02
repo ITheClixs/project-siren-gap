@@ -74,3 +74,14 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-07-31,S1-W11,P-W11-A probability f(W11a)<f(W5) i.e. frame choice beats reader architecture,"P=0.75",NA,NA,e3bbc081a5810956
 2026-07-31,S1-W11,P-W11-B probability f(W11b)>f(W10) i.e. learned pooling beats eigenvalue spectra,"P=0.70",NA,NA,e3bbc081a5810956
 2026-07-31,S1-W11,P-W11-C probability f(W11b)>f(W5) i.e. invariant reader overtakes alignment,"P=0.30",NA,NA,e3bbc081a5810956
+2026-08-02,S5,H-S5-1 function-query accuracy K=4 pct (pilot-informed),"45",28,62,80bdc96ce9497c3d
+2026-08-02,S5,H-S5-2 function-query accuracy K=16 pct (pilot-informed),"78",62,90,80bdc96ce9497c3d
+2026-08-02,S5,H-S5-3 function-query accuracy K=64 pct (pilot-informed),"93",84,97,80bdc96ce9497c3d
+2026-08-02,S5,H-S5-4 function-query accuracy K=256 pct (pilot-informed),"96",91,98,80bdc96ce9497c3d
+2026-08-02,S5,H-S5-5 smallest K whose accuracy exceeds W5 64.41 (pilot-informed),"16",8,64,80bdc96ce9497c3d
+2026-08-02,S5,H-S5-6 FLOPs ratio W5 over function-query at that K (pilot-informed),"3.9",1.5,12,80bdc96ce9497c3d
+2026-08-02,S5,H-S5-7 function-query P-random minus P-shared-det at K=16 pts (pilot-informed),"4.0",0.0,10.0,80bdc96ce9497c3d
+2026-08-02,S5,H-S5-8 learned minus frozen probes at K=16 pts (pilot-informed),"6.0",0.0,15.0,80bdc96ce9497c3d
+2026-08-02,S5,P-S5-A probability function-query at K<=64 beats W5 at strictly lower FLOPs,"P=0.85",NA,NA,80bdc96ce9497c3d
+2026-08-02,S5,P-S5-B probability amortized weight access overtakes function-query at T<=100 tasks,"P=0.30",NA,NA,80bdc96ce9497c3d
+2026-08-02,S5,P-S5-C probability learned probes beat frozen probes at K=16 by >2 pts,"P=0.60",NA,NA,80bdc96ce9497c3d
