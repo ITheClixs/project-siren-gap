@@ -130,23 +130,25 @@ def gap_table(available) -> str:
     lines = [
         r"\begin{table}[t]",
         r"\centering\small",
-        r"\caption{\textbf{The gap, and what an exact treatment of the group removes.} The "
-        r"perception gap W1$-$W3 shrinks in absolute terms with the task ceiling. The best "
-        r"\emph{exact}, function-preserving rung (W4, W5 or W10 --- the winner changes) is a "
-        r"certified lower bound on the symmetry-attributable share, so the last column is an "
-        r"\emph{upper} bound on what is not symmetry, not a measurement of it "
-        r"(Proposition~\ref{prop:bound}).}",
+        r"\caption{\textbf{The gap, and what an exact \emph{reframing} recovers.} The "
+        r"shared-versus-random accuracy gap W1$-$W3 shrinks with the task ceiling. The rung "
+        r"reported is the best orbit-valued \emph{reframing} (W4 or W5). The invariant "
+        r"\emph{encodings} W10 and W11b are excluded here and reported separately, because their "
+        r"gain is not separable from nonlinear feature engineering (\S\ref{sec:bounds}). $f$ is "
+        r"algorithm-relative and the last column is what this reframing did not recover, not a "
+        r"measurement of non-symmetry.}",
         r"\label{tab:gap}",
         r"\begin{tabular}{@{}lrrlrr@{}}",
         r"\toprule",
-        r"dataset & ceiling P0 & gap W1$-$W3 & best exact rung & removed & residual $\le$ \\",
+        r"dataset & ceiling P0 & gap W1$-$W3 & best reframing & recovered & unrecovered \\",
         r"\midrule",
     ]
     for _, label, m, _ in available:
         if not {"P0", "W1", "W3", "W4", "W5"} <= m.keys():
             continue
         gap = m["W1"] - m["W3"]
-        exact = {r: m[r] for r in ("W4", "W5", "W10") if r in m}
+        # reframings only: W10/W11b are invariant encodings, not orbit-valued maps
+        exact = {r: m[r] for r in ("W4", "W5") if r in m}
         best = max(exact, key=exact.get)
         removed = exact[best] - m["W3"]
         name = {"W4": r"W4 $\csort$", "W5": r"W5 $\calign$", "W10": "W10 invariants"}[best]

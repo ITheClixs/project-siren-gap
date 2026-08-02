@@ -167,7 +167,7 @@ def fig_ladder(available: list[tuple[str, str, str, dict]]) -> None:
     ax1.set_xticklabels([lbl.replace("FashionMNIST", "Fashion-\nMNIST") for _, lbl, _, _ in available],
                         fontsize=6.6)
     ax1.set_xlim(-0.25, len(available) - 0.75)
-    ax1.set_ylabel(r"recovery fraction $f$")
+    ax1.set_ylabel(r"recoverable fraction $f$")
     ax1.set_ylim(-0.06, 0.95)
     ax1.set_title("(b)  the crossover", loc="left")
     ax1.legend(frameon=False, loc="upper left", handlelength=1.4, labelspacing=0.2,
@@ -359,7 +359,7 @@ def fig_template() -> None:
     ax.text(0.51, -0.15, "prereg falsification line", fontsize=6, color="#C0392B")
     ax.set_yticks(np.arange(len(fvals))[::-1])
     ax.set_yticklabels(labels)
-    ax.set_xlabel(r"recovery fraction $f(\mathrm{W5})$")
+    ax.set_xlabel(r"recoverable fraction $f(\mathrm{W5})$")
     ax.set_xlim(0, 0.8)
     ax.tick_params(axis="y", length=0)
     ax.set_title("alignment template does not matter", loc="left")
@@ -489,7 +489,7 @@ def fig_channels() -> None:
     ax.set_xticklabels([lbl for _, lbl, _ in order], fontsize=6.4)
     ax.set_xlim(-0.3, len(order) - 0.7)
     ax.set_ylim(-0.05, 0.95)
-    ax.set_ylabel(r"recovery fraction $f$")
+    ax.set_ylabel(r"recoverable fraction $f$")
     ax.set_title("images or channels?", loc="left")
     ax.legend(frameon=False, loc="center left", fontsize=6.4, labelspacing=0.2, borderpad=0.0)
     fig.tight_layout()

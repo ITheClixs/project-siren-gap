@@ -26,28 +26,31 @@ second-layer Gram matrix — closing a gap that per-neuron constructions leave o
 theory we run a pre-registered decomposition ladder on ~1.8M fitted INRs across MNIST,
 FashionMNIST and CIFAR-10.
 
-**Exact, function-preserving reframing recovers 63%, 66% and 53% of the gap** on the three
-datasets. Because the transformations preserve every network's function exactly, those are
-*certified lower bounds* on the symmetry-attributable share. Group augmentation,
-$K$-marginalization and frame averaging recover a small fraction of that everywhere. And the two
-exact methods **cross over**: alignment to a fixed reference dominates on grayscale (0.63, 0.66)
-and collapses on natural RGB (0.33), while the exact invariant encoding does the reverse (0.27,
-0.43, 0.53) — a reversal the pre-registration predicted from the encoding's algebra.
+Prior work uses two of these transformations — neuron negation and integer-π bias shifts — as
+weight-space *augmentations* [[13]](#ref13). We characterize the group they generate and ask
+whether it exhausts functional equivalence.
 
-A capacity-matched permutation-equivariant reader — the coverage the field has for sine networks —
-recovers **0.265**, less than half of what reframing does; but the same equivariant machinery over
-our exact invariants reaches **0.526**, showing the invariant encoding's shortfall was **72% pooling
-and only 28% incompleteness**.
+**Exact orbit-valued *reframing* recovers 63%, 66% and 32%** of the shared-versus-random accuracy
+gap. A nonlinear invariant *encoding* recovers 27%, 43% and 53%, but its gain is **not separable**
+from ordinary nonlinear feature engineering without a control we did not run, so the two families
+are reported apart. These are **algorithm-relative recoverable fractions, not causal shares** — an
+exact reframing creates no function-level information, but it can still route an orbit-invariant
+property into a coordinate the reader finds accessible. The causal quantity is measured separately
+(§7), by randomizing the group while holding each network and its function fixed.
+
+A capacity-matched permutation-equivariant reader recovers **0.265**, less than half of what
+reframing does; replacing the encoding's fixed spectral pooling with a learned equivariant reader
+raises it to **0.526** (a comparison confounded by reader architecture and capacity, so we do not
+decompose it).
 
 We hunt for a counterexample to identifiability at depth two and find none: one student recovers its
 teacher's parameters to **seven significant figures** at width 2, while at production width the
 optimiser leaves the true orbit even when started on it.
 
-**Finally, and against our own subject matter, we price the comparison.** On a FLOPs-matched
-frontier, classifying an INR by *querying* it at 64 learned coordinates reaches **95.3% for 1.6
-MFLOP** where the best weight-space rung reaches **64.4% for 5.5 MFLOP** — and amortizing the
-canonicalization over many downstream tasks never closes the gap. At this scale, weight-space
-learning is **dominated on both axes**. Our pre-registration required us to say so plainly.
+**Finally we price the comparison.** On a FLOPs-matched frontier, classifying an INR by *querying*
+it at 64 learned coordinates reaches **95.3% for 1.6 MFLOP** where the best weight-space rung
+reaches **64.4% for 5.5 MFLOP**, and amortizing the canonicalization over many downstream tasks
+does not close the gap. At this scale, weight-space learning is dominated on both axes.
 
 ---
 
@@ -211,7 +214,7 @@ the feature map changes.
 
 The quantity of interest is the **recovery fraction**
 
-$$f(\mathrm{W}k)\;=\;\frac{\mathrm{W}k-\mathrm{W3}}{\mathrm{W1}-\mathrm{W3}}\ \in[0,1],$$
+$$f(\mathrm{W}k)\;=\;\frac{\mathrm{W}k-\mathrm{W3}}{\mathrm{W1}-\mathrm{W3}}\ \in\ \mathbb{R},$$
 
 the share of the gap that feature map $k$ buys back. Absolute accuracies inherit the task ceiling;
 $f$ does not, which is what makes it comparable across datasets.
@@ -269,7 +272,7 @@ from a shared init is, if anything, marginally *better*. We had registered +2.0 
 MNIST and were wrong; having learned that, we registered −0.7 [−2.5, +1.0] for CIFAR-10 and hit.
 **The gap is attributable to the initialization, not the trajectory.**
 
-### Most of the gap is symmetry — but the share is not a constant
+### Reframing recovers much of the gap, and the fraction is not a constant
 
 $f(\mathrm{W5}) = 0.628$ (MNIST), $0.664$ (FashionMNIST). We had registered **0.10**, with an 80%
 interval reaching only to 0.30, and a pre-committed rule stating that $f>0.5$ falsifies the
@@ -280,23 +283,39 @@ with an explicit falsifier at $f<0.30$ — and it missed the *other* way: $f(\ma
 \mathbf{0.325}$, just clear of the falsification line. **The two-thirds figure is a property of
 the grayscale corpora, not a law.**
 
-### What the recovery fractions do and do not prove
+### What these fractions measure — and what they do not
 
-> **Proposition.** Let $c$ be any *exact* reframing, $c(\theta) \in G\theta$. Then $f$ is a
-> **lower bound** on the share of the gap attributable to the group action.
->
-> *Proof.* $c$ moves each parameter vector inside its own orbit, so $f_{c(\theta)} = f_\theta$: no
-> function, and hence no information about the signal, is created. Any accuracy gained is from the
-> change of representative alone. The bound is loose because $c$ need not be *canonical* — two
-> parameters in one orbit may land on different representatives — so a better exact reframing can
-> only raise $f$. ∎
+An earlier version of this README claimed $f$ is a **certified lower bound** on the share of the gap
+caused by symmetry. **That claim is wrong**, and the way it fails is instructive, so it is recorded
+rather than quietly softened.
 
-This matters for how the residual is read. $f(\mathrm{W5}) = 0.628$ means **at least** 63% of the
-MNIST gap is symmetry. It does *not* follow that the other 37% is basin multiplicity — a better
-representative could claim part of it. Our own history is the cautionary example: improving the
-frame once, from $c_\text{sort}$ to $c_\text{align}$, dropped the "residual" from 82% to 37%.
+The argument was: an exact reframing $c(\theta)\in G\theta$ preserves the function, so it creates no
+information about the signal, so any accuracy it buys must come from removing nuisance. **The last
+step does not follow.** An orbit-valued map can *route* an orbit-invariant quantity into a coordinate
+the reader finds easy. Let $y(\theta)$ be any orbit-invariant binary property and let $c$ apply
+$\tau_k$ at the first neuron with $k = M\,y(\theta)$ for large $M$. Then $c(\theta)\in G\theta$ and
+$f_{c(\theta)} = f_\theta$ **exactly** — yet a linear probe on the first bias now predicts $y$. No
+function-level information was created; the group's degrees of freedom were used as a channel.
 
-### The 0.11→0.63 span is canonicalizer quality, not information
+Two further gaps: the decoder is **retrained per rung**, so what is held fixed is the learning
+*algorithm*, not a predictor; and the comparison contrasts corpora fitted from *different
+initializations*, which intervenes on the fit map, not on the group.
+
+So $f$ is an **algorithm-relative recoverable fraction**. It is a real quantity, cleanly measured —
+but it is not "the fraction of the gap caused by symmetry". For that, see **§7**, which intervenes on
+the group directly.
+
+### Reframings and encodings are different objects
+
+| | returns | example | gain separable from feature engineering? |
+|---|---|---|---|
+| **reframing** | another parameter vector in the same orbit | W4 $c_\text{sort}$, W5 $c_\text{align}$ | yes — no new features computed |
+| **invariant encoding** | *features* | W10, W11b | **no** — nonlinear in the parameters ($w\otimes w$, $(\sin b)u$, spectra) |
+
+We keep them apart in every table, and we do not quote an encoding's number where a reframing's
+belongs. On CIFAR-10 the strongest *reframing* result is **0.324**, not W10's 0.534.
+
+### The 0.11→0.63 span is a property of the frame, not of the information
 
 Template-free sorting recovers 0.177 / 0.170 / 0.108; aligning to a fixed reference network
 recovers 0.628 / 0.664 / 0.325. Both are exact elements of $G$. The difference is entirely *which
@@ -331,8 +350,8 @@ CIFAR corpus, with no new fitting, by changing only what the encoder may read
 Truncating to one channel — restoring exactly the grayscale encoding dimension — costs only
 **0.077**. Against the 0.265 rise from MNIST's 0.269 to CIFAR's 0.534, the channel count explains
 about **29%**; the other 71% survives at $D=320$ and is a property of the corpus, not of $c$. Our
-registered mechanism was right in direction and wrong in magnitude, and we say so rather than let a
-correct sign carry the whole explanation. The *averaged* arm is the control that makes this
+registered mechanism was right in direction and wrong in magnitude; a correct sign does not carry
+the explanation. The *averaged* arm is the control that makes this
 readable: same dimension as *truncated*, strictly more of the network's information, yet **worse**
 — so the effect is neither "more dimensions" nor "more information". Channel-averaging cancels the
 per-channel sign structure that $(\sin b_i)u_i$ exists to carry.
@@ -391,7 +410,7 @@ known shared init. Five templates say otherwise: an **unrelated** random init do
 observation: fitted INRs make **worse** templates than untrained ones (0.51–0.55 vs 0.60–0.64) —
 plausibly because a fitted network's neurons are specialized to its own image.
 
-### The tools the field reaches for do not work
+### The standard treatments recover little, under our implementations
 
 Across MNIST / FashionMNIST / CIFAR-10: augmentation **0.054 / 0.032 / 0.128** · marginalization
 **0.048 / 0.034 / 0.101** · frame averaging **0.003 / −0.008 / 0.001**. The largest anywhere is
@@ -455,7 +474,7 @@ weight-space rung on **both** axes.
 Function access evaluates $f_\theta$ at $K$ **learned** probe coordinates and classifies the
 outputs. Nothing reads a weight; T14 certifies the reader is exactly $G$-invariant and the fitted
 INR receives no gradient. Learning the probes is the *strong* form — it can only move the function
-frontier up, against our own thesis, which is the direction to err in. FLOPs are **analytic**, not
+frontier up, which is the conservative direction for this comparison. FLOPs are **analytic**, not
 wall-clock.
 
 ![pareto](paper/figures/fig7_pareto.png)
@@ -487,9 +506,9 @@ entire object this project decomposes is an artifact of choosing to read paramet
 ### What this does to the thesis
 
 On these corpora, at this scale, for targets that are functions of the represented signal,
-**weight-space learning is the wrong tool** — and that applies to *our own* canonicalizers,
-invariant encoding and equivariant reader as much as to anyone's. The registration fixed in advance
-that we would say this plainly rather than soften it.
+querying the network is both more accurate and cheaper than every weight-space pipeline evaluated
+here, including the canonicalizers, invariant encoding and equivariant reader introduced in this
+work.
 
 What survives: **the theory** (a correct, novel account of the symmetry structure, independent of
 whether one should use the representation), **the decomposition** (a measurement about that
