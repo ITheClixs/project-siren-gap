@@ -98,11 +98,14 @@ alignment dominates on grayscale, the invariant encoding on RGB --- a reversal o
 pre-registration predicted from the encoding's algebra. A capacity-matched permutation-equivariant reader --- the coverage the field
 has for sine networks --- recovers $0.265$, less than half of what reframing does; but the same
 equivariant machinery applied to our exact invariants reaches $0.526$, showing that the invariant
-encoding's shortfall was $72\%$ pooling and only $28\%$ incompleteness. Finally we hunt for a
-counterexample to identifiability at depth two and find none: one student recovers its teacher's
-parameters to seven significant figures at width two, while at production width the optimiser leaves
-the true orbit even when started on it. We report the program's own forecast calibration throughout,
-misses included --- $44/55$ registered intervals against a nominal $80\%$.
+encoding's shortfall was $72\%$ pooling and only $28\%$ incompleteness. We hunt for a
+counterexample to identifiability at depth two and find none. Finally, and against our own subject
+matter, we price the whole comparison: on a FLOPs-matched frontier, classifying an INR by
+\emph{querying} it at $64$ learned coordinates reaches $95.3\%$ for $1.6$\,MFLOP where the best
+weight-space rung reaches $64.4\%$ for $5.5$\,MFLOP, and amortizing the canonicalization over many
+downstream tasks never closes the gap. At this scale, weight-space learning is dominated on both
+axes --- a conclusion our pre-registration required us to state plainly. We report the program's own
+forecast calibration throughout, misses included ($49/63$ registered intervals, nominal $80\%$).
 \end{minipage}
 \end{center}
 \vskip 1.2em
@@ -161,6 +164,8 @@ of exactly invariant features, certified numerically to $3\times10^{-7}$ relativ
 feature maps applied to the same corpora and decoded by one frozen apparatus separate the gap
 into what an exact change of frame removes and what it cannot. Registered before any cell was
 computed; scored publicly, misses included.
+\item \textbf{A FLOPs-matched adjudication against function access} (\S\ref{sec:s5}), which
+finds weight access dominated on both accuracy and compute and says so.
 \item \textbf{A mechanism} (\S\ref{sec:mechanism}), \textbf{a capacity-matched comparison
 against equivariant reader architectures} (\S\ref{sec:w11}) which localises the exact invariant
 encoding's shortfall to its pooling, \textbf{a falsification hunt against identifiability at depth
@@ -783,6 +788,73 @@ landscape. The headline non-monotonicity survives; the sub-claim does not.
 \end{remark}
 
 % =====================================================================================
+\section{The adjudication: weight access against function access}\label{sec:s5}
+% =====================================================================================
+
+Corollary~\ref{cor:ceiling} says a \emph{complete} $G$-invariant of the weights carries exactly the
+information of the realised function, so weight access can only win on \emph{compute}. We have been
+asserting that since \S\ref{sec:identifiability} on the strength of a proof. S5 measures it, and the
+registration was written to be adversarial to this paper's own subject matter: it predicted, at
+$P = 0.85$, that querying the function would beat every weight-space rung on \emph{both} axes.
+
+\paragraph{The comparison.} Function access evaluates $f_\theta$ at $K$ \emph{learned} probe
+coordinates and classifies the outputs; nothing reads a weight, and our test suite certifies the
+reader is exactly $G$-invariant while the fitted INR receives no gradient. Learning the probes is
+the strong form of the baseline, and it can only move the function frontier up --- against our own
+thesis, which is the direction to err in. FLOPs are analytic (one MAC $=2$ FLOPs, per INR, at
+inference), not wall-clock, so the frontier reproduces off this laptop.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig7_pareto.pdf}
+\caption{\textbf{The FLOPs--accuracy frontier (MNIST, \texttt{P-random}).} (a) Function access
+(blue) dominates every weight-access rung (orange): $K{=}64$ learned probes reach $95.3\%$ at
+$1.59$\,MFLOP where the best weight rung, $\calign$, reaches $64.4\%$ at $5.45$\,MFLOP. W1 (grey) is
+the shared-initialization ceiling, which is not available for independently fitted corpora.
+(b) Amortization does not rescue weight access: its \emph{per-task} decoder cost already exceeds
+function-query's entire per-task cost, so the lines never cross.}
+\label{fig:pareto}
+\end{figure}
+
+\paragraph{Weight access is dominated on both axes.} At $K = 64$, function access reaches
+$95.34\%$ for $1.59$\,MFLOP per INR. The best weight-access rung on the same corpus, $\calign$,
+reaches $64.41\%$ for $5.45$\,MFLOP: \textbf{$30.9$ accuracy points worse at $3.4\times$ the
+compute}. At $K = 256$ function access reaches $98.23\%$, which is above the real-pixel MLP's
+$97.97\%$ --- learned query points are a better input to the same decoder than the pixels are.
+
+\paragraph{Amortization does not rescue it.} Corollary~\ref{cor:ceiling} left one escape: canonicalize
+once, decode many times. Priced, that escape closes. Weight access costs
+$1.70 + 3.74\,T$\,MFLOP over $T$ downstream tasks; function-query with task-specific probes costs
+$1.59\,T$. The lines never cross, because the weight reader's \emph{per-task} cost on a $1185$-dimensional
+input already exceeds function-query's \emph{entire} per-task cost on a $64$-dimensional one. The
+mechanism is general: reading $P$ parameters into a decoder of first-layer width $W$ costs
+$\approx 2PW$, while querying $K$ points costs $\approx 2KcW + K\cdot\mathrm{siren}$, so function
+access is cheaper whenever $Kc \ll P$ --- a condition on how many probes the task needs, not on how
+big the INR is.
+
+\paragraph{And the nuisance simply does not arise.} Between \texttt{P-random} and
+\texttt{P-shared-det}, function-query accuracy moves $5.4$ points --- a fit-quality effect, since the
+two corpora differ in median PSNR ($37.5$ vs $39.2$\,dB), not a symmetry effect. Weight access moves
+$\mathbf{80.4}$ points between the same two corpora. The entire object this paper decomposes is
+invisible from the function side.
+
+\paragraph{What we take this to mean.} On these corpora, at this scale, and for targets that are
+functions of the represented signal, \textbf{weight-space learning is the wrong tool}: querying the
+network is more accurate and cheaper, in both regimes. The registration fixed in advance that we
+would say this plainly rather than soften it, and it applies to our own contributions --- the
+canonicalizers, the invariant encoding, W11b --- as much as to anyone's.
+
+The scope is worth stating precisely, because it is not unlimited. The result holds where the
+function is cheap to query relative to the parameter count; for representations whose evaluation is
+itself expensive (volumetric rendering, long-horizon dynamics) the $Kc \ll P$ condition can fail. It
+holds for targets that are functions of the realised signal; a property of the \emph{training run}
+that is not identifiable from the function is outside both access models' reach except through
+nuisance correlation. And it is measured at width 32, depth 2, on $10$-way classification. What it
+does settle is the case that has been made for weight-space learning on INR benchmarks of this kind,
+and the honest reading of \S\ref{sec:results}--\S\ref{sec:w11} in its light: those sections measure
+the structure of a representation that, for this task, one should think twice before choosing.
+
+% =====================================================================================
 \section{Reader architecture against frame choice}\label{sec:w11}
 % =====================================================================================
 
@@ -1086,8 +1158,8 @@ The symmetry-removable share is \emph{not} a constant: alignment to a fixed refe
 recovers two thirds on grayscale corpora and one third on natural images. And the ranking of the
 two exact methods \emph{reverses} between them, in the direction our pre-registration predicted
 from the invariant encoding's algebra rather than from its two observed values. The practical
-implication is that frame choice, not reader architecture, is where the available factor of two
-sits --- and that claim has now been tested rather than asserted: a permutation-equivariant reader
+implication \emph{within} weight space is that frame choice, not reader architecture, is where the
+available factor of two sits --- and that claim has now been tested rather than asserted: a permutation-equivariant reader
 matched to the decoder's parameter count recovers $0.265$ where an exact reframing recovers $0.628$.
 The same equivariant machinery over our exact invariants reaches $0.526$, which localises the
 invariant encoding's remaining shortfall to its pooling rather than to the invariants themselves,
@@ -1095,6 +1167,16 @@ and points at the construction we would now recommend building: a $G$-invariant 
 which needs no template and comes within $0.10$ of alignment. Which frame strategy wins remains a
 property of the signal, so a weight-space method evaluated on one corpus family should not be
 assumed to rank the same way on another.
+
+But the honest last word is the one our own registration forced. Priced against function access on a
+FLOPs-matched frontier (\S\ref{sec:s5}), every weight-space rung in this paper --- including the
+best of them --- is dominated on both accuracy and compute, and amortizing the canonicalization does
+not close it. Corollary~\ref{cor:ceiling} said weight access could only win computationally; at this
+scale it does not win there either. We therefore offer the theory and the decomposition as what they
+are, an exact account of the structure of a representation, and we decline to recommend that
+representation for this task. The field's case, if there is one, has to be made where the condition
+$Kc \ll P$ fails --- expensive-to-query representations, or targets not identifiable from the
+function --- and that is a different experiment from the ones run here.
 
 \paragraph{Reproducibility.} Corpora, canonicalizers, the invariant encoder, all ladder cells, the
 frozen pre-registrations with their hashes, the adversarial review notes and the full prediction

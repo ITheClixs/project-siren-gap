@@ -771,3 +771,68 @@ overtakes alignment) correctly registered low at 0.30 and did not happen. Progra
 An implementation note worth keeping: W11b's first form gated every feature channel per edge, a
 [B,n,n,width] tensor that is ~800 MB at width 384; restructured to multi-relational messages,
 [B,n,n,8], which is exactly as permutation-covariant and ~200× smaller.
+
+---
+
+## S5 — the FLOPs-matched adjudication (2026-08-02)
+
+PO-6's corollary has been in the notebook since G2: a *complete* G-invariant of the weights carries
+exactly the information of the realised function, so weight access can only win on **compute**. The
+program has been asserting it on a proof. S5 measures it — registered at **80bdc96ce9497c3d**, and
+deliberately **adversarial to the program's own subject matter**: P-S5-A predicted at 0.85 that
+querying the function would beat every weight rung on *both* axes.
+
+**Apparatus.** `eval/flops.py` is an analytic accounting (one MAC = 2 FLOPs, per INR, at inference)
+rather than wall-clock, so the frontier reproduces off this throttling laptop and can be audited
+line by line. `eval/probes.py` is function access with **learned** probe coordinates — the strong
+form, which can only move the function frontier *up*, i.e. against our own thesis. T14's decisive
+test: the probe reader is exactly G-invariant (gap < 1e-8) and the fitted INR receives **no
+gradient**; a "function access" baseline that peeked at weights would have invalidated everything.
+
+### Result: weight access is dominated on both axes, in both regimes
+
+| access | accuracy | MFLOP/INR |
+|---|---|---|
+| function-query K=16 | 51.54 | 1.385 |
+| **function-query K=64** | **95.34** | **1.594** |
+| function-query K=256 | 98.23 | 2.430 |
+| W5 c_align (best weight rung) | 64.41 | 5.447 |
+| W11b equivariant invariant reader | 56.24 | 119.1 |
+| *P0 real pixels, for reference* | *97.97* | *—* |
+
+**K=64 beats c_align by 30.9 points at 3.4× fewer FLOPs.** K=256 (98.23) exceeds the real-pixel MLP
+(97.97) — learned query points are a better input to the same decoder than the pixels are.
+
+**Amortization, the one escape PO-6 left, closes.** Weight access costs 1.70 + 3.74·T MFLOP over T
+tasks; function-query costs 1.59·T. The lines never cross, because the weight reader's *per-task*
+cost on a 1185-dim input already exceeds function-query's *entire* per-task cost on a 64-dim one.
+General form: reading P params into a decoder of width W costs ≈2PW, querying K points costs
+≈2KcW + K·siren, so function access is cheaper whenever **Kc ≪ P** — a condition on probes needed,
+not on INR size. That was registered as a prediction, not noticed afterwards.
+
+**And the nuisance never arises.** Function-query moves 5.4 points between P-random and
+P-shared-det (a fit-quality effect: 37.5 vs 39.2 dB), where weight access moves **80.4**. The entire
+object this program decomposes is an artifact of choosing to read parameters.
+
+### What this does to the thesis, stated as §5 required
+
+On these corpora, at this scale, for targets that are functions of the represented signal,
+**weight-space learning is the wrong tool** — and that applies to our own canonicalizers, invariant
+encoding and equivariant reader as much as to anyone's. What survives: the theory (a correct, novel
+account of the symmetry structure, independent of whether one should use the representation), the
+decomposition (a measurement about that structure), and the scope conditions where the case would
+have to be remade — expensive-to-query representations, or targets not identifiable from the
+function. Defense row 2 is answered, and not in the program's favour.
+
+### Calibration
+
+**5/8 intervals.** All three misses are one shape error: the accuracy-vs-K curve is far more
+sigmoidal than registered — near chance until K≈16, then saturating — so K=4 (16.4 vs [28,62]) and
+K=16 (51.5 vs [62,90]) came in low while K=256 (98.2) overshot the top edge by 0.23. The
+probability calls all resolved correctly, including P-S5-A, the one predicting that the program's
+own subject matter would lose (Brier 0.0225), and P-S5-B, which correctly doubted that amortization
+would save it (0.09).
+
+Program coverage **49/63 = 78%**; 16 probability calls, mean Brier 0.215.
+
+**Deviations:** none. **Compute:** ~12 min for the sweep plus both controls.

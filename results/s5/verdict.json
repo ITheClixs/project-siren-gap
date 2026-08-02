@@ -1,0 +1,10 @@
+{
+  "prereg": "docs/prereg/S5.md (80bdc96ce9497c3d)",
+  "intervals_hit": "5/8",
+  "P-S5-A": true,
+  "P-S5-B": false,
+  "P-S5-C": true,
+  "k_star": 64,
+  "flops_ratio": 3.4161849710982657,
+  "weight_dominated_both_axes": true
+}

@@ -496,6 +496,67 @@ def fig_channels() -> None:
     save(fig, "fig6_channels")
 
 
+def fig_pareto() -> None:
+    """S5: the FLOPs-accuracy frontier that adjudicates weight against function access."""
+    path = ROOT / "results" / "s5" / "pareto_mnist.json"
+    if not path.exists():
+        print("skip fig7: no S5 results")
+        return
+    d = json.loads(path.read_text())
+    fq = sorted(d["function_query"], key=lambda r: r["flops"])
+    wt = [r for r in d["weight_access"] if r["acc"] is not None]
+
+    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(5.5, 2.5),
+                                   gridspec_kw={"width_ratios": [1.25, 1]})
+
+    fx = [r["flops"] / 1e6 for r in fq]
+    fy = [r["acc"] for r in fq]
+    ax0.plot(fx, fy, "-o", ms=4, lw=1.4, color="#3B6EA5", label="function-query (learned probes)")
+    for r in fq:
+        ax0.annotate(f"K={r['n_probes']}", (r["flops"] / 1e6, r["acc"]), fontsize=5.4,
+                     textcoords="offset points", xytext=(3, -7), color="#2A4F77")
+
+    marks = {"W3 raw weights": "s", "W4 c_sort": "^", "W5 c_align": "D",
+             "W10 invariants": "v", "W11a equivariant (raw)": "P",
+             "W11b equivariant (invariant)": "X", "W1 shared-init (ceiling)": "*"}
+    for r in wt:
+        ceiling = r["name"].startswith("W1 ")
+        ax0.scatter(r["flops"] / 1e6, r["acc"], s=40 if ceiling else 26,
+                    marker=marks.get(r["name"], "o"),
+                    color="0.6" if ceiling else "#C4622D", zorder=3,
+                    label="_", edgecolor="none")
+        ax0.annotate(r["name"].split()[0], (r["flops"] / 1e6, r["acc"]), fontsize=5.4,
+                     textcoords="offset points", xytext=(4, 3),
+                     color="0.45" if ceiling else "#8E4520")
+    ax0.scatter([], [], marker="D", s=26, color="#C4622D", label="weight access (rungs)")
+    ax0.scatter([], [], marker="*", s=40, color="0.6", label="shared-init ceiling (not available)")
+    ax0.set_xscale("log")
+    ax0.set_xlabel("MFLOP per INR (analytic, inference)")
+    ax0.set_ylabel("test accuracy (%)")
+    ax0.set_ylim(5, 103)
+    ax0.set_title("(a)  the frontier", loc="left")
+    ax0.legend(frameon=False, fontsize=5.6, loc="lower right", labelspacing=0.2, borderpad=0.0)
+
+    # (b) amortization: does canonicalise-once rescue weight access?
+    import numpy as _np
+    from math import isnan  # noqa: F401
+    w5 = next(r for r in wt if r["name"] == "W5 c_align")
+    kstar = next(r for r in fq if r["acc"] > 64.41)
+    T = _np.arange(1, 201)
+    wcost = (w5["preprocess"] + T * (w5["flops"] - w5["preprocess"])) / 1e6
+    fcost = T * kstar["flops"] / 1e6
+    ax1.plot(T, wcost, lw=1.4, color="#C4622D", label="weight: canonicalize once,\ndecode $T$ times")
+    ax1.plot(T, fcost, lw=1.4, color="#3B6EA5",
+             label=f"function-query $K{{=}}{kstar['n_probes']}$,\nprobes per task")
+    ax1.set_xlabel("downstream tasks $T$")
+    ax1.set_ylabel("total MFLOP per INR")
+    ax1.set_title("(b)  amortization does not rescue it", loc="left")
+    ax1.legend(frameon=False, fontsize=5.8, loc="upper left", labelspacing=0.4, borderpad=0.0)
+
+    fig.tight_layout(w_pad=1.5)
+    save(fig, "fig7_pareto")
+
+
 def main() -> None:
     style()
     available = []
@@ -513,6 +574,7 @@ def main() -> None:
     fig_template()
     fig_s4e()
     fig_channels()
+    fig_pareto()
 
 
 if __name__ == "__main__":

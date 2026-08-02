@@ -1,0 +1,188 @@
+{
+  "dataset": "mnist",
+  "protocol": "P-random",
+  "prereg": "docs/prereg/S5.md",
+  "arch": {
+    "in_dim": 2,
+    "width": 32,
+    "layers": 2,
+    "out_dim": 1,
+    "n_params": 1185
+  },
+  "function_query": [
+    {
+      "name": "function-query K=1",
+      "access": "function",
+      "n_probes": 1,
+      "acc": 13.565999999999999,
+      "acc_ci95": [
+        13.466,
+        13.646
+      ],
+      "seeds": [
+        13.67,
+        13.59,
+        13.65,
+        13.37,
+        13.55
+      ],
+      "flops": 1320192,
+      "probe_eval_flops": 2304,
+      "wallclock_s": 63.05414295196533
+    },
+    {
+      "name": "function-query K=4",
+      "access": "function",
+      "n_probes": 4,
+      "acc": 16.374000000000002,
+      "acc_ci95": [
+        16.072000000000003,
+        16.652
+      ],
+      "seeds": [
+        15.84,
+        16.47,
+        16.29,
+        16.85,
+        16.42
+      ],
+      "flops": 1333248,
+      "probe_eval_flops": 9216,
+      "wallclock_s": 79.5470871925354
+    },
+    {
+      "name": "function-query K=16",
+      "access": "function",
+      "n_probes": 16,
+      "acc": 51.54200000000001,
+      "acc_ci95": [
+        50.29,
+        52.97800000000001
+      ],
+      "seeds": [
+        52.11,
+        49.76,
+        50.37,
+        51.19,
+        54.28
+      ],
+      "flops": 1385472,
+      "probe_eval_flops": 36864,
+      "wallclock_s": 92.64817786216736
+    },
+    {
+      "name": "function-query K=64",
+      "access": "function",
+      "n_probes": 64,
+      "acc": 95.336,
+      "acc_ci95": [
+        95.15599999999999,
+        95.516
+      ],
+      "seeds": [
+        95.05,
+        95.49,
+        95.66,
+        95.28,
+        95.2
+      ],
+      "flops": 1594368,
+      "probe_eval_flops": 147456,
+      "wallclock_s": 137.44581985473633
+    },
+    {
+      "name": "function-query K=256",
+      "access": "function",
+      "n_probes": 256,
+      "acc": 98.232,
+      "acc_ci95": [
+        98.14,
+        98.326
+      ],
+      "seeds": [
+        98.2,
+        98.07,
+        98.21,
+        98.29,
+        98.39
+      ],
+      "flops": 2429952,
+      "probe_eval_flops": 589824,
+      "wallclock_s": 345.7479021549225
+    }
+  ],
+  "weight_access": [
+    {
+      "name": "W3 raw weights",
+      "access": "weight",
+      "acc": 13.922,
+      "flops": 3742720,
+      "amortized": 0,
+      "preprocess": 0
+    },
+    {
+      "name": "W4 c_sort",
+      "access": "weight",
+      "acc": 28.188,
+      "flops": 3745280,
+      "amortized": 0,
+      "preprocess": 2560
+    },
+    {
+      "name": "W5 c_align",
+      "access": "weight",
+      "acc": 64.408,
+      "flops": 5446656,
+      "amortized": 589824,
+      "preprocess": 1703936
+    },
+    {
+      "name": "W10 invariants",
+      "access": "weight",
+      "acc": 35.536,
+      "flops": 2933760,
+      "amortized": 0,
+      "preprocess": 962560
+    },
+    {
+      "name": "W1 shared-init (ceiling)",
+      "access": "weight",
+      "acc": 94.35600000000001,
+      "flops": 3742720,
+      "amortized": 0,
+      "preprocess": 0
+    },
+    {
+      "name": "W11a equivariant (raw)",
+      "access": "weight",
+      "acc": 35.26199999999999,
+      "flops": 247411200,
+      "amortized": 0,
+      "preprocess": 0
+    },
+    {
+      "name": "W11b equivariant (invariant)",
+      "access": "weight",
+      "acc": 56.242000000000004,
+      "flops": 119086080,
+      "amortized": 0,
+      "preprocess": 77824
+    }
+  ],
+  "controls": {
+    "nuisance_invariance": {
+      "probes": 16,
+      "protocol_a": "P-random",
+      "acc_a": 52.11,
+      "protocol_b": "P-shared-det",
+      "acc_b": 57.54,
+      "difference": 5.43,
+      "note": "function access is provably protocol-invariant (T14); this measures it"
+    },
+    "frozen_probes_K16": {
+      "learned": 52.11,
+      "frozen": 40.86,
+      "gain_from_learning": 11.25
+    }
+  }
+}

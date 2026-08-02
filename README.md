@@ -39,10 +39,15 @@ recovers **0.265**, less than half of what reframing does; but the same equivari
 our exact invariants reaches **0.526**, showing the invariant encoding's shortfall was **72% pooling
 and only 28% incompleteness**.
 
-Finally we hunt for a counterexample to identifiability at depth two and find none: one student
-recovers its teacher's parameters to **seven significant figures** at width 2, while at production
-width the optimiser leaves the true orbit even when started on it. Identifiability survives; at
-production width it has **no empirical content**.
+We hunt for a counterexample to identifiability at depth two and find none: one student recovers its
+teacher's parameters to **seven significant figures** at width 2, while at production width the
+optimiser leaves the true orbit even when started on it.
+
+**Finally, and against our own subject matter, we price the comparison.** On a FLOPs-matched
+frontier, classifying an INR by *querying* it at 64 learned coordinates reaches **95.3% for 1.6
+MFLOP** where the best weight-space rung reaches **64.4% for 5.5 MFLOP** — and amortizing the
+canonicalization over many downstream tasks never closes the gap. At this scale, weight-space
+learning is **dominated on both axes**. Our pre-registration required us to say so plainly.
 
 ---
 
@@ -438,7 +443,63 @@ mechanism, and it predicts exactly the null W1−W2 rung we measured.
 
 ---
 
-## 7. Reader architecture against frame choice
+## 7. The adjudication: weight access vs function access
+
+**Proposition 4** says a *complete* $G$-invariant of the weights carries exactly the information of
+the realised function — so weight access can only win on **compute**. This program asserted that on
+a proof for four gates. **S5** measures it, and the registration
+([`S5.md`](docs/prereg/S5.md), `80bdc96ce9497c3d`) was written to be *adversarial to this project's
+own subject matter*: `P-S5-A = 0.85` predicted that simply querying the function would beat every
+weight-space rung on **both** axes.
+
+Function access evaluates $f_\theta$ at $K$ **learned** probe coordinates and classifies the
+outputs. Nothing reads a weight; T14 certifies the reader is exactly $G$-invariant and the fitted
+INR receives no gradient. Learning the probes is the *strong* form — it can only move the function
+frontier up, against our own thesis, which is the direction to err in. FLOPs are **analytic**, not
+wall-clock.
+
+![pareto](paper/figures/fig7_pareto.png)
+
+| access | accuracy | MFLOP/INR |
+|---|---:|---:|
+| function-query $K{=}16$ | 51.54 | 1.385 |
+| **function-query $K{=}64$** | **95.34** | **1.594** |
+| function-query $K{=}256$ | 98.23 | 2.430 |
+| **W5 $c_\text{align}$** (best weight rung) | **64.41** | **5.447** |
+| W11b equivariant invariant reader | 56.24 | 119.1 |
+| *P0 real pixels, reference* | *97.97* | *—* |
+
+**Weight access is dominated on both axes.** $K{=}64$ beats $c_\text{align}$ by **30.9 points at
+3.4× fewer FLOPs**. At $K{=}256$ function access reaches 98.23% — *above* the real-pixel MLP.
+
+**Amortization — the one escape the corollary left — closes.** Over $T$ downstream tasks weight
+access costs $1.70 + 3.74T$ MFLOP against function-query's $1.59T$. The lines never cross, because
+the weight reader's *per-task* cost on a 1185-dim input already exceeds function-query's *entire*
+per-task cost on a 64-dim one. General form: reading $P$ parameters into a decoder of width $W$
+costs $\approx 2PW$; querying $K$ points costs $\approx 2KcW + K\cdot\text{siren}$. So function
+access wins whenever $Kc \ll P$ — a condition on **probes needed**, not on INR size. Registered as
+a prediction, not noticed afterwards.
+
+**And the nuisance never arises.** Function-query moves **5.4 points** between `P-random` and
+`P-shared-det` (a fit-quality effect — 37.5 vs 39.2 dB), where weight access moves **80.4**. The
+entire object this project decomposes is an artifact of choosing to read parameters.
+
+### What this does to the thesis
+
+On these corpora, at this scale, for targets that are functions of the represented signal,
+**weight-space learning is the wrong tool** — and that applies to *our own* canonicalizers,
+invariant encoding and equivariant reader as much as to anyone's. The registration fixed in advance
+that we would say this plainly rather than soften it.
+
+What survives: **the theory** (a correct, novel account of the symmetry structure, independent of
+whether one should use the representation), **the decomposition** (a measurement about that
+structure), and **the scope conditions** where the case would have to be remade — representations
+expensive to query (volumetric rendering, long-horizon dynamics, where $Kc \ll P$ fails), or targets
+not identifiable from the function at all.
+
+---
+
+## 8. Reader architecture against frame choice
 
 Every rung above changes the *feature map* and freezes the *reader*. That's what makes the
 decomposition interpretable — and it's the obvious objection, because the field doesn't read weights
@@ -482,7 +543,7 @@ would have withdrawn the practical claim.
 
 ---
 
-## 8. S4e: does identifiability have empirical content at depth two?
+## 9. S4e: does identifiability have empirical content at depth two?
 
 Everything above rests on a theorem proved at $L=1$ while every experiment is $L=2$. **S4e** is the
 pre-registered attack on that gap ([`docs/prereg/S4e.md`](docs/prereg/S4e.md), `aa5426a4245bd22f`):
@@ -569,7 +630,7 @@ when placed on it. The remaining route is analytic, not empirical. **7/9 interva
 
 ---
 
-## 9. Calibration: scoring our own forecasts
+## 10. Calibration: scoring our own forecasts
 
 ![calibration](paper/figures/fig3_calibration.png)
 
@@ -609,7 +670,7 @@ nominal 80%.
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
 grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; with S4e's nine rows it is
-**44/55 = 80%** — exactly nominal (grayscale 9/14, CIFAR 14/17, S4e 7/9, luminance 9/10, W11 5/5).
+**49/63 = 78%** (grayscale 9/14, CIFAR 14/17, S4e 7/9, luminance 9/10, W11 5/5, S5 5/8); 16 probability calls, mean Brier 0.215.
 
 The two misses that matter are the paper's finding, not a footnote to it. And the category error
 that produced a *spurious* miss on the FashionMNIST arm is now blocked by the instrument rather
@@ -628,7 +689,7 @@ of the final story was anticipated.
 
 ---
 
-## 10. Limitations
+## 11. Limitations
 
 - **Signal complexity is confounded with two other things.** CIFAR-10 differs from the grayscale
   corpora in image statistics, in output-channel count ($c=3$ vs $c=1$), *and* in fit budget (1000
@@ -655,7 +716,7 @@ of the final story was anticipated.
 
 ---
 
-## 11. Reproduction
+## 12. Reproduction
 
 ```bash
 python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt

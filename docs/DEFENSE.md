@@ -6,7 +6,7 @@ honestly.
 | # | question | status | draft |
 |---|---|---|---|
 | 1 | Why is this not Papa et al. plus extra steps? | partial (G0) | Papa et al. intervene on fit hyperparameters and observe downstream deltas; we (i) prove the symmetry group and its exact canonicalizability, (ii) causally separate symmetry from basin multiplicity via the W4–W7 discriminator, (iii) state a transferable geometry law, (iv) adjudicate against function/render access under matched FLOPs. Their finding is one rung-pair (W1 vs W3) of our ladder — and one we must replicate (A1). |
-| 2 | PO-6 says complete invariants are secretly the function — doesn't that moot the field and this thesis? | partial (G0) | Only informationally, and only for *complete* invariants. The thesis's claim is precisely that the field's justification must be computational (amortization: canonicalize once, decode many) or must embrace incompleteness deliberately. S5's Pareto figure is the honest test. Novelty caveat vs 2602.01083 pending G1 close-read. |
+| 2 | PO-6 says complete invariants are secretly the function — doesn't that moot the field and this thesis? | **answered (S5), and the answer is uncomfortable** | Only informationally, and only for *complete* invariants. The thesis's claim is precisely that the field's justification must be computational (amortization: canonicalize once, decode many) or must embrace incompleteness deliberately. S5's Pareto figure is the honest test. Novelty caveat vs 2602.01083 pending G1 close-read. |
 | 3 | How do you know identifiability holds at width 32–64 rather than only asymptotically? | drafted (G3) | Theorem PO-2 (L=1) is non-asymptotic: the only hypothesis is membership in Θ_gen — an explicit condition (no zero rows/columns, no parallel first-layer pair) that we *measure* on every corpus. The G3 strata audit shows production fits satisfy it, but marginally: with 32 first-layer directions in a 2D input space, minimal parallel angles are ~3·10⁻⁴–2·10⁻³ rad, so orbits pass near the parallel stratum. That is a conditioning statement, not an identifiability failure — and it is exactly what the F7 margin diagnostics quantify. Deep case: conjecture + S4e falsification hunt at production width. |
 | 4 | Couldn't every gap be decoder inadequacy? What kills that? | **answered (G4, S1)** | The P0/P1 control settles it with the same decoder throughout. On MNIST: P0 97.97, P1 97.59 — TOST declares equivalence at the pre-registered 1.0-pt margin (p 2.5e−05), so the fit destroys no class information. W1 94.36 is 3.2 pts below P1, which bounds decoder-vs-representation loss under *zero* nuisance. W3 is 13.92 with the identical decoder, and W5 lifts the same corpus to 64.41 by re-framing alone — a decoder that were simply inadequate could not be rescued by a function-preserving change of frame. Decoder inadequacy is therefore excluded as the driver of the 80-pt gap; what remains is a statement about the representation. |
 | 5 | Why care about INRs of CIFAR images? | **answered (G5)** | Because the grayscale answer turned out not to generalize, and only CIFAR showed that. On MNIST and FashionMNIST exact alignment recovers 63% and 66% of the perception gap and the exact invariant encoding 27% and 43%; on CIFAR-10 the numbers are 33% and 53% — the two methods **cross over**, so the practical recommendation ("choose a better orbit representative") inverts to ("build exact invariants") on natural RGB images. Had the program stopped at two grayscale corpora it would have shipped a law that is a property of centred strokes and silhouettes. CIFAR is also the only arm where c > 1, which is the mechanism the crossover was predicted from (P-C1-B, registered at P = 0.60, resolved correctly). |
@@ -48,3 +48,19 @@ So row 15's weakest link is now precisely stated rather than merely named: **the
 program decodes are governed by basin structure, not by identifiability, and the remaining route to
 the theorem is analytic (the two open lemmas of the proof memo), not empirical.** The empirical
 fallback that G2 wired in has been spent, and it reported.
+
+
+**S5 answers defense row 2, and not in the program's favour (2026-08-02).** The row has said since
+G0 that PO-6 moots the field "only informationally", and that the justification must be computational
+— amortize the canonicalization. S5 priced that and it does not hold. Function access at K=64 learned
+probes beats the best weight rung by 30.9 points at 3.4x fewer FLOPs, and amortization never closes
+because weight access's per-task decoder cost (1185-dim input) already exceeds function-query's
+entire per-task cost (64-dim input). The general condition is Kc << P.
+
+The correct answer to row 2 is therefore: **yes, at this scale, for targets that are functions of the
+represented signal.** What survives is (i) the theory, which is a correct and novel account of the
+symmetry structure regardless of whether one should use the representation, (ii) the decomposition,
+which is a measurement about that structure, and (iii) the scope conditions — expensive-to-query
+representations, or targets not identifiable from the function — where the case would have to be
+remade. The program states this rather than defending its subject, because the registration
+(S5 §5) required it in advance.

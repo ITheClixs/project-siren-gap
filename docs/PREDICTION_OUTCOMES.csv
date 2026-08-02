@@ -67,3 +67,14 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-07-31,P-W11-A probability f(W11a)<f(W5) i.e. frame choice beats reader architecture,probability,0.75,,,1,—,,0.0625,f(W11a)=0.265 vs f(W5)=0.628
 2026-07-31,P-W11-B probability f(W11b)>f(W10) i.e. learned pooling beats eigenvalue spectra,probability,0.7,,,1,—,,0.09,f(W11b)=0.526 vs f(W10)=0.269
 2026-07-31,P-W11-C probability f(W11b)>f(W5) i.e. invariant reader overtakes alignment,probability,0.3,,,0,—,,0.09,f(W11b)=0.526 vs f(W5)=0.628
+2026-08-02,H-S5-1 function-query accuracy K=4 pct (pilot-informed),interval,45,28,62,16.374,MISS,28.626,,
+2026-08-02,H-S5-2 function-query accuracy K=16 pct (pilot-informed),interval,78,62,90,51.542,MISS,26.458,,
+2026-08-02,H-S5-3 function-query accuracy K=64 pct (pilot-informed),interval,93,84,97,95.336,HIT,2.336,,
+2026-08-02,H-S5-4 function-query accuracy K=256 pct (pilot-informed),interval,96,91,98,98.232,MISS,2.232,,exceeds the real-pixel MLP (97.97)
+2026-08-02,H-S5-5 smallest K whose accuracy exceeds W5 64.41 (pilot-informed),interval,16,8,64,64.0,HIT,48.0,,the accuracy curve is far more sigmoidal than registered
+2026-08-02,H-S5-6 FLOPs ratio W5 over function-query at that K (pilot-informed),interval,3.9,1.5,12,3.4162,HIT,0.4838,,
+2026-08-02,H-S5-7 function-query P-random minus P-shared-det at K=16 pts (pilot-informed),interval,4.0,0.0,10.0,5.43,HIT,1.43,,fit-quality effect; weight access swings 80.4 pts on the same pair
+2026-08-02,H-S5-8 learned minus frozen probes at K=16 pts (pilot-informed),interval,6.0,0.0,15.0,11.25,HIT,5.25,,
+2026-08-02,P-S5-A probability function-query at K<=64 beats W5 at strictly lower FLOPs,probability,0.85,,,1,—,,0.0225,K=64 gives 95.34 vs W5 64.41 at 3.42x fewer FLOPs
+2026-08-02,P-S5-B probability amortized weight access overtakes function-query at T<=100,probability,0.3,,,0,—,,0.09,"weight per-task decoder 3.743 MFLOP already exceeds function-query's whole 1.594 MFLOP, so amortizing the 1.704 MFLOP preprocessing never closes"
+2026-08-02,P-S5-C probability learned probes beat frozen probes at K=16 by >2 pts,probability,0.6,,,1,—,,0.16,learned-frozen = +11.25 pts

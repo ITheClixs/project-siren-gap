@@ -1,0 +1,9 @@
+function-query K=   1:  13.57    1.320 MFLOP/INR (63s)
+function-query K=   4:  16.37    1.333 MFLOP/INR (80s)
+function-query K=  16:  51.54    1.385 MFLOP/INR (93s)
+function-query K=  64:  95.34    1.594 MFLOP/INR (137s)
+function-query K= 256:  98.23    2.430 MFLOP/INR (346s)
+nuisance control K=16: P-random 52.11 vs P-shared-det 57.54 (diff +5.43)
+frozen-probe ablation K=16: learned 52.11 vs fixed 40.86 (learning buys +11.25)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s5/pareto_mnist.json
