@@ -94,11 +94,13 @@ def ladder_table(available) -> str:
         r"\centering\small",
         r"\caption{\textbf{The decomposition ladder.} One frozen decoder, thirteen feature maps, "
         r"the same underlying corpora. \emph{acc.} is mean test accuracy (\%) over the "
-        r"pre-registered seed count; $f$ is the recovery fraction \eqref{eq:f}, computed "
-        r"seed-paired for the registered rungs and as a ratio of means for the two unregistered "
-        rf"ones (W7-1/8, W8). Every bootstrap 95\% CI on $f$ is narrower than $\pm{hw:.3f}$. "
-        r"Rungs marked $\dagger$ act on the random-initialization corpus and are attempts to "
-        r"close the W3$\to$W1 gap; W4, W5 and W10 are \emph{exactly} function-preserving.}",
+        r"pre-registered seed count; $f$ is the algorithm-relative recoverable fraction "
+        r"\eqref{eq:f}, computed seed-paired for the registered rungs and as a ratio of means for "
+        rf"the two unregistered ones (W7-1/8, W8). Every bootstrap 95\% CI on $f$ is narrower than "
+        rf"$\pm{hw:.3f}$. Rungs marked $\dagger$ act on the random-initialization corpus. W4 and W5 "
+        r"are orbit-valued \emph{reframings}; W10 is an invariant \emph{encoding}, whose gain is "
+        r"not separable from nonlinear feature engineering (\S\ref{sec:bounds}) and which is "
+        r"therefore not comparable to the reframings as a symmetry measurement.}",
         r"\label{tab:ladder}",
         rf"\begin{{tabular}}{{{colspec}}}",
         r"\toprule",
@@ -300,6 +302,56 @@ def w11_table() -> str | None:
     return "\n".join(lines)
 
 
+def orbit_table() -> str | None:
+    """S6: what a pure group intervention costs, and what each treatment recovers."""
+    import glob
+    d = ROOT / "results" / "s6"
+    main = d / "orbit_mnist.json"
+    if not main.exists():
+        return None
+    perm = json.loads(main.read_text())
+    noperm = json.loads((d / "orbit_mnist_noperm.json").read_text()) if (
+        d / "orbit_mnist_noperm.json").exists() else None
+
+    order = ["raw", "c_sort", "c_align", "invariants", "W11a", "W11b"]
+    pretty = {"raw": "raw weights", "c_sort": r"$\csort$", "c_align": r"$\calign$",
+              "invariants": "exact invariants (W10)", "W11a": "equivariant, raw (W11a)",
+              "W11b": "equivariant, invariant (W11b)"}
+    Bs = sorted(perm["by_winding"], key=int)
+    lines = [
+        r"\begin{table}[t]", r"\centering\small",
+        r"\caption{\textbf{The orbit-only intervention (MNIST).} Each fitted network and its "
+        r"realised function are held fixed; an independent $g_i\sim\mu_B$ is applied to each. "
+        rf"The baseline is the untouched corpus at ${perm['baseline']['mean']:.2f}\%$. "
+        r"$\Delta_{\mathrm{sym}}$ is the degradation caused by the group action alone; the "
+        r"treatment rows give the share of it recovered. Because the functions are unchanged to "
+        r"machine precision, this is a causal measurement, unlike the ladder's $f$.}",
+        r"\label{tab:orbit}",
+        r"\begin{tabular}{@{}l" + "r" * len(Bs) + r"@{}}", r"\toprule",
+        "treatment & " + " & ".join(rf"$B={b}$" for b in Bs) + r" \\", r"\midrule",
+    ]
+    lines.append(r"$\Delta_{\mathrm{sym}}$ (points) & "
+                 + " & ".join(f"{perm['by_winding'][b]['delta_sym']:.2f}" for b in Bs) + r" \\")
+    lines.append(r"\midrule")
+    for name in order:
+        if not any(name in perm["by_winding"][b]["treatments"] for b in Bs):
+            continue
+        cells = []
+        for b in Bs:
+            tr = perm["by_winding"][b]["treatments"].get(name)
+            cells.append("---" if tr is None else
+                         ("0.000" if name == "raw" else f"{tr['recovered_fraction']:.3f}"))
+        lines.append(f"{pretty[name]} & " + " & ".join(cells) + r" \\")
+    if noperm:
+        lines.append(r"\midrule")
+        nb = sorted(noperm["by_winding"], key=int)
+        vals = {b: noperm["by_winding"][b]["delta_sym"] for b in nb}
+        lines.append(r"$\Delta_{\mathrm{sym}}$, identity permutation & "
+                     + " & ".join(f"{vals.get(b, float('nan')):.2f}" for b in Bs) + r" \\")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    return "\n".join(lines)
+
+
 def calibration_table() -> str:
     rows = list(csv.DictReader((ROOT / "docs" / "PREDICTION_OUTCOMES.csv").open()))
     iv = [r for r in rows if r["kind"] == "interval"]
@@ -397,6 +449,9 @@ def main() -> None:
     (OUT / "calibration_table.tex").write_text(calibration_table())
     for f in ("ladder_table", "gap_table", "calibration_table"):
         print(f"wrote {OUT / f}.tex")
+    orb = orbit_table()
+    (OUT / "orbit_table.tex").write_text(orb or "% orbit intervention results pending\n")
+    print(f"wrote {OUT / 'orbit_table'}.tex" if orb else "orbit_table: pending")
     w11 = w11_table()
     (OUT / "w11_table.tex").write_text(w11 or "% W11 not run yet\n")
     print(f"wrote {OUT / 'w11_table'}.tex" if w11 else "w11_table: no results yet")
