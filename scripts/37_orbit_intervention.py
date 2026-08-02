@@ -57,6 +57,10 @@ from sirengap.eval.rungs import (  # noqa: E402
 )
 from sirengap.eval.stats import bootstrap_ci_mean  # noqa: E402
 from sirengap.models.forward import max_functional_gap  # noqa: E402
+from sirengap.models.readers import (  # noqa: E402
+    invariant_graph_features,
+    raw_graph_features,
+)
 from sirengap.models.params import SirenParams  # noqa: E402
 from sirengap.symmetry.dinf import GroupElement, apply  # noqa: E402
 
@@ -110,6 +114,11 @@ def main() -> None:
     ap.add_argument("--no-permute", action="store_true",
                     help="isolate the D_infinity part by fixing the permutation to identity")
     ap.add_argument("--seeds", type=int, default=SEEDS)
+    ap.add_argument("--equivariant", action="store_true",
+                    help="also score the W11 equivariant readers on the scattered corpus")
+    ap.add_argument("--width-a", type=int, default=424)
+    ap.add_argument("--width-b", type=int, default=288)
+    ap.add_argument("--tag", default="")
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--root", default="data/inrbench")
     args = ap.parse_args()
@@ -150,6 +159,36 @@ def main() -> None:
                 "acc": accs, "mean": float(a.mean()), "ci95": bootstrap_ci_mean(a),
             }
             print(f"  B={B:3d} {name:12s} {a.mean():6.2f}", flush=True)
+        if args.equivariant:
+            sys.path.insert(0, str(ROOT / "scripts"))
+            w11 = __import__("33_w11_equivariant")
+            for variant, width, fn in (("a", args.width_a, raw_graph_features),
+                                       ("b", args.width_b, invariant_graph_features)):
+                feats_g = {}
+                for split in SPLITS:
+                    q = scattered[split]
+                    pieces: dict = {}
+                    for i in range(0, q.batch, 4096):
+                        idx = torch.arange(i, min(i + 4096, q.batch))
+                        sub = SirenParams(
+                            hidden=tuple((w[idx], b[idx]) for w, b in q.hidden),
+                            w_out=q.w_out[idx], b_out=q.b_out[idx],
+                        )
+                        for k, v in fn(sub).items():
+                            pieces.setdefault(k, []).append(v)
+                    feats_g[split] = {k: torch.cat(v, dim=0) for k, v in pieces.items()}
+                accs = [
+                    w11.train_one(feats_g, labels, variant, s, args.device, width)["test_acc"]
+                    for s in range(args.seeds)
+                ]
+                a = np.array(accs)
+                cell["treatments"][f"W11{variant}"] = {
+                    "acc": accs, "mean": float(a.mean()), "ci95": bootstrap_ci_mean(a),
+                    "width": width,
+                }
+                print(f"  B={B:3d} {'W11'+variant:12s} {a.mean():6.2f}", flush=True)
+                del feats_g
+
         raw = cell["treatments"]["raw"]["mean"]
         drop = out["baseline"]["mean"] - raw
         cell["delta_sym"] = drop
@@ -159,7 +198,8 @@ def main() -> None:
         out["by_winding"][str(B)] = cell
         print(f"  B={B:3d} delta_sym = {drop:+.2f} pts   (functional gap {gap:.2e})", flush=True)
 
-    path = ROOT / "results" / "s6" / f"orbit_{args.dataset}.json"
+    suffix = f"_{args.tag}" if args.tag else ""
+    path = ROOT / "results" / "s6" / f"orbit_{args.dataset}{suffix}.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(out, indent=2))
     print(f"\nwrote {path}")

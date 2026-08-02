@@ -85,3 +85,11 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-08-02,S5,P-S5-A probability function-query at K<=64 beats W5 at strictly lower FLOPs,"P=0.85",NA,NA,80bdc96ce9497c3d
 2026-08-02,S5,P-S5-B probability amortized weight access overtakes function-query at T<=100 tasks,"P=0.30",NA,NA,80bdc96ce9497c3d
 2026-08-02,S5,P-S5-C probability learned probes beat frozen probes at K=16 by >2 pts,"P=0.60",NA,NA,80bdc96ce9497c3d
+2026-08-03,S6,H-S6-1 delta_sym identity-perm B=0 sign flips only pts,"10",2,30,4826774c2e2c0d9d
+2026-08-03,S6,H-S6-2 delta_sym identity-perm B=3 pts,"15",3,35,4826774c2e2c0d9d
+2026-08-03,S6,H-S6-3 permutation share = delta_sym(perm B=3) - delta_sym(identity B=3) pts,"64",45,76,4826774c2e2c0d9d
+2026-08-03,S6,H-S6-4 W11a recovery fraction of delta_sym at B=3,"0.60",0.30,0.88,4826774c2e2c0d9d
+2026-08-03,S6,H-S6-5 W11b accuracy scattered minus unscattered abs pts (validity check),"0.3",0.0,1.5,4826774c2e2c0d9d
+2026-08-03,S6,H-S6-6 raw accuracy on scattered P-random B=3 pct,"13.0",11.0,15.5,4826774c2e2c0d9d
+2026-08-03,S6,P-S6-A probability the permutation part dominates (identity-perm delta_sym < half),"P=0.80",NA,NA,4826774c2e2c0d9d
+2026-08-03,S6,P-S6-B probability extra scatter on P-random costs less than 2 pts,"P=0.85",NA,NA,4826774c2e2c0d9d

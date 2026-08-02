@@ -10,3 +10,9 @@ baseline (no scatter): 94.36
   B=  1 invariants    72.40
   B=  1 delta_sym = +79.04 pts   (functional gap 3.87e-06)
   B=  3 raw           15.57
+  B=  3 c_sort        61.12
+  B=  3 c_align       83.52
+  B=  3 invariants    72.26
+  B=  3 delta_sym = +78.79 pts   (functional gap 4.29e-06)
+  B= 10 raw           15.27
+  B= 10 c_sort        60.79
