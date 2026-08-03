@@ -11,6 +11,12 @@ and every "claimed new" row must name the search that failed to find a prior sou
 **Last novelty scan:** 2026-08-03 (G8, eight targeted arXiv queries; snapshot in
 `docs/lit_snapshots/G8-novelty-scan.txt`). Earlier scans: G0 2026-07-16, G2.
 
+**Note on the external review's contributions.** Four components here exist because a reviewer
+asked for them, and two of those came with the method attached. Rows E3, E4, E6 and M7 record which.
+M7 in particular is a case where the *idea* is not ours: the phasor route to a $D_\infty$-aware
+reader was named in the review, and the paper credits it at first mention rather than in an
+acknowledgements line.
+
 ---
 
 ## 1. Theory
@@ -43,6 +49,8 @@ proof of novelty.
 | M4 | Frame averaging | **prior work** | Puny et al. 2022 | nothing; rung W9 measures one instantiation of it, and the paper states that a different winding distribution or normalization could behave differently |
 | M5 | Permutation-equivariant weight-space readers | **prior work** | DWSNets, NFN/NFT, GMN, ScaleGMN, UNF | nothing; W11a is a member of that family, deliberately not the strongest, and the limitations section says so |
 | M6 | Function-query classification of an INR | **prior work** | ProbeGen (Horwitz et al. 2024) and the probe line | the FLOPs-matched frontier against weight access, and the amortization pricing |
+| M7 | Bias phasors $(\cos b, \sin b)$ as the route to a $D_\infty$-aware reader | **suggested by the external review**, implemented here | The review named the route explicitly: "replace raw bias $b$ by the phasor $(\cos b,\sin b)$, which removes the integer $2\pi$ translation. The remaining sign and reflection actions can then be represented by finite-dimensional linear transformations." Sign-equivariant weight-space layers are prior work (Monomial-NFN, ScaleGMN) | the **idea is not ours** and the paper credits it at first mention. Ours is the two-layer realization: the $\Z_2\times\Z_2$ character grading, the identification of which message channels are character-legal once $W^2$ is graded $(1,1)$ on one side and $(1,0)$ on the other, and the verification that the resulting reader is invariant for unbounded windings (T16 at $\|j\|\le40$; audited on fitted corpora at $3.3\times10^{-6}$) |
+| M8 | The matched ungraded control (W12u) | **ours**, by analogy with E4 | none known | same skeleton, block shapes and capacity rule, grading removed; without it W12's gain is not attributable to the grading, which is the error E4 exists to prevent |
 
 ## 3. Experiment
 
@@ -53,6 +61,7 @@ proof of novelty.
 | E3 | The orbit-only intervention (S6) | **ours**, prompted by external review | none known | holding each fitted network and its function fixed while randomizing the group, so the measured degradation has one cause |
 | E4 | The matched non-invariant control (S7) | **ours**, prompted by external review | none known | a feature map matched to W10 in monomial degree, trigonometric order, pooling and dimension, differing only in whether the $D_\infty$ component is quotiented out |
 | E5 | Pre-registration with interval forecasts and public scoring | **practice imported** | Munafò et al. 2017, Nosek et al. 2018; scoring rules from Gneiting & Raftery 2007 | applying it to a methods study in this field, and reporting the misses |
+| E6 | The convergence sweep (S8) | **prompted by the external review**, designed here | the review asked whether the recoverable fraction survives training to a stationary point | the design, and the per-INR relative endpoint gradient norm added to the fitter so that stationarity is measured rather than inferred from render fidelity |
 
 ## 4. Corrections already forced by this ledger
 
