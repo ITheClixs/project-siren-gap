@@ -97,8 +97,10 @@ point. Acting on the characterization, we build a reader that quotients the grou
 parameters: bias phasors reduce the infinite winding to a parity, leaving a finite grading the
 network preserves layer by layer. It recovers $\mathbf{92\%}$ of the gap at matched capacity against
 $63\%$ for the best reframing and $27\%$ for a permutation-equivariant reader, reversing a claim an
-earlier version of this paper made and a pre-registration required us to withdraw. Querying the INR
-at $64$ learned coordinates remains more accurate and $100\times$ cheaper.
+earlier version of this paper made and a pre-registration required us to withdraw. A matched control
+locates the effect: removing the grading but keeping the coordinates still gives $86\%$, so it is
+the symmetry-adapted representation and not the enforced equivariance that carries it. Querying the
+INR at $64$ learned coordinates remains more accurate and $100\times$ cheaper.
 \end{minipage}
 \end{center}
 \vskip 1.2em
@@ -1186,11 +1188,30 @@ than qualified}. It is withdrawn. The supported claim is the opposite one: a rea
 the group on the raw parameters beats choosing a good representative, by $0.29$ of the gap at
 matched capacity on this corpus.
 
-This also closes a loop the theory had left open. S6 found that within $\Dinf\wr S_n$ the reflection
-and phase components carry four fifths of the damage and neuron relabelling one fifth
+This closes a loop the theory had left open. S6 found that within $\Dinf\wr S_n$ the reflection and
+phase components carry four fifths of the damage and neuron relabelling one fifth
 (\S\ref{sec:orbit}); W11a quotients only the relabelling and recovers $0.265$, while W12 quotients
 all of it and recovers $0.917$. The group characterization is not decoration on the empirical part
 of the paper --- it is what tells you which quotient a reader has to take.
+
+\paragraph{But the layer-level grading is not what does the work.} Applying S7's argument to W12,
+the matched control removes the grading and keeps everything else: same skeleton, same block shapes,
+same phasor features, capacity re-solved by the same rule (width $122$, $1{,}888{,}212$ parameters).
+It is genuinely not invariant --- its logits move $0.25$ relative under the group on fitted INRs,
+against W12's $3\times10^{-6}$ --- and it still reaches $f(\mathrm{W12u}) = \mathbf{0.858}$. The
+grading is therefore worth $+0.059$ of W12's $0.917$, and the control on its own already beats
+$\calign$'s $0.628$ and W11b's $0.526$.
+
+The reading we take from that is not the one we expected. Both readers receive the same
+exactly-invariant neutral block from the shared feature map --- $\|w_i\|^2$, $\cos 2b_i$,
+$\|u_k\|^2$, the Gram diagonals --- which moves by $3\times10^{-8}$ under $\Dinf$. What the grading
+adds is the \emph{guarantee} that nothing outside that block reaches the head, and on this corpus
+that guarantee is worth about six points of the eighty-point gap. The bulk of the advantage belongs
+to the symmetry-adapted \emph{coordinates}, not to enforcing equivariance in the layers. That is
+still the group characterization paying off --- the character table is what says which coordinates
+those are --- but it is a different mechanism from the one we would have named, and the control is
+the only reason we can tell. What it does not separate is the coordinates from the architecture;
+\S\ref{sec:limits} names the third arm that would.
 
 \paragraph{Replacing the encoding's pooling helps substantially.} W10 was limited to $0.269$;
 keeping its invariants and replacing sorted eigenvalue spectra with learned equivariant pooling

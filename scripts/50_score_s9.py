@@ -40,6 +40,8 @@ def main() -> None:
         return
     w12 = json.loads(w12_path.read_text())
     w11 = json.loads((LADDER / "W11.json").read_text())["variants"]
+    w12u_path = LADDER / "W12u.json"
+    w12u = json.loads(w12u_path.read_text()) if w12u_path.exists() else None
     cells = {r: json.loads((LADDER / f"{r}.json").read_text()) for r in ("W1", "W3", "W4", "W5")}
 
     w1, w3 = np.array(cells["W1"]["acc"]), np.array(cells["W3"]["acc"])
@@ -54,12 +56,18 @@ def main() -> None:
         "W11a": w11["W11a"]["recovery_fraction"], "W11b": w11["W11b"]["recovery_fraction"],
         "W12": w12["recovery_fraction"],
     }
+    if w12u:
+        f["W12u"] = w12u["recovery_fraction"]
     acc = {
         "W4": cells["W4"]["mean"], "W5": cells["W5"]["mean"],
         "W11a": w11["W11a"]["mean"], "W11b": w11["W11b"]["mean"], "W12": w12["mean"],
     }
+    if w12u:
+        acc["W12u"] = w12u["mean"]
     params = {"W11a": w11["W11a"]["reader_params"], "W11b": w11["W11b"]["reader_params"],
               "W12": w12["reader_params"]}
+    if w12u:
+        params["W12u"] = w12u["reader_params"]
 
     observed = {
         "H-S9-1": f["W12"],
@@ -92,6 +100,14 @@ def main() -> None:
     for k, c in report["probability_calls"].items():
         print(f"{k}: p={c['p']}, resolved {c['resolved']}, Brier {c['brier']:.4f}")
 
+    if w12u:
+        # exploratory, not registered: S7's argument applied to W12
+        report["grading_attributable"] = f["W12"] - f["W12u"]
+        report["control_also_beats_calign"] = bool(f["W12u"] > f["W5"])
+        print(f"\ncontrol: f(W12u) = {f['W12u']:.3f}; the layer-level grading is worth "
+              f"{report['grading_attributable']:+.3f} of W12's {f['W12']:.3f}"
+              f"{'; the control also beats c_align' if report['control_also_beats_calign'] else ''}")
+
     report["practical_claim_withdrawn"] = bool(calls["P-S9-C"][1])
     if report["practical_claim_withdrawn"]:
         print("\nP-S9-C RESOLVED TRUE -> the 'frame choice beats reader architecture' claim is "
@@ -111,17 +127,20 @@ def table(rep: dict) -> str:
     rows = [
         ("W11a", r"perm.-equivariant, raw weights", r"$S_{n_1}\times S_{n_2}$ only"),
         ("W11b", r"equivariant reader over W10's invariants", r"$G$, via a fixed front-end"),
+        ("W12u", r"\quad matched control: grading removed", r"none (logits move $0.25$)"),
         ("W12", r"phasor-graded, raw weights", r"$G$, on the parameters"),
         ("W5", r"$\calign$ + the frozen MLP", r"--- (a reframing, not a reader)"),
     ]
+    rows = [r for r in rows if r[0] in rep["f"]]
     lines = [
         r"\begin{table}[t]", r"\centering\small",
         r"\caption{\textbf{Readers at matched capacity (MNIST, \texttt{P-random}).} All three "
         r"readers are sized by rule to the frozen decoder's $1{,}873{,}162$ parameters. The "
         r"invariance column is what each construction actually quotients: W11a nothing beyond "
         r"permutations, W11b the full group but only because its input already is invariant, W12 "
-        r"the full group on the raw parameters. $\calign$ is listed for reference; it is a change "
-        r"of frame rather than a reader.}",
+        r"the full group on the raw parameters, W12u nothing --- its logits move $0.25$ relative "
+        r"under the group, against W12's $3\times10^{-6}$. $\calign$ is listed for reference; it "
+        r"is a change of frame rather than a reader.}",
         r"\label{tab:w12}",
         r"\begin{tabular}{@{}llrrl@{}}", r"\toprule",
         r"rung & construction & acc.\ (\%) & $f$ & invariance \\", r"\midrule",

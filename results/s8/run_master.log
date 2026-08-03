@@ -23,3 +23,13 @@ width 186 (capacity rule against the decoder's 1,873,162)
 === master chain start Mon Aug  3 23:47:13 +03 2026 ===
 --- W12u: the matched ungraded control Mon Aug  3 23:47:13 +03 2026 ---
 W12u: width 122 (capacity rule against the decoder's 1,873,162)
+  W12u seed 0: test 82.53 (val 84.34, 10 ep)
+  W12u seed 1: test 82.41 (val 84.34, 28 ep)
+  W12u seed 2: test 83.31 (val 84.78, 10 ep)
+  W12u seed 3: test 83.09 (val 83.86, 15 ep)
+  W12u seed 4: test 83.29 (val 84.18, 16 ep)
+W12u: 82.93  f=0.8579  params=1,888,212  (4225s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W12u.json
+--- W12 on unscattered P-shared-det (re-measures the S6 triple) Tue Aug  4 00:57:40 +03 2026 ---
+W12_shareddet: width 186 (capacity rule against the decoder's 1,873,162)
