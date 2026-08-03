@@ -109,3 +109,9 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-08-03,S8,P-S8-A probability f(W5) at 10000 steps exceeds 0.30,"P=0.70",NA,NA,ab228c6deb526eed
 2026-08-03,S8,P-S8-B probability W1-W3 gap at 10000 steps is at least 50 pts,"P=0.80",NA,NA,ab228c6deb526eed
 2026-08-03,S8,P-S8-C probability gradient norm falls at least 10x from 300 to 10000,"P=0.60",NA,NA,ab228c6deb526eed
+2026-08-03,S9,H-S9-1 f(W12) MNIST P-random,"0.55",0.35,0.72,1c74280c55a1a3f0
+2026-08-03,S9,H-S9-2 f(W12) minus f(W11a),"0.29",0.10,0.45,1c74280c55a1a3f0
+2026-08-03,S9,H-S9-3 f(W12) minus f(W11b),"0.02",-0.15,0.18,1c74280c55a1a3f0
+2026-08-03,S9,P-S9-A probability f(W12) exceeds f(W11a),"P=0.85",NA,NA,1c74280c55a1a3f0
+2026-08-03,S9,P-S9-B probability f(W12) exceeds f(W11b),"P=0.45",NA,NA,1c74280c55a1a3f0
+2026-08-03,S9,P-S9-C probability f(W12) exceeds f(W5),"P=0.25",NA,NA,1c74280c55a1a3f0
