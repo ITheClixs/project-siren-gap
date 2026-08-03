@@ -24,6 +24,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 from sirengap.canon.calign import c_align  # noqa: E402
 from sirengap.canon.csort import c_sort  # noqa: E402
+from sirengap.canon.deep_control import encode_deep_control  # noqa: E402
 from sirengap.canon.deep_invariants import encode_deep  # noqa: E402
 from sirengap.eval.decoder import knn_accuracy, linear_probe, train_matched_mlp  # noqa: E402
 from sirengap.eval.rungs import (  # noqa: E402
@@ -128,6 +129,15 @@ def build_rung(name: str, cache: CorpusCache, dataset: str, device: str) -> Rung
         by_split, labels = cache.split_params("P-random")
         feats = {s: _chunked(encode_deep, p) for s, p in by_split.items()}
         return Rung("W10", feats, labels, notes="deep phase-invariant encoding (L=2, Ch3.6)")
+
+    if name == "W10c":
+        by_split, labels = cache.split_params("P-random")
+        feats = {s: _chunked(encode_deep_control, p) for s, p in by_split.items()}
+        return Rung(
+            "W10c", feats, labels,
+            notes="matched non-invariant control for W10: same monomial degrees, trigonometric "
+                  "orders, pooling and dimension, parity classes swapped (docs/prereg/S7.md)",
+        )
 
     raise ValueError(f"unknown rung {name}")
 
