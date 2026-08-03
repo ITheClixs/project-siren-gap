@@ -359,10 +359,15 @@ def orbit_table() -> str | None:
         lines.append(f"{pretty[name]} & " + " & ".join(cells) + r" \\")
     if noperm:
         lines.append(r"\midrule")
-        nb = sorted(noperm["by_winding"], key=int)
-        vals = {b: noperm["by_winding"][b]["delta_sym"] for b in nb}
+        vals = {b: c["delta_sym"] for b, c in noperm["by_winding"].items()}
         lines.append(r"$\Delta_{\mathrm{sym}}$, identity permutation & "
-                     + " & ".join(f"{vals.get(b, float('nan')):.2f}" for b in Bs) + r" \\")
+                     + " & ".join(f"{vals[b]:.2f}" if b in vals else "---" for b in Bs) + r" \\")
+    prandom_path = d / "orbit_mnist_prandom.json"
+    if prandom_path.exists():
+        pr = json.loads(prandom_path.read_text())
+        vals = {b: c["delta_sym"] for b, c in pr["by_winding"].items()}
+        lines.append(r"$\Delta_{\mathrm{sym}}$, applied to \texttt{P-random} instead & "
+                     + " & ".join(f"{vals[b]:+.2f}" if b in vals else "---" for b in Bs) + r" \\")
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
     return "\n".join(lines)
 

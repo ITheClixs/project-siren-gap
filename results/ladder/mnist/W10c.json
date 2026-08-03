@@ -1,0 +1,30 @@
+{
+  "rung": "W10c",
+  "notes": "matched non-invariant control for W10: same monomial degrees, trigonometric orders, pooling and dimension, parity classes swapped (docs/prereg/S7.md)",
+  "feature_dim": 320,
+  "n_train_rows": 55000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    24.26,
+    24.36,
+    23.85,
+    24.46,
+    22.77
+  ],
+  "mean": 23.94,
+  "ci95_bootstrap": [
+    23.324,
+    24.38
+  ],
+  "epochs_ran": [
+    14,
+    12,
+    12,
+    12,
+    11
+  ],
+  "wallclock_s": 77.98663973808289,
+  "linear_probe": 20.45,
+  "knn10_cosine": 11.98
+}

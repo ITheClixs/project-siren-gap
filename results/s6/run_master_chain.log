@@ -1,1 +1,65 @@
 === master chain start Mon Aug  3 14:56:04 +03 2026 ===
+--- S6 arm (iv): the intervention on P-random Mon Aug  3 16:09:07 +03 2026 ---
+baseline (no scatter): 13.92
+  B=  0 raw           13.79
+  B=  0 c_sort        28.18
+  B=  0 c_align       64.39
+  B=  0 invariants    35.54
+  B=  0 delta_sym = +0.13 pts   (functional gap 5.96e-07)
+  B=  3 raw           14.42
+  B=  3 c_sort        28.18
+  B=  3 c_align       64.39
+  B=  3 invariants    35.37
+  B=  3 delta_sym = -0.50 pts   (functional gap 4.35e-06)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s6/orbit_mnist_prandom.json
+--- S7: rung W10c, MNIST Mon Aug  3 16:26:17 +03 2026 ---
+=== rung W10c ===
+  W10c seed 0: test 24.26 (val 24.60, 14 ep)
+  W10c seed 1: test 24.36 (val 24.80, 12 ep)
+  W10c seed 2: test 23.85 (val 24.54, 12 ep)
+  W10c seed 3: test 24.46 (val 24.22, 12 ep)
+  W10c seed 4: test 22.77 (val 24.50, 11 ep)
+  -> results/ladder/mnist/W10c.json (23.94 mean over 5 seeds)
+--- S7: rung W10c, CIFAR-10 Mon Aug  3 16:27:46 +03 2026 ---
+=== rung W10c ===
+  W10c seed 0: test 19.20 (val 18.72, 13 ep)
+  W10c seed 1: test 19.02 (val 19.22, 13 ep)
+  W10c seed 2: test 19.42 (val 19.36, 13 ep)
+  W10c seed 3: test 19.83 (val 19.70, 13 ep)
+  W10c seed 4: test 19.90 (val 19.16, 14 ep)
+  -> results/ladder/cifar10/W10c.json (19.47 mean over 5 seeds)
+--- S6 arm (i): permuted, re-run under --tag perm Mon Aug  3 16:29:08 +03 2026 ---
+baseline (no scatter): 94.36
+  B=  0 raw           15.29
+  B=  0 c_sort        60.59
+  B=  0 c_align       83.67
+  B=  0 invariants    72.51
+  B=  0 delta_sym = +79.07 pts   (functional gap 5.96e-07)
+  B=  1 raw           15.31
+  B=  1 c_sort        60.83
+  B=  1 c_align       83.50
+  B=  1 invariants    72.40
+  B=  1 delta_sym = +79.04 pts   (functional gap 3.87e-06)
+  B=  3 raw           15.57
+  B=  3 c_sort        61.12
+  B=  3 c_align       83.52
+  B=  3 invariants    72.26
+  B=  3 delta_sym = +78.79 pts   (functional gap 4.29e-06)
+  B= 10 raw           15.27
+  B= 10 c_sort        60.79
+  B= 10 c_align       83.27
+  B= 10 invariants    72.44
+  B= 10 delta_sym = +79.09 pts   (functional gap 8.70e-06)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s6/orbit_mnist_perm.json
+--- S6 H-S6-5: W11b on unscattered P-shared-det Mon Aug  3 17:14:46 +03 2026 ---
+  W11b seed 0: test 84.27 (val 86.28, 17 ep)
+  W11b seed 1: test 84.79 (val 85.84, 25 ep)
+  W11b seed 2: test 84.30 (val 86.30, 19 ep)
+  W11b seed 3: test 85.11 (val 86.82, 34 ep)
+  W11b seed 4: test 85.56 (val 87.18, 41 ep)
+W11b: 84.81  f=0.8813  params=1,845,210  (4151s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W11_shareddet.json
+=== master chain complete Mon Aug  3 18:23:59 +03 2026 ===

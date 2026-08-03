@@ -85,18 +85,21 @@ parameter symmetry without direct measurement.
 Prior work uses two function-preserving transformations of sine networks --- neuron negation and
 integer-$\pi$ bias shifts --- as weight-space augmentations \citep{shamsian2024augmentations}. We
 characterize the group they generate: each hidden neuron carries an infinite dihedral action
-$\Dinf$ whose phase component is \emph{affine} and therefore lies outside the monomial-matrix
-actions previous classifications cover, and a layer carries $\Dinf \wr S_n$. For generic
-one-hidden-layer sine networks we prove this group exhausts functional equivalence; at depth two we
-construct exact cross-layer invariants by coupling through the second-layer Gram matrix.
+$\Dinf$ whose phase component is \emph{affine} and therefore outside the monomial-matrix actions
+previous classifications cover, and a layer carries $\Dinf \wr S_n$. For generic one-hidden-layer
+sine networks we prove this group exhausts functional equivalence, and at depth two we construct
+exact cross-layer invariants through the second-layer Gram matrix.
 
 Exact orbit-valued reframing recovers $63\%$, $66\%$ and $32\%$ of the shared-versus-random accuracy
-gap on three datasets. We show that fraction is \emph{algorithm-relative} rather than a causal
-share, and measure the causal quantity by randomizing the group while holding each fitted network
-and its realized function fixed: the intervention costs $79$ accuracy points against an $80$-point
-observed gap, and within the group per-neuron sign flips account for four fifths of the damage while
-integer phase shifts account for about one. Classifying an INR by querying it at $64$ learned
-coordinates outperforms every weight-space pipeline we tested, at lower inference cost.
+gap. That fraction is \emph{algorithm-relative}, not a causal share; we measure the causal quantity
+by randomizing the group while holding each fitted network and its function fixed. Randomizing the
+group costs $79$ of the $80$ points --- yet a reader whose invariance to it we \emph{measure} still
+loses $28.6$ points between the two corpora, so the gap is not reducible to group scatter. Within
+the group, sign flips carry four fifths of the damage and integer phase shifts about one point. A
+control matched to our invariant encoding in degree, trigonometric order, pooling and dimension,
+differing only in whether $\Dinf$ is quotiented out, attributes $0.32$ of that encoding's $0.53$
+CIFAR-10 recovery to invariance. Finally, querying an INR at $64$ learned coordinates outperforms
+every weight-space pipeline we tested, at lower cost.
 \end{minipage}
 \end{center}
 \vskip 1.2em
@@ -741,26 +744,55 @@ phase component this paper emphasises matters empirically or only mathematically
 \input{tables/orbit_table}
 
 \paragraph{The group alone costs about as much as the whole observed gap.} Randomizing $g$ over the
-untouched \texttt{P-shared-det} corpus takes the decoder from $94.36\%$ to $15.3\%$, a
-$\Delta_{\mathrm{sym}}$ of $79.1$ points at $B=0$ and $79.1$ again at $B=10$. For comparison, the
+untouched \texttt{P-shared-det} corpus takes the decoder from $94.36\%$ to $15.3\%$:
+$\Delta_{\mathrm{sym}} = 79.07$ at $B=0$ and $79.09$ at $B=10$, flat in the winding bound. The
 entire shared-versus-random gap on the same dataset is $80.4$ points. Known group scatter alone
 therefore reproduces nearly all of the degradation that independent initialization produces --- but
-the two are not the same intervention, and the recoveries differ in the informative direction:
-$\calign$ returns $83\%$ of $\Delta_{\mathrm{sym}}$ against $63\%$ of the observed gap, and the
-invariant encoding $73\%$ against $27\%$. Both treatments do markedly better against synthetic
-scatter than against independent fits. This is the comparison the ladder alone could not make, and
-it must be read with the caveat the registration named: the scattered corpus is a favourable case
-for $\calign$ by construction, since every scattered network is exactly a group image of one fitted
-from the template's own initialization.
+the two are not the same intervention, and the recoveries separate them. $\calign$ returns $86\%$ of
+$\Delta_{\mathrm{sym}}$ against $63\%$ of the observed gap; the invariant encoding $72\%$ against
+$27\%$; $\csort$ $58\%$ against $18\%$. Every treatment does markedly better against synthetic
+scatter than against independent fits, which is the first direct evidence that the observed gap
+contains something the group does not. The registration named the caveat in advance: the scattered
+corpus is a favourable case for $\calign$ by construction, since every scattered network is exactly
+a group image of one fitted from the template's own initialization.
+
+\paragraph{An independently initialized corpus is already group-saturated.} Applying the same
+intervention to \texttt{P-random} costs $+0.13$ points at $B=0$ and $-0.50$ at $B=3$ --- nothing,
+within seed noise, and the registered call P-S6-B ($0.85$) resolves as expected. The raw reader on
+\texttt{P-random} is at a floor that additional exact group scatter cannot lower. Note also that
+$\calign$ reaches $64.39\%$ on the scattered \texttt{P-random} corpus against $64.41\%$ on the
+unscattered one, a second empirical statement of the canonicalizer property of \S\ref{sec:bounds}.
+
+\paragraph{An exactly invariant reader still loses $28.6$ points, and the group cannot explain it.}
+This is the sharpest result of the intervention, and it comes from a triple. W11b --- the
+$G$-invariant equivariant reader of \S\ref{sec:w11} --- scores $84.81\%$ on the untouched
+\texttt{P-shared-det} corpus and $85.39\%$ on the \emph{same corpus after the group has been
+randomized} at $B=3$. The difference, $0.59$ points, is seed noise: its invariance is not merely
+asserted by construction but measured (this was registered as validity check H-S6-5 and hits). The
+same reader scores $56.24\%$ on \texttt{P-random}. So a reader that is empirically blind to
+$\Dinf \wr S_n$ still loses $28.6$ points between the shared-initialization and
+independent-initialization corpora, and \emph{that} loss cannot be group scatter.
+
+What it can be is narrower than before but not yet settled. It is not lost class information in the
+signal: the render gates pass on both protocols and function-query accuracy moves only $5.4$ points
+between them (\S\ref{sec:s5}). It is not the group. The two surviving explanations are that
+independent fits land on genuinely different orbits --- which S4e measures directly, two fits of the
+same image sitting at orbit distance $0.279$ against $0.280$ for two fits of \emph{different} images
+--- and that W10's invariant family is incomplete in a way that reads more from a shared chart than
+from independently scattered ones. An incomplete invariant cannot separate those two, so we do not
+claim a decomposition; what the triple does establish is that the residual survives an intervention
+that removes the group entirely, which the canonicalizer residual of \S\ref{sec:bounds} could not
+show.
 
 \paragraph{Within the group, reflection dominates and winding is nearly free.} With the permutation
 fixed to the identity, $\Delta_{\mathrm{sym}}$ is still $62.9$ points at $B=0$ and $64.1$ at
 $B=10$: of the $79$ points that the full group costs, roughly $63$ are already bought by
 per-neuron sign flips alone, about $15$ by relabelling $32$ neurons, and about $1$ by windings up
 to $|j|=10$. Two registered rows are badly missed by this. H-S6-1 put sign flips at $10$ points
-$[2,30]$ and H-S6-3 put the permutation share at $64$ $[45,76]$; the observed values are $62.9$ and
-$14.8$, i.e.\ the two components' roles are the reverse of what we registered, and the probability
-call P-S6-A ($0.80$ that permutations dominate) resolves false.
+$[2,30]$ and H-S6-3 put the permutation share at $64$ $[45,76]$; the observed values are $62.90$ and
+$14.74$, i.e.\ the two components' roles are the reverse of what we registered, and the probability
+call P-S6-A ($0.80$ that permutations dominate) resolves false. S6 scores $3/6$ intervals, its worst
+arm, and all three misses are this one finding.
 
 The consequence for this paper's framing is specific and cuts both ways. The $\Dinf$ component
 dominates the permutation component by four to one, which is the empirical case for treating the
@@ -790,6 +822,28 @@ and below $10^{-5}$ under permutations alone. The difference between the two run
 attributable to the $\Dinf$ component specifically.
 
 \input{tables/control_table}
+
+\paragraph{Most of the encoding's CIFAR-10 gain is invariance; a substantial minority is not.}
+$f(\mathrm{W10c}) = 0.125$ on MNIST against W10's $0.269$, and $0.216$ on CIFAR-10 against
+$0.534$. All three registered intervals hit --- $0.14\,[0.02,0.28]$, $0.22\,[0.05,0.42]$ and, for
+the difference the review actually asked for, $0.31\,[0.11,0.48]$ against an observed $0.318$. The
+pre-committed falsifier ($f(\mathrm{W10c}) \ge f(\mathrm{W10}) - 0.05$ on CIFAR-10, which would
+have voided every symmetry reading of the CIFAR-10 encoding result) did not fire.
+
+So of W10's $0.534$ on CIFAR-10, $0.318$ is attributable to quotienting $\Dinf$ and $0.216$ is
+what the same nonlinearity buys without it. On MNIST the split is $0.144$ against $0.125$. The
+encoding's advantage over an exact reframing on natural images is therefore a genuine symmetry
+effect and not a feature-engineering artifact --- but it is not \emph{purely} a symmetry effect
+either, and the second registered probability call is the one that says so.
+
+\paragraph{The nonlinearity contributes on its own, which changes how W10 and W4 compare.}
+P-S7-B put $0.55$ on $f(\mathrm{W10c}) \le f(\mathrm{W4})$ on CIFAR-10 --- that breaking $\Dinf$
+invariance would cost more than the nonlinear pooling buys. It resolves false: $0.216$ against
+$\csort$'s $0.108$. A feature map with the same nonlinearity and \emph{no} $\Dinf$ invariance
+already doubles template-free canonicalization. The registration fixed in advance that this must be
+stated wherever W10 is compared with W4, so: the W10-versus-W4 comparison is not a clean
+symmetry-handling comparison, because the two differ in nonlinearity as well. The clean comparison
+is W10 against W10c, and it is the one we now quote.
 
 % =====================================================================================
 \section{The crossover: alignment and invariance trade places}\label{sec:crossover}
@@ -1363,11 +1417,27 @@ recovers $63\%$, $66\%$ and $32\%$ of the shared-versus-random accuracy gap on M
 and CIFAR-10. That fraction is relative to the learning algorithm rather than a causal
 decomposition, which is why we also measure the effect of the group directly, holding each network
 and its function fixed (\S\ref{sec:orbit}): randomizing the group over a corpus with no
-initialization nuisance costs $79$ points, against an $80$-point observed gap, and the same
-treatments recover more of that scatter than of the observed gap. Within the group, per-neuron sign
+initialization nuisance costs $79.1$ points, against an $80.4$-point observed gap, and every
+treatment recovers more of that scatter than of the observed gap. Within the group, per-neuron sign
 flips account for about $63$ of those points, neuron relabelling for about $15$, and windings up to
 $|j|=10$ for about one --- so the affine phase component is mathematically necessary for the
 identifiability statement and empirically minor as a source of scatter, and we report it as both.
+
+The intervention also settles, in one direction, a question the ladder could not. A reader that is
+$G$-invariant --- and whose invariance we \emph{measure}, at $0.59$ points under the same
+randomization --- scores $84.81\%$ on the shared-initialization corpus and $56.24\%$ on the
+independently initialized one. That $28.6$-point loss cannot be group scatter, and it is not lost
+signal, since function-query accuracy moves only $5.4$ points between the same two corpora. The
+weight-space perception gap is therefore not reducible to parameter symmetry. What the residual
+\emph{is} --- genuinely different orbits, or an incomplete invariant family that reads more from a
+shared chart --- an incomplete invariant cannot decide, and we do not claim it does.
+
+A matched control settles the other open attribution. An encoding with the same monomials,
+trigonometric orders, pooling and dimension as our invariant one, differing only in whether $\Dinf$
+is quotiented out, recovers $0.216$ of the CIFAR-10 gap against the invariant encoding's $0.534$
+(\S\ref{sec:control}). Roughly $0.32$ of that encoding's recovery is invariance and $0.22$ is what
+the nonlinearity buys on its own --- enough that the encoding's advantage over template-free
+canonicalization is not a clean symmetry comparison, and we say which comparison is.
 The treatments most often applied to this nuisance --- bounded group augmentation, $K$-view
 training, unweighted frame averaging --- recover at most $13\%$ under our implementations and
 budgets.

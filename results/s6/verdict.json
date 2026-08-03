@@ -1,0 +1,131 @@
+{
+  "study": "S6",
+  "prereg": "docs/prereg/S6.md",
+  "note": "arm (i) was declared exposed before freezing and carries no ledger rows",
+  "arms_present": {
+    "perm": true,
+    "noperm": true,
+    "equivariant": true,
+    "prandom": true
+  },
+  "measurement": {
+    "baseline_acc": 94.35600000000001,
+    "delta_sym_permuted": {
+      "0": 79.07000000000001,
+      "1": 79.04200000000002,
+      "3": 78.78800000000001,
+      "10": 79.09
+    },
+    "recovery_permuted": {
+      "0": {
+        "raw": 0.0,
+        "c_sort": 0.5729859618059947,
+        "c_align": 0.8649045149867206,
+        "invariants": 0.723713165549513
+      },
+      "1": {
+        "raw": 0.0,
+        "c_sort": 0.5758457528908681,
+        "c_align": 0.8626806001872421,
+        "invariants": 0.7221730219377037
+      },
+      "3": {
+        "raw": 0.0,
+        "c_sort": 0.5782098796771081,
+        "c_align": 0.8624155962836978,
+        "invariants": 0.7195765852667917
+      },
+      "10": {
+        "raw": 0.0,
+        "c_sort": 0.5755721330130231,
+        "c_align": 0.859830572765204,
+        "invariants": 0.7228726766974335
+      }
+    },
+    "max_functional_gap": 8.702278137207031e-06,
+    "delta_sym_identity_perm": {
+      "0": 62.90400000000001,
+      "1": 63.49400000000001,
+      "3": 64.04400000000001,
+      "10": 64.08200000000001
+    }
+  },
+  "registered": {
+    "H-S6-1": {
+      "statement": "Delta_sym, identity permutation, B=0",
+      "point": 10.0,
+      "interval": [
+        2.0,
+        30.0
+      ],
+      "observed": 62.90400000000001,
+      "verdict": "MISS"
+    },
+    "H-S6-2": {
+      "statement": "Delta_sym, identity permutation, B=3",
+      "point": 15.0,
+      "interval": [
+        3.0,
+        35.0
+      ],
+      "observed": 64.04400000000001,
+      "verdict": "MISS"
+    },
+    "H-S6-3": {
+      "statement": "Delta_sym(permuted,B=3) - Delta_sym(identity,B=3)",
+      "point": 64.0,
+      "interval": [
+        45.0,
+        76.0
+      ],
+      "observed": 14.744,
+      "verdict": "MISS"
+    },
+    "H-S6-4": {
+      "statement": "W11a recovery of Delta_sym at B=3",
+      "point": 0.6,
+      "interval": [
+        0.3,
+        0.88
+      ],
+      "observed": 0.6307559526831494,
+      "verdict": "HIT"
+    },
+    "H-S6-5": {
+      "statement": "|W11b scattered - unscattered| (pts)",
+      "point": 0.3,
+      "interval": [
+        0.0,
+        1.5
+      ],
+      "observed": 0.5859999999999843,
+      "verdict": "HIT"
+    },
+    "H-S6-6": {
+      "statement": "raw accuracy on scattered P-random, B=3",
+      "point": 13.0,
+      "interval": [
+        11.0,
+        15.5
+      ],
+      "observed": 14.422,
+      "verdict": "HIT"
+    }
+  },
+  "probability_calls": {
+    "P-S6-A": {
+      "statement": "the permutation part dominates: Delta_sym(identity,B=3) < half of Delta_sym(permuted,B=3)",
+      "p": 0.8,
+      "resolved": false,
+      "brier": 0.6400000000000001
+    },
+    "P-S6-B": {
+      "statement": "adding scatter to P-random costs less than 2 points",
+      "observed_cost_pts": -0.5,
+      "p": 0.85,
+      "resolved": true,
+      "brier": 0.022500000000000006
+    }
+  },
+  "score": "3/6"
+}

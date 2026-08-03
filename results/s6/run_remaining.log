@@ -13,3 +13,7 @@ baseline (no scatter): 94.36
   B=  3 c_align       83.52
   B=  3 invariants    72.26
   B=  3 W11a          65.26
+  B=  3 W11b          85.39
+  B=  3 delta_sym = +78.79 pts   (functional gap 4.29e-06)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s6/orbit_mnist_equivariant.json

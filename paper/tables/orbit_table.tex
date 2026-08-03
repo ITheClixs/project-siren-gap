@@ -1,1 +1,22 @@
-% orbit intervention results pending
+\begin{table}[t]
+\centering\small
+\caption{\textbf{The orbit-only intervention (MNIST).} Each fitted network and its realised function are held fixed; an independent $g_i\sim\mu_B$ is applied to each. The baseline is the untouched corpus at $94.36\%$. $\Delta_{\mathrm{sym}}$ is the degradation caused by the group action alone; the treatment rows give the share of it recovered. Because the functions are unchanged to machine precision, this is a causal measurement, unlike the ladder's $f$.}
+\label{tab:orbit}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+treatment & $B=0$ & $B=1$ & $B=3$ & $B=10$ \\
+\midrule
+$\Delta_{\mathrm{sym}}$ (points) & 79.07 & 79.04 & 78.79 & 79.09 \\
+\midrule
+raw weights & 0.000 & 0.000 & 0.000 & 0.000 \\
+$\csort$ & 0.573 & 0.576 & 0.578 & 0.576 \\
+$\calign$ & 0.865 & 0.863 & 0.862 & 0.860 \\
+exact invariants (W10) & 0.724 & 0.722 & 0.720 & 0.723 \\
+equivariant, raw (W11a) & --- & --- & 0.631 & --- \\
+equivariant, invariant (W11b) & --- & --- & 0.886 & --- \\
+\midrule
+$\Delta_{\mathrm{sym}}$, identity permutation & 62.90 & 63.49 & 64.04 & 64.08 \\
+$\Delta_{\mathrm{sym}}$, applied to \texttt{P-random} instead & +0.13 & --- & -0.50 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
