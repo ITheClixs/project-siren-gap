@@ -625,7 +625,8 @@ align to a random fixed network, never to a corpus member.
 \paragraph{The inexact treatments recover little, under our implementations and budgets.} Across
 MNIST / FashionMNIST / CIFAR-10: bounded group augmentation recovers $f = 0.054 / 0.032 / 0.128$;
 $K$-marginalization $0.048 / 0.034 / 0.101$; frame averaging $0.003 / -0.008 / 0.001$. The largest
-of these anywhere is $0.128$, against $0.534$ for the best exact treatment on the same corpus. We had
+of these anywhere is $0.128$, against $0.325$ for the best exact \emph{reframing} on the same
+corpus and $0.534$ for the invariant encoding. We had
 registered that marginalization would beat augmentation by $15$ points on MNIST; the observed
 difference was $-0.52$ ($p = .21$) because \emph{neither} works, and the null replicates on both
 later datasets ($+0.16$, $-0.84$; registered $0.0\,[-2,+2]$ for CIFAR-10 and hit). Of W7's small
