@@ -146,6 +146,14 @@ def generate(args: argparse.Namespace) -> None:
                     "lr": args.lr,
                     "final_psnr": psnr(result.final_loss).numpy(),
                     "final_loss": result.final_loss.numpy(),
+                    # relative endpoint gradient norm: the stationarity measure S8 needs,
+                    # since render fidelity does not distinguish "interpolates the grid"
+                    # from "sits at a stationary point"
+                    "final_grad_norm": (
+                        result.final_grad_norm.numpy()
+                        if result.final_grad_norm is not None
+                        else float("nan")
+                    ),
                     "wallclock_s": wall / len(chunk),
                     "code_version": config["code_version"],
                 }
@@ -165,6 +173,8 @@ def generate(args: argparse.Namespace) -> None:
         "n_inrs": len(meta), "psnr_median": float(meta["final_psnr"].median()),
         "psnr_q05": float(meta["final_psnr"].quantile(0.05)),
         "corr_psnr_label": corr_psnr, "wallclock_total_s": time.time() - t_start,
+        "grad_norm_median": float(meta["final_grad_norm"].median()),
+        "grad_norm_q95": float(meta["final_grad_norm"].quantile(0.95)),
     }
     (out / "summary.json").write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2), flush=True)

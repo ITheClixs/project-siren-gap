@@ -27,6 +27,11 @@ class FitResult:
     params: SirenParams  # stored (canonical) form, omega absorbed
     final_loss: Tensor  # [B] per-INR MSE
     loss_curve: tuple[float, ...]  # mean-over-B MSE at each logged step
+    # ||grad of this INR's own loss|| / ||its parameters||, at the endpoint. The convergence
+    # sweep (S8) needs a stationarity measure that is comparable across step budgets and
+    # parameter scales; render fidelity is not one, because a network can interpolate the
+    # sampled grid while sitting far from a stationary point.
+    final_grad_norm: Tensor | None = None
 
 
 def make_coord_grid(height: int, width: int, device: str = "cpu") -> Tensor:
@@ -155,9 +160,22 @@ def fit_batch(
         opt.step()
         if step % log_every == 0 or step == steps - 1:
             curve.append(float(per_inr.detach().mean().cpu()))
+    # endpoint stationarity, on the full-batch loss regardless of how the fit was driven
+    for t in tensors:
+        if t.grad is not None:
+            t.grad = None
+    per_inr_full = ((forward_train(tensors, coords) - targets) ** 2).mean(dim=(1, 2))
+    per_inr_full.sum().backward()
     with torch.no_grad():
-        final = ((forward_train(tensors, coords) - targets) ** 2).mean(dim=(1, 2)).cpu()
-    return FitResult(params=absorb_omega(tensors), final_loss=final, loss_curve=tuple(curve))
+        # summing over each tensor's non-batch axes keeps this per-INR
+        gsq = sum((t.grad**2).flatten(1).sum(1) for t in tensors)
+        psq = sum((t.detach() ** 2).flatten(1).sum(1) for t in tensors)
+        grad_norm = (gsq.sqrt() / psq.sqrt().clamp_min(1e-12)).cpu()
+        final = per_inr_full.detach().cpu()
+    return FitResult(
+        params=absorb_omega(tensors), final_loss=final, loss_curve=tuple(curve),
+        final_grad_norm=grad_norm,
+    )
 
 
 def psnr(mse: Tensor, data_range: float = 2.0) -> Tensor:

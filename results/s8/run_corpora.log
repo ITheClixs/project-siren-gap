@@ -1,0 +1,15 @@
+=== S8 corpora start Mon Aug  3 20:16:13 +03 2026 ===
+--- P-shared-det @ 300 steps Mon Aug  3 20:16:13 +03 2026 ---
+shard_000000: 256 fits in 5.0s  psnr_med=39.2dB  overall 51.1 fits/s
+shard_000256: 256 fits in 4.6s  psnr_med=39.1dB  overall 53.4 fits/s
+shard_000512: 256 fits in 4.6s  psnr_med=39.0dB  overall 54.2 fits/s
+shard_000768: 256 fits in 4.6s  psnr_med=39.2dB  overall 54.5 fits/s
+shard_001024: 256 fits in 4.7s  psnr_med=38.9dB  overall 54.4 fits/s
+shard_001280: 256 fits in 4.6s  psnr_med=39.0dB  overall 54.7 fits/s
+shard_001536: 256 fits in 4.5s  psnr_med=39.1dB  overall 54.9 fits/s
+shard_001792: 256 fits in 4.6s  psnr_med=39.0dB  overall 55.0 fits/s
+shard_002048: 256 fits in 4.6s  psnr_med=39.2dB  overall 55.1 fits/s
+shard_002304: 256 fits in 4.6s  psnr_med=39.1dB  overall 55.2 fits/s
+shard_002560: 256 fits in 4.6s  psnr_med=39.2dB  overall 55.3 fits/s
+shard_002816: 256 fits in 4.6s  psnr_med=39.1dB  overall 55.3 fits/s
+shard_003072: 256 fits in 4.6s  psnr_med=39.2dB  overall 55.4 fits/s
