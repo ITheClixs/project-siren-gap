@@ -93,3 +93,8 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-08-03,S6,H-S6-6 raw accuracy on scattered P-random B=3 pct,"13.0",11.0,15.5,4826774c2e2c0d9d
 2026-08-03,S6,P-S6-A probability the permutation part dominates (identity-perm delta_sym < half),"P=0.80",NA,NA,4826774c2e2c0d9d
 2026-08-03,S6,P-S6-B probability extra scatter on P-random costs less than 2 pts,"P=0.85",NA,NA,4826774c2e2c0d9d
+2026-08-03,S7,H-S7-1 f(W10c) MNIST,"0.14",0.02,0.28,682f760e526f4850
+2026-08-03,S7,H-S7-2 f(W10c) CIFAR-10,"0.22",0.05,0.42,682f760e526f4850
+2026-08-03,S7,H-S7-3 f(W10) minus f(W10c) CIFAR-10,"0.31",0.11,0.48,682f760e526f4850
+2026-08-03,S7,P-S7-A probability f(W10c) < f(W10) on both datasets,"P=0.75",NA,NA,682f760e526f4850
+2026-08-03,S7,P-S7-B probability f(W10c) <= f(W4) on CIFAR-10,"P=0.55",NA,NA,682f760e526f4850

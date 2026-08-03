@@ -1992,17 +1992,24 @@ S4e identifiability                & 9  & 7  & \texttt{S4e.md} \\
 S1 luminance CIFAR                 & 10 & 9  & \texttt{S1-gray.md} \\
 W11 equivariant readers            & 5  & 5  & \texttt{S1-w11.md} \\
 S5 function access                 & 8  & 5  & \texttt{S5.md} \\
+S6 orbit intervention              & 6  & 3  & \texttt{S6.md} \\
+S7 matched control                 & 3  & 3  & \texttt{S7.md} \\
 \midrule
-total                              & 63 & 49 & realized coverage $78\%$ \\
+total                              & 72 & 55 & realized coverage $76\%$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Running coverage at earlier points in the program is quoted against prefixes of this table --- $9/14$
-through the grayscale arms, $23/31$ after CIFAR-10 --- and the probability calls are scored
-separately, $16$ of them at mean Brier $0.215$. The S6 and S7 registrations are scored in
-\S\ref{sec:orbit} and \S\ref{sec:control} and are not folded into this table, which covers the arms
-frozen before the external review.
+Running coverage at earlier points in the program is quoted against prefixes of this table ---
+$9/14$ through the grayscale arms, $23/31$ after CIFAR-10, $49/63$ before the external review --- and
+the probability calls are scored separately, $20$ of them at mean Brier $0.223$.
+
+S6 is the program's worst-scoring arm at $3/6$, and its three misses are one finding: we registered
+the permutation component as dominant and it is not (\S\ref{sec:orbit}). S7 is its best at $3/3$,
+including the one interval the review's Priority~3 actually asked for. The two arms were registered
+on the same day under the same template, which is a useful reminder that arm-level coverage is
+mostly a statement about how well a mechanism was understood before the run, not about the care
+taken in registering it.
 
 
 \end{document}

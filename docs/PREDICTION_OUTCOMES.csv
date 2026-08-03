@@ -78,3 +78,16 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-08-02,P-S5-A probability function-query at K<=64 beats W5 at strictly lower FLOPs,probability,0.85,,,1,—,,0.0225,K=64 gives 95.34 vs W5 64.41 at 3.42x fewer FLOPs
 2026-08-02,P-S5-B probability amortized weight access overtakes function-query at T<=100,probability,0.3,,,0,—,,0.09,"weight per-task decoder 3.743 MFLOP already exceeds function-query's whole 1.594 MFLOP, so amortizing the 1.704 MFLOP preprocessing never closes"
 2026-08-02,P-S5-C probability learned probes beat frozen probes at K=16 by >2 pts,probability,0.6,,,1,—,,0.16,learned-frozen = +11.25 pts
+2026-08-03,H-S6-1 delta_sym identity permutation B=0 pts,interval,10.0,2.0,30.0,62.904,MISS,52.904,,sign flips alone cost 63 of the 79 points; we registered 10
+2026-08-03,H-S6-2 delta_sym identity permutation B=3 pts,interval,15.0,3.0,35.0,64.044,MISS,49.044,,same event as H-S6-1
+2026-08-03,H-S6-3 permutation share of delta_sym at B=3 pts,interval,64.0,45.0,76.0,14.744,MISS,49.256,,"the two components' roles are the reverse of the registration: D_inf 63, permutation 15"
+2026-08-03,H-S6-4 W11a recovery of delta_sym at B=3,interval,0.60,0.30,0.88,0.631,HIT,0.031,,
+2026-08-03,H-S6-5 |W11b scattered minus unscattered| pts,interval,0.3,0.0,1.5,0.586,HIT,0.286,,"validity check: 85.39 scattered vs 84.81 unscattered, i.e. seed noise"
+2026-08-03,H-S6-6 raw accuracy on scattered P-random B=3 pct,interval,13.0,11.0,15.5,14.422,HIT,1.422,,
+2026-08-03,P-S6-A probability the permutation part dominates (identity-perm delta_sym < half),probability,0.80,,,0,—,,0.64,"observed 64.04 against half of 78.79 = 39.4; D_inf dominates instead"
+2026-08-03,P-S6-B probability extra scatter on P-random costs less than 2 pts,probability,0.85,,,1,—,,0.0225,"+0.13 at B=0 and -0.50 at B=3: P-random is already group-saturated"
+2026-08-03,H-S7-1 f(W10c) MNIST,interval,0.14,0.02,0.28,0.125,HIT,0.015,,
+2026-08-03,H-S7-2 f(W10c) CIFAR-10,interval,0.22,0.05,0.42,0.216,HIT,0.004,,
+2026-08-03,H-S7-3 f(W10) minus f(W10c) CIFAR-10,interval,0.31,0.11,0.48,0.318,HIT,0.008,,the quantity the external review asked for
+2026-08-03,P-S7-A probability f(W10c) < f(W10) on both datasets,probability,0.75,,,1,—,,0.0625,0.125<0.269 and 0.216<0.534
+2026-08-03,P-S7-B probability f(W10c) <= f(W4) on CIFAR-10,probability,0.55,,,0,—,,0.3025,"0.216 against c_sort's 0.108: the nonlinearity contributes on its own, so W10-vs-W4 is not a clean symmetry comparison"
