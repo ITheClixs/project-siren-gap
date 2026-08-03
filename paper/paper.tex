@@ -1048,7 +1048,12 @@ substantially improves accuracy --- and the factorial ablation that would licens
 (matched-capacity MLP on the same objects; richer fixed invariant statistics; the same learned
 pooling over non-invariant control objects) is left as future work. What the result does support is
 a practical suggestion: a $G$-invariant equivariant reader needs no template and no assignment
-problem, and lands within $0.10$ of alignment.
+problem, and lands within $0.10$ of alignment. W11b is therefore this paper's $\Dinf$-aware reader,
+and the comparison W11a versus W11b is the one that isolates $G$-awareness at fixed reader family
+--- $0.265$ against $0.526$. Its limitation is structural rather than architectural: it is invariant
+because its \emph{input} already is, so it inherits whatever the invariant family discards, and a
+reader that quotients $\Dinf$ on the parameters themselves (\S\ref{sec:limits}) is the construction
+we did not build.
 
 All five registered intervals hit and all three probability calls resolved as registered, including
 the one that would have withdrawn the paper's practical claim had it failed.
@@ -1276,11 +1281,17 @@ parameter budget as the decoder it replaces, does not substitute for choosing a 
 representative --- and that the phase component of $G$, which none of these architectures covers
 for sine networks, is a plausible reason.
 
-\textbf{No $\Dinf$-aware reader was built.} The natural construction, and the one we would attempt
-next, replaces the raw bias by its phasor $(\cos b, \sin b)$, which removes the integer $2\pi$
-translation at the level of the representation and leaves reflection and parity to be carried by
-finite-dimensional linear maps on real and complex features. That is a cleaner object than
-canonicalizing an unbounded bias coordinate, and it is the comparison that would make the
+\textbf{The $\Dinf$-aware reader we built consumes an invariant front-end rather than raw
+parameters.} W11b is $G$-invariant, and it is the best weight-space reader here that needs neither
+template nor assignment ($f = 0.526$) --- but it is invariant \emph{because} its input is already
+W10's invariants, so its ceiling inherits whatever that family discards. A reader that handles
+$\Dinf$ on the parameters directly is a different and probably better object. The natural
+construction replaces the raw bias by its phasor $(\cos b, \sin b)$, which removes the integer
+$2\pi$ translation at the level of the representation and leaves reflection and parity to be carried
+by finite-dimensional linear maps; equivalently, one can read the shallow network as the atomic
+measure of \eqref{eq:atoms}, whose atoms at $\pm w_i$ with coefficient proportional to
+$u_i e^{\mathrm i b_i}$ quotient the phase shift automatically and turn orientation reversal into
+complex conjugation. We did not build either, and it is the comparison that would make the
 architecture question in \S\ref{sec:w11} decisive rather than indicative.
 
 \textbf{Signal complexity remains confounded with image statistics.} CIFAR-10 differed from the
