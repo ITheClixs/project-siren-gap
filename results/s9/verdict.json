@@ -1,0 +1,79 @@
+{
+  "study": "S9",
+  "prereg": "docs/prereg/S9.md",
+  "exposure": "docs/prereg/S9-addendum-01.md",
+  "f": {
+    "W4": 0.17736303468123343,
+    "W5": 0.6276695141890121,
+    "W11a": 0.2653100473965932,
+    "W11b": 0.5261450453012029,
+    "W12": 0.916530843264125
+  },
+  "acc": {
+    "W4": 28.188,
+    "W5": 64.408,
+    "W11a": 35.26199999999999,
+    "W11b": 56.242000000000004,
+    "W12": 87.64200000000001
+  },
+  "reader_params": {
+    "W11a": 1879874,
+    "W11b": 1845210,
+    "W12": 1874898
+  },
+  "width": 186,
+  "registered": {
+    "H-S9-1": {
+      "statement": "f(W12), MNIST P-random",
+      "point": 0.55,
+      "interval": [
+        0.35,
+        0.72
+      ],
+      "observed": 0.916530843264125,
+      "verdict": "MISS"
+    },
+    "H-S9-2": {
+      "statement": "f(W12) - f(W11a)",
+      "point": 0.29,
+      "interval": [
+        0.1,
+        0.45
+      ],
+      "observed": 0.6512207958675318,
+      "verdict": "MISS"
+    },
+    "H-S9-3": {
+      "statement": "f(W12) - f(W11b)",
+      "point": 0.02,
+      "interval": [
+        -0.15,
+        0.18
+      ],
+      "observed": 0.39038579796292217,
+      "verdict": "MISS"
+    }
+  },
+  "probability_calls": {
+    "P-S9-A": {
+      "statement": "f(W12) > f(W11a)",
+      "p": 0.85,
+      "resolved": true,
+      "brier": 0.022500000000000006
+    },
+    "P-S9-B": {
+      "statement": "f(W12) > f(W11b)",
+      "p": 0.45,
+      "resolved": true,
+      "brier": 0.30250000000000005
+    },
+    "P-S9-C": {
+      "statement": "f(W12) > f(W5)",
+      "p": 0.25,
+      "resolved": true,
+      "brier": 0.5625
+    }
+  },
+  "practical_claim_withdrawn": true,
+  "score": "0/3"
+}

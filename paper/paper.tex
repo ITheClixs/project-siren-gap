@@ -87,19 +87,18 @@ integer-$\pi$ bias shifts --- as weight-space augmentations \citep{shamsian2024a
 characterize the group they generate: each hidden neuron carries an infinite dihedral action
 $\Dinf$ whose phase component is \emph{affine} and therefore outside the monomial-matrix actions
 previous classifications cover, and a layer carries $\Dinf \wr S_n$. For generic one-hidden-layer
-sine networks we prove this group exhausts functional equivalence, and at depth two we construct
-exact cross-layer invariants through the second-layer Gram matrix.
+sine networks we prove this group exhausts functional equivalence.
 
-Exact orbit-valued reframing recovers $63\%$, $66\%$ and $32\%$ of the shared-versus-random accuracy
-gap. That fraction is \emph{algorithm-relative}, not a causal share; we measure the causal quantity
-by randomizing the group while holding each fitted network and its function fixed. Randomizing the
-group costs $79$ of the $80$ points --- yet a reader whose invariance to it we \emph{measure} still
-loses $28.6$ points between the two corpora, so the gap is not reducible to group scatter. Within
-the group, sign flips carry four fifths of the damage and integer phase shifts about one point. A
-control matched to our invariant encoding in degree, trigonometric order, pooling and dimension,
-differing only in whether $\Dinf$ is quotiented out, attributes $0.32$ of that encoding's $0.53$
-CIFAR-10 recovery to invariance. Finally, querying an INR at $64$ learned coordinates outperforms
-every weight-space pipeline we tested, at lower cost.
+Exact orbit-valued reframing recovers $63\%$, $66\%$ and $32\%$ of the gap. That fraction is
+\emph{algorithm-relative}, not a causal share; the causal quantity, measured by randomizing the
+group while holding each network and its function fixed, costs $79$ of the $80$ points --- and
+within the group, sign flips carry four fifths of it while integer phase shifts carry about one
+point. Acting on the characterization, we build a reader that quotients the group on the \emph{raw}
+parameters: bias phasors reduce the infinite winding to a parity, leaving a finite grading the
+network preserves layer by layer. It recovers $\mathbf{92\%}$ of the gap at matched capacity against
+$63\%$ for the best reframing and $27\%$ for a permutation-equivariant reader, reversing a claim an
+earlier version of this paper made and a pre-registration required us to withdraw. Querying the INR
+at $64$ learned coordinates remains more accurate and $100\times$ cheaper.
 \end{minipage}
 \end{center}
 \vskip 1.2em
@@ -174,6 +173,10 @@ realized function fixed while randomizing the group isolates the degradation the
 causes, which the ladder's shared-versus-random contrast cannot. It shows that the group reproduces
 nearly the whole gap, and --- via a reader whose invariance to it we measure rather than assume ---
 that the gap is nevertheless not reducible to the group.
+\item \textbf{A reader that quotients the group on raw parameters} (\S\ref{sec:w11}). Bias phasors
+reduce the winding to a parity, leaving a finite $\Z_2\times\Z_2$ grading that the network preserves
+layer by layer; it recovers $92\%$ of the gap at matched capacity and overturns this paper's own
+earlier claim that frame choice beats reader architecture.
 \item \textbf{A FLOPs-matched comparison against function access} (\S\ref{sec:s5}), in which
 weight access is dominated on both accuracy and inference cost.
 \end{enumerate}
@@ -198,7 +201,9 @@ created'' to ``the gain measures nuisance removal'' does not hold (\S\ref{sec:bo
 quantity is measured separately, by intervening on the group directly (\S\ref{sec:orbit}), and the
 answer has two halves: randomizing the group costs $79.1$ of the $80.4$ points, and yet a reader
 whose invariance to that randomization is \emph{measured} at $0.59$ points still loses $28.6$
-between the two corpora. The gap looks like group scatter and is not reducible to it. Under our
+between the two corpora. Acting on the group characterization closes most of what remains: a reader
+that quotients $\Dinf \wr S_n$ on the raw parameters recovers $92\%$ of the gap
+(\S\ref{sec:w11}), against $63\%$ for the best exact reframing. Under our
 implementations and training budgets, the treatments most often applied to this nuisance ---
 augmenting by group elements \citep{shamsian2024augmentations}, marginalizing over refits, averaging
 over a frame \citep{puny2022frame} --- recover at most $13\%$ on any dataset and under $6\%$ on both
@@ -1141,13 +1146,40 @@ W11b within $1.5\%$; W12 at width $186$, $+0.09\%$), so no row loses for being s
 
 \input{tables/w11_table}
 
-\paragraph{Frame choice wins against this reader, at matched capacity.}
-$f(\mathrm{W11a}) = 0.265$ against $f(\mathrm{W5}) = 0.628$. A capacity-matched
+\input{tables/w12_table}
+
+\paragraph{Permutation equivariance alone is not enough, and the ordering is the finding.}
+$f(\mathrm{W11a}) = 0.265$ against $f(\mathrm{W5}) = 0.628$: a capacity-matched
 permutation-equivariant reader on raw weights recovers about the same share of the gap as an exact
 invariant encoding with lossy pooling ($0.269$), and less than half of what an exact change of frame
-recovers. The scope is this construction, at this capacity, on this corpus: what it shows is that
-permutation equivariance alone does not compensate for unmodelled phase symmetry as effectively as
-choosing a good orbit representative does, not that equivariance in general cannot.
+recovers. On its own that comparison invites the reading we gave it in an earlier version --- that
+frame choice beats reader architecture. W12 shows the reading was wrong, and that what W11a
+demonstrates is narrower: permutation equivariance alone does not compensate for unmodelled phase
+symmetry.
+
+\paragraph{A $G$-aware reader on raw parameters beats every other treatment here, and the paper's
+practical claim is withdrawn.} $f(\mathrm{W12}) = \mathbf{0.917}$, i.e.\ $87.64\%$ against the
+shared-initialization ceiling's $94.36\%$, from weights fitted independently. That is $+0.651$ over
+the permutation-only reader, $+0.390$ over the same-family reader fed a fixed invariant front-end,
+and $+0.288$ over the best exact reframing. All three readers sit within $1.5\%$ of the frozen
+decoder's parameter count, so none of it is capacity.
+
+We registered this badly. H-S9-1 put $f(\mathrm{W12})$ at $0.55\,[0.35,0.72]$, H-S9-2 the gain over
+W11a at $0.29\,[0.10,0.45]$, H-S9-3 the gain over W11b at $0.02\,[-0.15,0.18]$; the observed values
+are $0.917$, $0.651$ and $0.390$, so S9 scores $\mathbf{0/3}$ and every miss is in the same
+direction. The probability call that mattered --- P-S9-C, $0.25$ that a $G$-aware reader would beat
+$\calign$ --- resolved true at a Brier score of $0.56$. Section~4 of the frozen registration
+committed in advance that if it did, this paper's claim that \emph{within weight space the choice of
+orbit representative matters more than the reader architecture} would be \textbf{withdrawn rather
+than qualified}. It is withdrawn. The supported claim is the opposite one: a reader that quotients
+the group on the raw parameters beats choosing a good representative, by $0.29$ of the gap at
+matched capacity on this corpus.
+
+This also closes a loop the theory had left open. S6 found that within $\Dinf\wr S_n$ the reflection
+and phase components carry four fifths of the damage and neuron relabelling one fifth
+(\S\ref{sec:orbit}); W11a quotients only the relabelling and recovers $0.265$, while W12 quotients
+all of it and recovers $0.917$. The group characterization is not decoration on the empirical part
+of the paper --- it is what tells you which quotient a reader has to take.
 
 \paragraph{Replacing the encoding's pooling helps substantially.} W10 was limited to $0.269$;
 keeping its invariants and replacing sorted eigenvalue spectra with learned equivariant pooling
@@ -1500,13 +1532,20 @@ budgets.
 
 Two results were not anticipated. The recoverable fraction is not a constant across corpora:
 alignment recovers about two thirds on the grayscale corpora and one third on natural images, and
-a luminance-CIFAR arm rules out output-channel count as the explanation. And the ordering of the
-two exact treatments reverses between those regimes. Within weight space, the choice of orbit
-representative matters more than the reader architecture we tested: a permutation-equivariant
-reader matched to the decoder's parameter count recovers $0.265$ where reframing recovers $0.628$,
-and replacing an invariant encoding's fixed spectral pooling with a learned equivariant reader
-raises it from $0.269$ to $0.526$ --- though that comparison is confounded by reader architecture
-and capacity and we do not decompose it further.
+a luminance-CIFAR arm rules out output-channel count as the explanation; the ordering of the two
+exact treatments reverses between those regimes.
+
+The third was not anticipated either, and it overturns a claim this paper previously made. An
+earlier version reported that within weight space the choice of orbit representative matters more
+than reader architecture, on the evidence that a capacity-matched permutation-equivariant reader
+recovers $0.265$ where reframing recovers $0.628$. Acting on the group characterization instead ---
+bias phasors reduce the winding to a parity, and the resulting finite grading is preserved layer by
+layer --- gives a reader that quotients $\Dinf\wr S_n$ on the raw parameters and recovers
+$\mathbf{0.917}$, at the same parameter count. The registration for that rung committed in advance
+to withdrawing the earlier claim if this happened, and it is withdrawn: what the W11a result
+actually shows is that permutation equivariance \emph{alone} is not enough, which is the
+empirical counterpart of S6's finding that relabelling carries a fifth of the group's damage and
+the reflection and phase components carry the rest.
 
 The practical conclusion points away from weight space at this scale. Priced against function
 access on a FLOPs-matched frontier (\S\ref{sec:s5}), every weight-space pipeline we tested is

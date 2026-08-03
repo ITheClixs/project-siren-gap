@@ -3,3 +3,7 @@ width 186 (capacity rule against the decoder's 1,873,162)
   W12 seed 1: test 88.85 (val 90.24, 65 ep)
   W12 seed 2: test 87.12 (val 88.58, 16 ep)
   W12 seed 3: test 87.43 (val 88.78, 20 ep)
+  W12 seed 4: test 86.94 (val 88.22, 17 ep)
+W12: 87.64  f=0.9165  params=1,874,898  (6280s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W12.json
