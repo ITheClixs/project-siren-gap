@@ -49,6 +49,13 @@ step() { local label="$1"; shift; echo "--- $label $(date) ---"; "$@" || echo "S
           --out-name W12_shareddet
   fi
 
+  # W12 is a new weight-access point on the S5 frontier, and S5's claim is that *every*
+  # weight-space pipeline is dominated. Re-price the frontier with it. The script reuses the
+  # already-measured weight accuracies and only retrains the function-query side, ~12 min.
+  step "S5: re-price the frontier with W12 on it" \
+    $PY scripts/35_s5_pareto.py --dataset mnist --nuisance-control --frozen-ablation
+  step "S5: re-score" $PY scripts/36_score_s5.py
+
   # Budgets in increasing order, and the decode re-run after 3000 as well as at the end. The
   # 10000-step arm is ~8 h of the ~11 h total, while 1000 steps already drops the relative
   # gradient norm 24x (5.5e-3 -> 2.25e-4) at 69 dB, so the convergence question is largely
