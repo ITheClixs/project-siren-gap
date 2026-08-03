@@ -848,13 +848,20 @@ of the final story was anticipated.
 
 ```bash
 python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt
-make test                                             # property tests T1–T11
+make test                                             # property tests T1–T16
 
 .venv/bin/python scripts/03_generate_inrbench.py ...  # corpora (or use 05/08/16 wrappers)
 .venv/bin/python scripts/04_quality_gate.py  ...      # admission gates
 bash scripts/12_ladder_chain.sh                       # MNIST ladder
 bash scripts/17_g4_chain.sh                           # W5 sensitivity + FMNIST + CIFAR corpus
 bash scripts/20_cifar_ladder.sh                       # CIFAR-10 ladder
+
+.venv/bin/python scripts/37_orbit_intervention.py ... # S6 orbit-only intervention
+.venv/bin/python scripts/11_ladder.py --rungs W10c    # S7 matched non-invariant control
+.venv/bin/python scripts/47_w12_phasor.py             # S9 phasor-graded reader (--ungraded = control)
+bash scripts/51_master_chain_s8_s9.sh                 # S8 convergence sweep + S9, serialized
+.venv/bin/python scripts/42_canon_equivariance_audit.py   # is c_align a canonicalizer here?
+.venv/bin/python scripts/52_w12_invariance_audit.py       # is W12 invariant on fitted INRs?
 
 .venv/bin/python scripts/21_paper_figures.py          # every figure above
 .venv/bin/python scripts/22_paper_tables.py           # every table above
@@ -869,9 +876,9 @@ committed artifacts by scripts 21 and 22 — none are hand-edited.
 
 ```
 src/sirengap/    fitting/ symmetry/ canon/ models/ geometry/ data/ eval/ queue/
-tests/           property tests T1–T11 (CPU-runnable)
+tests/           property tests T1–T16 (CPU-runnable)
 configs/         one YAML per experiment, no hidden defaults
-scripts/         numbered idempotent entrypoints (00_lit_scan.sh … 22_paper_tables.py)
+scripts/         numbered idempotent entrypoints (00_lit_scan.sh … 52_w12_invariance_audit.py)
 results/         committed per-seed cells + figures (raw weight shards gitignored)
 paper/           paper.tex/pdf, figures/, tables/, thesis/ chapters
 docs/            LAB_NOTEBOOK, prereg/, THINKING/, ADVISOR_REVIEWS/, ledgers, RELATED_WORK
