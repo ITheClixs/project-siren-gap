@@ -98,3 +98,14 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-08-03,S7,H-S7-3 f(W10) minus f(W10c) CIFAR-10,"0.31",0.11,0.48,682f760e526f4850
 2026-08-03,S7,P-S7-A probability f(W10c) < f(W10) on both datasets,"P=0.75",NA,NA,682f760e526f4850
 2026-08-03,S7,P-S7-B probability f(W10c) <= f(W4) on CIFAR-10,"P=0.55",NA,NA,682f760e526f4850
+2026-08-03,S8,H-S8-1 W1 accuracy at 300 steps reduced corpus pct,"88.0",82,93,ab228c6deb526eed
+2026-08-03,S8,H-S8-2 W1 minus W3 gap at 10000 steps pts,"75.0",60,85,ab228c6deb526eed
+2026-08-03,S8,H-S8-3 f(W5) at 300 steps reduced corpus,"0.60",0.45,0.72,ab228c6deb526eed
+2026-08-03,S8,H-S8-4 f(W5) at 10000 steps,"0.45",0.20,0.65,ab228c6deb526eed
+2026-08-03,S8,H-S8-5 f(W5) at 10000 minus at 300,"-0.15",-0.40,0.05,ab228c6deb526eed
+2026-08-03,S8,H-S8-6 median relative endpoint gradient norm at 10000 steps,"3e-4",3e-5,3e-3,ab228c6deb526eed
+2026-08-03,S8,H-S8-7 median relative parameter travel at 10000 steps,"0.35",0.20,0.60,ab228c6deb526eed
+2026-08-03,S8,H-S8-8 f(W10) at 10000 steps,"0.25",0.05,0.45,ab228c6deb526eed
+2026-08-03,S8,P-S8-A probability f(W5) at 10000 steps exceeds 0.30,"P=0.70",NA,NA,ab228c6deb526eed
+2026-08-03,S8,P-S8-B probability W1-W3 gap at 10000 steps is at least 50 pts,"P=0.80",NA,NA,ab228c6deb526eed
+2026-08-03,S8,P-S8-C probability gradient norm falls at least 10x from 300 to 10000,"P=0.60",NA,NA,ab228c6deb526eed
