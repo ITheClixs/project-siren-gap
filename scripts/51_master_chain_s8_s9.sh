@@ -49,16 +49,24 @@ step() { local label="$1"; shift; echo "--- $label $(date) ---"; "$@" || echo "S
           --out-name W12_shareddet
   fi
 
+  # Budgets in increasing order, and the decode re-run after 3000 as well as at the end. The
+  # 10000-step arm is ~8 h of the ~11 h total, while 1000 steps already drops the relative
+  # gradient norm 24x (5.5e-3 -> 2.25e-4) at 69 dB, so the convergence question is largely
+  # answered by 3000. Decoding early gives that answer without deviating from the registration,
+  # which still commits to all four budgets. 48_s8_sweep is idempotent and skips missing arms.
+  DONE=""
   for steps in 300 1000 3000 10000; do
     for protocol in P-shared-det P-random; do
       step "$protocol @ $steps steps" \
         $PY scripts/03_generate_inrbench.py --dataset mnist --protocol "$protocol" \
             --steps "$steps" --n-train 10000 --n-val 2000 --n-test 2000 --tag "s8s$steps"
     done
+    DONE="$DONE $steps"
+    if [ "$steps" = "3000" ] || [ "$steps" = "10000" ]; then
+      step "S8: decode budgets$DONE" \
+        $PY scripts/48_s8_sweep.py --dataset mnist --budgets $DONE
+    fi
   done
-
-  step "S8: decode the sweep" \
-    $PY scripts/48_s8_sweep.py --dataset mnist --budgets 300 1000 3000 10000
 
   echo "=== master chain complete $(date) ==="
 } >> "$LOG" 2>&1
