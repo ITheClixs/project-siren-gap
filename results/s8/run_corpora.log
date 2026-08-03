@@ -118,3 +118,19 @@ shard_012544: 256 fits in 6.7s  psnr_med=37.0dB  overall 39.9 fits/s
 shard_012800: 256 fits in 7.4s  psnr_med=37.3dB  overall 39.7 fits/s
 shard_013056: 256 fits in 7.5s  psnr_med=37.5dB  overall 39.6 fits/s
 shard_013312: 256 fits in 7.5s  psnr_med=37.4dB  overall 39.5 fits/s
+shard_013568: 256 fits in 7.2s  psnr_med=37.3dB  overall 39.4 fits/s
+shard_013824: 176 fits in 4.7s  psnr_med=37.4dB  overall 39.4 fits/s
+{
+  "n_inrs": 14000,
+  "psnr_median": 37.410133361816406,
+  "psnr_q05": 33.59891624450684,
+  "corr_psnr_label": -0.01264790215090571,
+  "wallclock_total_s": 355.4983730316162,
+  "grad_norm_median": 0.007381996139883995,
+  "grad_norm_q95": 0.012858614418655634
+}
+--- P-shared-det @ 1000 steps Mon Aug  3 20:26:42 +03 2026 ---
+shard_000000: 256 fits in 24.6s  psnr_med=69.5dB  overall 10.4 fits/s
+shard_000256: 256 fits in 54.5s  psnr_med=69.3dB  overall 6.5 fits/s
+shard_000512: 256 fits in 62.1s  psnr_med=69.5dB  overall 5.4 fits/s
+shard_000768: 256 fits in 24.8s  psnr_med=68.6dB  overall 6.2 fits/s
