@@ -904,3 +904,41 @@ more accurate and a stronger scientific claim.
 I first wrote that no D∞-aware reader was built. That is false: W11b is G-invariant and is the best
 template-free weight reader here. Its limitation is structural — it is invariant because its input
 already is — and the unbuilt object is a reader that quotients D∞ on the parameters directly.
+
+### S6 and S7 results (same day, 18:24)
+
+**S6, 3/6 — the worst-scoring arm in the program, and the most useful.** Δ_sym = 79.07 at B=0 and
+79.09 at B=10, flat in the winding bound, against an 80.4-point observed gap. Every treatment
+recovers more of the synthetic scatter than of the observed gap (c_align 0.865 vs 0.628, invariants
+0.724 vs 0.269, c_sort 0.573 vs 0.177). Applying the same intervention to `P-random` costs
++0.13 / −0.50 points: it is already group-saturated.
+
+The result I did not anticipate is the W11b triple. 84.81 on `P-shared-det`, 85.39 on the same
+corpus with the group randomized, 56.24 on `P-random`. The first two differ by 0.59 points, so this
+reader's invariance is measured rather than asserted; the third says it still loses 28.6 points
+between the corpora. That loss cannot be group scatter. It is also not lost signal, because
+function-query accuracy moves 5.4 points between the same corpora. So "not reducible to symmetry"
+is back — but now it rests on an intervention that removes the group, not on a canonicalizer's
+residual, which is what made the earlier version of the claim indefensible. What the residual *is*
+remains undecided, and an incomplete invariant cannot decide it.
+
+The three misses are one finding: sign flips cost 62.90 points on their own, permutation 14.74,
+windings ≤ 1. I registered the reverse (H-S6-3 put the permutation share at 64). P-S6-A resolves
+false at Brier 0.64, the worst call in the program. The positioning consequence is uncomfortable and
+is now in the paper: D∞ beats S_n four-to-one, which is the empirical case for the group — but
+inside D∞ it is σ, the generator Monomial-NFN already covers, that carries almost all of it, and the
+affine winding component this paper's theory turns on is worth about one accuracy point.
+
+**S7, 3/3, falsifier did not fire.** f(W10c) = 0.125 / 0.216 against W10's 0.269 / 0.534. So 0.318
+of the CIFAR-10 recovery is quotienting D∞ and 0.216 is the same nonlinearity without it. H-S7-3 —
+the quantity the review actually asked for — registered 0.31 [0.11, 0.48] and observed 0.318, which
+is the closest call the program has made.
+
+P-S7-B resolves false: W10c beats c_sort, 0.216 to 0.108. The registration fixed in advance that
+this would have to be stated wherever W10 and W4 are compared, so the paper now says that comparison
+is not a clean symmetry comparison and quotes W10-vs-W10c instead.
+
+**Program calibration:** 55/72 = 76%, 20 probability calls at mean Brier 0.223. S6 and S7 were
+registered on the same day under the same template and scored 3/6 and 3/3, which is the clearest
+evidence yet that arm-level coverage measures how well a mechanism was understood beforehand, not
+how carefully the registration was written.
