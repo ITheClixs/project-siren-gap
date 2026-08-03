@@ -91,3 +91,9 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-08-03,H-S7-3 f(W10) minus f(W10c) CIFAR-10,interval,0.31,0.11,0.48,0.318,HIT,0.008,,the quantity the external review asked for
 2026-08-03,P-S7-A probability f(W10c) < f(W10) on both datasets,probability,0.75,,,1,—,,0.0625,0.125<0.269 and 0.216<0.534
 2026-08-03,P-S7-B probability f(W10c) <= f(W4) on CIFAR-10,probability,0.55,,,0,—,,0.3025,"0.216 against c_sort's 0.108: the nonlinearity contributes on its own, so W10-vs-W4 is not a clean symmetry comparison"
+2026-08-03,H-S9-1 f(W12) MNIST P-random,interval,0.55,0.35,0.72,0.917,MISS,0.367,,"registered between W11b and c_align; it beat both"
+2026-08-03,H-S9-2 f(W12) minus f(W11a),interval,0.29,0.10,0.45,0.651,MISS,0.361,,same event as H-S9-1
+2026-08-03,H-S9-3 f(W12) minus f(W11b),interval,0.02,-0.15,0.18,0.390,MISS,0.370,,same event as H-S9-1
+2026-08-03,P-S9-A probability f(W12) exceeds f(W11a),probability,0.85,,,1,—,,0.0225,0.917 vs 0.265
+2026-08-03,P-S9-B probability f(W12) exceeds f(W11b),probability,0.45,,,1,—,,0.3025,0.917 vs 0.526
+2026-08-03,P-S9-C probability f(W12) exceeds f(W5),probability,0.25,,,1,—,,0.5625,"0.917 vs 0.628; per S9 section 4 the paper's practical claim is withdrawn"
