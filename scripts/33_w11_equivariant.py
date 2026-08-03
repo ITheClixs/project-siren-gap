@@ -147,15 +147,21 @@ def main() -> None:
     ap.add_argument("--max-epochs", type=int, default=MAX_EPOCHS)
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--root", default="data/inrbench")
+    ap.add_argument("--protocol", default="P-random",
+                    help="S6 arm (iii) needs the unscattered P-shared-det baseline for H-S6-5")
+    ap.add_argument("--out-name", default="W11",
+                    help="cell name under results/ladder/<dataset>; never overwrite W11.json "
+                         "with a non-default protocol")
     args = ap.parse_args()
 
     cache = CorpusCache(Path(args.root) / args.dataset, args.dataset)
-    by_split, labels = cache.split_params("P-random")
+    by_split, labels = cache.split_params(args.protocol)
     ladder = ROOT / "results" / "ladder" / args.dataset
     anchors = {r: json.loads((ladder / f"{r}.json").read_text())["acc"] for r in ("W1", "W3")}
     w1, w3 = np.array(anchors["W1"]), np.array(anchors["W3"])
 
     out = {"dataset": args.dataset, "prereg": "docs/prereg/S1-w11.md",
+           "protocol": args.protocol,
            "W1": float(w1.mean()), "W3": float(w3.mean()), "variants": {}}
 
     for variant in args.variants:
@@ -185,7 +191,10 @@ def main() -> None:
               f"params={params_n:,}  ({r['wallclock_s']:.0f}s)", flush=True)
         del feats
 
-    path = ladder / "W11.json"
+    if args.protocol != "P-random" and args.out_name == "W11":
+        raise SystemExit("refusing to overwrite W11.json with a non-default protocol; "
+                         "pass --out-name")
+    path = ladder / f"{args.out_name}.json"
     path.write_text(json.dumps(out, indent=2))
     print(f"\nwrote {path}")
 

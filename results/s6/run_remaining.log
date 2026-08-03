@@ -12,3 +12,4 @@ baseline (no scatter): 94.36
   B=  3 c_sort        61.12
   B=  3 c_align       83.52
   B=  3 invariants    72.26
+  B=  3 W11a          65.26
