@@ -38,6 +38,17 @@ step() { local label="$1"; shift; echo "--- $label $(date) ---"; "$@" || echo "S
       $PY scripts/47_w12_phasor.py --dataset mnist --ungraded
   fi
 
+  # The S6 triple that licensed "the gap is not reducible to symmetry" was measured with W11b.
+  # W12 recovers far more of the same gap while being equally invariant, so the shared-init leg
+  # of that triple has to be re-measured with the better reader before the claim can stand.
+  if [ -f results/ladder/mnist/W12_shareddet.json ]; then
+    echo "--- W12 on P-shared-det already present, skipping $(date) ---"
+  else
+    step "W12 on unscattered P-shared-det (re-measures the S6 triple)" \
+      $PY scripts/47_w12_phasor.py --dataset mnist --protocol P-shared-det \
+          --out-name W12_shareddet
+  fi
+
   for steps in 300 1000 3000 10000; do
     for protocol in P-shared-det P-random; do
       step "$protocol @ $steps steps" \
