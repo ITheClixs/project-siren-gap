@@ -1112,8 +1112,11 @@ per-neuron even scalars and the sign-cancelling matrices $A, B, C$ --- to an equ
 \emph{learned} pooling in place of sorted eigenvalue spectra.
 
 \textbf{W12} is the reader neither of those is: exactly $G$-invariant on the \emph{raw} parameters.
-Under $g_{d,j}$ the phasor coordinates of the bias transform with $j$ only through its
-\emph{parity} --- $\cos b \mapsto (-1)^j \cos b$, $\sin b \mapsto (-1)^{d+j}\sin b$ --- so replacing
+The route is not ours --- an external review of this paper proposed replacing the raw bias by its
+phasor, on the grounds that this removes the integer $2\pi$ translation and leaves sign and
+reflection to be carried by finite-dimensional linear maps. It is exactly right, and what follows is
+the two-layer realization. Under $g_{d,j}$ the phasor coordinates of the bias transform with $j$
+only through its \emph{parity} --- $\cos b \mapsto (-1)^j \cos b$, $\sin b \mapsto (-1)^{d+j}\sin b$ --- so replacing
 $b$ by $(\cos b, \sin b)$ turns the infinite group $\Z\rtimes\Z_2$ into a finite $\Z_2\times\Z_2$
 acting by signs. Writing a \emph{character} $\chi=(a,c)$ for a feature picking up $(-1)^{ad+cj}$,
 the raw parameters sort into four blocks,
