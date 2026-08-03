@@ -118,23 +118,38 @@ def apply_scale(feats: dict, stats: dict) -> dict:
 
 
 class GradedLinear(nn.Module):
-    """One learned linear map per character. Characters never mix, so the grading survives."""
+    """One learned linear map per character. Characters never mix, so the grading survives.
 
-    def __init__(self, dims_in: dict[Character, int], width: int) -> None:
+    With ``graded=False`` the blocks are concatenated and mixed by a single linear map. That is
+    the matched control: identical tensor shapes and identical computational skeleton, with the
+    grading -- and therefore the invariance -- removed. See `PhasorGradedReader`.
+    """
+
+    def __init__(self, dims_in: dict[Character, int], width: int, graded: bool = True) -> None:
         super().__init__()
-        self.lin = nn.ModuleDict(
-            {str(c): nn.Linear(dims_in[c], width, bias=(c == (0, 0))) for c in CHARACTERS}
-        )
+        self.graded = graded
+        if graded:
+            self.lin = nn.ModuleDict(
+                {str(c): nn.Linear(dims_in[c], width, bias=(c == (0, 0))) for c in CHARACTERS}
+            )
+        else:
+            self.mixed = nn.Linear(sum(dims_in[c] for c in CHARACTERS), 4 * width)
+            self.width = width
 
     def forward(self, x: dict[Character, Tensor]) -> dict[Character, Tensor]:
-        return {c: self.lin[str(c)](x[c]) for c in CHARACTERS}
+        if self.graded:
+            return {c: self.lin[str(c)](x[c]) for c in CHARACTERS}
+        y = self.mixed(torch.cat([x[c] for c in CHARACTERS], dim=-1))
+        parts = y.split(self.width, dim=-1)
+        return dict(zip(CHARACTERS, parts))
 
 
 class GradedBilinear(nn.Module):
     """Products add characters. This is how a (1,0) and a (0,1) reach (1,1) and become passable."""
 
-    def __init__(self, width: int) -> None:
+    def __init__(self, width: int, graded: bool = True) -> None:
         super().__init__()
+        self.graded = graded
         pairs = [(x, y) for i, x in enumerate(CHARACTERS) for y in CHARACTERS[i:]]
         self.pairs = pairs
         self.mix = nn.ModuleDict({f"{x}|{y}": nn.Linear(width, width, bias=False)
@@ -143,16 +158,28 @@ class GradedBilinear(nn.Module):
     def forward(self, x: dict[Character, Tensor]) -> dict[Character, Tensor]:
         out = {c: x[c] for c in CHARACTERS}
         for cx, cy in self.pairs:
-            out[_add(cx, cy)] = out[_add(cx, cy)] + self.mix[f"{cx}|{cy}"](x[cx] * x[cy])
+            prod = self.mix[f"{cx}|{cy}"](x[cx] * x[cy])
+            # graded: a product lands where its characters sum. ungraded: anywhere.
+            target = _add(cx, cy) if self.graded else cx
+            out[target] = out[target] + prod
         return out
 
 
 class GradedAct(nn.Module):
-    """GELU on the neutral block; an *odd* nonlinearity elsewhere, which preserves the sign."""
+    """GELU on the neutral block; an *odd* nonlinearity elsewhere, which preserves the sign.
+
+    Ungraded, every block gets GELU, which is where the sign covariance dies.
+    """
+
+    def __init__(self, graded: bool = True) -> None:
+        super().__init__()
+        self.graded = graded
 
     def forward(self, x: dict[Character, Tensor]) -> dict[Character, Tensor]:
-        return {c: (torch.nn.functional.gelu(x[c]) if c == (0, 0) else torch.tanh(x[c]))
-                for c in CHARACTERS}
+        gelu = torch.nn.functional.gelu
+        if not self.graded:
+            return {c: gelu(x[c]) for c in CHARACTERS}
+        return {c: (gelu(x[c]) if c == (0, 0) else torch.tanh(x[c])) for c in CHARACTERS}
 
 
 class GradedMessage(nn.Module):
@@ -161,8 +188,9 @@ class GradedMessage(nn.Module):
     Only two channels per direction are legitimate; see the module docstring.
     """
 
-    def __init__(self, width: int) -> None:
+    def __init__(self, width: int, graded: bool = True) -> None:
         super().__init__()
+        self.graded = graded
         self.up_odd = nn.Linear(width, width, bias=False)     # (1,1) via E   -> l2 (1,0)
         self.up_even = nn.Linear(width, width, bias=False)    # (0,0) via E^2 -> l2 (0,0)
         self.down_odd = nn.Linear(width, width, bias=False)   # (1,0) via E   -> l1 (1,1)
@@ -173,9 +201,14 @@ class GradedMessage(nn.Module):
                 e: Tensor) -> tuple[dict[Character, Tensor], dict[Character, Tensor]]:
         n, p = l1[(0, 0)].shape[1], l2[(0, 0)].shape[1]
         e2 = e * e
-        up_odd = torch.einsum("bpn,bnd->bpd", e, self.up_odd(l1[(1, 1)])) / n
+        # graded: only the two character-legal source blocks may travel each way. ungraded:
+        # the same four messages, but read off the *neutral* block regardless of character,
+        # which is the one edit that breaks invariance while leaving the skeleton alone.
+        src_up_odd = l1[(1, 1)] if self.graded else l1[(0, 0)]
+        src_down_odd = l2[(1, 0)] if self.graded else l2[(0, 0)]
+        up_odd = torch.einsum("bpn,bnd->bpd", e, self.up_odd(src_up_odd)) / n
         up_even = torch.einsum("bpn,bnd->bpd", e2, self.up_even(l1[(0, 0)])) / n
-        down_odd = torch.einsum("bpn,bpd->bnd", e, self.down_odd(l2[(1, 0)])) / p
+        down_odd = torch.einsum("bpn,bpd->bnd", e, self.down_odd(src_down_odd)) / p
         down_even = torch.einsum("bpn,bpd->bnd", e2, self.down_even(l2[(0, 0)])) / p
 
         s = self.scale
@@ -192,29 +225,35 @@ class PhasorGradedReader(nn.Module):
     """Exactly $G$-invariant reader on raw parameters (rung W12)."""
 
     def __init__(self, dims_l1: dict[Character, int], dims_l2: dict[Character, int],
-                 width: int = 256, n_classes: int = 10, rounds: int = 2) -> None:
+                 width: int = 256, n_classes: int = 10, rounds: int = 2,
+                 graded: bool = True) -> None:
         super().__init__()
-        self.embed_l1 = GradedLinear(dims_l1, width)
-        self.embed_l2 = GradedLinear(dims_l2, width)
-        self.bilinear = nn.ModuleList(GradedBilinear(width) for _ in range(rounds))
-        self.messages = nn.ModuleList(GradedMessage(width) for _ in range(rounds))
-        self.mix_l1 = nn.ModuleList(GradedLinear({c: width for c in CHARACTERS}, width)
+        self.graded = graded
+        self.embed_l1 = GradedLinear(dims_l1, width, graded)
+        self.embed_l2 = GradedLinear(dims_l2, width, graded)
+        self.bilinear = nn.ModuleList(GradedBilinear(width, graded) for _ in range(rounds))
+        self.messages = nn.ModuleList(GradedMessage(width, graded) for _ in range(rounds))
+        self.mix_l1 = nn.ModuleList(GradedLinear({c: width for c in CHARACTERS}, width, graded)
                                     for _ in range(rounds))
-        self.mix_l2 = nn.ModuleList(GradedLinear({c: width for c in CHARACTERS}, width)
+        self.mix_l2 = nn.ModuleList(GradedLinear({c: width for c in CHARACTERS}, width, graded)
                                     for _ in range(rounds))
-        self.act = GradedAct()
+        self.act = GradedAct(graded)
+        # graded: only the neutral block reaches the head, which is where invariance is cashed
+        # in. ungraded: all four, which is the other half of the control.
+        n_pool = 4 if graded else 16
         self.head = nn.Sequential(
-            nn.Linear(4 * width, 2 * width), nn.GELU(), nn.Dropout(0.1),
+            nn.Linear(n_pool * width, 2 * width), nn.GELU(), nn.Dropout(0.1),
             nn.Linear(2 * width, width), nn.GELU(),
             nn.Linear(width, n_classes),
         )
 
     @classmethod
     def from_features(cls, feats: dict, width: int = 256, n_classes: int = 10,
-                      rounds: int = 2) -> "PhasorGradedReader":
+                      rounds: int = 2, graded: bool = True) -> "PhasorGradedReader":
         dims_l1 = {c: feats["l1"][c].shape[2] for c in CHARACTERS}
         dims_l2 = {c: feats["l2"][c].shape[2] for c in CHARACTERS}
-        return cls(dims_l1, dims_l2, width=width, n_classes=n_classes, rounds=rounds)
+        return cls(dims_l1, dims_l2, width=width, n_classes=n_classes, rounds=rounds,
+                   graded=graded)
 
     def forward(self, feats: dict) -> Tensor:
         l1, l2, e = self.embed_l1(feats["l1"]), self.embed_l2(feats["l2"]), feats["edge"]
@@ -222,6 +261,10 @@ class PhasorGradedReader(nn.Module):
             l1, l2 = msg(l1, l2, e)
             l1, l2 = self.act(m1(bil(l1))), self.act(m2(bil(l2)))
         # invariance is cashed in here: only the neutral block reaches the head
-        pooled = torch.cat([l1[(0, 0)].mean(1), l1[(0, 0)].amax(1),
-                            l2[(0, 0)].mean(1), l2[(0, 0)].amax(1)], dim=1)
+        # order kept as [l1 mean, l1 max, l2 mean, l2 max] so the graded path is bit-identical
+        # to the version the confirmatory run was launched with
+        blocks = [(0, 0)] if self.graded else list(CHARACTERS)
+        pooled = torch.cat(
+            [f(t[c]) for t in (l1, l2) for c in blocks for f in (lambda z: z.mean(1),
+                                                                 lambda z: z.amax(1))], dim=1)
         return self.head(pooled)

@@ -198,3 +198,6 @@ shard_013824: 176 fits in 16.7s  psnr_med=69.1dB  overall 9.7 fits/s
 shard_000000: 256 fits in 25.8s  psnr_med=65.0dB  overall 9.9 fits/s
 shard_000256: 256 fits in 37.9s  psnr_med=63.0dB  overall 8.0 fits/s
 shard_000512: 256 fits in 74.8s  psnr_med=64.6dB  overall 5.5 fits/s
+shard_000768: 256 fits in 74.6s  psnr_med=64.6dB  overall 4.8 fits/s
+shard_001024: 256 fits in 70.1s  psnr_med=64.1dB  overall 4.5 fits/s
+shard_001280: 256 fits in 71.5s  psnr_med=63.0dB  overall 4.3 fits/s

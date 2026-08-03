@@ -49,11 +49,16 @@ LR = 1e-3
 DECODER_PARAMS = 1_873_162  # the frozen matched MLP
 
 
-def matched_width(feats: dict, lo: int = 64, hi: int = 320) -> int:
-    """The capacity rule: minimise |params - DECODER_PARAMS| over widths."""
+def matched_width(feats: dict, graded: bool = True, lo: int = 32, hi: int = 320) -> int:
+    """The capacity rule: minimise |params - DECODER_PARAMS| over widths.
+
+    Applied separately to the graded reader and to its ungraded control, so the two are matched
+    in capacity rather than in width -- the control mixes blocks and so needs a smaller width to
+    reach the same parameter count.
+    """
     best, best_gap = lo, float("inf")
     for w in range(lo, hi + 1):
-        n = count_parameters(PhasorGradedReader.from_features(feats, width=w))
+        n = count_parameters(PhasorGradedReader.from_features(feats, width=w, graded=graded))
         if abs(n - DECODER_PARAMS) < best_gap:
             best, best_gap = w, abs(n - DECODER_PARAMS)
     return best
@@ -106,9 +111,9 @@ def accuracy(model: nn.Module, feats: dict, y: torch.Tensor, device: str,
 
 
 def train_one(fs: dict, labels: dict, seed: int, device: str, width: int,
-              max_epochs: int = MAX_EPOCHS) -> dict:
+              max_epochs: int = MAX_EPOCHS, graded: bool = True) -> dict:
     torch.manual_seed(seed)
-    model = PhasorGradedReader.from_features(fs["train"], width=width).to(device)
+    model = PhasorGradedReader.from_features(fs["train"], width=width, graded=graded).to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=LR)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=max_epochs)
     loss_fn = nn.CrossEntropyLoss()
@@ -150,7 +155,9 @@ def main() -> None:
     ap.add_argument("--max-epochs", type=int, default=MAX_EPOCHS)
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--root", default="data/inrbench")
-    ap.add_argument("--out-name", default="W12")
+    ap.add_argument("--out-name", default="")
+    ap.add_argument("--ungraded", action="store_true",
+                    help="the matched control: same skeleton and capacity, grading removed")
     args = ap.parse_args()
 
     cache = CorpusCache(Path(args.root) / args.dataset, args.dataset)
@@ -165,16 +172,17 @@ def main() -> None:
     fs = {s: apply_scale(feats[s], stats) for s in SPLITS}
     del feats
 
-    width = args.width or matched_width(fs["train"])
+    graded = not args.ungraded
+    width = args.width or matched_width(fs["train"], graded=graded)
     print(f"width {width} (capacity rule against the decoder's {DECODER_PARAMS:,})", flush=True)
 
     accs, epochs, params_n = [], [], 0
     for s in range(args.seeds):
-        r = train_one(fs, labels, s, args.device, width, args.max_epochs)
+        r = train_one(fs, labels, s, args.device, width, args.max_epochs, graded=graded)
         accs.append(r["test_acc"])
         epochs.append(r["epochs_ran"])
         params_n = r["params"]
-        print(f"  W12 seed {s}: test {r['test_acc']:.2f} (val {r['val_acc']:.2f}, "
+        print(f"  {'W12' if graded else 'W12u'} seed {s}: test {r['test_acc']:.2f} (val {r['val_acc']:.2f}, "
               f"{r['epochs_ran']} ep)", flush=True)
 
     a = np.array(accs)
@@ -183,15 +191,16 @@ def main() -> None:
     out = {
         "dataset": args.dataset, "protocol": args.protocol, "prereg": "docs/prereg/S9.md",
         "W1": float(w1.mean()), "W3": float(w3.mean()),
-        "width": width, "reader_params": params_n,
+        "width": width, "reader_params": params_n, "graded": graded,
         "acc": accs, "mean": float(a.mean()), "ci95_bootstrap": bootstrap_ci_mean(a),
         "recovery_fraction": float(f.mean()), "f_ci95": bootstrap_ci_mean(f),
         "epochs_ran": epochs, "wallclock_s": time.time() - t0,
     }
-    print(f"W12: {out['mean']:.2f}  f={out['recovery_fraction']:.4f}  "
+    print(f"{name}: {out['mean']:.2f}  f={out['recovery_fraction']:.4f}  "
           f"params={params_n:,}  ({out['wallclock_s']:.0f}s)", flush=True)
 
-    path = ladder / f"{args.out_name}.json"
+    name = args.out_name or ("W12" if graded else "W12u")
+    path = ladder / f"{name}.json"
     path.write_text(json.dumps(out, indent=2))
     print(f"\nwrote {path}")
 

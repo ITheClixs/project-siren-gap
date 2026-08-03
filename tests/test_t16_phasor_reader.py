@@ -128,3 +128,34 @@ def test_feature_scale_is_itself_group_invariant() -> None:
         a = model(apply_scale(base, s1))
         b = model(apply_scale(moved, s1))
     assert _rel(a, b) < TOL
+
+
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_ungraded_control_is_not_invariant(seed: int) -> None:
+    """The matched control for W12: same skeleton, same shapes, grading removed.
+
+    W12's gain must not be attributed to the grading unless a reader with the same
+    architecture and no grading does worse -- the same argument S7 makes for W10. This asserts
+    the control is genuinely broken, by a margin far above the tolerance W12 passes at.
+    """
+    params = _params()
+    torch.manual_seed(0)
+    feats = phasor_features(params)
+    model = PhasorGradedReader.from_features(feats, width=64, graded=False)
+    model.eval()
+    gen = torch.Generator().manual_seed(seed)
+    g = random_element(params, gen, max_windings=3)
+    with torch.no_grad():
+        moved = _rel(model(feats), model(phasor_features(apply(g, params))))
+    assert moved > 1e-2, f"the ungraded control is not broken enough to be a control: {moved:.2e}"
+
+
+def test_graded_and_ungraded_have_the_same_skeleton() -> None:
+    """Same block shapes at every stage, so the control differs in grading and not in shape."""
+    params = _params()
+    feats = phasor_features(params)
+    a = PhasorGradedReader.from_features(feats, width=64, graded=True)
+    b = PhasorGradedReader.from_features(feats, width=64, graded=False)
+    assert len(a.messages) == len(b.messages) and len(a.bilinear) == len(b.bilinear)
+    with torch.no_grad():
+        assert a(feats).shape == b(feats).shape
