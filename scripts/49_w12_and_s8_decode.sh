@@ -21,8 +21,15 @@ busy() {
   echo "=== waiting for the S8 corpora $(date) ==="
   while busy; do sleep 60; done
 
-  echo "--- W12: phasor-graded reader, MNIST P-random $(date) ---"
-  $PY scripts/47_w12_phasor.py --dataset mnist || echo "W12 FAILED"
+  # W12 may have been run already, alongside the corpora rather than behind them: the
+  # fitting sweep turned out to be ~11.5 h and W12's outcome is the one that can force a
+  # headline change, so it is worth having early. Never overwrite a completed cell.
+  if [ -f results/ladder/mnist/W12.json ]; then
+    echo "--- W12 already present, skipping $(date) ---"
+  else
+    echo "--- W12: phasor-graded reader, MNIST P-random $(date) ---"
+    $PY scripts/47_w12_phasor.py --dataset mnist || echo "W12 FAILED"
+  fi
 
   echo "--- S8: decode the sweep $(date) ---"
   $PY scripts/48_s8_sweep.py --dataset mnist --budgets 300 1000 3000 10000 || echo "S8 DECODE FAILED"
