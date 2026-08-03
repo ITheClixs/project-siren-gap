@@ -283,7 +283,7 @@ $U \subseteq \R^m$. Then $n = n'$ and $\theta' = g\theta$ for a \emph{unique}
 $g \in \Dinf \wr S_n$.
 \end{theorem}
 
-\begin{proof}[Proof sketch]
+\begin{proof}[Proof sketch; App.~\ref{app:po2} gives it in full]
 $f_\theta - f_{\theta'}$ is entire and vanishes on an open set, hence everywhere. As tempered
 distributions,
 \begin{equation}
@@ -414,7 +414,11 @@ sorted eigenvalue spectra are therefore invariant under the full product group.
 
 Per-neuron even scalars are emitted as order statistics under a shared invariant sort key, and
 layer~2 uses \eqref{eq:phi} contracted over the layer-1 index. The encoding has $D = 320$ for our
-grayscale corpora and $D = 384$ for CIFAR-10 (three output channels). We verify invariance by
+grayscale corpora and $D = 384$ for CIFAR-10 (three output channels).
+Appendix~\ref{app:w10} specifies the emitted vector coordinate by coordinate, proves invariance of
+each coordinate, and states what is not claimed --- the family is invariant but not shown to
+separate orbits, the spectra are $1$-Lipschitz by Weyl's inequality while the shared-key order
+statistics are discontinuous where the key ties. We verify invariance by
 applying random group elements with windings $|j|\le3$ and non-trivial permutations: the relative
 residual move is $\approx 3\times10^{-7}$, i.e.\ fp32 round-off rather than tolerance slack, with
 controls for non-constancy and for wrong depth. Whether a finite invariant family stays separating
