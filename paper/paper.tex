@@ -77,10 +77,10 @@
 \begin{minipage}{0.86\textwidth}
 \begin{center}\textbf{Abstract}\end{center}
 \small
-Classifiers that read the raw weights of independently fitted implicit neural representations
-(INRs) perform near chance, while the same classifier reading weights fitted from a \emph{shared}
-initialization performs almost as well as it does on pixels. This gap is usually attributed to
-parameter symmetry without direct measurement.
+A classifier reading the raw weights of independently fitted implicit neural representations (INRs)
+performs near chance; the same classifier reading weights fitted from a \emph{shared} initialization
+nearly matches a pixel model. The gap is usually attributed to parameter symmetry, without
+measurement.
 
 Prior work uses two function-preserving transformations of sine networks --- neuron negation and
 integer-$\pi$ bias shifts --- as weight-space augmentations \citep{shamsian2024augmentations}. We
@@ -89,13 +89,12 @@ $\Dinf$ whose phase component is \emph{affine} and therefore outside the monomia
 previous classifications cover, and a layer carries $\Dinf \wr S_n$. For generic one-hidden-layer
 sine networks we prove this group exhausts functional equivalence.
 
-Exact orbit-valued reframing recovers $63\%$, $66\%$ and $32\%$ of the gap. That fraction is
-\emph{algorithm-relative}, not a causal share; the causal quantity, measured by randomizing the
-group while holding each network and its function fixed, costs $79$ of the $80$ points --- and
-within the group, sign flips carry four fifths of it while integer phase shifts carry about one
-point. Acting on the characterization, we build a reader that quotients the group on the \emph{raw}
-parameters: bias phasors reduce the infinite winding to a parity, leaving a finite grading the
-network preserves layer by layer. It recovers $\mathbf{92\%}$ of the gap at matched capacity against
+Exact orbit-valued reframing recovers $63\%$, $66\%$ and $32\%$ of the gap --- an
+\emph{algorithm-relative} fraction, not a causal share. The causal quantity, measured by randomizing
+the group while holding each network and its function fixed, costs $79$ of the $80$ points, four
+fifths of it from sign flips. Acting on the characterization, we build a reader that quotients the
+group on the \emph{raw} parameters: bias phasors reduce the infinite winding to a parity, leaving a
+finite grading the network preserves layer by layer. It recovers $\mathbf{92\%}$ of the gap at matched capacity against
 $63\%$ for the best reframing and $27\%$ for a permutation-equivariant reader, reversing a claim an
 earlier version of this paper made and a pre-registration required us to withdraw. A matched control
 locates the effect: removing the grading but keeping the coordinates still gives $86\%$, so it is
