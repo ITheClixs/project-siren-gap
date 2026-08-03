@@ -54,6 +54,8 @@ def main() -> None:
     ap.add_argument("--windings", nargs="+", type=int, default=[3, 10, 40])
     ap.add_argument("--width", type=int, default=186)
     ap.add_argument("--root", default="data/inrbench")
+    ap.add_argument("--ungraded", action="store_true",
+                    help="audit the matched control instead: how far from invariant is it really?")
     args = ap.parse_args()
 
     cache = CorpusCache(Path(args.root) / args.dataset, args.dataset)
@@ -65,7 +67,8 @@ def main() -> None:
     stats = feature_scale(base)
 
     torch.manual_seed(0)
-    model = PhasorGradedReader.from_features(base, width=args.width)
+    model = PhasorGradedReader.from_features(base, width=args.width,
+                                             graded=not args.ungraded)
     model.eval()
     with torch.no_grad():
         logits = model(apply_scale(base, stats))
@@ -73,6 +76,7 @@ def main() -> None:
     report: dict = {
         "dataset": args.dataset, "protocol": args.protocol,
         "n_inrs": int(params.batch), "width": args.width, "tolerance": TOL,
+        "graded": not args.ungraded,
         "note": "logit move under group elements, on fitted networks; a random reader, since "
                 "invariance is a property of the architecture and not of trained weights",
         "by_winding": {},
@@ -111,9 +115,13 @@ def main() -> None:
     )
     out_dir = ROOT / "results" / "audits"
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"w12_invariance_{args.dataset}.json"
+    tag = "w12u" if args.ungraded else "w12"
+    path = out_dir / f"{tag}_invariance_{args.dataset}.json"
     path.write_text(json.dumps(report, indent=2))
     print(f"\nwrote {path}")
+    if args.ungraded:
+        # the control is *supposed* to fail; the number is the point, not the verdict
+        return
     if not report["all_within_tolerance"]:
         raise SystemExit("W12 is not invariant on production INRs -- the rung is void (S9 section 4)")
 
