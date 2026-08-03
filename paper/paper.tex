@@ -93,9 +93,12 @@ invariants at depth two by coupling through the second-layer Gram matrix.
 Empirically, across three datasets, exact orbit-valued reframing recovers $63\%$, $66\%$ and
 $32\%$ of the shared-versus-random accuracy gap. We show this fraction is \emph{algorithm-relative}
 rather than a causal share, and measure the causal quantity separately by randomizing the group
-while holding each fitted network and its function fixed. Finally, classifying an INR by querying
-it at $64$ learned coordinates outperforms every weight-space pipeline we tested, at lower
-inference cost under an analytic FLOP model.
+while holding each fitted network and its realized function fixed. That intervention costs $79$
+accuracy points against an $80$-point observed gap; within the group, per-neuron sign flips account
+for four fifths of the damage and integer phase shifts for about one point, so the affine component
+is necessary for the identifiability result and minor as a source of scatter. Finally, classifying
+an INR by querying it at $64$ learned coordinates outperforms every weight-space pipeline we tested,
+at lower inference cost under an analytic FLOP model.
 \end{minipage}
 \end{center}
 \vskip 1.2em
