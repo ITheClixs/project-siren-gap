@@ -44,6 +44,7 @@ from sirengap.eval.flops import (  # noqa: E402
     weight_calign,
     weight_csort,
     weight_equivariant_reader,
+    weight_phasor_reader,
     weight_invariants,
     weight_raw,
 )
@@ -147,6 +148,12 @@ def weight_points(dataset: str, arch: Arch) -> list[dict]:
                                               invariant_features=False, n_global=0)))
         pts.append(("W11b equivariant (invariant)", v["W11b"]["mean"],
                     weight_equivariant_reader(arch, v["W11b"]["width"])))
+
+    w12_path = ROOT / "results" / "ladder" / dataset / "W12.json"
+    if w12_path.exists():
+        w12 = json.loads(w12_path.read_text())
+        pts.append(("W12 phasor-graded", w12["mean"],
+                    weight_phasor_reader(arch, w12["width"])))
     return [
         {"name": n, "access": "weight", "acc": a, "flops": c["per_inr"],
          "amortized": c.get("amortized", 0), "preprocess": c.get("preprocess", 0)}

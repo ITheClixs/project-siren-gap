@@ -98,3 +98,24 @@ def test_t14_frozen_probes_stay_put() -> None:
     p = random_params(2, 2, (32, 32), 1, seed=9)
     reader(p).sum().backward()
     assert torch.equal(reader.probes.detach(), before)
+
+
+def test_phasor_reader_flops_are_ordered_sensibly() -> None:
+    """The grading is not free. W12 drops the edge MLP but pays for 18 d x d per-node maps a
+    round against the graph reader's two, so it prices *above* it at equal width -- and both
+    price far above reading raw weights into an MLP. The accounting must show that, since the
+    S5 comparison turns on it."""
+    from sirengap.eval.flops import (
+        Arch,
+        weight_equivariant_reader,
+        weight_phasor_reader,
+        weight_raw,
+    )
+
+    arch = Arch(in_dim=2, width=32, layers=2, out_dim=1)
+    raw = weight_raw(arch)["per_inr"]
+    phasor = weight_phasor_reader(arch, 186)["per_inr"]
+    graph = weight_equivariant_reader(arch, 186)["per_inr"]
+    assert raw < graph < phasor, f"raw {raw}, graph {graph}, phasor {phasor}"
+    for cost in (weight_phasor_reader(arch, w) for w in (64, 128, 256)):
+        assert cost["per_inr"] > 0 and cost["reader"] > cost["preprocess"]

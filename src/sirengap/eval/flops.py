@@ -149,6 +149,41 @@ def weight_equivariant_reader(
     return {"preprocess": pre, "reader": total - pre, "per_inr": total, "amortized": 0}
 
 
+def weight_phasor_reader(
+    arch: Arch, width: int, rounds: int = 2, n_classes: int = 10,
+) -> dict[str, int]:
+    """W12: the phasor-graded reader on raw parameters.
+
+    It has no edge MLP over the n^2 pairs -- the coupling is the weight matrix itself, so a
+    message is one dense contraction against a [p, n] matrix -- but it is nonetheless the most
+    expensive reader here, and by a wide margin. The grading costs: each round applies 10
+    bilinear mixes and 8 graded linear maps, all d x d over every node, against the graph
+    reader's two. At width 186 that is ~163 MFLOP/INR against ~54, and the accounting says so
+    rather than flattering the construction.
+
+    Costs, per INR:
+
+      features    the phasor lift, the two Gram diagonals and E^2 -- O(w^2) and O(w * in_dim)
+      embed       four graded linear maps per layer
+      per round   4 message contractions (2 x [p,n] x [n,d]), 10 bilinear mixes, 8 graded
+                  linear maps, on 2w nodes
+      head        4d -> 2d -> d -> classes
+    """
+    w, d, m, c = arch.width, width, arch.in_dim, arch.out_dim
+    n_blocks = len(("00", "10", "01", "11"))
+
+    feats = MAC * w * w + MAC * w * m + SIN * 4 * w * 2  # E^2 and its two contractions, phasors
+    embed = MAC * 2 * w * (m + 4 + c) * d                # four blocks per layer, small fan-in
+    per_round = (
+        4 * MAC * w * w * d          # the four message contractions against E and E^2
+        + 10 * MAC * 2 * w * d * d   # graded bilinear: 10 unordered character pairs
+        + 2 * n_blocks * MAC * 2 * w * d * d  # graded linear, both layers
+    )
+    head = mlp_forward([4 * d, 2 * d, d, n_classes])
+    total = feats + embed + rounds * per_round + head
+    return {"preprocess": feats, "reader": total - feats, "per_inr": total, "amortized": 0}
+
+
 def summarize(name: str, cost: dict[str, int], acc: float | None = None) -> str:
     per = cost["per_inr"]
     amort = cost.get("amortized", 0)
