@@ -98,9 +98,9 @@ def ladder_table(available) -> str:
         r"\eqref{eq:f}, computed seed-paired for the registered rungs and as a ratio of means for "
         rf"the two unregistered ones (W7-1/8, W8). Every bootstrap 95\% CI on $f$ is narrower than "
         rf"$\pm{hw:.3f}$. Rungs marked $\dagger$ act on the random-initialization corpus. W4 and W5 "
-        r"are orbit-valued \emph{reframings}; W10 is an invariant \emph{encoding}, whose gain is "
-        r"not separable from nonlinear feature engineering (\S\ref{sec:bounds}) and which is "
-        r"therefore not comparable to the reframings as a symmetry measurement.}",
+        r"are orbit-valued \emph{reframings}; W10 is an invariant \emph{encoding}, separated from "
+        r"nonlinear feature engineering only by the matched control of \S\ref{sec:control}, and "
+        r"therefore not directly comparable to the reframings as a symmetry measurement.}",
         r"\label{tab:ladder}",
         rf"\begin{{tabular}}{{{colspec}}}",
         r"\toprule",
@@ -136,7 +136,8 @@ def gap_table(available) -> str:
         r"shared-versus-random accuracy gap W1$-$W3 shrinks with the task ceiling. The rung "
         r"reported is the best orbit-valued \emph{reframing} (W4 or W5). The invariant "
         r"\emph{encodings} W10 and W11b are excluded here and reported separately, because their "
-        r"gain is not separable from nonlinear feature engineering (\S\ref{sec:bounds}). $f$ is "
+        r"gain is separated from nonlinear feature engineering only by the matched control of "
+        r"\S\ref{sec:control}. $f$ is "
         r"algorithm-relative and the last column is what this reframing did not recover, not a "
         r"measurement of non-symmetry.}",
         r"\label{tab:gap}",

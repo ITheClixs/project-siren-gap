@@ -700,12 +700,12 @@ audit of \S\ref{sec:bench} shows the corpora pass close to the stratum where the
 tie --- but on the sampled orbits they are exact canonicalizers, not heuristics.
 
 \paragraph{Reframings and encodings are different objects.} W4 and W5 are \emph{reframings}: they
-return another parameter vector in the same orbit, computing no new features. W10 and W11b are
-\emph{invariant encodings}: they return features, and those features are nonlinear in the
-parameters ($w \otimes w$, $(\sin b)u$, eigenvalue spectra). An encoding's gain is therefore not
-separable, without a matched non-invariant control, from ordinary nonlinear feature engineering ---
-a control we have not run. We keep the two families apart in every table and we do not quote an
-encoding's number as though it were a reframing's.
+return another parameter vector in the same orbit, computing no new features. W10 is an
+\emph{invariant encoding} and W11b a reader over the same invariant objects: they return features,
+and those features are nonlinear in the parameters ($w \otimes w$, $(\sin b)u$, eigenvalue spectra).
+An encoding's gain is therefore not separable from ordinary nonlinear feature engineering except by
+a matched non-invariant control, which is \S\ref{sec:control}. We keep the two families apart in
+every table and we do not quote an encoding's number as though it were a reframing's.
 
 Finally, Proposition~\ref{prop:po5} says no continuous exact canonicalizer exists, so even the
 best reframing is discontinuous somewhere; how much of the residual is imperfect frame choice
