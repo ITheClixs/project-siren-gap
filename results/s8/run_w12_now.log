@@ -1,2 +1,3 @@
 width 186 (capacity rule against the decoder's 1,873,162)
   W12 seed 0: test 87.87 (val 88.82, 23 ep)
+  W12 seed 1: test 88.85 (val 90.24, 65 ep)

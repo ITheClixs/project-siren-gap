@@ -1,0 +1,26 @@
+{
+  "dataset": "mnist",
+  "protocol": "P-random",
+  "n_inrs": 512,
+  "width": 186,
+  "tolerance": 0.0001,
+  "note": "logit move under group elements, on fitted networks; a random reader, since invariance is a property of the architecture and not of trained weights",
+  "by_winding": {
+    "3": {
+      "logit_move_max": 1.4460498505286523e-06,
+      "neutral_block_move_max_dinf_only": 3.316895558214128e-08,
+      "within_tolerance": true
+    },
+    "10": {
+      "logit_move_max": 1.9555477592803072e-06,
+      "neutral_block_move_max_dinf_only": 1.6578259476318635e-07,
+      "within_tolerance": true
+    },
+    "40": {
+      "logit_move_max": 3.3005551358655794e-06,
+      "neutral_block_move_max_dinf_only": 6.627157631555747e-07,
+      "within_tolerance": true
+    }
+  },
+  "all_within_tolerance": true
+}
