@@ -623,6 +623,15 @@ structure), and **the scope conditions** where the case would have to be remade 
 expensive to query (volumetric rendering, long-horizon dynamics, where $Kc \ll P$ fails), or targets
 not identifiable from the function at all.
 
+**Re-priced with the best reader on the frontier.** S5 was registered before W12 existed, and its
+claim is quantified over *every* weight-space pipeline, so the frontier is recomputed rather than
+left to speak for a set that no longer contains the best reader. W12 reaches **87.64%** at
+**163 MFLOP/INR**: 7.7 points worse at **103×** the compute. The conclusion survives — function
+access still dominates on both axes — but its shape changes, from a large accuracy deficit at
+comparable cost to a small one at two orders of magnitude more compute. The grading is what costs:
+W12 drops the edge MLP over the $n^2$ pairs and pays for eighteen $d\times d$ per-node maps a round
+against the graph reader's two.
+
 ---
 
 ## 10. Reader architecture against frame choice — and the claim we had to withdraw

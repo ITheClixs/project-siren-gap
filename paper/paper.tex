@@ -1060,10 +1060,21 @@ function-query's entire per-task cost, so the lines never cross.}
 \end{figure}
 
 \paragraph{Weight access is dominated on both axes.} At $K = 64$, function access reaches
-$95.34\%$ for $1.59$\,MFLOP per INR. The best weight-access rung on the same corpus, $\calign$,
-reaches $64.41\%$ for $5.45$\,MFLOP: \textbf{$30.9$ accuracy points worse at $3.4\times$ the
-compute}. At $K = 256$ function access reaches $98.23\%$, which is above the real-pixel MLP's
-$97.97\%$ --- learned query points are a better input to the same decoder than the pixels are.
+$95.34\%$ for $1.59$\,MFLOP per INR. The best weight-access rung \emph{at the time this comparison
+was registered}, $\calign$, reaches $64.41\%$ for $5.45$\,MFLOP: $30.9$ accuracy points worse at
+$3.4\times$ the compute. At $K = 256$ function access reaches $98.23\%$, which is above the
+real-pixel MLP's $97.97\%$ --- learned query points are a better input to the same decoder than the
+pixels are.
+
+\paragraph{The best reader narrows the accuracy gap and widens the compute one.} W12
+(\S\ref{sec:w11}) is a weight-access pipeline that did not exist when S5 was registered, and the
+claim above is quantified over all of them, so it has to be re-priced rather than left to speak for
+a set that no longer contains the best reader. W12 reaches $87.64\%$ at $163$\,MFLOP per INR under
+the same analytic accounting: \textbf{$7.7$ accuracy points worse at $103\times$ the compute}. The
+conclusion survives --- function access still dominates on both axes --- but the shape of the
+domination changes, from a large accuracy deficit at comparable cost to a small accuracy deficit at
+two orders of magnitude more compute. The grading is what costs: W12 drops the edge MLP over the
+$n^2$ pairs but pays for eighteen $d\times d$ per-node maps a round against the graph reader's two.
 
 \paragraph{Amortization does not rescue it.} Corollary~\ref{cor:ceiling} left one escape: canonicalize
 once, decode many times. Priced, that escape closes. Weight access costs
