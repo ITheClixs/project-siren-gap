@@ -17,23 +17,28 @@ initialization performs almost as well as it does on pixels. This **perception g
 central obstacle of weight-space learning, and it is usually attributed, without measurement, to
 parameter symmetry. This work tests that attribution.
 
-For sine networks we prove the exact per-neuron symmetry group is the infinite dihedral group
-$D_\infty$, so the layer group is $D_\infty \wr S_n$; we prove this group is **maximal** at one
-hidden layer (generic identifiability), that no continuous canonicalizer for it exists, and that
+Prior work uses two function-preserving transformations of sine networks — neuron negation and
+integer-π bias shifts — as weight-space *augmentations* [[13]](#ref13), and a monomial-matrix
+framework covers the sign symmetry of $\sin$. We characterize the **group they generate**: the
+per-neuron closure is the infinite dihedral group $D_\infty$, whose phase component is *affine* and
+therefore outside every monomial action, so the layer group is $D_\infty \wr S_n$. We prove this
+group is **maximal** at one hidden layer (generic identifiability, full proof in Appendix A); the
+sine instance of the continuous-canonicalization obstruction follows, as does the observation that
 complete invariants are informationally equivalent to function access. We then construct a finite
 family of **exact** invariants for two-layer sine networks by coupling the layers through the
 second-layer Gram matrix — closing a gap that per-neuron constructions leave open. Against this
 theory we run a pre-registered decomposition ladder on ~1.8M fitted INRs across MNIST,
 FashionMNIST and CIFAR-10.
 
-Prior work uses two of these transformations — neuron negation and integer-π bias shifts — as
-weight-space *augmentations* [[13]](#ref13). We characterize the group they generate and ask
-whether it exhausts functional equivalence.
+Which components are ours and which are inherited is stated component by component in
+[docs/PROVENANCE.md](docs/PROVENANCE.md) and reproduced as a table in the paper.
 
 **Exact orbit-valued *reframing* recovers 63%, 66% and 32%** of the shared-versus-random accuracy
-gap. A nonlinear invariant *encoding* recovers 27%, 43% and 53%, but its gain is **not separable**
-from ordinary nonlinear feature engineering without a control we did not run, so the two families
-are reported apart. These are **algorithm-relative recoverable fractions, not causal shares** — an
+gap. A nonlinear invariant *encoding* recovers 27%, 43% and 53%; the two families are reported
+apart, and a **matched non-invariant control** — the same monomials at the same trigonometric
+orders, same pooling, same dimension, same reader, with only the parity classes swapped so it stays
+permutation-invariant and is broken only in $D_\infty$ — separates the encoding's gain from ordinary
+nonlinear feature engineering. These are **algorithm-relative recoverable fractions, not causal shares** — an
 exact reframing creates no function-level information, but it can still route an orbit-invariant
 property into a coordinate the reader finds accessible. The causal quantity is measured separately
 (§7), by randomizing the group while holding each network and its function fixed.
