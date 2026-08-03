@@ -1,0 +1,23 @@
+{
+  "dataset": "cifar10",
+  "protocol": "P-random",
+  "n_inrs": 512,
+  "trials": 4,
+  "max_windings": 3,
+  "tolerance": 0.0001,
+  "note": "residual of c(g theta) against c(theta), per INR, relative to that INR's scale",
+  "canonicalizers": {
+    "c_sort": {
+      "median": 1.2564558460326225e-07,
+      "p95": 1.3623304084831034e-07,
+      "max": 1.4557659255842736e-07,
+      "share_above_tol": 0.0
+    },
+    "c_align": {
+      "median": 1.2564558460326225e-07,
+      "p95": 1.3623304084831034e-07,
+      "max": 1.4557659255842736e-07,
+      "share_above_tol": 0.0
+    }
+  }
+}

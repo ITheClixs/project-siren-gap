@@ -684,6 +684,16 @@ $g_i \sim \mu_B$ independently per INR, apply it to a corpus that has no initial
 and measure what that alone does. We report both, and we keep them typographically distinct: $f_A$
 throughout for the ladder, $\Delta_{\mathrm{sym}}$ for the intervention.
 
+\paragraph{$\calign$ is a canonicalizer on these corpora, not an alignment heuristic.} The
+distinction matters for how W4 and W5 may be described, so we measure it rather than assume it. On
+$512$ held-out INRs per dataset, under four random group elements each with windings $|j|\le3$ and
+non-trivial permutations, the residual $\|c(g\theta) - c(\theta)\|$ relative to each INR's own scale
+has median $1.2\times10^{-7}$ and maximum $1.5\times10^{-7}$ for both $\csort$ and $\calign$, on
+MNIST and on CIFAR-10, with \emph{no} INR above the $10^{-4}$ tolerance. That is fp32 round-off.
+Proposition~\ref{prop:po5} still applies --- these maps must be discontinuous somewhere, and the
+audit of \S\ref{sec:bench} shows the corpora pass close to the stratum where the sort keys nearly
+tie --- but on the sampled orbits they are exact canonicalizers, not heuristics.
+
 \paragraph{Reframings and encodings are different objects.} W4 and W5 are \emph{reframings}: they
 return another parameter vector in the same orbit, computing no new features. W10 and W11b are
 \emph{invariant encodings}: they return features, and those features are nonlinear in the
@@ -904,17 +914,22 @@ orbit of the realizing parameters, and it has $19$ additional spurious local min
 Two findings follow. First, \textbf{basin capture is non-monotone} in the initialization range,
 with a sweet spot at range $\approx \omega$, and this replicates across optimizer classes
 (global-capture fractions $0.00/0.20/0.56/0.31$ for converged Adam, $0.00/0.18/0.58/0.33$ for
-plain gradient descent, $0.00/0.26/0.62/0.32$ for Nelder--Mead on the profiled surface at ranges
-$2/5/10/20$). Second, \textbf{at the setting our corpora are actually fitted with}
+plain gradient descent and $0.00/0.26/0.62/0.32$ for Nelder--Mead on the profiled surface, at
+ranges $2/5/10/20$). Second, \textbf{at the setting our corpora are actually fitted with}
 (Adam, $10^{-3}$, $300$ steps) \emph{every} initialization ends unconverged, with endpoint
-$\|\nabla\| \approx 0.5$--$0.7$ and median $|\Delta w| \approx 0.24$ \emph{independently of the
-initialization range}. The fit never leaves its initialization's neighbourhood --- the lazy regime
-\citep{jacot2018ntk,chizat2019lazy} --- so the final weights are essentially the initialization
-plus a signal-dependent perturbation. A shared initialization means a shared frame; independent
-initializations mean independently scattered ones. That is the mechanism, and it predicts exactly
-the null W1$-$W2 rung we measured.
+gradient norm $\approx 0.5$--$0.7$ and median displacement $|\Delta w| \approx 0.24$
+\emph{independently of the initialization range}: the fit stays in its initialization's
+neighbourhood, so the final weights are close to the initialization plus a signal-dependent
+perturbation. A shared initialization then means a shared frame, and independent initializations
+mean independently scattered ones, which is what the null W1$-$W2 rung reports.
 
-\begin{remark}[A sub-claim of our own that was an artifact]
+We describe this as small displacement and not as a lazy or NTK regime
+\citep{jacot2018ntk,chizat2019lazy}, because displacement alone does not establish one: that would
+need the linearization error, the kernel drift, or the linearized model's own fit, none of which we
+measure (\S\ref{sec:limits}). The claim here is the weaker and sufficient one --- the fit map's
+output is dominated by its initialization argument at this budget.
+
+\begin{remark}[A sub-claim that was an artifact]
 Our first census reported ``$100\%$ degenerate-ridge capture at range $2$''. Re-running under
 gradient methods rather than Nelder--Mead on the profiled surface shows ridge capture is $0.00$:
 those runs are still \emph{descending}, not sitting in a $w\approx0$ basin. An
@@ -1138,7 +1153,8 @@ released with the code as \texttt{docs/PROVENANCE.md}.
 weak evidence of novelty, and the two rows marked $\ast$ rest on one: eight targeted arXiv queries
 (2026-08-03) returned no matching construction.}
 \label{tab:provenance}
-\begin{tabular}{@{}p{3.5cm}p{1.9cm}p{3.4cm}p{4.4cm}@{}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{tabular}{@{}L{3.35cm}L{1.75cm}L{3.35cm}L{4.3cm}@{}}
 \toprule
 component & status & closest prior work & what is ours \\
 \midrule
@@ -1221,9 +1237,10 @@ that leaves the function untouched.
 \paragraph{Concurrent 2026 work.} Three preprints bear directly on results here and are cited by
 identifier, since our engagement with them is through the close-read memos released with this code
 rather than through published versions: arXiv:2602.01083 proves approximation-theoretic
-universality for permutation-invariant weight-space networks, of which
-Proposition~\ref{prop:po6} is the exact, identifiability-based counterpart for the full sine
-group; arXiv:2604.23720 supplies the maximal-symmetry-group vocabulary in which
+universality for permutation-invariant weight-space networks. Proposition~\ref{prop:po6} is
+\emph{not} a competing universality theorem --- it is a quotient factorization, and all of its
+content comes from Theorem~\ref{thm:po2}, without which it says nothing about sine networks;
+arXiv:2604.23720 supplies the maximal-symmetry-group vocabulary in which
 Theorem~\ref{thm:po2} is stated; and arXiv:2605.08281 reports that in a meta-learned regime the
 bias column is a causal readout route while weight-space geometry does not predict reader accuracy
 --- a dissociation that runs counter to the mechanism of \S\ref{sec:mechanism} and was named in
@@ -1323,15 +1340,22 @@ across those levels would be the right analysis and is not what we ran.
 % =====================================================================================
 
 Parameter symmetry accounts for a substantial part of the weight-space perception gap, and we can
-now say in what sense. For periodic-activation networks the relevant group is $\Dinf\wr S_n$;
-at one hidden layer it exhausts generic functional equivalence, so complete invariants of it are
-informationally equivalent to function access. Exact orbit-valued reframing recovers $63\%$, $66\%$
-and $32\%$ of the shared-versus-random accuracy gap on MNIST, FashionMNIST and CIFAR-10. That
-fraction is relative to the learning algorithm rather than a causal decomposition, which is why we
-also measure the effect of the group directly, holding each network and its function fixed
-(\S\ref{sec:orbit}). The treatments most often applied to this nuisance --- bounded group
-augmentation, $K$-view training, unweighted frame averaging --- recover at most $13\%$ under our
-implementations and budgets.
+now say in what sense. For periodic-activation networks the relevant group is $\Dinf\wr S_n$ ---
+prior work uses two of its generators as augmentations; what is new here is the group they generate,
+the affine phase component that no monomial-matrix classification contains, and the fact that at one
+hidden layer the group exhausts generic functional equivalence. Exact orbit-valued reframing
+recovers $63\%$, $66\%$ and $32\%$ of the shared-versus-random accuracy gap on MNIST, FashionMNIST
+and CIFAR-10. That fraction is relative to the learning algorithm rather than a causal
+decomposition, which is why we also measure the effect of the group directly, holding each network
+and its function fixed (\S\ref{sec:orbit}): randomizing the group over a corpus with no
+initialization nuisance costs $79$ points, against an $80$-point observed gap, and the same
+treatments recover more of that scatter than of the observed gap. Within the group, per-neuron sign
+flips account for about $63$ of those points, neuron relabelling for about $15$, and windings up to
+$|j|=10$ for about one --- so the affine phase component is mathematically necessary for the
+identifiability statement and empirically minor as a source of scatter, and we report it as both.
+The treatments most often applied to this nuisance --- bounded group augmentation, $K$-view
+training, unweighted frame averaging --- recover at most $13\%$ under our implementations and
+budgets.
 
 Two results were not anticipated. The recoverable fraction is not a constant across corpora:
 alignment recovers about two thirds on the grayscale corpora and one third on natural images, and
