@@ -372,6 +372,57 @@ def orbit_table() -> str | None:
     return "\n".join(lines)
 
 
+def sweep_table() -> str | None:
+    """S8: the ladder at four step budgets, against three fit diagnostics."""
+    path = ROOT / "results" / "s8" / "sweep.json"
+    if not path.exists():
+        return None
+    rep = json.loads(path.read_text())
+    steps = sorted(rep["by_steps"], key=int)
+    if not steps:
+        return None
+    col = "@{}l" + "r" * len(steps) + "@{}"
+    lines = [
+        r"\begin{table}[t]", r"\centering\small",
+        r"\caption{\textbf{The ladder against the step budget (MNIST).} Same images, "
+        r"architecture, optimizer and seed policy; only the number of steps changes. The corpus "
+        r"is reduced to 10k/2k/2k so the largest budget is affordable, so the 300-step column is "
+        r"the internal control rather than the full-corpus ladder. $\|\nabla\|$ is the median "
+        r"relative endpoint gradient norm of each INR's own full-batch loss --- the stationarity "
+        r"measure, which render fidelity cannot supply.}",
+        r"\label{tab:sweep}",
+        rf"\begin{{tabular}}{{{col}}}", r"\toprule",
+        "quantity & " + " & ".join(rf"{int(b):,} steps" for b in steps) + r" \\",
+        r"\midrule",
+    ]
+
+    def row(label, fn, fmt="{:.2f}"):
+        cells = []
+        for b in steps:
+            try:
+                cells.append(fmt.format(fn(rep["by_steps"][b])))
+            except (KeyError, TypeError):
+                cells.append("---")
+        lines.append(f"{label} & " + " & ".join(cells) + r" \\")
+
+    row(r"W1 (shared init)", lambda r: r["cells"]["W1"]["mean"])
+    row(r"W3 (random init)", lambda r: r["cells"]["W3"]["mean"])
+    row(r"gap W1$-$W3", lambda r: r["gap"])
+    lines.append(r"\midrule")
+    row(r"$f(\mathrm{W4})$ $\csort$", lambda r: r["f"]["W4"], "{:.3f}")
+    row(r"$f(\mathrm{W5})$ $\calign$", lambda r: r["f"]["W5"], "{:.3f}")
+    row(r"$f(\mathrm{W10})$ invariants", lambda r: r["f"]["W10"], "{:.3f}")
+    lines.append(r"\midrule")
+    row(r"median $\|\nabla\|/\|\theta\|$",
+        lambda r: r["diagnostics"]["random"]["grad_norm_median"], "{:.1e}")
+    row(r"median render PSNR (dB)",
+        lambda r: r["diagnostics"]["random"]["psnr_median"], "{:.1f}")
+    row(r"median relative travel",
+        lambda r: r["diagnostics"]["shared"]["travel_median"], "{:.3f}")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    return "\n".join(lines)
+
+
 def calibration_table() -> str:
     rows = list(csv.DictReader((ROOT / "docs" / "PREDICTION_OUTCOMES.csv").open()))
     iv = [r for r in rows if r["kind"] == "interval"]
@@ -469,6 +520,10 @@ def main() -> None:
     (OUT / "calibration_table.tex").write_text(calibration_table())
     for f in ("ladder_table", "gap_table", "calibration_table"):
         print(f"wrote {OUT / f}.tex")
+    swp = sweep_table()
+    (OUT / "sweep_table.tex").write_text(swp or "% convergence sweep results pending\n")
+    print(f"wrote {OUT / 'sweep_table'}.tex" if swp else "sweep_table: pending")
+
     orb = orbit_table()
     (OUT / "orbit_table.tex").write_text(orb or "% orbit intervention results pending\n")
     print(f"wrote {OUT / 'orbit_table'}.tex" if orb else "orbit_table: pending")
