@@ -1003,6 +1003,31 @@ landscape. The headline non-monotonicity survives; the sub-claim does not.
 \end{remark}
 
 % =====================================================================================
+\section{Does the recoverable fraction survive convergence?}\label{sec:convergence}
+% =====================================================================================
+
+Every ladder cell in this paper is measured on fits that end \emph{unconverged}. The corpora at
+$300$ steps end with a median relative endpoint gradient norm of $5.3\times10^{-3}$, and the
+microcosm at the same budget ends with $\|\nabla\|\approx0.5$--$0.7$. If the recoverable fraction is
+a property of that regime rather than of independently fitted INRs generally, the paper's scope is
+much narrower than its claims. S8 tests this directly.
+
+Same images, same architecture, same optimizer (Adam $10^{-3}$, full batch, deterministic), same
+seed policy; only the step budget changes, over $\{300, 1000, 3000, 10000\}$, on both protocols. The
+corpus is reduced to $10$k/$2$k/$2$k so the largest budget is affordable, which makes the
+$300$-step arm at \emph{that} size the internal control --- comparisons are within the sweep, never
+against the full-corpus ladder whose W1 is decoded from $55$k rows.
+
+Render fidelity cannot settle the question, because an MNIST INR here has $1185$ parameters against
+$784$ targets and can interpolate the sampled grid while sitting far from a stationary point: a
+pilot puts $300$ steps at $37.3$\,dB and $1000$ at $63.6$\,dB, with both far from stationarity. We
+therefore added a stationarity measure to the fitter --- the relative endpoint gradient norm
+$\|\nabla_\theta \mathcal L_i(\theta)\|/\|\theta\|$ of each INR's own full-batch loss --- and report
+it alongside PSNR and relative parameter travel at every budget.
+
+\input{tables/sweep_table}
+
+% =====================================================================================
 \section{Weight access against function access}\label{sec:s5}
 % =====================================================================================
 
@@ -1086,8 +1111,30 @@ attempt. \textbf{W11b} feeds W10's \emph{own} invariants --- the
 per-neuron even scalars and the sign-cancelling matrices $A, B, C$ --- to an equivariant reader with
 \emph{learned} pooling in place of sorted eigenvalue spectra.
 
-Both readers are sized by rule to the frozen decoder's $1{,}873{,}162$ parameters (within $1.5\%$),
-so no row loses for being smaller.
+\textbf{W12} is the reader neither of those is: exactly $G$-invariant on the \emph{raw} parameters.
+Under $g_{d,j}$ the phasor coordinates of the bias transform with $j$ only through its
+\emph{parity} --- $\cos b \mapsto (-1)^j \cos b$, $\sin b \mapsto (-1)^{d+j}\sin b$ --- so replacing
+$b$ by $(\cos b, \sin b)$ turns the infinite group $\Z\rtimes\Z_2$ into a finite $\Z_2\times\Z_2$
+acting by signs. Writing a \emph{character} $\chi=(a,c)$ for a feature picking up $(-1)^{ad+cj}$,
+the raw parameters sort into four blocks,
+\[
+(0,0)\!: \|w_i\|^2,\ \cos 2b_i \qquad (1,0)\!: w_i,\ \sin 2b_i \qquad
+(0,1)\!: \cos b_i \qquad (1,1)\!: \sin b_i,\ u_i ,
+\]
+and every layer preserves the grading: linear maps act within a character, products add characters,
+the nonlinearity is odd off the neutral block, and only $(0,0)$ channels reach the head. The
+coupling matrix $W^2$ carries character $(1,1)$ on the layer-1 side and $(1,0)$ on the layer-2 side,
+which leaves exactly two legitimate message channels per direction ---
+$\sum_i W^2_{ki} f_i^{(1,1)}$ and $\sum_i (W^2_{ki})^2 f_i^{(0,0)}$, and their transposes. That is
+the Gram coupling of Proposition~\ref{prop:deep} reappearing as a message rule, except that here it
+is neither pooled nor fixed: the network learns which couplings to use, and a graded bilinear layer
+lets characters that cannot pass alone combine into one that can. Invariance is verified rather than
+asserted --- logits move by less than $10^{-4}$ relative under random group elements with windings
+up to $|j| = 40$, far outside anything a fitted network occupies, because the phasor quotients the
+integer translation exactly rather than approximately.
+
+All three readers are sized by rule to the frozen decoder's $1{,}873{,}162$ parameters (W11a and
+W11b within $1.5\%$; W12 at width $186$, $+0.09\%$), so no row loses for being smaller.
 
 \input{tables/w11_table}
 
