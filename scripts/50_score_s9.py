@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+"""Score S9, the phasor-graded reader, against its frozen registration (docs/prereg/S9.md).
+
+Also writes paper/tables/w12_table.tex: the four-way comparison at matched capacity that is the
+point of the rung -- permutation-only, invariant-front-end, phasor-graded on raw parameters, and
+the exact reframing they are all measured against.
+
+Usage:
+  .venv/bin/python scripts/50_score_s9.py
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parent.parent
+LADDER = ROOT / "results" / "ladder" / "mnist"
+
+# frozen in docs/prereg/S9.md before the rung was decoded
+REGISTERED = {
+    "H-S9-1": ("f(W12), MNIST P-random", 0.55, (0.35, 0.72)),
+    "H-S9-2": ("f(W12) - f(W11a)", 0.29, (0.10, 0.45)),
+    "H-S9-3": ("f(W12) - f(W11b)", 0.02, (-0.15, 0.18)),
+}
+PROB = {"P-S9-A": 0.85, "P-S9-B": 0.45, "P-S9-C": 0.25}
+
+
+def verdict(v: float, lo: float, hi: float) -> str:
+    return "HIT" if lo <= v <= hi else "MISS"
+
+
+def main() -> None:
+    w12_path = LADDER / "W12.json"
+    if not w12_path.exists():
+        print("S9: W12 cell not present yet")
+        return
+    w12 = json.loads(w12_path.read_text())
+    w11 = json.loads((LADDER / "W11.json").read_text())["variants"]
+    cells = {r: json.loads((LADDER / f"{r}.json").read_text()) for r in ("W1", "W3", "W4", "W5")}
+
+    w1, w3 = np.array(cells["W1"]["acc"]), np.array(cells["W3"]["acc"])
+
+    def frac(acc: list[float]) -> float:
+        a = np.array(acc)
+        n = min(len(a), len(w1), len(w3))
+        return float(((a[:n] - w3[:n]) / (w1[:n] - w3[:n])).mean())
+
+    f = {
+        "W4": frac(cells["W4"]["acc"]), "W5": frac(cells["W5"]["acc"]),
+        "W11a": w11["W11a"]["recovery_fraction"], "W11b": w11["W11b"]["recovery_fraction"],
+        "W12": w12["recovery_fraction"],
+    }
+    acc = {
+        "W4": cells["W4"]["mean"], "W5": cells["W5"]["mean"],
+        "W11a": w11["W11a"]["mean"], "W11b": w11["W11b"]["mean"], "W12": w12["mean"],
+    }
+    params = {"W11a": w11["W11a"]["reader_params"], "W11b": w11["W11b"]["reader_params"],
+              "W12": w12["reader_params"]}
+
+    observed = {
+        "H-S9-1": f["W12"],
+        "H-S9-2": f["W12"] - f["W11a"],
+        "H-S9-3": f["W12"] - f["W11b"],
+    }
+    report: dict = {
+        "study": "S9", "prereg": "docs/prereg/S9.md",
+        "exposure": "docs/prereg/S9-addendum-01.md",
+        "f": f, "acc": acc, "reader_params": params,
+        "width": w12["width"], "registered": {},
+    }
+    for k, v in observed.items():
+        stmt, point, (lo, hi) = REGISTERED[k]
+        report["registered"][k] = {"statement": stmt, "point": point, "interval": [lo, hi],
+                                   "observed": v, "verdict": verdict(v, lo, hi)}
+        print(f"{k}: registered {point} [{lo}, {hi}], observed {v:+.3f} -> "
+              f"{report['registered'][k]['verdict']}")
+
+    calls = {
+        "P-S9-A": ("f(W12) > f(W11a)", f["W12"] > f["W11a"]),
+        "P-S9-B": ("f(W12) > f(W11b)", f["W12"] > f["W11b"]),
+        "P-S9-C": ("f(W12) > f(W5)", f["W12"] > f["W5"]),
+    }
+    report["probability_calls"] = {
+        k: {"statement": st, "p": PROB[k], "resolved": bool(t),
+            "brier": (PROB[k] - float(t)) ** 2}
+        for k, (st, t) in calls.items()
+    }
+    for k, c in report["probability_calls"].items():
+        print(f"{k}: p={c['p']}, resolved {c['resolved']}, Brier {c['brier']:.4f}")
+
+    report["practical_claim_withdrawn"] = bool(calls["P-S9-C"][1])
+    if report["practical_claim_withdrawn"]:
+        print("\nP-S9-C RESOLVED TRUE -> the 'frame choice beats reader architecture' claim is "
+              "withdrawn, per docs/prereg/S9.md section 4.")
+
+    hits = sum(1 for v in report["registered"].values() if v["verdict"] == "HIT")
+    report["score"] = f"{hits}/{len(report['registered'])}"
+    print(f"\nS9 intervals: {report['score']}")
+
+    (ROOT / "results" / "s9").mkdir(parents=True, exist_ok=True)
+    (ROOT / "results" / "s9" / "verdict.json").write_text(json.dumps(report, indent=2))
+    (ROOT / "paper" / "tables" / "w12_table.tex").write_text(table(report))
+    print("wrote results/s9/verdict.json and paper/tables/w12_table.tex")
+
+
+def table(rep: dict) -> str:
+    rows = [
+        ("W11a", r"perm.-equivariant, raw weights", r"$S_{n_1}\times S_{n_2}$ only"),
+        ("W11b", r"equivariant reader over W10's invariants", r"$G$, via a fixed front-end"),
+        ("W12", r"phasor-graded, raw weights", r"$G$, on the parameters"),
+        ("W5", r"$\calign$ + the frozen MLP", r"--- (a reframing, not a reader)"),
+    ]
+    lines = [
+        r"\begin{table}[t]", r"\centering\small",
+        r"\caption{\textbf{Readers at matched capacity (MNIST, \texttt{P-random}).} All three "
+        r"readers are sized by rule to the frozen decoder's $1{,}873{,}162$ parameters. The "
+        r"invariance column is what each construction actually quotients: W11a nothing beyond "
+        r"permutations, W11b the full group but only because its input already is invariant, W12 "
+        r"the full group on the raw parameters. $\calign$ is listed for reference; it is a change "
+        r"of frame rather than a reader.}",
+        r"\label{tab:w12}",
+        r"\begin{tabular}{@{}llrrl@{}}", r"\toprule",
+        r"rung & construction & acc.\ (\%) & $f$ & invariance \\", r"\midrule",
+    ]
+    for key, desc, inv in rows:
+        p = rep["reader_params"].get(key)
+        pstr = f"{p:,}" if p else "---"
+        lines.append(f"{key} & {desc} & {rep['acc'][key]:.2f} & {rep['f'][key]:.3f} & {inv} \\\\")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    return "\n".join(lines)
+
+
+if __name__ == "__main__":
+    main()
