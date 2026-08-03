@@ -43,10 +43,12 @@ exact reframing creates no function-level information, but it can still route an
 property into a coordinate the reader finds accessible. The causal quantity is measured separately
 (§6), by randomizing the group while holding each network and its function fixed.
 
-A capacity-matched permutation-equivariant reader recovers **0.265**, less than half of what
-reframing does; replacing the encoding's fixed spectral pooling with a learned equivariant reader
-raises it to **0.526** (a comparison confounded by reader architecture and capacity, so we do not
-decompose it).
+**Acting on the group characterization closes most of the gap.** A reader that quotients
+$D_\infty \wr S_n$ on the **raw** parameters — bias phasors reduce the infinite winding to a parity,
+leaving a finite grading preserved layer by layer — recovers **0.917** at matched capacity, against
+0.628 for the best reframing, 0.526 for the same reader family fed a fixed invariant front-end, and
+0.265 for a permutation-equivariant one. That reverses a claim this README previously made, and a
+pre-registration required us to withdraw rather than qualify it (§10).
 
 **Randomizing the group costs 79.1 of the 80.4 points** — yet the $G$-invariant reader, whose
 invariance to that randomization we *measure* at 0.59 points, still loses **28.6 points** between
@@ -623,47 +625,65 @@ not identifiable from the function at all.
 
 ---
 
-## 10. Reader architecture against frame choice
+## 10. Reader architecture against frame choice — and the claim we had to withdraw
 
 Every rung above changes the *feature map* and freezes the *reader*. That's what makes the
 decomposition interpretable — and it's the obvious objection, because the field doesn't read weights
 with a plain MLP, it builds permutation-equivariant architectures. **W11** supplies the missing
-comparison, pre-registered ([`S1-w11.md`](docs/prereg/S1-w11.md), `e3bbc081a5810956`).
+comparison ([`S1-w11.md`](docs/prereg/S1-w11.md)); **W12** supplies the one that overturned our own
+conclusion ([`S9.md`](docs/prereg/S9.md)).
 
 - **W11a** — bipartite message passing on raw weights. $S_n$-equivariant, **not** $D_\infty$-invariant.
-  That negative property is *asserted by test*: it's exactly the coverage the DWSNets/NFN/GMN family
-  has for sine networks, whose phase generators are affine and outside every monomial-matrix action.
+  That negative property is *asserted by test*: it's the coverage the DWSNets/NFN/GMN family has for
+  sine networks, whose phase generators are affine and outside every monomial-matrix action.
 - **W11b** — W10's **own** invariants, fed to an equivariant reader with **learned** pooling instead
-  of sorted eigenvalue spectra.
+  of sorted eigenvalue spectra. $G$-invariant, but only because its *input* already is.
+- **W12** — $G$-invariant on the **raw parameters**. Under $g_{d,j}$ the bias phasors transform with
+  the winding $j$ only through its *parity*, so $(\cos b,\sin b)$ turns the infinite $\mathbb{Z}\rtimes\mathbb{Z}_2$
+  into a finite $\mathbb{Z}_2\times\mathbb{Z}_2$ acting by signs. Writing $\chi=(a,c)$ for a feature picking up
+  $(-1)^{ad+cj}$, every layer preserves the grading, and $W^2$ — character $(1,1)$ on the layer-1
+  side, $(1,0)$ on the layer-2 side — admits exactly two legal message channels per direction. That
+  is §2's Gram coupling as a *learned* message rule rather than a fixed pooled family.
+  **The phasor route was proposed by an external reviewer of this paper**; ours is the two-layer
+  realization ([PROVENANCE](docs/PROVENANCE.md) row M7).
 
-Both sized *by rule* to the frozen decoder's 1,873,162 params (within 1.5%), so no row loses for
-being smaller.
+All three sized *by rule* to the frozen decoder's 1,873,162 params (within 1.5%), so no row loses
+for being smaller.
 
-| rung | construction | reader | acc | $f$ |
-|---|---|---|---:|---:|
-| W4 | $c_\text{sort}$ | matched MLP | 28.19 | 0.177 |
-| **W11a** | perm-equivariant, raw weights | graph (1.88M) | **35.26** | **0.265** |
-| W10 | exact invariants, eigenvalue pooling | matched MLP | 35.54 | 0.269 |
-| **W11b** | same invariants, **learned** pooling | graph (1.85M) | **56.24** | **0.526** |
-| W5 | $c_\text{align}$ | matched MLP | 64.41 | 0.628 |
+| rung | construction | reader | acc | $f$ | quotients |
+|---|---|---|---:|---:|---|
+| W4 | $c_\text{sort}$ | matched MLP | 28.19 | 0.177 | — |
+| **W11a** | perm-equivariant, raw weights | graph (1.88M) | 35.26 | 0.265 | $S_{n_1}\times S_{n_2}$ |
+| W10 | exact invariants, eigenvalue pooling | matched MLP | 35.54 | 0.269 | $G$ (fixed, lossy) |
+| **W11b** | same invariants, **learned** pooling | graph (1.85M) | 56.24 | 0.526 | $G$, via a front-end |
+| W5 | $c_\text{align}$ | matched MLP | 64.41 | 0.628 | — (a reframing) |
+| **W12** | **phasor-graded, raw weights** | graded (1.87M) | **87.64** | **0.917** | **$G$, on the parameters** |
 
-**Frame choice wins, at matched capacity.** W11a (0.265) lands essentially on W10 (0.269) and less
-than half of $c_\text{align}$ (0.628). The paper's central practical claim survives its first real
-test. Bounded, and stated as bounded: one construction, one capacity, one corpus — and that
-limitation was committed *before* the number arrived, so the bound couldn't be drawn only when
-convenient.
+**The claim we withdrew.** An earlier version of this README read W11a's 0.265 against
+$c_\text{align}$'s 0.628 as showing that *within weight space the orbit representative matters more
+than the reader architecture*. W12 recovers **0.917** at the same capacity — +0.288 over the best
+reframing — so that reading was wrong. What W11a actually shows is narrower: **permutation
+equivariance alone is not enough.** [`S9.md`](docs/prereg/S9.md) §4 committed *in advance* to
+withdrawing rather than qualifying the claim if a $G$-aware reader beat $c_\text{align}$, and
+[CLAIMS](docs/CLAIMS.md) row 49 records the reversal against row 31 rather than editing it away.
 
-**OPEN_PROBLEMS #4 closed, with a split.** Keeping the invariants and changing *only* the pooling
-takes $f$ from 0.269 to 0.526. Of the 0.359 shortfall to $c_\text{align}$:
+This closes a loop with §6. Within the group, relabelling carries ~15 of the 79 points and
+reflection/phase carry ~64. W11a quotients only the relabelling and recovers 0.265; W12 quotients
+all of it and recovers 0.917. **The group characterization is not decoration on the empirical part —
+it tells you which quotient a reader has to take.**
 
-$$\underbrace{0.257\ (72\%)}_{\text{eigenvalue pooling}} \;+\; \underbrace{0.102\ (28\%)}_{\text{invariants' incompleteness}}$$
+**On the invariant encoding's pooling.** Keeping W10's invariants and changing only the pooling
+takes $f$ from 0.269 to 0.526. We previously split that 0.359 shortfall into "72% pooling, 28%
+incompleteness"; that split is **withdrawn** ([CLAIMS](docs/CLAIMS.md) row 38), because W10 and W11b
+differ in reader architecture, parameter count (0.99M vs 1.85M), relational capacity and
+optimisation geometry as well as pooling. The supported statement is the weaker one.
 
-The pooling was the binding constraint. That reframes the recommendation: the useful object is a
-**$G$-invariant equivariant reader** — no template, no assignment problem, within 0.10 of alignment.
-It also partly answers the O($n^3$) Hungarian scaling problem: the answer may be to stop aligning.
-
-**5/5 intervals hit**; all three probability calls resolved as registered, including the one that
-would have withdrawn the practical claim.
+**Scoring.** W11: 5/5 intervals, all three probability calls as registered. W12: **0/3** — every
+interval missed *high*, and P-S9-C (registered at 0.25 that a $G$-aware reader would beat
+$c_\text{align}$) resolved true at Brier 0.56. A fourth calibration failure mode, added to the three
+already named: **under-predicting one's own construction.** The mechanism was understood and the
+algebra was ours, and we still put the point estimate between the two baselines rather than above
+them, because the neighbouring numbers were more available than the reasoning.
 
 ---
 
@@ -794,8 +814,8 @@ nominal 80%.
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
 grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; before the
-external review, **49/63 = 78%**; with S6 and S7 it is **55/72 = 76%** (grayscale 9/14, CIFAR 14/17,
-S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**); 20 probability calls, mean Brier 0.223.
+external review, **49/63 = 78%**; with S6, S7 and S9 it is **55/75 = 73%** (grayscale 9/14, CIFAR 14/17,
+S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**, **S9 0/3**); 23 probability calls, mean Brier 0.233.
 S6 is the worst-scoring arm and S7 the best, and they were registered on the same day under the same
 template — arm-level coverage is mostly a statement about how well a mechanism was understood before
 the run, not about the care taken in registering it.

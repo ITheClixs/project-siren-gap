@@ -2089,22 +2089,32 @@ W11 equivariant readers            & 5  & 5  & \texttt{S1-w11.md} \\
 S5 function access                 & 8  & 5  & \texttt{S5.md} \\
 S6 orbit intervention              & 6  & 3  & \texttt{S6.md} \\
 S7 matched control                 & 3  & 3  & \texttt{S7.md} \\
+S9 phasor-graded reader            & 3  & 0  & \texttt{S9.md} \\
 \midrule
-total                              & 72 & 55 & realized coverage $76\%$ \\
+total                              & 75 & 55 & realized coverage $73\%$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 Running coverage at earlier points in the program is quoted against prefixes of this table ---
 $9/14$ through the grayscale arms, $23/31$ after CIFAR-10, $49/63$ before the external review --- and
-the probability calls are scored separately, $20$ of them at mean Brier $0.223$.
+the probability calls are scored separately, $23$ of them at mean Brier $0.233$.
 
-S6 is the program's worst-scoring arm at $3/6$, and its three misses are one finding: we registered
-the permutation component as dominant and it is not (\S\ref{sec:orbit}). S7 is its best at $3/3$,
-including the one interval the review's Priority~3 actually asked for. The two arms were registered
-on the same day under the same template, which is a useful reminder that arm-level coverage is
-mostly a statement about how well a mechanism was understood before the run, not about the care
-taken in registering it.
+Two arms tie for worst. S6 scores $3/6$ and its three misses are one finding: we registered the
+permutation component as dominant and it is not (\S\ref{sec:orbit}). S9 scores $0/3$, and its three
+misses are also one finding, in the opposite spirit --- we registered a reader we had just designed
+as landing between the two it was meant to improve on, and it beat both by a wide margin
+(\S\ref{sec:w11}). S7, registered the same day under the same template, scores $3/3$. Arm-level
+coverage is therefore mostly a statement about how well a mechanism was understood before the run,
+not about the care taken in registering it.
+
+S9 also adds a fourth failure mode to the three already named: \emph{under-predicting one's own
+construction}. Modes 1 and 2 are about hedging toward outside priors and registering a contrast that
+could not exist; mode 3 is a defective criterion. This one is different --- the mechanism was
+understood, the algebra was ours, and we still put the point estimate between the two baselines
+rather than above them, because the neighbouring numbers were more available than the reasoning. It
+is the same shape as the anchor-gap miss of Mode 1, with our own method in the role of the outside
+prior.
 
 
 \end{document}
