@@ -174,7 +174,9 @@ def main() -> None:
 
     graded = not args.ungraded
     width = args.width or matched_width(fs["train"], graded=graded)
-    print(f"width {width} (capacity rule against the decoder's {DECODER_PARAMS:,})", flush=True)
+    name = args.out_name or ("W12" if graded else "W12u")
+    print(f"{name}: width {width} (capacity rule against the decoder's {DECODER_PARAMS:,})",
+          flush=True)
 
     accs, epochs, params_n = [], [], 0
     for s in range(args.seeds):
@@ -182,7 +184,7 @@ def main() -> None:
         accs.append(r["test_acc"])
         epochs.append(r["epochs_ran"])
         params_n = r["params"]
-        print(f"  {'W12' if graded else 'W12u'} seed {s}: test {r['test_acc']:.2f} (val {r['val_acc']:.2f}, "
+        print(f"  {name} seed {s}: test {r['test_acc']:.2f} (val {r['val_acc']:.2f}, "
               f"{r['epochs_ran']} ep)", flush=True)
 
     a = np.array(accs)
@@ -199,7 +201,6 @@ def main() -> None:
     print(f"{name}: {out['mean']:.2f}  f={out['recovery_fraction']:.4f}  "
           f"params={params_n:,}  ({out['wallclock_s']:.0f}s)", flush=True)
 
-    name = args.out_name or ("W12" if graded else "W12u")
     path = ladder / f"{name}.json"
     path.write_text(json.dumps(out, indent=2))
     print(f"\nwrote {path}")
