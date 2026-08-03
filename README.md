@@ -48,6 +48,12 @@ reframing does; replacing the encoding's fixed spectral pooling with a learned e
 raises it to **0.526** (a comparison confounded by reader architecture and capacity, so we do not
 decompose it).
 
+**Randomizing the group costs 79.1 of the 80.4 points** — yet the $G$-invariant reader, whose
+invariance to that randomization we *measure* at 0.59 points, still loses **28.6 points** between
+the two corpora. The gap looks like group scatter and is **not reducible** to it. Within the group,
+per-neuron sign flips carry ~63 of the 79 points, neuron relabelling ~15, and integer phase shifts
+~1.
+
 We hunt for a counterexample to identifiability at depth two and find none: one student recovers its
 teacher's parameters to **seven significant figures** at width 2, while at production width the
 optimiser leaves the true orbit even when started on it.
