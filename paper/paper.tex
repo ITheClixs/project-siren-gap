@@ -171,7 +171,9 @@ into what an exact change of frame removes and what it cannot. Registered before
 computed, and scored against the frozen text.
 \item \textbf{An orbit-only intervention} (\S\ref{sec:orbit}). Holding each fitted network and its
 realized function fixed while randomizing the group isolates the degradation the group alone
-causes, which the ladder's shared-versus-random contrast cannot.
+causes, which the ladder's shared-versus-random contrast cannot. It shows that the group reproduces
+nearly the whole gap, and --- via a reader whose invariance to it we measure rather than assume ---
+that the gap is nevertheless not reducible to the group.
 \item \textbf{A FLOPs-matched comparison against function access} (\S\ref{sec:s5}), in which
 weight access is dominated on both accuracy and inference cost.
 \end{enumerate}
@@ -193,7 +195,10 @@ and its gain has to be separated from nonlinear feature engineering by a matched
 an exact reframing creates no function-level information, but it can still route an orbit-invariant
 property into a coordinate the reader finds accessible, so the inference from ``no information
 created'' to ``the gain measures nuisance removal'' does not hold (\S\ref{sec:bounds}). The causal
-quantity is measured separately, by intervening on the group directly (\S\ref{sec:orbit}). Under our
+quantity is measured separately, by intervening on the group directly (\S\ref{sec:orbit}), and the
+answer has two halves: randomizing the group costs $79.1$ of the $80.4$ points, and yet a reader
+whose invariance to that randomization is \emph{measured} at $0.59$ points still loses $28.6$
+between the two corpora. The gap looks like group scatter and is not reducible to it. Under our
 implementations and training budgets, the treatments most often applied to this nuisance ---
 augmenting by group elements \citep{shamsian2024augmentations}, marginalizing over refits, averaging
 over a frame \citep{puny2022frame} --- recover at most $13\%$ on any dataset and under $6\%$ on both
@@ -710,9 +715,11 @@ An encoding's gain is therefore not separable from ordinary nonlinear feature en
 a matched non-invariant control, which is \S\ref{sec:control}. We keep the two families apart in
 every table and we do not quote an encoding's number as though it were a reframing's.
 
-Finally, Proposition~\ref{prop:po5} says no continuous exact canonicalizer exists, so even the
-best reframing is discontinuous somewhere; how much of the residual is imperfect frame choice
-rather than non-group structure is exactly what \S\ref{sec:orbit} is built to separate.
+Finally, Proposition~\ref{prop:po5} says no continuous exact canonicalizer exists, so even the best
+reframing is discontinuous somewhere, and the residual after any one of them mixes imperfect frame
+choice with whatever is not a frame at all. That is why the residual is not interpreted here.
+Section~\ref{sec:orbit} attacks the same question from the other side, with an intervention that
+removes the group instead of a map that tries to quotient it.
 
 % =====================================================================================
 \section{The orbit-only intervention}\label{sec:orbit}

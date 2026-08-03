@@ -41,7 +41,7 @@ permutation-invariant and is broken only in $D_\infty$ — separates the encodin
 nonlinear feature engineering. These are **algorithm-relative recoverable fractions, not causal shares** — an
 exact reframing creates no function-level information, but it can still route an orbit-invariant
 property into a coordinate the reader finds accessible. The causal quantity is measured separately
-(§7), by randomizing the group while holding each network and its function fixed.
+(§6), by randomizing the group while holding each network and its function fixed.
 
 A capacity-matched permutation-equivariant reader recovers **0.265**, less than half of what
 reframing does; replacing the encoding's fixed spectral pooling with a learned equivariant reader
@@ -307,7 +307,7 @@ Two further gaps: the decoder is **retrained per rung**, so what is held fixed i
 initializations*, which intervenes on the fit map, not on the group.
 
 So $f$ is an **algorithm-relative recoverable fraction**. It is a real quantity, cleanly measured —
-but it is not "the fraction of the gap caused by symmetry". For that, see **§7**, which intervenes on
+but it is not "the fraction of the gap caused by symmetry". For that, see **§6**, which intervenes on
 the group directly.
 
 ### Reframings and encodings are different objects
@@ -315,7 +315,7 @@ the group directly.
 | | returns | example | gain separable from feature engineering? |
 |---|---|---|---|
 | **reframing** | another parameter vector in the same orbit | W4 $c_\text{sort}$, W5 $c_\text{align}$ | yes — no new features computed |
-| **invariant encoding** | *features* | W10, W11b | **no** — nonlinear in the parameters ($w\otimes w$, $(\sin b)u$, spectra) |
+| **invariant encoding** | *features* | W10, W11b | only against a **matched non-invariant control** (§7) — the features are nonlinear in the parameters ($w\otimes w$, $(\sin b)u$, spectra) |
 
 We keep them apart in every table, and we do not quote an encoding's number where a reframing's
 belongs. On CIFAR-10 the strongest *reframing* result is **0.324**, not W10's 0.534.
@@ -435,7 +435,101 @@ is still the wrong tool.
 
 ---
 
-## 6. Mechanism: the fit map never leaves its initialization
+## 6. The orbit-only intervention: the gap is *not* reducible to symmetry
+
+§5's $f$ intervenes on the initialization. To intervene on the **group** instead, take a corpus with
+no initialization nuisance (`P-shared-det`), hold each fitted network *and its realised function*
+fixed, and apply an independent group element per INR:
+
+$$\theta_i \longmapsto g_i\theta_i, \qquad g_i \sim \mu_B \ \text{i.i.d.}$$
+
+The same networks and the same functions appear on both sides — the residual functional gap is
+verified at ≤ 8.7×10⁻⁶ on every cell — so any degradation has exactly one cause. There is **no
+uniform measure on $D_\infty$**, so $\mu$ is a family: $j\sim\text{Unif}\{-B..B\}$,
+$d\sim\text{Bernoulli}(1/2)$, permutations uniform on $S_n$, and everything is reported against $B$.
+
+| treatment | $B{=}0$ | $B{=}1$ | $B{=}3$ | $B{=}10$ |
+|---|---|---|---|---|
+| $\Delta_\text{sym}$ (points) | **79.07** | 79.04 | 78.79 | **79.09** |
+| raw weights | 0.000 | 0.000 | 0.000 | 0.000 |
+| $c_\text{sort}$ | 0.573 | 0.576 | 0.578 | 0.576 |
+| $c_\text{align}$ | **0.865** | 0.863 | 0.862 | 0.860 |
+| exact invariants (W10) | 0.724 | 0.722 | 0.720 | 0.723 |
+| equivariant, raw (W11a) | — | — | 0.631 | — |
+| equivariant, invariant (W11b) | — | — | **0.886** | — |
+| $\Delta_\text{sym}$, identity permutation | 62.90 | 63.49 | 64.04 | 64.08 |
+| $\Delta_\text{sym}$, applied to `P-random` instead | +0.13 | — | −0.50 | — |
+
+**The group reproduces nearly the whole gap.** 79.1 points against an 80.4-point observed gap, flat
+in $B$. But the recoveries separate the two interventions: $c_\text{align}$ returns **86%** of
+$\Delta_\text{sym}$ against **63%** of the observed gap, the invariant encoding **72% vs 27%**,
+$c_\text{sort}$ **58% vs 18%**. Every treatment does better against synthetic scatter.
+
+**`P-random` is already group-saturated.** Extra scatter costs +0.13 / −0.50 points. And
+$c_\text{align}$ reaches 64.39% on the scattered `P-random` corpus against 64.41% unscattered — a
+second empirical statement of the canonicalizer property.
+
+**The decisive triple.** W11b — the $G$-invariant equivariant reader — scores:
+
+| corpus | W11b accuracy |
+|---|---|
+| `P-shared-det`, untouched | **84.81%** |
+| `P-shared-det`, group randomized at $B{=}3$ | **85.39%** |
+| `P-random` | **56.24%** |
+
+The 0.59-point difference between the first two is seed noise, so W11b's invariance is **measured**,
+not merely asserted (registered as validity check H-S6-5; HIT). Yet the same reader loses **28.6
+points** between the shared- and random-initialization corpora. *That loss cannot be group scatter.*
+It is also not lost signal — function-query accuracy moves only 5.4 points between the same corpora
+(§9). So the perception gap is **not reducible to parameter symmetry**. What the residual *is*
+— genuinely different orbits (S4e: same-image pairs at $R_\theta$ = 0.279 against 0.280 for
+*unrelated* pairs), or an incomplete invariant family that reads more from a shared chart — an
+incomplete invariant cannot decide, and we claim no decomposition.
+
+**Within the group, reflection dominates and winding is nearly free.** Of the 79 points, ~63 are
+per-neuron **sign flips**, ~15 is relabelling 32 neurons, ~1 is windings up to $|j|=10$. We had
+registered the reverse. H-S6-1 (10 [2,30]) and H-S6-3 (64 [45,76]) both miss badly and **P-S6-A
+resolves false**. The consequence cuts both ways: $D_\infty$ beats $S_n$ four-to-one, which is the
+empirical case for treating the sine group as more than permutations — but *within* $D_\infty$ it is
+$\sigma$, the generator monomial-matrix frameworks already cover, that carries almost all of it. The
+**affine** phase component is necessary for the identifiability theorem and worth about one
+accuracy point as a source of scatter. Both are true and the paper states them separately.
+
+**3/6 intervals**; all three misses are that one finding.
+
+---
+
+## 7. Is the invariant encoding's gain about invariance?
+
+W10 is *both* nonlinear and $G$-invariant, so its number attributes nothing to symmetry on its own.
+Rung **W10c** is the control: the same monomials in $(w,u)$ at the same trigonometric orders, pooled
+by the same eigenvalue spectra under the same $\|w\|^2$ sort key, at the same dimension, decoded by
+the same frozen apparatus — with only the **parity class** of each trigonometric factor swapped
+($\sin b_i\sin b_l \to \cos b_i\cos b_l$ against the Gram, and so on). The three matrices stay
+symmetric and still transform as $M\mapsto PMP^\top$, so W10c is **still exactly
+permutation-invariant** and is broken only in $D_\infty$ — asserted by test at relative move > 10⁻²
+under the full group and < 10⁻⁵ under permutations alone.
+
+| rung | MNIST acc. | $f$ | CIFAR-10 acc. | $f$ |
+|---|---|---|---|---|
+| W4 $c_\text{sort}$ (reference) | 28.19 | 0.177 | 16.05 | 0.108 |
+| W10 exact invariants | 35.54 | **0.269** | 29.54 | **0.534** |
+| W10c matched control | 23.94 | 0.125 | 19.47 | 0.216 |
+| $f(\text{W10}) - f(\text{W10c})$ | | **0.144** | | **0.318** |
+
+**3/3 intervals hit**, including the difference the review asked for (registered 0.31 [0.11, 0.48],
+observed 0.318), and the pre-committed falsifier — which would have voided every symmetry reading of
+the CIFAR-10 encoding result — **did not fire**. So of W10's 0.534 on CIFAR-10, **0.318 is
+quotienting $D_\infty$** and 0.216 is what the same nonlinearity buys without it.
+
+But **P-S7-B resolves false**: W10c (0.216) beats $c_\text{sort}$ (0.108), so the nonlinearity
+contributes on its own. The registration fixed in advance that this must then be stated wherever W10
+is compared with W4 — so: **W10 vs W4 is not a clean symmetry comparison.** W10 vs W10c is, and it
+is the one we quote.
+
+---
+
+## 8. Mechanism: the fit map never leaves its initialization
 
 ![mechanism](paper/figures/fig2_mechanism.png)
 
@@ -467,7 +561,7 @@ mechanism, and it predicts exactly the null W1−W2 rung we measured.
 
 ---
 
-## 7. The adjudication: weight access vs function access
+## 9. The adjudication: weight access vs function access
 
 **Proposition 4** says a *complete* $G$-invariant of the weights carries exactly the information of
 the realised function — so weight access can only win on **compute**. This program asserted that on
@@ -523,7 +617,7 @@ not identifiable from the function at all.
 
 ---
 
-## 8. Reader architecture against frame choice
+## 10. Reader architecture against frame choice
 
 Every rung above changes the *feature map* and freezes the *reader*. That's what makes the
 decomposition interpretable — and it's the obvious objection, because the field doesn't read weights
@@ -567,7 +661,7 @@ would have withdrawn the practical claim.
 
 ---
 
-## 9. S4e: does identifiability have empirical content at depth two?
+## 11. S4e: does identifiability have empirical content at depth two?
 
 Everything above rests on a theorem proved at $L=1$ while every experiment is $L=2$. **S4e** is the
 pre-registered attack on that gap ([`docs/prereg/S4e.md`](docs/prereg/S4e.md), `aa5426a4245bd22f`):
@@ -654,7 +748,7 @@ when placed on it. The remaining route is analytic, not empirical. **7/9 interva
 
 ---
 
-## 10. Calibration: scoring our own forecasts
+## 12. Calibration: scoring our own forecasts
 
 ![calibration](paper/figures/fig3_calibration.png)
 
@@ -693,8 +787,12 @@ nominal 80%.
 
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
-grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; with S4e's nine rows it is
-**49/63 = 78%** (grayscale 9/14, CIFAR 14/17, S4e 7/9, luminance 9/10, W11 5/5, S5 5/8); 16 probability calls, mean Brier 0.215.
+grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; before the
+external review, **49/63 = 78%**; with S6 and S7 it is **55/72 = 76%** (grayscale 9/14, CIFAR 14/17,
+S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**); 20 probability calls, mean Brier 0.223.
+S6 is the worst-scoring arm and S7 the best, and they were registered on the same day under the same
+template — arm-level coverage is mostly a statement about how well a mechanism was understood before
+the run, not about the care taken in registering it.
 
 The two misses that matter are the paper's finding, not a footnote to it. And the category error
 that produced a *spurious* miss on the FashionMNIST arm is now blocked by the instrument rather
@@ -702,7 +800,7 @@ than by careful writing: `14_ladder_analysis.py` carries a per-dataset registrat
 arm with none of its own prints *not scored*.
 
 **S4e added a third failure mode**, about *criteria* rather than point predictions: a registered
-threshold can be under-specified in a way only data reveals (the missing absolute floor, §7). Its
+threshold can be under-specified in a way only data reveals (the missing absolute floor, §11). Its
 two interval misses are one event — the $n=32$ pilot that informed them never sampled the global
 basin while the $n=128$ run did, which is exactly why those rows were flagged `pilot-informed`
 before the run. Checking a criterion against its instrument's resolution at registration time is now
@@ -713,7 +811,7 @@ of the final story was anticipated.
 
 ---
 
-## 11. Limitations
+## 13. Limitations
 
 - **Signal complexity is confounded with two other things.** CIFAR-10 differs from the grayscale
   corpora in image statistics, in output-channel count ($c=3$ vs $c=1$), *and* in fit budget (1000
@@ -740,7 +838,7 @@ of the final story was anticipated.
 
 ---
 
-## 12. Reproduction
+## 14. Reproduction
 
 ```bash
 python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt
