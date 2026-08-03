@@ -836,3 +836,71 @@ would save it (0.09).
 Program coverage **49/63 = 78%**; 16 probability calls, mean Brier 0.215.
 
 **Deviations:** none. **Compute:** ~12 min for the sweep plus both controls.
+
+---
+
+## 2026-08-03 — the external review: novelty positioning, provenance, and two new controls
+
+The review that arrived after S5 raised ten priorities. Priority 1 (the invalid lower-bound claim)
+and Priority 2 (an orbit-only intervention) were done in the previous session. This entry records
+the rest, and one data-integrity problem found on the way.
+
+### A file that overwrote another file
+
+`results/s6/orbit_mnist.json` did not contain arm (i). Arm (ii) had been launched without `--tag`,
+so it wrote to the untagged path and overwrote the permuted arm; only `run_perm.log` survived, with
+means but no per-seed values. Arm (i) has been re-run under `--tag perm`, and the log's means are
+the reproduction check. Related: the chain script in `scripts/39` first fell through its wait loop
+because `pgrep` takes an *extended* regex and the guard was written with the BRE spelling `\|`,
+which silently matches nothing. Both are now noted in the scripts.
+
+### Priority 3 — the matched non-invariant control (S7)
+
+W10 is nonlinear *and* invariant, so its number attributes nothing to symmetry on its own. `W10c`
+emits the same monomials in (w,u) at the same trigonometric orders, pooled by the same spectra under
+the same ‖w‖² key, at the same dimension, decoded by the same apparatus — with only the parity
+classes swapped. It stays exactly permutation-invariant and is broken only in D∞, so the difference
+isolates the D∞ component rather than confounding it with permutation handling. Registered in
+`docs/prereg/S7.md` before any cell was decoded.
+
+### Review question 1, answered directly
+
+Is c_align a canonicalizer on *production* corpora, where the sort keys nearly tie? Measured:
+residual of c(gθ) against c(θ) on 512 held-out INRs per dataset, four random group elements each,
+median 1.2e−07 and max 1.5e−07, **0% above the 1e−4 tolerance**, on both MNIST and CIFAR-10. It is a
+canonicalizer on the sampled orbits. PO-5 still guarantees a discontinuity set; we simply do not hit
+it.
+
+### Proofs
+
+Theorem PO-2 had only a sketch. Appendix A now gives it in full: analytic continuation, the atomic
+Fourier transform, support matching for width and permutation, the two sign cases for the
+coefficients (each landing exactly on a g_{d,j} family), and triviality of the stabilizer for
+uniqueness — plus where each genericity hypothesis is used. Appendix B specifies W10 coordinate by
+coordinate with shapes, keys and contractions, proves invariance of every emitted coordinate, and
+states what is *not* claimed: invariant but not shown separating; spectra 1-Lipschitz by Weyl while
+the shared-key order statistics are discontinuous at ties; an encoding, not a reframing.
+
+### Positioning
+
+`docs/PROVENANCE.md` classifies every component prior work / specialization / consequence /
+extension / ours, names the closest prior work, and states the difference. Two rows rest on a null
+keyword search (eight targeted arXiv queries, snapshot committed) and say so. It has already forced
+five corrections, and it is reproduced as a table in the paper rather than left to a closing
+paragraph. Proposition PO-6 is demoted to a consequence of PO-2 and explicitly not offered as a
+competing universality theorem; PO-5 is presented as the sine instance of Dym et al.
+
+### Style
+
+The review's suspicion of heavy LLM assistance was aimed at the writing, and the writing deserved
+it. The abstract is 238 words. The forecast ledger and calibration analysis moved to an appendix.
+Categorical and self-congratulatory constructions were replaced by what was measured, with the
+instantiation named — "the tools the field reaches for do not work" became a statement about the
+particular winding distribution, bias parameterization and averaging level we ran, which is both
+more accurate and a stronger scientific claim.
+
+### One correction to my own limitations text
+
+I first wrote that no D∞-aware reader was built. That is false: W11b is G-invariant and is the best
+template-free weight reader here. Its limitation is structural — it is invariant because its input
+already is — and the unbuilt object is a reader that quotients D∞ on the parameters directly.
