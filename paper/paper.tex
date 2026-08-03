@@ -44,6 +44,7 @@
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
 \newcommand{\Dinf}{D_\infty}
 \newcommand{\Thgen}{\Theta_{\mathrm{gen}}}
 \newcommand{\csort}{c_{\mathrm{sort}}}
@@ -83,22 +84,19 @@ parameter symmetry without direct measurement.
 
 Prior work uses two function-preserving transformations of sine networks --- neuron negation and
 integer-$\pi$ bias shifts --- as weight-space augmentations \citep{shamsian2024augmentations}. We
-characterize the group they generate. Each hidden neuron carries an infinite dihedral action
-$\Dinf$ whose phase component is \emph{affine}, and therefore lies outside the monomial-matrix
-actions that previous classifications cover; a layer carries $\Dinf \wr S_n$. For generic
-one-hidden-layer sine networks we prove this group exhausts functional equivalence; the deeper case
-remains conjectural, and we report a falsification search for it. We construct exact cross-layer
-invariants at depth two by coupling through the second-layer Gram matrix.
+characterize the group they generate: each hidden neuron carries an infinite dihedral action
+$\Dinf$ whose phase component is \emph{affine} and therefore lies outside the monomial-matrix
+actions previous classifications cover, and a layer carries $\Dinf \wr S_n$. For generic
+one-hidden-layer sine networks we prove this group exhausts functional equivalence; at depth two we
+construct exact cross-layer invariants by coupling through the second-layer Gram matrix.
 
-Empirically, across three datasets, exact orbit-valued reframing recovers $63\%$, $66\%$ and
-$32\%$ of the shared-versus-random accuracy gap. We show this fraction is \emph{algorithm-relative}
-rather than a causal share, and measure the causal quantity separately by randomizing the group
-while holding each fitted network and its realized function fixed. That intervention costs $79$
-accuracy points against an $80$-point observed gap; within the group, per-neuron sign flips account
-for four fifths of the damage and integer phase shifts for about one point, so the affine component
-is necessary for the identifiability result and minor as a source of scatter. Finally, classifying
-an INR by querying it at $64$ learned coordinates outperforms every weight-space pipeline we tested,
-at lower inference cost under an analytic FLOP model.
+Exact orbit-valued reframing recovers $63\%$, $66\%$ and $32\%$ of the shared-versus-random accuracy
+gap on three datasets. We show that fraction is \emph{algorithm-relative} rather than a causal
+share, and measure the causal quantity by randomizing the group while holding each fitted network
+and its realized function fixed: the intervention costs $79$ accuracy points against an $80$-point
+observed gap, and within the group per-neuron sign flips account for four fifths of the damage while
+integer phase shifts account for about one. Classifying an INR by querying it at $64$ learned
+coordinates outperforms every weight-space pipeline we tested, at lower inference cost.
 \end{minipage}
 \end{center}
 \vskip 1.2em
@@ -167,7 +165,7 @@ nonlinear feature engineering (\S\ref{sec:control}).
 \item \textbf{A pre-registered decomposition ladder} (\S\ref{sec:ladder}--\ref{sec:results}). Ten
 feature maps applied to the same corpora and decoded by one frozen apparatus separate the gap
 into what an exact change of frame removes and what it cannot. Registered before any cell was
-computed; scored publicly, misses included.
+computed, and scored against the frozen text.
 \item \textbf{An orbit-only intervention} (\S\ref{sec:orbit}). Holding each fitted network and its
 realized function fixed while randomizing the group isolates the degradation the group alone
 causes, which the ladder's shared-versus-random contrast cannot.
@@ -643,8 +641,7 @@ independent training rows rather than jointly at inference, which is the weaker 
 ``marginalization'' can mean. What the ladder establishes is that \emph{these} instantiations
 recover at most $12.8\%$ of the gap; it does not establish that principled invariant integration
 cannot do better. The one place augmentation looks best is CIFAR-10, where its $0.128$ edges past
-$\csort$'s $0.108$ and past its own registered ceiling of $0.12$; we record that as a miss (H-C1-9)
-rather than round it away.
+$\csort$'s $0.108$ and past its own registered ceiling of $0.12$; we record that as a miss (H-C1-9).
 
 % =====================================================================================
 \section{What the ladder measures, and what it does not}\label{sec:bounds}
@@ -758,7 +755,7 @@ per-neuron sign flips alone, about $15$ by relabelling $32$ neurons, and about $
 to $|j|=10$. Two registered rows are badly missed by this. H-S6-1 put sign flips at $10$ points
 $[2,30]$ and H-S6-3 put the permutation share at $64$ $[45,76]$; the observed values are $62.9$ and
 $14.8$, i.e.\ the two components' roles are the reverse of what we registered, and the probability
-call P-S6-A ($0.80$ that permutations dominate) resolves against us.
+call P-S6-A ($0.80$ that permutations dominate) resolves false.
 
 The consequence for this paper's framing is specific and cuts both ways. The $\Dinf$ component
 dominates the permutation component by four to one, which is the empirical case for treating the
@@ -768,8 +765,7 @@ already cover for periodic activations \citep{tran2024monomial}. The affine phas
 the piece outside every linear classification, and the one this paper's group-theoretic
 contribution turns on --- costs about one accuracy point at $B=10$ under this measure. It is
 mathematically necessary for the identifiability statement and empirically minor as a source of
-scatter, and we state it that way rather than letting the group's novelty imply the component's
-importance.
+scatter. Those are different claims and the paper makes them separately.
 
 % =====================================================================================
 \section{Is the invariant encoding's gain about invariance?}\label{sec:control}
@@ -868,9 +864,9 @@ The conjecture is \textbf{wrong}, and the registration fixed in advance that bot
 against it would withdraw rather than qualify it. At $c=1$ the recovery fraction is $f(\mathrm{W5}) = 0.324$ ---
 \emph{identical}, to three decimals, to the $0.324$ measured at $c=3$ on the same images --- and the
 crossover does not reverse ($f(\mathrm{W10}) = 0.493$, still above W5). Luminance CIFAR behaves like
-RGB CIFAR, not like the grayscale corpora. Both probability calls resolved against us.
+RGB CIFAR, not like the grayscale corpora. Both probability calls resolved false.
 
-The arm also removes the alternative explanation we owed. Dropping channels makes the fit
+The arm also removes one alternative explanation. Dropping channels makes the fit
 over-parameterised, taking median render PSNR from $40$\,dB to $59.8$\,dB --- so this corpus is
 fitted \emph{much more accurately} than MNIST's $39.2$\,dB and still aligns far worse. Higher
 fidelity does not buy alignment recovery.
@@ -1619,6 +1615,215 @@ A.~Zhou, C.~Finn, and J.~Harrison.
 % =====================================================================================
 \appendix
 \normalsize
+% =====================================================================================
+\section{Proof of Theorem~\ref{thm:po2}}\label{app:po2}
+% =====================================================================================
+
+Throughout, $\theta = (W,b,u,\beta)$ denotes a one-hidden-layer sine network of width $n$,
+\begin{equation}
+f_\theta(x) \;=\; \sum_{i=1}^{n} u_i \sin\!\big(\langle w_i, x\rangle + b_i\big) \;+\; \beta,
+\qquad x \in \R^m,
+\label{eq:app-l1}
+\end{equation}
+with $w_i \in \R^m$, $b_i,\beta \in \R$ and $u_i \in \R^c$; for readability we take $c=1$, the
+general case being coordinatewise in the output index. Recall
+$\Thgen = \{\theta : w_i \neq 0,\ u_i \neq 0\ \forall i,\ w_j \neq \pm w_i\ \forall j \neq i\}$ and
+the normal form $g_{d,j}(w,b,u) = ((-1)^d w,\ (-1)^d b + \pi j,\ (-1)^{d+j}u)$.
+
+\begin{lemma}[Analytic continuation]\label{lem:app-analytic}
+If $f_\theta = f_{\theta'}$ on a nonempty open $U \subseteq \R^m$, then $f_\theta = f_{\theta'}$
+on all of $\R^m$.
+\end{lemma}
+
+\begin{proof}
+Each summand of \eqref{eq:app-l1} extends to an entire function of $z \in \C^m$, so
+$h = f_\theta - f_{\theta'}$ is entire, in particular real-analytic on the connected set $\R^m$. A
+real-analytic function on a connected open set vanishing on a nonempty open subset vanishes
+identically: the set where all derivatives vanish is open by the local power-series expansion,
+closed by continuity of the derivatives, and nonempty.
+\end{proof}
+
+\begin{lemma}[Fourier atoms]\label{lem:app-atoms}
+$f_\theta$ is a tempered distribution and, with the convention
+$\mathcal F[e^{\mathrm i\langle w,\cdot\rangle}] = (2\pi)^m \delta_w$ and the factor $(2\pi)^m$
+suppressed,
+\begin{equation}
+\widehat{f_\theta} \;=\; \beta\,\delta_0 \;+\; \sum_{i=1}^{n} \frac{u_i}{2\mathrm i}
+\Big( e^{\mathrm i b_i}\,\delta_{w_i} \;-\; e^{-\mathrm i b_i}\,\delta_{-w_i} \Big).
+\label{eq:app-atoms}
+\end{equation}
+For $\theta \in \Thgen$ the $2n+1$ points $\{0\} \cup \{\pm w_i\}_{i \le n}$ are pairwise distinct
+and every coefficient in \eqref{eq:app-atoms} except possibly $\beta$ is nonzero.
+\end{lemma}
+
+\begin{proof}
+$f_\theta$ is bounded, hence tempered. Write
+$\sin(\langle w,x\rangle + b) = \frac{1}{2\mathrm i}(e^{\mathrm i b}e^{\mathrm i\langle w,x\rangle}
+- e^{-\mathrm i b}e^{-\mathrm i\langle w,x\rangle})$ and apply the transform termwise, which is
+legitimate because the sum is finite. Distinctness: $w_i \neq 0$ gives $w_i \neq -w_i$ and
+$\pm w_i \neq 0$; $w_j \neq \pm w_i$ for $j\neq i$ gives distinctness across neurons. The
+coefficient of $\delta_{\pm w_i}$ has modulus $|u_i|/2 \neq 0$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:po2}]
+By Lemma~\ref{lem:app-analytic}, $f_\theta = f_{\theta'}$ on $\R^m$, hence
+$\widehat{f_\theta} = \widehat{f_{\theta'}}$ in $\mathcal S'(\R^m)$. Dirac masses at distinct
+points are linearly independent in $\mathcal S'$, so two finite atomic distributions are equal iff
+their supports and their coefficients agree.
+
+\emph{(i) The constant.} Since $0$ lies in neither $\{\pm w_i\}$ nor $\{\pm w'_k\}$, the atom at
+the origin is matched only by itself: $\beta = \beta'$.
+
+\emph{(ii) Width and permutation.} The punctured supports agree:
+$\{\pm w_i\}_{i\le n} = \{\pm w'_k\}_{k \le n'}$. The left side has exactly $2n$ elements and the
+right exactly $2n'$, so $n = n'$. Both sets are closed under $v \mapsto -v$ and are partitioned
+into $n$ unordered pairs $\{w_i,-w_i\}$, respectively $\{w'_k,-w'_k\}$; since the pairs are
+disjoint, there is a unique bijection $\pi \in S_n$ with
+$\{w'_{\pi(i)}, -w'_{\pi(i)}\} = \{w_i, -w_i\}$, i.e.\ $w'_{\pi(i)} = (-1)^{d_i} w_i$ for a unique
+$d_i \in \{0,1\}$ (unique because $w_i \neq 0$).
+
+\emph{(iii) Coefficients, case $d_i = 0$.} Matching the atoms at $w_i$ and at $-w_i$ gives
+\[
+\frac{u'_{\pi(i)}}{2\mathrm i}e^{\mathrm i b'_{\pi(i)}} = \frac{u_i}{2\mathrm i}e^{\mathrm i b_i},
+\qquad
+-\frac{u'_{\pi(i)}}{2\mathrm i}e^{-\mathrm i b'_{\pi(i)}} = -\frac{u_i}{2\mathrm i}e^{-\mathrm i b_i},
+\]
+the second being the complex conjugate of the first, so the content is
+$u'_{\pi(i)} e^{\mathrm i b'_{\pi(i)}} = u_i e^{\mathrm i b_i}$ with both $u$'s real and nonzero.
+Taking moduli gives $|u'_{\pi(i)}| = |u_i|$, so $u'_{\pi(i)} = \pm u_i$. If $u'_{\pi(i)} = u_i$
+then $e^{\mathrm i b'_{\pi(i)}} = e^{\mathrm i b_i}$, i.e.\ $b'_{\pi(i)} = b_i + 2\pi k$; if
+$u'_{\pi(i)} = -u_i$ then $e^{\mathrm i b'_{\pi(i)}} = e^{\mathrm i (b_i + \pi)}$, i.e.\
+$b'_{\pi(i)} = b_i + \pi + 2\pi k$. These are exactly $g_{0,j}$ with $j = 2k$ and $j = 2k+1$
+respectively, since $g_{0,j}(w,b,u) = (w,\, b + \pi j,\, (-1)^j u)$.
+
+\emph{(iv) Coefficients, case $d_i = 1$.} Here $w'_{\pi(i)} = -w_i$, so the atom of $\theta'$ at
+$w'_{\pi(i)}$ must match the atom of $\theta$ at $-w_i$:
+$u'_{\pi(i)}e^{\mathrm i b'_{\pi(i)}} = -u_i e^{-\mathrm i b_i} = u_i e^{\mathrm i(\pi - b_i)}$.
+Taking moduli again gives $u'_{\pi(i)} = \pm u_i$; if $u'_{\pi(i)} = u_i$ then
+$b'_{\pi(i)} = -b_i + \pi + 2\pi k$, and if $u'_{\pi(i)} = -u_i$ then
+$b'_{\pi(i)} = -b_i + 2\pi k$. These are exactly $g_{1,j}$ with $j$ odd and $j$ even, since
+$g_{1,j}(w,b,u) = (-w,\, -b + \pi j,\, (-1)^{1+j}u)$.
+
+Assembling the per-neuron elements with the permutation $\pi$ gives $g \in \Dinf \wr S_n$ with
+$\theta' = g\theta$.
+
+\emph{(v) Uniqueness.} It suffices that the stabilizer of any $\theta \in \Thgen$ is trivial, since
+$g_1\theta = g_2\theta$ then forces $g_2^{-1}g_1 = \mathrm{id}$. Let $g = (\pi, (g_{d_i,j_i})_i)$
+fix $\theta$. Reading the first-layer rows, $(-1)^{d_i} w_{\pi(i)} = w_i$ for every $i$. If
+$\pi(i) \neq i$ this contradicts $w_{\pi(i)} \neq \pm w_i$, so $\pi = \mathrm{id}$; then
+$(-1)^{d_i}w_i = w_i$ with $w_i \neq 0$ forces $d_i = 0$; then the bias reads
+$b_i + \pi j_i = b_i$, so $j_i = 0$. Hence $g = \mathrm{id}$.
+\end{proof}
+
+\begin{remark}[Where each hypothesis is used]
+$w_i \neq 0$ is used for distinctness of $\pm w_i$, for uniqueness of $d_i$, and in (v);
+$u_i \neq 0$ is used to know every atom is present, which is what makes the support carry the
+width; and $w_j \neq \pm w_i$ is used for distinctness across neurons and in (v). On the parallel
+stratum $w_j = \pm w_i$ the two atoms coincide and add as phasors,
+$u_i\sin(z+b_i) + u_j\sin(z+b_j) = \operatorname{Im}\big((u_ie^{\mathrm i b_i}
++ u_je^{\mathrm i b_j})e^{\mathrm i z}\big)$, so only the complex sum is observable and the
+conclusion genuinely fails --- the exclusion is not an artifact of the proof.
+\end{remark}
+
+% =====================================================================================
+\section{The depth-two invariant encoding, in full}\label{app:w10}
+% =====================================================================================
+
+This appendix specifies rung W10 coordinate by coordinate, proves invariance of every emitted
+coordinate, and states what is \emph{not} claimed.
+
+\paragraph{Notation.} $L=2$, widths $n$ (layer 1) and $p$ (layer 2), input dimension $m$, output
+dimension $c$: $W^1 \in \R^{n\times m}$, $b^1 \in \R^n$, $W^2 \in \R^{p\times n}$, $b^2 \in \R^p$,
+$W^3 \in \R^{c\times p}$. Layer 1 acts on the rows of $W^1$, the entries of $b^1$ and the
+\emph{columns} of $W^2$; layer 2 acts on the rows of $W^2$, the entries of $b^2$ and the columns of
+$W^3$. Write $\varepsilon_i = (-1)^{d_i + j_i}$ for the sign a layer-1 neuron's outgoing column
+picks up, and $\varepsilon'_k = (-1)^{e_k + l_k}$ for the layer-2 analogue. Let
+$G = (W^2)^\top W^2 \in \R^{n \times n}$.
+
+\paragraph{Transformation rules.} Under a layer-1 element,
+\[
+w^1_i \mapsto (-1)^{d_i} w^1_i, \quad
+\sin b^1_i \mapsto \varepsilon_i \sin b^1_i, \quad
+\cos b^1_i \mapsto (-1)^{j_i}\cos b^1_i, \quad
+\sin 2b^1_i \mapsto (-1)^{d_i}\sin 2b^1_i,
+\]
+and $\cos 2b^1_i \mapsto \cos 2b^1_i$, $\|w^1_i\|^2 \mapsto \|w^1_i\|^2$. Under a layer-2 element
+$W^2$ has its rows sign-flipped and permuted, so $G \mapsto G$; layer-2 phase shifts touch $b^2$
+and $W^3$ only. Under layer 1, $G_{il} \mapsto \varepsilon_i\varepsilon_l G_{il}$ and
+$G \mapsto PGP^\top$ for the layer-1 permutation matrix $P$.
+
+\paragraph{The emitted vector.} With $\lambda^{\downarrow}(M) \in \R^n$ the eigenvalues of a
+symmetric $M$ in decreasing order, and $\mathrm{sort}_{\kappa}$ the gather of a vector by the
+descending order of the key $\kappa$, W10 emits the concatenation
+\[
+\underbrace{\lambda^{\downarrow}(A),\ \lambda^{\downarrow}(B),\ \lambda^{\downarrow}(C)}_{3n},\quad
+\underbrace{\mathrm{sort}_{\kappa_1}\big(\|w^1_\bullet\|^2\big),\
+\mathrm{sort}_{\kappa_1}\big(\cos 2b^1_\bullet\big),\
+\mathrm{sort}_{\kappa_1}\big(G_{\bullet\bullet}\big)}_{3n},
+\]
+\[
+\underbrace{\mathrm{sort}_{\kappa_2}\big(\|w^2_\bullet\|^2\big),\
+\mathrm{sort}_{\kappa_2}\big(\cos 2b^2_\bullet\big),\
+\mathrm{sort}_{\kappa_2}\big(\|u_\bullet\|^2\big),\
+\mathrm{sort}_{\kappa_2}\big(\sin(b^2_\bullet)\,u_\bullet\big)}_{(3+c)p},
+\]
+where $A_{il} = (\sin b^1_i \sin b^1_l)G_{il}$,
+$B_{il} = (\cos b^1_i w^1_i \cdot \cos b^1_l w^1_l)G_{il}$,
+$C_{il} = (\sin 2b^1_i w^1_i \cdot \sin 2b^1_l w^1_l)$, $u_k = W^3[:,k] \in \R^c$,
+$\kappa_1 = \|w^1_\bullet\|^2$ and $\kappa_2 = \|w^2_\bullet\|^2$. The total dimension is
+$6n + (3+c)p$, which is $320$ at $n=p=32$, $c=1$ and $384$ at $c=3$.
+
+\begin{proposition}[Invariance, coordinate by coordinate]
+Every coordinate above is invariant under $G_{\mathrm{grp}} = (\Dinf \wr S_n)\times(\Dinf \wr S_p)$,
+provided the sort keys $\kappa_1,\kappa_2$ have no ties.
+\end{proposition}
+
+\begin{proof}
+\emph{The matrices.} $A_{il} \mapsto (\varepsilon_i\sin b^1_i)(\varepsilon_l \sin b^1_l)\cdot
+\varepsilon_i\varepsilon_l G_{il} = A_{il}$, using $\varepsilon_i^2 = 1$. For $B$, each factor
+$\cos b^1_i w^1_i \mapsto (-1)^{j_i}(-1)^{d_i}\cos b^1_i w^1_i = \varepsilon_i \cos b^1_i w^1_i$,
+so the inner product contributes $\varepsilon_i\varepsilon_l$, which cancels $G$'s. For $C$, each
+factor $\sin 2b^1_i w^1_i \mapsto (-1)^{d_i}(-1)^{d_i}\sin 2b^1_i w^1_i$ is already invariant, and
+no Gram coupling is needed. All three depend on $W^2$ only through $G$, which is layer-2 invariant.
+Under the layer-1 permutation each transforms as $M \mapsto PMP^\top$, an orthogonal conjugation,
+which leaves the spectrum unchanged; each is symmetric by construction, so
+$\lambda^{\downarrow}$ is well defined and invariant.
+
+\emph{The layer-1 order statistics.} $\|w^1_i\|^2$, $\cos 2b^1_i$ and $G_{ii}$ are individually
+$\Dinf$-invariant per neuron ($\varepsilon_i^2 = 1$ for the last), and all four vectors --- the
+three payloads and the key $\kappa_1$ --- are permuted by the \emph{same} $P$. Gathering by the
+descending order of $\kappa_1$ therefore yields the same vector before and after.
+
+\emph{Layer 2.} $\|w^2_k\|^2 = \sum_i (W^2_{ki})^2$ is invariant under layer-1 column signs
+($\varepsilon_i^2=1$) and layer-1 permutation (it is a sum over $i$), and under layer-2 row signs
+($(-1)^{2e_k}=1$); $\cos 2b^2_k$ is invariant; $\|u_k\|^2$ picks up $(\varepsilon'_k)^2 = 1$; and
+$\sin(b^2_k)u_k \mapsto \varepsilon'_k\varepsilon'_k \sin(b^2_k)u_k$. All four are permuted by the
+same layer-2 permutation as the key $\kappa_2$, so the gather is invariant.
+\end{proof}
+
+\begin{remark}[What is not claimed]\label{rem:w10-scope}
+Three qualifications, all of which matter for how the W10 rows are read.
+
+\emph{Invariant, not proven complete.} We prove every coordinate is constant on orbits. We do
+\emph{not} claim the family separates distinct orbits, and the empirical shortfall against
+$\calign$ bounds --- without identifying --- what it discards. In particular the eigenvalue pooling
+is deliberately lossy: it retains a symmetric matrix only through its spectrum.
+
+\emph{Stability.} The spectral block is $1$-Lipschitz in the spectral norm by Weyl's inequality,
+$|\lambda_i(M) - \lambda_i(M')| \le \|M - M'\|_2$, so repeated eigenvalues are harmless here ---
+it is eigen\emph{vectors} that are unstable at a repeated eigenvalue, and we do not use them. The
+order-statistic blocks are the fragile part: gathering three payloads by a shared key is
+discontinuous where the key ties, i.e.\ where two neurons have equal $\|w^1_i\|^2$. This is the
+sine-network instance of the obstruction of Proposition~\ref{prop:po5}, it has Lebesgue measure
+zero, and the implementation uses a stable sort so the map is at least deterministic; the audit in
+\S\ref{sec:bench} reports how close the production corpora come to it.
+
+\emph{An encoding, not a reframing.} W10 returns features, not a parameter vector realizing the
+same function, and its coordinates are nonlinear in the parameters. Its gain is therefore
+separated from generic nonlinear feature engineering only by the matched control of
+\S\ref{sec:control}, not by its invariance.
+\end{remark}
+
 % =====================================================================================
 \section{Calibration of the program's own forecasts}\label{sec:calibration}
 % =====================================================================================
