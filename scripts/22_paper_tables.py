@@ -303,15 +303,29 @@ def w11_table() -> str | None:
 
 
 def orbit_table() -> str | None:
-    """S6: what a pure group intervention costs, and what each treatment recovers."""
-    import glob
+    """S6: what a pure group intervention costs, and what each treatment recovers.
+
+    Arm (i) lives in orbit_mnist_perm.json, arm (ii) in *_noperm.json and arm (iii) --- the
+    equivariant readers, run at a single B --- in *_equivariant.json, whose treatment cells are
+    merged into arm (i)'s at the matching winding bound.
+    """
     d = ROOT / "results" / "s6"
-    main = d / "orbit_mnist.json"
+    main = d / "orbit_mnist_perm.json"
     if not main.exists():
         return None
     perm = json.loads(main.read_text())
     noperm = json.loads((d / "orbit_mnist_noperm.json").read_text()) if (
         d / "orbit_mnist_noperm.json").exists() else None
+
+    equi_path = d / "orbit_mnist_equivariant.json"
+    if equi_path.exists():
+        equi = json.loads(equi_path.read_text())
+        for b, cell in equi["by_winding"].items():
+            if b not in perm["by_winding"]:
+                continue
+            for name in ("W11a", "W11b"):
+                if name in cell["treatments"]:
+                    perm["by_winding"][b]["treatments"][name] = cell["treatments"][name]
 
     order = ["raw", "c_sort", "c_align", "invariants", "W11a", "W11b"]
     pretty = {"raw": "raw weights", "c_sort": r"$\csort$", "c_align": r"$\calign$",

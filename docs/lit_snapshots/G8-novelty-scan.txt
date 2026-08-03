@@ -1,0 +1,20 @@
+=== q1 ===
+<title>arXiv Query: search_query=abs:"Gram matrix" AND abs:"weight space" AND cat:cs.LG&amp;id_list=&amp;start=0&amp;max_results=25</title>
+=== q2 ===
+<title>arXiv Query: search_query=abs:"invariant" AND abs:"sine" AND abs:"neural network" AND abs:"phase"&amp;id_list=&amp;start=0&amp;max_results=25</title>
+<title>Strategies for training point distributions in physics-informed neural networks</title>
+=== q3 ===
+<title>arXiv Query: search_query=all:"cross-layer invariant" AND cat:cs.LG&amp;id_list=&amp;start=0&amp;max_results=25</title>
+=== q4 ===
+<title>arXiv Query: search_query=abs:"infinite dihedral" AND cat:cs.LG&amp;id_list=&amp;start=0&amp;max_results=25</title>
+=== q5 ===
+<title>arXiv Query: search_query=abs:"periodic activation" AND abs:"symmetry"&amp;id_list=&amp;start=0&amp;max_results=25</title>
+=== q6 ===
+<title>arXiv Query: search_query=abs:"SIREN" AND abs:"weight space"&amp;id_list=&amp;start=0&amp;max_results=25</title>
+<title>Is Class Signal Clustered or Routed in Task-Induced Implicit Neural Representation Weight Spaces?</title>
+<title>CertMix: Certified, Data-Efficient Metamaterial Design by Affine Mixing of Aligned Neural-Implicit Weight Spaces</title>
+=== q7 ===
+<title>arXiv Query: search_query=abs:"canonicalization" AND abs:"implicit neural representation"&amp;id_list=&amp;start=0&amp;max_results=25</title>
+=== q8 ===
+<title>arXiv Query: search_query=abs:"weight space" AND abs:"invariant" AND abs:"eigenvalue"&amp;id_list=&amp;start=0&amp;max_results=25</title>
+<title>Modulation equation and SPDEs on unbounded domains</title>

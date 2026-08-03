@@ -17,3 +17,7 @@ baseline (no scatter): 94.36
   B= 10 raw           15.27
   B= 10 c_sort        60.79
   B= 10 c_align       83.27
+  B= 10 invariants    72.44
+  B= 10 delta_sym = +79.09 pts   (functional gap 8.70e-06)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s6/orbit_mnist.json

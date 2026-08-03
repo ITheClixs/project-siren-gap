@@ -1,0 +1,23 @@
+baseline (no scatter): 94.36
+  B=  0 raw           31.45
+  B=  0 c_sort        60.59
+  B=  0 c_align       83.67
+  B=  0 invariants    72.51
+  B=  0 delta_sym = +62.90 pts   (functional gap 0.00e+00)
+  B=  1 raw           30.86
+  B=  1 c_sort        60.67
+  B=  1 c_align       83.48
+  B=  1 invariants    72.38
+  B=  1 delta_sym = +63.49 pts   (functional gap 4.26e-06)
+  B=  3 raw           30.31
+  B=  3 c_sort        60.62
+  B=  3 c_align       83.71
+  B=  3 invariants    72.19
+  B=  3 delta_sym = +64.04 pts   (functional gap 4.05e-06)
+  B= 10 raw           30.27
+  B= 10 c_sort        60.57
+  B= 10 c_align       83.37
+  B= 10 invariants    72.39
+  B= 10 delta_sym = +64.08 pts   (functional gap 9.36e-06)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s6/orbit_mnist_noperm.json

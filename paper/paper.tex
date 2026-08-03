@@ -144,43 +144,56 @@ equivalence. The answer is that each hidden neuron carries an infinite dihedral 
 a layer carries $\Dinf \wr S_n$ (Theorem~\ref{thm:po1}), and that the phase generators are
 \emph{affine} rather than linear --- which is why a classification restricted to monomial-matrix
 actions cannot contain them.
-\item \textbf{Identifiability, impossibility, and a limit on the field}
-(\S\ref{sec:identifiability}). At one hidden layer, $\Dinf \wr S_n$ is \emph{all} of the
-functional equivalence on an explicit generic stratum (Theorem~\ref{thm:po2}); no continuous
-canonicalizer exists for it (Proposition~\ref{prop:po5}); and any \emph{complete} invariant
-factors through the realized function (Proposition~\ref{prop:po6}), so weight access can beat
-function access only computationally or by being deliberately incomplete.
+\item \textbf{Generic identifiability at one hidden layer} (\S\ref{sec:identifiability}).
+$\Dinf \wr S_n$ is \emph{all} of the functional equivalence on an explicit generic stratum
+(Theorem~\ref{thm:po2}), by a Fourier-atom argument that is the periodic-activation analogue of a
+classical line \citep{hechtnielsen1990algebraic,sussmann1992uniqueness,fefferman1994reconstructing}.
+Two consequences follow rather than stand alone: the sine instance of
+\citeauthor{dym2024impossibility}'s continuous-canonicalization obstruction, which here is global
+rather than confined to sorting ties (Proposition~\ref{prop:po5}); and the observation that any
+\emph{complete} invariant factors through the realized function
+(Proposition~\ref{prop:po6}), so weight access can beat function access only computationally or by
+being deliberately incomplete.
 \item \textbf{Exact invariants at depth two} (\S\ref{sec:deep}). Per-neuron invariants break at
 $L\ge 2$ because a hidden neuron's outgoing vector is acted on by the next layer. Coupling the
 layers through the second-layer Gram $G = W_2^\top W_2$ repairs this and yields a finite family
-of exactly invariant features, certified numerically to $3\times10^{-7}$ relative.
+of exactly invariant features, verified numerically to $3\times10^{-7}$ relative. A control
+matched to it in monomial degree, trigonometric order, pooling and dimension --- differing only in
+whether the $\Dinf$ component is quotiented out --- separates the encoding's gain from generic
+nonlinear feature engineering (\S\ref{sec:control}).
 \item \textbf{A pre-registered decomposition ladder} (\S\ref{sec:ladder}--\ref{sec:results}). Ten
 feature maps applied to the same corpora and decoded by one frozen apparatus separate the gap
 into what an exact change of frame removes and what it cannot. Registered before any cell was
 computed; scored publicly, misses included.
-\item \textbf{A FLOPs-matched adjudication against function access} (\S\ref{sec:s5}), which
-which finds weight access dominated on both accuracy and inference cost.
-\item \textbf{A mechanism} (\S\ref{sec:mechanism}), \textbf{a capacity-matched comparison
-against equivariant reader architectures} (\S\ref{sec:w11}) which localises the exact invariant
-encoding's shortfall to its pooling, \textbf{a falsification hunt against identifiability at depth
-two} (\S\ref{sec:s4e}) built on an exact minimiser over $G$, and \textbf{a calibration audit}
-(\S\ref{sec:calibration}) of the program's own forecasts.
+\item \textbf{An orbit-only intervention} (\S\ref{sec:orbit}). Holding each fitted network and its
+realized function fixed while randomizing the group isolates the degradation the group alone
+causes, which the ladder's shared-versus-random contrast cannot.
+\item \textbf{A FLOPs-matched comparison against function access} (\S\ref{sec:s5}), in which
+weight access is dominated on both accuracy and inference cost.
 \end{enumerate}
 
-\paragraph{Headline result.} Transformations that change no network's function at all --- exact
-elements of $\Dinf \wr S_n$, applied either as an alignment to a fixed reference network or as an
-exact invariant encoding --- recover $63\%$, $66\%$ and $53\%$ of the perception gap on MNIST,
-FashionMNIST and CIFAR-10. These are algorithm-relative recoverable fractions, not causal shares: an exact reframing creates
-no function-level information, but it can still route an orbit-invariant property into a coordinate
-the reader finds accessible, so the inference from ``no information created'' to ``the gain measures
-nuisance removal'' does not hold (\S\ref{sec:bounds}). The causal quantity is measured separately,
-by intervening on the group directly (\S\ref{sec:orbit}). Meanwhile the interventions the literature
-most often reaches for
---- augmenting by group elements \citep{shamsian2024augmentations}, marginalizing over refits,
-averaging over a frame \citep{puny2022frame} --- never exceed $13\%$ on any dataset and stay under
-$6\%$ on both grayscale ones. The gap is largely symmetry; symmetry is largely not being removed
-by the usual tools; and \emph{which} exact method wins changes with the signal
-(\S\ref{sec:crossover}).
+We also report a mechanism for the initialization's dominance (\S\ref{sec:mechanism}), a
+capacity-matched comparison against equivariant reader architectures (\S\ref{sec:w11}), a
+falsification hunt against identifiability at depth two (\S\ref{sec:s4e}) built on an exact
+minimizer over $G$, and a calibration audit of the program's own interval forecasts
+(App.~\ref{sec:calibration}). Which components are ours and which are inherited is set out
+component by component in \S\ref{sec:related}, Table~\ref{tab:provenance}.
+
+\paragraph{Headline result.} A transformation that changes no network's function at all --- an
+exact element of $\Dinf \wr S_n$, applied as an alignment to a fixed reference network --- recovers
+$63\%$, $66\%$ and $32\%$ of the perception gap on MNIST, FashionMNIST and CIFAR-10. The exact
+invariant \emph{encoding} of \S\ref{sec:deep} recovers $27\%$, $43\%$ and $53\%$; we keep the two
+families separate throughout, because an encoding returns features rather than a parameter vector
+and its gain has to be separated from nonlinear feature engineering by a matched control
+(\S\ref{sec:control}). Both are algorithm-relative recoverable fractions rather than causal shares:
+an exact reframing creates no function-level information, but it can still route an orbit-invariant
+property into a coordinate the reader finds accessible, so the inference from ``no information
+created'' to ``the gain measures nuisance removal'' does not hold (\S\ref{sec:bounds}). The causal
+quantity is measured separately, by intervening on the group directly (\S\ref{sec:orbit}). Under our
+implementations and training budgets, the treatments most often applied to this nuisance ---
+augmenting by group elements \citep{shamsian2024augmentations}, marginalizing over refits, averaging
+over a frame \citep{puny2022frame} --- recover at most $13\%$ on any dataset and under $6\%$ on both
+grayscale ones. And \emph{which} exact method wins changes with the signal (\S\ref{sec:crossover}).
 
 % =====================================================================================
 \section{Setting and the symmetry group}\label{sec:group}
@@ -313,8 +326,7 @@ Bessel--Vandermonde matrices $[J_k(x_j)]$, and control of the infinite tail when
 is identified from finitely many observed coefficients. The rank lemma is numerically supported and
 looks completable; the same numerics show the system is severely ill-conditioned by $n=5$
 ($\min|\det|$ falling from $4.4\times10^{-3}$ to $4.4\times10^{-13}$ between $n=2$ and $n=5$), which
-is what motivated attacking the conjecture empirically instead (\S\ref{sec:s4e}). The attempt is
-released as a proof memo rather than buried.
+is what motivated attacking the conjecture empirically instead (\S\ref{sec:s4e}). The attempt is released as a proof memo.
 
 \begin{proposition}[No continuous canonicalization]\label{prop:po5}
 There is no continuous $\kappa : \Thgen \to \Thgen$ with $\kappa(\theta) \in \Orb(\theta)$ and
@@ -440,10 +452,23 @@ first-layer directions in a 2-D input space, minimal parallel angles are
 $3\times10^{-4}$--$2\times10^{-3}$\,rad, so orbits pass near the parallel stratum. That is a
 conditioning statement, not an identifiability failure, and we report it as such.
 
+\paragraph{Splits.} Splits are assigned by \emph{image}, and a schema check refuses a corpus whose
+image ids are not disjoint across train, validation and test; for \texttt{P-random-K} this puts all
+$K=8$ fitted views of an image in the same partition, and for the random-initialization protocols a
+second check enforces disjointness of \texttt{(init\_seed, fit\_seed)} pairs between test and the
+rest. The quality gates below are computed on the training and validation splits; no test cell was
+decoded before the corpus and the fitting protocol were accepted.
+
 \paragraph{Scale.} Three datasets $\times$ four protocols $=$ approximately $1.8$M fitted INRs,
-generated on a single Apple M4 laptop; the CIFAR-10 corpus alone is $540{,}000$ fits and
-$15.4$ hours of wall-clock. Every corpus, gate and audit is generated by a numbered, idempotent
-script.
+generated on a single Apple M4 laptop. CIFAR-10 alone is $540{,}000$ fits ($60$k $+$ $60$k $+$
+$60$k $+$ $8\times45$k) in $55{,}510$\,s of recorded wall-clock, i.e.\ $15.4$ hours at $9.7$ fits per
+second. That rate comes from fitting a whole shard as one batched optimization: the shard's INRs
+share the forward pass, with per-INR parameters carried in the leading tensor dimension, and
+per-INR losses share no parameters, so Adam on their mean is exactly independent per-INR Adam. A
+``fit'' is therefore an independently initialized and independently optimized parameter vector, not
+an independent process. Shard sizes, batch dimensions, peak memory, per-corpus wall-clock and the
+separate active-compute accounting are in the released compute ledger. Every corpus, gate and audit
+is generated by a numbered, idempotent script.
 
 % =====================================================================================
 \section{The decomposition ladder}\label{sec:ladder}
@@ -496,8 +521,17 @@ matrix, $0.721$ for rungs that redraw it each step), giving $n=5$ and $n=15$ res
 at $n=5$ the second class would have had TOST power $0.20$. Rung comparisons use paired-by-seed
 $t$ and Wilcoxon tests with Holm correction \citep{holm1979simple}, equivalence via TOST
 \citep{schuirmann1987tost}, and a label-shuffle control at W1, W3 and W5
-\citep{zhang2017rethinking}. Registered predictions are scored publicly, misses included
-(\S\ref{sec:calibration}).
+\citep{zhang2017rethinking}. All registered predictions are scored, and deviations and exploratory
+analyses are identified as such wherever they appear; the full ledger and its calibration are in
+App.~\ref{sec:calibration}.
+
+The registrations are \emph{sequential}, not one joint confirmatory experiment, and the sequence
+matters for how they should be read: the grayscale arm was registered first and its outcomes
+informed the CIFAR-10 predictions, which in turn informed the mechanism and identifiability arms;
+two identifiability rows were informed by an under-powered pilot and are flagged pilot-informed in
+the ledger. Sample sizes are also structured. The $1.8$M fitted INRs are not $1.8$M independent
+replications: the units of uncertainty are datasets, images, fit realizations and decoder seeds,
+and the paired tests here resolve only the last of those.
 
 % =====================================================================================
 \section{Results}\label{sec:results}
@@ -516,7 +550,7 @@ cross over (\S\ref{sec:crossover}); the three inexact treatments (grey) sit near
 
 \input{tables/ladder_table}
 
-\paragraph{The gap is real and enormous.} On MNIST, W1 $=94.36$ against W3 $=13.92$: a
+\paragraph{The size of the gap.} On MNIST, W1 $=94.36$ against W3 $=13.92$: a
 $\mathbf{80.4}$-point gap between two corpora of networks fitted to \emph{the same images}, with
 the same architecture, differing only in whether the initialization was shared. FashionMNIST gives
 $70.3$ points and CIFAR-10 $31.6$. X1 shows the two representations are not even rescalings of one
@@ -583,10 +617,10 @@ align to a random fixed network, never to a corpus member.
 
 \input{tables/gap_table}
 
-\paragraph{The tools the field reaches for do not work.} Across MNIST / FashionMNIST / CIFAR-10:
-bounded group augmentation recovers $f = 0.054 / 0.032 / 0.128$; $K$-marginalization
-$0.048 / 0.034 / 0.101$; frame averaging $0.003 / -0.008 / 0.001$. The largest of these
-anywhere is $0.128$, against $0.534$ for the best exact treatment on the same corpus. We had
+\paragraph{The inexact treatments recover little, under our implementations and budgets.} Across
+MNIST / FashionMNIST / CIFAR-10: bounded group augmentation recovers $f = 0.054 / 0.032 / 0.128$;
+$K$-marginalization $0.048 / 0.034 / 0.101$; frame averaging $0.003 / -0.008 / 0.001$. The largest
+of these anywhere is $0.128$, against $0.534$ for the best exact treatment on the same corpus. We had
 registered that marginalization would beat augmentation by $15$ points on MNIST; the observed
 difference was $-0.52$ ($p = .21$) because \emph{neither} works, and the null replicates on both
 later datasets ($+0.16$, $-0.84$; registered $0.0\,[-2,+2]$ for CIFAR-10 and hit). Of W7's small
@@ -596,18 +630,26 @@ three ($10.27 / 10.20 / 10.65$): augmenting inside a canonical frame destroys th
 decoder just gained. Frame averaging's failure is the expected one: parity-odd coordinates cancel
 toward zero, so it is a lossy invariantization where W10 is an exact one.
 
-The one place augmentation looks better is CIFAR-10, where its $0.128$ edges past $\csort$'s
-$0.108$ and past its own registered ceiling of $0.12$. We record it as a miss (H-C1-9) rather
-than round it away, but it does not change the ranking: an inexact treatment recovering an eighth
-of the gap where an exact one recovers a half is still the wrong tool.
+\paragraph{Scope of the three null results.} $\Dinf$ is infinite, so there is no uniform measure to
+average or augment over and no canonical approximation to group integration: W6 and W9 are
+instantiated at one winding distribution (uniform on $|j|\le3$), on raw bias coordinates, averaging
+features rather than predictions. A different truncation, a bias reduction modulo $2\pi$, or
+averaging at the prediction level could behave differently, and the augmentation distribution can
+itself put mass on bias magnitudes no fitted network occupies. W7 likewise consumes its $K$ views as
+independent training rows rather than jointly at inference, which is the weaker of the two things
+``marginalization'' can mean. What the ladder establishes is that \emph{these} instantiations
+recover at most $12.8\%$ of the gap; it does not establish that principled invariant integration
+cannot do better. The one place augmentation looks best is CIFAR-10, where its $0.128$ edges past
+$\csort$'s $0.108$ and past its own registered ceiling of $0.12$; we record that as a miss (H-C1-9)
+rather than round it away.
 
 % =====================================================================================
 \section{What the ladder measures, and what it does not}\label{sec:bounds}
 % =====================================================================================
 
 An earlier version of this paper claimed that $f$ is a certified lower bound on the share of the
-gap caused by symmetry. That claim is wrong, and the argument for it fails in an instructive way,
-so we state the failure rather than quietly weaken the wording.
+gap caused by symmetry. That claim is wrong. The argument for it fails at a specific step, which we set out
+because the same step is implicit elsewhere in this literature.
 
 The argument was: an exact reframing $c(\theta) \in G\theta$ preserves the function, so it creates
 no information about the represented signal, so any accuracy it buys must come from removing
@@ -683,6 +725,58 @@ phase component this paper emphasises matters empirically or only mathematically
 
 \input{tables/orbit_table}
 
+\paragraph{The group alone costs about as much as the whole observed gap.} Randomizing $g$ over the
+untouched \texttt{P-shared-det} corpus takes the decoder from $94.36\%$ to $15.3\%$, a
+$\Delta_{\mathrm{sym}}$ of $79.1$ points at $B=0$ and $79.1$ again at $B=10$. For comparison, the
+entire shared-versus-random gap on the same dataset is $80.4$ points. Known group scatter alone
+therefore reproduces nearly all of the degradation that independent initialization produces --- but
+the two are not the same intervention, and the recoveries differ in the informative direction:
+$\calign$ returns $83\%$ of $\Delta_{\mathrm{sym}}$ against $63\%$ of the observed gap, and the
+invariant encoding $73\%$ against $27\%$. Both treatments do markedly better against synthetic
+scatter than against independent fits. This is the comparison the ladder alone could not make, and
+it must be read with the caveat the registration named: the scattered corpus is a favourable case
+for $\calign$ by construction, since every scattered network is exactly a group image of one fitted
+from the template's own initialization.
+
+\paragraph{Within the group, reflection dominates and winding is nearly free.} With the permutation
+fixed to the identity, $\Delta_{\mathrm{sym}}$ is still $62.9$ points at $B=0$ and $64.1$ at
+$B=10$: of the $79$ points that the full group costs, roughly $63$ are already bought by
+per-neuron sign flips alone, about $15$ by relabelling $32$ neurons, and about $1$ by windings up
+to $|j|=10$. Two registered rows are badly missed by this. H-S6-1 put sign flips at $10$ points
+$[2,30]$ and H-S6-3 put the permutation share at $64$ $[45,76]$; the observed values are $62.9$ and
+$14.8$, i.e.\ the two components' roles are the reverse of what we registered, and the probability
+call P-S6-A ($0.80$ that permutations dominate) resolves against us.
+
+The consequence for this paper's framing is specific and cuts both ways. The $\Dinf$ component
+dominates the permutation component by four to one, which is the empirical case for treating the
+sine group as more than $S_n$. But \emph{within} $\Dinf$ it is the reflection generator $\sigma$
+that carries almost all of it, and $\sigma$ is exactly the part that monomial-matrix frameworks
+already cover for periodic activations \citep{tran2024monomial}. The affine phase component ---
+the piece outside every linear classification, and the one this paper's group-theoretic
+contribution turns on --- costs about one accuracy point at $B=10$ under this measure. It is
+mathematically necessary for the identifiability statement and empirically minor as a source of
+scatter, and we state it that way rather than letting the group's novelty imply the component's
+importance.
+
+% =====================================================================================
+\section{Is the invariant encoding's gain about invariance?}\label{sec:control}
+% =====================================================================================
+
+W10 is both a nonlinear feature map and a $G$-invariant one, so its accuracy attributes nothing to
+symmetry on its own; a map that is equally nonlinear and not invariant might do as well. S7 supplies
+the control the ladder was missing. Rung \textbf{W10c} emits, coordinate for coordinate, the same
+monomials in $(w,u)$ at the same trigonometric orders as W10, pooled by the same eigenvalue spectra
+under the same $\|w\|^2$ sort key, at the same dimension, decoded by the same frozen apparatus. Only
+the parity class of each trigonometric factor changes: $\sin b_i \sin b_l \to \cos b_i \cos b_l$
+against the Gram, $\cos b_i w_i \to \sin b_i w_i$, $\sin 2b_i w_i \to \cos 2b_i w_i$, and similarly
+per neuron and in layer two. The three matrices remain symmetric and still transform as
+$M \mapsto PMP^\top$, so W10c is \emph{still exactly permutation-invariant} and is broken only in
+$\Dinf$; the test suite asserts both halves, at a relative move above $10^{-2}$ under the full group
+and below $10^{-5}$ under permutations alone. The difference between the two rungs is therefore
+attributable to the $\Dinf$ component specifically.
+
+\input{tables/control_table}
+
 % =====================================================================================
 \section{The crossover: alignment and invariance trade places}\label{sec:crossover}
 % =====================================================================================
@@ -729,8 +823,7 @@ averaged    & the three channels' mean                 & 320 & 0.425 \\
 Truncating to one channel --- which restores exactly the grayscale encoding dimension --- costs
 only $0.077$. Against the $0.265$ rise from MNIST's $0.269$ to CIFAR's $0.534$, the channel count
 therefore explains about $29\%$; the other $71\%$ survives at $D = 320$ and is a property of the
-corpus, not of $c$. Our registered mechanism was right in direction and wrong in magnitude, and we
-say so rather than let the correct sign carry the whole explanation. (The \emph{averaged} arm is
+corpus, not of $c$. The registered mechanism is therefore right in direction and wrong in magnitude. (The \emph{averaged} arm is
 the useful control: it has the same dimension as \emph{truncated} and strictly more of the
 network's information, yet does \emph{worse}, so the effect is not ``more feature dimensions'' and
 not ``more information'' --- channel-averaging cancels the per-channel sign structure that
@@ -758,8 +851,8 @@ budget, with the output-channel count changed from three to one.
 
 \input{tables/gray_table}
 
-The conjecture is \textbf{wrong}, and the registration fixed in advance that it would then be
-withdrawn rather than softened. At $c=1$ the recovery fraction is $f(\mathrm{W5}) = 0.324$ ---
+The conjecture is \textbf{wrong}, and the registration fixed in advance that both calls resolving
+against it would withdraw rather than qualify it. At $c=1$ the recovery fraction is $f(\mathrm{W5}) = 0.324$ ---
 \emph{identical}, to three decimals, to the $0.324$ measured at $c=3$ on the same images --- and the
 crossover does not reverse ($f(\mathrm{W10}) = 0.493$, still above W5). Luminance CIFAR behaves like
 RGB CIFAR, not like the grayscale corpora. Both probability calls resolved against us.
@@ -772,10 +865,9 @@ fidelity does not buy alignment recovery.
 \paragraph{What survives.} Three candidate causes for the cross-dataset behaviour have now been
 tested and eliminated: fit length (parameter travel is identical across corpora), output-channel
 count (this arm), and render fidelity (this arm, in the helpful direction). What remains is image
-statistics --- natural scenes versus centred strokes and silhouettes --- and we deliberately do not
-offer a replacement mechanism here. The one we did offer was specific, well-motivated by the
-algebra, and false; the appropriate response is to report the eliminations and name the experiment
-that would identify the cause, not to supply a second story on the same evidence.
+statistics --- natural scenes versus centred strokes and silhouettes. We do not offer a replacement
+mechanism: the one we did offer was well motivated by the algebra and false, and a second
+explanation fitted to the same evidence would carry no more weight than the first.
 
 \paragraph{The practical reading.} On low-complexity grayscale corpora, choosing a good orbit
 representative is the dominant lever and an exact invariant front-end is a poor second. On natural
@@ -813,7 +905,7 @@ Two findings follow. First, \textbf{basin capture is non-monotone} in the initia
 with a sweet spot at range $\approx \omega$, and this replicates across optimizer classes
 (global-capture fractions $0.00/0.20/0.56/0.31$ for converged Adam, $0.00/0.18/0.58/0.33$ for
 plain gradient descent, $0.00/0.26/0.62/0.32$ for Nelder--Mead on the profiled surface at ranges
-$2/5/10/20$). Second, and decisively, \textbf{at the setting our corpora are actually fitted with}
+$2/5/10/20$). Second, \textbf{at the setting our corpora are actually fitted with}
 (Adam, $10^{-3}$, $300$ steps) \emph{every} initialization ends unconverged, with endpoint
 $\|\nabla\| \approx 0.5$--$0.7$ and median $|\Delta w| \approx 0.24$ \emph{independently of the
 initialization range}. The fit never leaves its initialization's neighbourhood --- the lazy regime
@@ -831,14 +923,12 @@ landscape. The headline non-monotonicity survives; the sub-claim does not.
 \end{remark}
 
 % =====================================================================================
-\section{The adjudication: weight access against function access}\label{sec:s5}
+\section{Weight access against function access}\label{sec:s5}
 % =====================================================================================
 
 Corollary~\ref{cor:ceiling} says a \emph{complete} $G$-invariant of the weights carries exactly the
-information of the realised function, so weight access can only win on \emph{compute}. We have been
-asserting that since \S\ref{sec:identifiability} on the strength of a proof. S5 measures it, and the
-registration predicted, at $P = 0.85$, that querying the function would beat every weight-space
-rung on \emph{both} axes.
+information of the realised function, so weight access can only win on \emph{compute}. S5 measures the comparison directly. The registration predicted, at $P = 0.85$, that querying the
+function would beat every weight-space rung on \emph{both} axes.
 
 \paragraph{The comparison.} Function access evaluates $f_\theta$ at $K$ \emph{learned} probe
 coordinates and classifies the outputs; nothing reads a weight, and our test suite certifies the
@@ -893,8 +983,8 @@ holds for targets that are functions of the realised signal; a property of the \
 that is not identifiable from the function is outside both access models' reach except through
 nuisance correlation. And it is measured at width 32, depth 2, on $10$-way classification. What it
 does settle is the case that has been made for weight-space learning on INR benchmarks of this kind,
-and the honest reading of \S\ref{sec:results}--\S\ref{sec:w11} in its light: those sections measure
-the structure of a representation that, for this task, one should think twice before choosing.
+and how \S\ref{sec:results}--\S\ref{sec:w11} should be read in its light: those sections measure
+the structure of a representation that, for this task, is not the one we would recommend choosing.
 
 % =====================================================================================
 \section{Reader architecture against frame choice}\label{sec:w11}
@@ -908,9 +998,11 @@ the missing comparison, pre-registered, in two variants.
 
 \textbf{W11a} is bipartite message passing on the raw weights --- layer-1 neurons, layer-2 neurons,
 $W^2$ as edges --- equivariant to $S_{n_1}\times S_{n_2}$ and \emph{not} invariant to $\Dinf$. That
-last property is the point rather than an oversight: it is the coverage the cited family has for
-sine networks, whose phase generators are affine and outside every monomial-matrix action, and our
-test suite asserts it as a negative control. \textbf{W11b} feeds W10's \emph{own} invariants --- the
+last property is deliberate and is asserted by the test suite as a negative control: it matches what
+the permutation-equivariant family covers for periodic activations, whose phase generators are
+affine and outside every monomial-matrix action. It is not a claim that no $\Dinf$-aware reader
+could be built --- \S\ref{sec:limits} names the phasor construction that would be the natural
+attempt. \textbf{W11b} feeds W10's \emph{own} invariants --- the
 per-neuron even scalars and the sign-cancelling matrices $A, B, C$ --- to an equivariant reader with
 \emph{learned} pooling in place of sorted eigenvalue spectra.
 
@@ -919,12 +1011,13 @@ so no row loses for being smaller.
 
 \input{tables/w11_table}
 
-\paragraph{Frame choice wins, at matched capacity.} $f(\mathrm{W11a}) = 0.265$ against
-$f(\mathrm{W5}) = 0.628$. A capacity-matched equivariant reader on raw weights recovers about the
-same share of the gap as an exact invariant encoding with lossy pooling ($0.269$), and less than
-half of what an exact change of frame recovers. The paper's practical claim survives its first
-test against a reader architecture --- bounded, as \S\ref{sec:limits} states, to this construction
-at this capacity on this corpus.
+\paragraph{Frame choice wins against this reader, at matched capacity.}
+$f(\mathrm{W11a}) = 0.265$ against $f(\mathrm{W5}) = 0.628$. A capacity-matched
+permutation-equivariant reader on raw weights recovers about the same share of the gap as an exact
+invariant encoding with lossy pooling ($0.269$), and less than half of what an exact change of frame
+recovers. The scope is this construction, at this capacity, on this corpus: what it shows is that
+permutation equivariance alone does not compensate for unmodelled phase symmetry as effectively as
+choosing a good orbit representative does, not that equivariance in general cannot.
 
 \paragraph{Replacing the encoding's pooling helps substantially.} W10 was limited to $0.269$;
 keeping its invariants and replacing sorted eigenvalue spectra with learned equivariant pooling
@@ -1016,9 +1109,8 @@ space rather than from a decoder.
 \paragraph{What this licenses.} Conjecture~\ref{conj:deep} survives, with one width's worth of
 direct positive evidence and no counterexample. But identifiability at $L=2$ has \emph{no empirical
 content at production width}: the configuration that would witness it is not reachable, and the
-optimiser will leave the true orbit even when placed on it. The honest statement for Ch.~1 is that
-the $L=1$ theorem is the guarantee we have, and that the $L=2$ corpora this paper decodes are
-governed by basin structure rather than by identifiability.
+optimiser will leave the true orbit even when placed on it. What this supports is that the $L=1$ theorem is the guarantee we have, and that the $L=2$ corpora
+this paper decodes are governed by basin structure rather than by identifiability.
 
 \begin{figure}[t]
 \centering
@@ -1032,85 +1124,88 @@ it --- the basin collapses with width. (c) The local condition number $\kappa$ a
 \end{figure}
 
 % =====================================================================================
-\section{Calibration of the program's own forecasts}\label{sec:calibration}
-% =====================================================================================
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{figures/fig3_calibration.pdf}
-\caption{\textbf{Scoring our own predictions.} (a) Every registered interval, rescaled to its own
-$[\text{lo80},\text{hi80}]$; blue is a hit, red a miss, arrows are off-scale. (b) Realized
-coverage against nominal. The intervals are too \emph{narrow}, not too wide.}
-\label{fig:calibration}
-\end{figure}
-
-Because every prediction was registered with an interval, the program can be scored as a
-forecaster \citep{gneiting2007scoring}. Through the two grayscale arms, realized coverage was
-$9/14 = 64\%$ against a nominal $80\%$: the intervals were too narrow. More useful than the number
-is that the failures fall into exactly two modes.
-
-\emph{Mode 1 --- hedging a registered mechanism toward priors from a different setting.} Three of
-the five early misses (the anchor gap, predicted $30\,[12,45]$, observed $80.4$; the CIFAR render
-fidelity, predicted $27\,[22,32]$\,dB, observed $40.1$; the alignment recovery, predicted
-$0.10\,[0.02,0.30]$, observed $0.628$) err in the same direction: our own mechanism predicted an
-extreme and we hedged toward the middle because a neighbouring literature, working in a different
-regime, reported milder effects. Where we trusted the mechanism instead --- the $80.4$-point gap,
-predicted to the decimal --- the intervals hit.
-
-\emph{Mode 2 --- registering a contrast that could not exist.} Two misses (optimization noise,
-predicted $+2.0$; marginalization-beats-augmentation, predicted $+15$) assumed a nuisance was
-present and then registered a difference between two ways of handling it. Both nuisances turned
-out to be null, so neither contrast \emph{could} have appeared at any magnitude.
-
-\paragraph{The CIFAR-10 arm was registered with those lessons applied, and is the cleaner test.}
-Seventeen intervals were frozen against a corpus that did not yet have a single decoded cell,
-after an explicit decision to register \emph{its own} magnitudes rather than inherit the MNIST
-ones --- because scoring the FashionMNIST arm against MNIST magnitudes had already produced one
-spurious ``miss'' that only careful write-up caught. (That failure mode is now blocked by the
-analysis script rather than by prose: an arm with no registration of its own prints
-\emph{not scored}.) \input{tables/cifar_scoreline}
-
-The two misses are the informative ones and they are the paper's finding, not a footnote to it:
-$f(\mathrm{W5})$ came in at half its registered value, and the bracket claim ``W10 lands between
-W4 and W5'' broke \emph{upward} because W10 overtook W5. Both are the crossover of
-\S\ref{sec:crossover}, seen from the registration's point of view. Meanwhile the probability call
-that ran on the encoding's algebra rather than on extrapolation --- $f(\mathrm{W10})$ would rise
-with the output-channel count --- resolved correctly.
-
-\paragraph{S4e, and a failure mode neither mode covers.} The identifiability hunt registered nine
-intervals and scored \textbf{7/9}. Its two misses are one event: the best functional residual at
-$n=2$ came in at $5.9\times10^{-8}$ against a registered $3\times10^{-4}\,[10^{-6}, 3\times10^{-3}]$,
-and the orbit residual there at $1.2\times10^{-7}$ against $0.35\,[0.05, 0.65]$ --- because the
-pilot that informed both predictions used $n=32$ restarts and never sampled the global basin, while
-the confirmatory run at $n=128$ did. Those rows were flagged \emph{pilot-informed} in the ledger
-before the run for exactly this reason, and they are the argument for that flag: an under-powered
-pilot mispredicts the powered run, and in this case in the direction that made the result better.
-
-S4e also exposed a third failure mode, which is about \emph{criteria} rather than point
-predictions: a pre-registered threshold can be under-specified in a way only data reveals
-(\S\ref{sec:s4e}, the missing absolute floor). The lesson we take is that a registered criterion
-should be checked against its instrument's resolution at registration time, and that is now part of
-the template.
-
-The luminance-CIFAR arm (\S\ref{sec:crossover}) scored $9/10$ and both of its probability calls
-resolved against a mechanism this paper had previously proposed, which is why that mechanism is
-withdrawn in \S\ref{sec:crossover} rather than qualified.
-
-We report all of this because the alternative, reporting the hits, would misrepresent how much of
-the final story was anticipated.
-
-% =====================================================================================
 \section{Related work}\label{sec:related}
 % =====================================================================================
+
+Table~\ref{tab:provenance} states the boundary component by component. We keep it in the main text
+rather than in an appendix because several of the ingredients this paper builds on are easy to
+mistake for its contributions. The full version, including the queries behind each ``new'' row, is
+released with the code as \texttt{docs/PROVENANCE.md}.
+
+\begin{table}[t]\centering\small
+\setlength{\tabcolsep}{4pt}
+\caption{\textbf{Provenance.} What this paper inherits and what it adds. A null keyword search is
+weak evidence of novelty, and the two rows marked $\ast$ rest on one: eight targeted arXiv queries
+(2026-08-03) returned no matching construction.}
+\label{tab:provenance}
+\begin{tabular}{@{}p{3.5cm}p{1.9cm}p{3.4cm}p{4.4cm}@{}}
+\toprule
+component & status & closest prior work & what is ours \\
+\midrule
+$\sigma$ (neuron negation) and $\rho$ (integer-$\pi$ bias shift) preserve $f_\theta$
+ & prior work
+ & \citet{shamsian2024augmentations} use both as SIREN augmentations; \citet{tran2024monomial} fold
+   $\sigma$ into a monomial framework
+ & nothing; cited at first mention \\
+\addlinespace[2pt]
+the group they generate, $\Dinf\wr S_n$
+ & ours
+ & \citet{tran2024monomial} classify \emph{linear} actions and leave the general sine case open
+ & the closure, the normal form, and that the phase generators are affine and hence outside every
+   monomial action (Thm~\ref{thm:po1}) \\
+\addlinespace[2pt]
+generic identifiability at $L=1$
+ & ours
+ & \citet{hechtnielsen1990algebraic,sussmann1992uniqueness,fefferman1994reconstructing}
+ & the periodic analogue by Fourier atoms, on an explicit measurable stratum
+   (Thm~\ref{thm:po2}) \\
+\addlinespace[2pt]
+no continuous canonicalization
+ & specialization
+ & \citet{dym2024impossibility} prove the general obstruction
+ & the sine instance, and that it is global rather than confined to sorting ties
+   (Prop.~\ref{prop:po5}) \\
+\addlinespace[2pt]
+complete invariants $=$ function access
+ & consequence
+ & quotient factorization; the universality line
+ & only its specialization to the orbit equivalence of Thm~\ref{thm:po2}
+   (Prop.~\ref{prop:po6}) \\
+\addlinespace[2pt]
+cross-layer $L=2$ invariants via the second-layer Gram
+ & claimed new$^\ast$
+ & per-neuron monomial invariants; the breakage at $L\ge2$ is noted in
+   \citet{tran2024monomial} but not repaired for the phase group
+ & $A,B,C$, the parity bookkeeping that makes them sign-cancelling, and their spectra
+   (Prop.~\ref{prop:deep}) \\
+\addlinespace[2pt]
+alignment to a fixed reference over the full group
+ & extension
+ & Git Re-Basin \citep{ainsworth2023rebasin}; \citet{entezari2022lmc}
+ & the exact per-neuron $\Dinf$ minimizer inside the assignment, and that any fixed reference
+   network serves \\
+\addlinespace[2pt]
+the shared-vs-random initialization gap
+ & prior observation
+ & \citet{deluigi2023inr2vec,papa2024howtotrain}
+ & replicated as a pre-registered anchor, then decomposed \\
+\addlinespace[2pt]
+orbit-only intervention; matched non-invariant control
+ & ours$^\ast$
+ & none known
+ & \S\ref{sec:orbit}, \S\ref{sec:control}; both were added in response to external review \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{Weight-space architectures.} DWSNets \citep{navon2023dws}, NFN/NFT
 \citep{zhou2023nfn,zhou2023nft}, graph metanetworks \citep{lim2024gmn,kofinas2024graph},
 universal neural functionals \citep{zhou2024unf} and ScaleGMN \citep{kalogeropoulos2024scalegmn}
 build permutation --- and sometimes sign or scaling --- equivariance into the reader.
 \citet{tran2024monomial} classify monomial-matrix symmetries and prove maximality among linear
-actions. Our contribution is orthogonal and prior: we identify the group exactly for periodic
-activations, including its \emph{affine} phase component that no linear classification can see,
-and then measure how much of the empirical difficulty that group actually accounts for.
+actions, which is the closest statement to Theorem~\ref{thm:po1} in the literature; what it cannot
+reach is the affine phase component, and what it does not attempt is the empirical question of how
+much of the difficulty the group accounts for.
 
 \paragraph{Symmetry, alignment and canonicalization.} Git Re-Basin \citep{ainsworth2023rebasin}
 and the linear-mode-connectivity line \citep{entezari2022lmc} align networks by permutation for
@@ -1161,13 +1256,36 @@ parameter budget as the decoder it replaces, does not substitute for choosing a 
 representative --- and that the phase component of $G$, which none of these architectures covers
 for sine networks, is a plausible reason.
 
-\textbf{Signal complexity is confounded with two other things.} CIFAR-10 differs from the
-grayscale corpora in image statistics, in output channel count ($c=3$ vs $c=1$) and in fit budget
-($1000$ vs $300$ steps). We ruled out the third directly (\S\ref{sec:crossover}: parameter travel
-is indistinguishable across all three), and the second is the mechanism our registration named for
-W10's rise --- but the first two remain entangled, and separating them needs a $c=1$ natural-image
-corpus (grayscale CIFAR) or a $c=3$ simple one. That is one corpus generation, and it is the next
-experiment we would run.
+\textbf{No $\Dinf$-aware reader was built.} The natural construction, and the one we would attempt
+next, replaces the raw bias by its phasor $(\cos b, \sin b)$, which removes the integer $2\pi$
+translation at the level of the representation and leaves reflection and parity to be carried by
+finite-dimensional linear maps on real and complex features. That is a cleaner object than
+canonicalizing an unbounded bias coordinate, and it is the comparison that would make the
+architecture question in \S\ref{sec:w11} decisive rather than indicative.
+
+\textbf{Signal complexity remains confounded with image statistics.} CIFAR-10 differed from the
+grayscale corpora in three ways: image statistics, output-channel count and fit budget. Two are now
+ruled out --- fit budget by the travel measurement and channel count by the luminance arm, both in
+\S\ref{sec:crossover} --- which leaves image statistics as the surviving candidate and no
+experiment here that isolates it. A $c=1$ natural-image corpus at the grayscale fit budget, or a
+synthetic corpus that interpolates image statistics at fixed everything else, is what would.
+
+\textbf{The mechanism is evidenced by displacement, not by linearization.} \S\ref{sec:mechanism}
+argues the fits stay in their initialization's neighbourhood, and measures relative parameter travel
+and direction cosine. Those are not the standard diagnostics of a lazy or NTK regime: we do not
+measure Jacobian or kernel drift, the error of the first-order linearization, or the accuracy of the
+corresponding linearized model. The production fits are also not at a stationary point --- the
+microcosm at the corpus budget ends with $\|\nabla\|\approx0.5$--$0.7$ --- so what we have shown may
+be specific to high-fidelity but early-stopped fits. A convergence sweep across step budgets,
+learning rates and optimizers, with checkpoints matched by PSNR as well as by iteration, would
+decide whether the recoverable fraction survives convergence. It is the single experiment we would
+most want added, and we have not run it.
+
+\textbf{Capacity is matched by rule, not across a frontier.} The decoder template is frozen, but
+input dimension changes across feature maps, so parameter counts do too: W10's MLP is $0.99$M
+against $1.85$--$1.87$M for W11b and W5. W11a and W11b are sized to the decoder within $1.5\%$; W10
+is not, and the comparisons involving it should be read with that in mind. A capacity and
+training-compute frontier, rather than single matched points, is the stronger design.
 
 \textbf{Identifiability is proved only at $L=1$, and every experiment here is $L=2$.} This remains
 the program's weakest theoretical link: Theorem~\ref{thm:po2}'s guarantee and our corpora do not
@@ -1186,6 +1304,19 @@ minimal parallel angles of $3\times10^{-4}$\,rad mean orbits pass close to the s
 identifiability genuinely fails. \textbf{All results are single-device (Apple MPS)}; a CUDA
 replication of one headline table is owed. \textbf{Widths are 32--64}; the Hungarian assignment is
 $O(n^3)$ per layer and an amortized or Sinkhorn path is required before this scales to width 1024.
+
+\textbf{The empirical domain is narrow.} Three image datasets, one architecture family, one width,
+one depth, one initialization distribution, $10$-way classification. Nothing here speaks to audio,
+to 3-D occupancy or radiance fields, to deeper or wider SIRENs, or to targets that are properties of
+the training run rather than of the represented signal --- and that last category is where the case
+for weight access is strongest, because it is the one place Corollary~\ref{cor:ceiling} does not
+reach.
+
+\textbf{The uncertainty analysis resolves one level of five.} Comparisons use $n=5$ paired decoder
+seeds, which is adequate for the decoder-seed level and nothing else. Images, fit realizations,
+protocols and datasets are the other levels of variation, and the $1.8$M fitted INRs do not make
+them independent replications; a hierarchical resampling that reports the variance decomposition
+across those levels would be the right analysis and is not what we ran.
 
 % =====================================================================================
 \section{Conclusion}
@@ -1457,5 +1588,76 @@ A.~Zhou, C.~Finn, and J.~Harrison.
 \newblock In \emph{NeurIPS}, 2024. arXiv:2402.05232.
 
 \end{thebibliography}
+
+% =====================================================================================
+\appendix
+\normalsize
+% =====================================================================================
+\section{Calibration of the program's own forecasts}\label{sec:calibration}
+% =====================================================================================
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig3_calibration.pdf}
+\caption{\textbf{Scoring our own predictions.} (a) Every registered interval, rescaled to its own
+$[\text{lo80},\text{hi80}]$; blue is a hit, red a miss, arrows are off-scale. (b) Realized
+coverage against nominal. The intervals are too \emph{narrow}, not too wide.}
+\label{fig:calibration}
+\end{figure}
+
+Because every prediction was registered with an interval, the program can be scored as a
+forecaster \citep{gneiting2007scoring}. Through the two grayscale arms, realized coverage was
+$9/14 = 64\%$ against a nominal $80\%$: the intervals were too narrow. More useful than the number
+is that the failures fall into exactly two modes.
+
+\emph{Mode 1 --- hedging a registered mechanism toward priors from a different setting.} Three of
+the five early misses (the anchor gap, predicted $30\,[12,45]$, observed $80.4$; the CIFAR render
+fidelity, predicted $27\,[22,32]$\,dB, observed $40.1$; the alignment recovery, predicted
+$0.10\,[0.02,0.30]$, observed $0.628$) err in the same direction: our own mechanism predicted an
+extreme and we hedged toward the middle because a neighbouring literature, working in a different
+regime, reported milder effects. Where we trusted the mechanism instead --- the $80.4$-point gap,
+predicted to the decimal --- the intervals hit.
+
+\emph{Mode 2 --- registering a contrast that could not exist.} Two misses (optimization noise,
+predicted $+2.0$; marginalization-beats-augmentation, predicted $+15$) assumed a nuisance was
+present and then registered a difference between two ways of handling it. Both nuisances turned
+out to be null, so neither contrast \emph{could} have appeared at any magnitude.
+
+\paragraph{The CIFAR-10 arm was registered with those lessons applied, and is the cleaner test.}
+Seventeen intervals were frozen against a corpus that did not yet have a single decoded cell,
+after an explicit decision to register \emph{its own} magnitudes rather than inherit the MNIST
+ones --- because scoring the FashionMNIST arm against MNIST magnitudes had already produced one
+spurious ``miss'' that only careful write-up caught. (That failure mode is now blocked by the
+analysis script rather than by prose: an arm with no registration of its own prints
+\emph{not scored}.) \input{tables/cifar_scoreline}
+
+The two misses are the informative ones and they are the paper's finding, not a footnote to it:
+$f(\mathrm{W5})$ came in at half its registered value, and the bracket claim ``W10 lands between
+W4 and W5'' broke \emph{upward} because W10 overtook W5. Both are the crossover of
+\S\ref{sec:crossover}, seen from the registration's point of view. Meanwhile the probability call
+that ran on the encoding's algebra rather than on extrapolation --- $f(\mathrm{W10})$ would rise
+with the output-channel count --- resolved correctly.
+
+\paragraph{S4e, and a failure mode neither mode covers.} The identifiability hunt registered nine
+intervals and scored \textbf{7/9}. Its two misses are one event: the best functional residual at
+$n=2$ came in at $5.9\times10^{-8}$ against a registered $3\times10^{-4}\,[10^{-6}, 3\times10^{-3}]$,
+and the orbit residual there at $1.2\times10^{-7}$ against $0.35\,[0.05, 0.65]$ --- because the
+pilot that informed both predictions used $n=32$ restarts and never sampled the global basin, while
+the confirmatory run at $n=128$ did. Those rows were flagged \emph{pilot-informed} in the ledger
+before the run for exactly this reason, and they are the argument for that flag: an under-powered
+pilot mispredicts the powered run, and in this case in the direction that made the result better.
+
+S4e also exposed a third failure mode, which is about \emph{criteria} rather than point
+predictions: a pre-registered threshold can be under-specified in a way only data reveals
+(\S\ref{sec:s4e}, the missing absolute floor). The lesson we take is that a registered criterion
+should be checked against its instrument's resolution at registration time, and that is now part of
+the template.
+
+The luminance-CIFAR arm (\S\ref{sec:crossover}) scored $9/10$ and both of its probability calls
+resolved against a mechanism this paper had previously proposed, which is why that mechanism is
+withdrawn in \S\ref{sec:crossover} rather than qualified.
+
+Reporting only the hits would misrepresent how much of the final story was anticipated.
+
 
 \end{document}

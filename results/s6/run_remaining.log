@@ -1,1 +1,14 @@
 === waiting for the earlier S6 arms Mon Aug  3 00:01:57 +03 2026 ===
+=== waiting for the earlier S6 arms Mon Aug  3 00:20:36 +03 2026 ===
+--- arm (iii): equivariant readers at B=3 Mon Aug  3 01:45:10 +03 2026 ---
+baseline (no scatter): 94.36
+  B=  3 raw           15.57
+  B=  3 c_sort        61.12
+  B=  3 c_align       83.52
+  B=  3 invariants    72.26
+  B=  3 W11a          65.26
+baseline (no scatter): 94.36
+  B=  3 raw           15.57
+  B=  3 c_sort        61.12
+  B=  3 c_align       83.52
+  B=  3 invariants    72.26
