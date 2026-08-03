@@ -1393,18 +1393,17 @@ parameter budget as the decoder it replaces, does not substitute for choosing a 
 representative --- and that the phase component of $G$, which none of these architectures covers
 for sine networks, is a plausible reason.
 
-\textbf{The $\Dinf$-aware reader we built consumes an invariant front-end rather than raw
-parameters.} W11b is $G$-invariant, and it is the best weight-space reader here that needs neither
-template nor assignment ($f = 0.526$) --- but it is invariant \emph{because} its input is already
-W10's invariants, so its ceiling inherits whatever that family discards. A reader that handles
-$\Dinf$ on the parameters directly is a different and probably better object. The natural
-construction replaces the raw bias by its phasor $(\cos b, \sin b)$, which removes the integer
-$2\pi$ translation at the level of the representation and leaves reflection and parity to be carried
-by finite-dimensional linear maps; equivalently, one can read the shallow network as the atomic
+\textbf{The $\Dinf$-aware reader is built at $L=2$ only, and by one route.} W12
+(\S\ref{sec:w11}) quotients the group on the raw parameters, and it is the strongest weight-space
+result in this paper --- but its grading is derived for two hidden layers, and extending it needs
+one $\Z_2\times\Z_2$ per layer with the coupling matrices graded on both sides, which we have not
+written down for $L\ge3$. A second route we did not take reads the shallow network as the atomic
 measure of \eqref{eq:atoms}, whose atoms at $\pm w_i$ with coefficient proportional to
 $u_i e^{\mathrm i b_i}$ quotient the phase shift automatically and turn orientation reversal into
-complex conjugation. We did not build either, and it is the comparison that would make the
-architecture question in \S\ref{sec:w11} decisive rather than indicative.
+complex conjugation; that is likely the cleaner object and it is not obviously equivalent to the
+graded construction. Finally, W12 is decoded on one corpus: whether the ordering it produces holds
+on natural images, where the two exact treatments already trade places (\S\ref{sec:crossover}), is
+untested.
 
 \textbf{Signal complexity remains confounded with image statistics.} CIFAR-10 differed from the
 grayscale corpora in three ways: image statistics, output-channel count and fit budget. Two are now
