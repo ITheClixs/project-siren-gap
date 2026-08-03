@@ -82,11 +82,17 @@ def decode(feats: dict, labels: dict, device: str, seeds: int) -> dict:
     return {"acc": accs, "mean": float(a.mean()), "ci95": bootstrap_ci_mean(a)}
 
 
-def run_budget(steps: int, dataset: str, root: Path, device: str, seeds: int) -> dict:
+def run_budget(steps: int, dataset: str, root: Path, device: str, seeds: int,
+               smoke: bool = False) -> dict:
     cache = CorpusCache(root / dataset, dataset)
     shared, random_ = f"P-shared-det-s8s{steps}", f"P-random-s8s{steps}"
     sh_split, sh_labels = cache.split_params(shared)
     rn_split, rn_labels = cache.split_params(random_)
+
+    if smoke:  # nothing decoded here estimates a registered quantity
+        g = torch.Generator().manual_seed(0)
+        for lab in (sh_labels, rn_labels):
+            lab["train"] = lab["train"][torch.randperm(len(lab["train"]), generator=g)]
 
     template = shared_init_template(rn_split["train"])
     probes = probe_coords(dataset)
@@ -159,7 +165,22 @@ def main() -> None:
     ap.add_argument("--seeds", type=int, default=SEEDS)
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--root", default="data/inrbench")
+    ap.add_argument("--smoke", action="store_true",
+                    help="engineering check: shuffles the training labels, so nothing decoded is "
+                         "an estimate of a registered quantity, and writes no report")
     args = ap.parse_args()
+
+    # The mechanical guard of docs/prereg/S8-addendum-01.md. A pre-run check on registered
+    # quantities is exposure even when it is not meant as a measurement; twice in one day a
+    # written lesson failed to prevent it, so the guard lives in code now.
+    downgraded = args.device == "cpu" and torch.backends.mps.is_available()
+    if not args.smoke and (args.seeds != SEEDS or downgraded):
+        raise SystemExit(
+            f"refusing to write a report off-protocol (seeds={args.seeds}, device={args.device}); "
+            f"the registration fixes n={SEEDS}. Use --smoke for an engineering check, which "
+            "shuffles the training labels and writes nothing. (A CPU or CUDA replication on a "
+            "machine without MPS is not off-protocol and is allowed.)"
+        )
 
     root = Path(args.root)
     out_dir = ROOT / "results" / "s8"
@@ -170,7 +191,7 @@ def main() -> None:
         if not (root / args.dataset / f"P-random-s8s{steps}").exists():
             print(f"skipping {steps}: corpus not present")
             continue
-        r = run_budget(steps, args.dataset, root, args.device, args.seeds)
+        r = run_budget(steps, args.dataset, root, args.device, args.seeds, args.smoke)
         by_steps[steps] = r
         d = r["diagnostics"]["random"]
         print(f"steps={steps:6d}  W1={r['cells']['W1']['mean']:.2f}  "
@@ -203,6 +224,9 @@ def main() -> None:
               f"P-S8-A {report['P-S8-A']}, P-S8-B {report['P-S8-B']}, "
               f"P-S8-C {report.get('P-S8-C')}")
 
+    if args.smoke:
+        print("\nsmoke run: labels were shuffled and no report is written")
+        return
     (out_dir / "sweep.json").write_text(json.dumps(report, indent=2))
     print(f"\nwrote {out_dir / 'sweep.json'}")
 
