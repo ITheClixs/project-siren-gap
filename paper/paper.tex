@@ -1436,6 +1436,14 @@ parameter budget as the decoder it replaces, does not substitute for choosing a 
 representative --- and that the phase component of $G$, which none of these architectures covers
 for sine networks, is a plausible reason.
 
+\textbf{The attribution of W12's gain is only half-resolved.} The matched control isolates the
+layer-level grading and finds it worth a small part of the total (\S\ref{sec:w11}), which leaves the
+larger part with the phasor-lifted \emph{feature map} and the message architecture together. Those
+two are not separated here. The control that would separate them is a third arm with the same graded
+skeleton reading the \emph{raw} bias instead of its phasor; without it, the step from a
+permutation-equivariant reader on raw weights to this one conflates a change of coordinates with a
+change of architecture, and we do not claim otherwise.
+
 \textbf{The $\Dinf$-aware reader is built at $L=2$ only, and by one route.} W12
 (\S\ref{sec:w11}) quotients the group on the raw parameters, and it is the strongest weight-space
 result in this paper --- but its grading is derived for two hidden layers, and extending it needs
