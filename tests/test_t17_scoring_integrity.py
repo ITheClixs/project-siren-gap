@@ -65,6 +65,54 @@ def test_s5_scorer_refuses_to_double_score() -> None:
     assert "refusing to double-score" in out, out[-400:]
 
 
+def _load_sweep_module():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "s8_sweep", ROOT / "scripts" / "48_s8_sweep.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _fake_report() -> dict:
+    mod = _load_sweep_module()
+    reg = {k: {"statement": s, "point": p, "interval": [lo, hi],
+               "observed": lo, "verdict": "HIT"}
+           for k, (s, p, (lo, hi)) in mod.REGISTERED.items()}
+    return {"registered": reg, "P-S8-A": True, "P-S8-B": True, "P-S8-C": False}
+
+
+def test_s8_ledger_rows_cover_every_registered_call() -> None:
+    mod = _load_sweep_module()
+    rows = mod.ledger_rows(_fake_report())
+    names = {r["prediction"].split()[0] for r in rows}
+    assert names == set(mod.REGISTERED) | set(mod.REGISTERED_P)
+    briers = {r["prediction"].split()[0]: r["brier"] for r in rows if r["kind"] == "probability"}
+    assert briers["P-S8-A"] == pytest.approx(0.09)   # p=0.70, happened
+    assert briers["P-S8-C"] == pytest.approx(0.36)   # p=0.60, did not happen
+
+
+def test_s8_ledger_refuses_to_double_score(tmp_path, monkeypatch) -> None:
+    mod = _load_sweep_module()
+    report = _fake_report()
+    ledger = tmp_path / "PREDICTION_OUTCOMES.csv"
+    header = ("date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,note\n")
+    ledger.write_text(header)
+    monkeypatch.setattr(mod, "OUTCOMES", ledger)
+
+    mod.append_ledger(report, rescore=False)
+    first = ledger.read_text().count("\n")
+    assert first == len(mod.ledger_rows(report)) + 1
+
+    with pytest.raises(SystemExit, match="double-score"):
+        mod.append_ledger(report, rescore=False)
+    assert ledger.read_text().count("\n") == first, "a refused append must not write"
+
+    mod.append_ledger(report, rescore=True)
+    assert ledger.read_text().count("\n") == 2 * first - 1
+
+
 def test_every_ledger_writer_is_covered_by_the_uniqueness_invariant() -> None:
     """The per-script guard exists only on the S5 path; uniqueness is what catches the rest.
 

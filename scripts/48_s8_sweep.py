@@ -57,6 +57,61 @@ REGISTERED = {
     "H-S8-8": ("f(W10) at 10000 steps", 0.25, (0.05, 0.45)),
 }
 FALSIFIER = 0.15  # f(W5) below this at the largest budget rescopes every ladder claim
+# registered in docs/prereg/S8.md section 5, before any corpus was fitted
+REGISTERED_P = {
+    "P-S8-A": ("probability f(W5) at 10000 steps is still above 0.30", 0.70),
+    "P-S8-B": ("probability the W1-W3 gap at 10000 steps is still at least 50 points", 0.80),
+    "P-S8-C": ("probability the median relative gradient norm falls 10x from 300 to 10000 steps",
+               0.60),
+}
+OUTCOMES = ROOT / "docs" / "PREDICTION_OUTCOMES.csv"
+DATE = "2026-08-04"
+
+
+def ledger_rows(report: dict) -> list[dict]:
+    """The frozen S8 calls as PREDICTION_OUTCOMES rows. Scored once, when all arms exist."""
+    rows = []
+    for key, r in report.get("registered", {}).items():
+        rows.append({
+            "date_scored": DATE, "prediction": f"{key} {r['statement']}", "kind": "interval",
+            "point": r["point"], "lo80": r["interval"][0], "hi80": r["interval"][1],
+            "observed": round(float(r["observed"]), 6), "verdict": r["verdict"],
+            "abs_error": round(abs(float(r["observed"]) - r["point"]), 6), "brier": "", "note": "",
+        })
+    for key, (stmt, p) in REGISTERED_P.items():
+        if key not in report:
+            continue
+        happened = bool(report[key])
+        rows.append({
+            "date_scored": DATE, "prediction": f"{key} {stmt}", "kind": "probability",
+            "point": p, "lo80": "", "hi80": "", "observed": int(happened), "verdict": "—",
+            "abs_error": "", "brier": round((p - happened) ** 2, 4),
+            "note": report.get("ledger_note", {}).get(key, ""),
+        })
+    return rows
+
+
+def append_ledger(report: dict, rescore: bool) -> None:
+    """Write the S8 rows, with the append-once guard of CLAIMS row 54."""
+    import csv
+
+    rows = ledger_rows(report)
+    if not rows:
+        return
+    with OUTCOMES.open(newline="") as fh:
+        already = {r["prediction"] for r in csv.DictReader(fh)}
+    clash = sorted({r["prediction"] for r in rows} & already)
+    if clash and not rescore:
+        raise SystemExit(
+            f"refusing to double-score: {len(clash)} S8 predictions are already in "
+            f"{OUTCOMES.name} (first: {clash[0]!r}). Pass --rescore only after removing the "
+            "superseded rows."
+        )
+    with OUTCOMES.open(newline="") as fh:
+        fieldnames = list(csv.DictReader(fh).fieldnames)
+    with OUTCOMES.open("a", newline="") as fh:
+        csv.DictWriter(fh, fieldnames=fieldnames).writerows(rows)
+    print(f"appended {len(rows)} rows to {OUTCOMES}")
 
 
 def diagnostics(cache: CorpusCache, protocol: str, root: Path, dataset: str) -> dict:
@@ -168,6 +223,11 @@ def main() -> None:
     ap.add_argument("--smoke", action="store_true",
                     help="engineering check: shuffles the training labels, so nothing decoded is "
                          "an estimate of a registered quantity, and writes no report")
+    ap.add_argument("--no-ledger", action="store_true",
+                    help="write sweep.json but not the PREDICTION_OUTCOMES rows")
+    ap.add_argument("--rescore", action="store_true",
+                    help="permit appending predictions already in the ledger; the caller must "
+                         "remove the superseded rows first")
     args = ap.parse_args()
 
     # The mechanical guard of docs/prereg/S8-addendum-01.md. A pre-run check on registered
@@ -229,6 +289,15 @@ def main() -> None:
         return
     (out_dir / "sweep.json").write_text(json.dumps(report, indent=2))
     print(f"\nwrote {out_dir / 'sweep.json'}")
+
+    # The ledger is written only when every registered arm exists, so a partial sweep cannot
+    # score a call that the missing budget would have decided. Transcribing these by hand is
+    # what went wrong on the S5 path (CLAIMS row 54), so the scorer does it.
+    if {300, 10000} <= set(by_steps) and not args.no_ledger:
+        append_ledger(report, args.rescore)
+    elif not args.no_ledger:
+        missing = {300, 10000} - set(by_steps)
+        print(f"ledger not written: the registered set needs budgets {sorted(missing)}")
 
 
 if __name__ == "__main__":
