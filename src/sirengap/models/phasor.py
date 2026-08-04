@@ -58,10 +58,20 @@ def _add(x: Character, y: Character) -> Character:
     return ((x[0] + y[0]) % 2, (x[1] + y[1]) % 2)
 
 
-def phasor_features(params: SirenParams) -> dict[str, dict[Character, Tensor]]:
+def phasor_features(params: SirenParams,
+                    raw_bias: bool = False) -> dict[str, dict[Character, Tensor]]:
     """Graded node features and the coupling matrix: no learned parameters, no pooling.
 
     Returns {"l1": {char: [B, n, d]}, "l2": {char: [B, p, d]}, "edge": [B, p, n]}.
+
+    With ``raw_bias=True`` the bias is *not* lifted: every trigonometric channel of $b$ is
+    dropped and $b$ itself enters once, in the sign-covariant block, which is where it would go
+    under the naive reading that ignores the winding. That is rung W12b, the control which
+    separates the change of coordinates from the change of architecture -- it keeps the graded
+    skeleton, the block structure and the edge coupling exactly, and changes only what the
+    feature map hands them. It is necessarily *not* invariant, because a winding
+    $b \\mapsto b + \\pi j$ is precisely what the phasor lift quotients and the raw bias does not;
+    T18 asserts that it moves under one.
     """
     if params.n_layers != 2:
         raise ValueError(f"phasor_features is derived for L=2 (got L={params.n_layers})")
@@ -74,6 +84,25 @@ def phasor_features(params: SirenParams) -> dict[str, dict[Character, Tensor]]:
     ones_n = torch.ones_like(b1)[:, :, None]
     ones_p = torch.ones_like(b2)[:, :, None]
     e2 = e * e
+
+    if raw_bias:
+        empty_n = b1.new_zeros(b1.shape[0], b1.shape[1], 0)
+        empty_p = b2.new_zeros(b2.shape[0], b2.shape[1], 0)
+        l1 = {
+            (0, 0): torch.cat([(w1 * w1).sum(2, keepdim=True),
+                               e2.sum(1).unsqueeze(2), ones_n], dim=2),
+            (1, 0): torch.cat([w1, b1[:, :, None]], dim=2),
+            (0, 1): empty_n,
+            (1, 1): empty_n,
+        }
+        l2 = {
+            (0, 0): torch.cat([e2.sum(2, keepdim=True), (u * u).sum(2, keepdim=True),
+                               ones_p], dim=2),
+            (1, 0): b2[:, :, None],
+            (0, 1): empty_p,
+            (1, 1): u,
+        }
+        return {"l1": l1, "l2": l2, "edge": e}
 
     l1: dict[Character, Tensor] = {
         (0, 0): torch.cat([(w1 * w1).sum(2, keepdim=True), torch.cos(2 * b1)[:, :, None],
