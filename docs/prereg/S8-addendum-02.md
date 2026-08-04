@@ -58,8 +58,30 @@ three earlier arms, which are separate registered cells decoded on protocol.
 - **0.85** — **H-S8-4 hits**: $f(\mathrm{W5})$ at 10000 steps is inside $[0.20, 0.65]$.
 - **0.88** — **H-S8-5 hits**: $f(\mathrm{W5})$ at 10000 minus at 300 is inside $[-0.40, +0.05]$
   (it is $-0.032$ at 3000).
-- **0.60** — median PSNR on the shared corpus at 10000 steps is in $[58, 66]$ dB, i.e. the same
-  band the 3000-step arm occupies rather than above 1000's 69.2 dB.
+- ~~**0.60** — median PSNR on the shared corpus at 10000 steps is in $[58, 66]$ dB.~~
+  **Withdrawn as a call; see the declared exposure below. It is reported as an observation, not
+  scored.**
+
+## Declared exposure — the PSNR call was contaminated when I wrote it
+
+`03_generate_inrbench.py` prints a per-shard median PSNR to `results/s8/run_master.log`, the same
+file the decode writes to, in the form `shard_011008: 256 fits in 823.3s psnr_med=58.0dB`. I had
+read several of those lines while checking that the resumed chain was alive, **before** writing the
+PSNR call above, and they sit at 57.6–59.3 dB across the 10000-step shards. So that call was
+informed by fitted values of the quantity it predicts, and betting a $[58,66]$ band was not a
+forecast. It is struck out rather than deleted, and the shard PSNRs are reported as an observation.
+
+The other five calls are clean: the generator prints PSNR and throughput only. Endpoint gradient
+norm, parameter travel and every $f$ are computed by `48_s8_sweep.py` at decode time, which has not
+run at this budget, and none of them appears anywhere in the log. The seed-count guard added in
+`48_s8_sweep.py` still holds for the decode itself.
+
+This is the third exposure in this study's family (`S8-addendum-01`, `S9-addendum-01`) and the first
+one caught *in the same session that created it* rather than afterwards. The generalizable defect:
+a long-running generator and a scorer that writes registered quantities share one log file, so
+monitoring the job at all exposes one of the quantities. Separating the generator's progress log
+from the results log is the mechanical fix, and it is recorded as owed rather than done here,
+because changing the log path mid-chain would break the resume.
 
 ## What follows if the first three resolve as stated
 
