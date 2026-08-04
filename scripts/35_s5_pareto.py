@@ -54,6 +54,7 @@ from sirengap.eval.stats import bootstrap_ci_mean  # noqa: E402
 from sirengap.models.params import SirenParams  # noqa: E402
 
 MAX_EPOCHS = 100
+SEEDS = 5  # frozen in docs/prereg/S5.md section 6 for the headline K sweep
 PATIENCE = 10
 BATCH = 512
 LR = 1e-3
@@ -165,7 +166,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset", default="mnist")
     ap.add_argument("--probes", nargs="+", type=int, default=[1, 4, 16, 64, 256])
-    ap.add_argument("--seeds", type=int, default=3)
+    ap.add_argument("--seeds", type=int, default=SEEDS)
     ap.add_argument("--protocol", default="P-random")
     ap.add_argument("--nuisance-control", action="store_true",
                     help="repeat one probe count on P-shared-det: function access must not care")
@@ -175,7 +176,20 @@ def main() -> None:
     ap.add_argument("--max-epochs", type=int, default=MAX_EPOCHS)
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--root", default="data/inrbench")
+    ap.add_argument("--exploratory", action="store_true",
+                    help="permit an off-protocol seed count; writes a separate _EXPLORATORY "
+                         "artifact that the scorer refuses to read")
     args = ap.parse_args()
+
+    # The same mechanical guard 48_s8_sweep.py carries, extended to this path after a chain step
+    # re-ran the sweep at n=3 and silently overwrote the registered n=5 artifact (CLAIMS row 54).
+    if not args.exploratory and args.seeds != SEEDS:
+        raise SystemExit(
+            f"refusing to overwrite the registered artifact off-protocol (seeds={args.seeds}); "
+            f"docs/prereg/S5.md section 6 fixes n={SEEDS} for the headline K sweep, and permits 3 "
+            "only for K=256 and only if the sweep exceeds 3 h. Use --exploratory to write a "
+            "separate artifact that is not scoreable."
+        )
 
     spec = spec_of(args.dataset)
     arch = Arch(in_dim=2, width=32, layers=2, out_dim=spec.channels)
@@ -236,10 +250,14 @@ def main() -> None:
             print(f"frozen-probe ablation K={k}: learned {base:.2f} vs fixed {acc:.2f} "
                   f"(learning buys {base - acc:+.2f})", flush=True)
 
-    path = ROOT / "results" / "s5" / f"pareto_{args.dataset}.json"
+    name = f"pareto_{args.dataset}.json" if not args.exploratory \
+        else f"pareto_{args.dataset}_EXPLORATORY.json"
+    path = ROOT / "results" / "s5" / name
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(out, indent=2))
     print(f"\nwrote {path}")
+    if args.exploratory:
+        print("exploratory run: this artifact is off-protocol and 36_score_s5.py will not read it")
 
 
 if __name__ == "__main__":

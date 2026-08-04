@@ -25,6 +25,7 @@ from sirengap.eval.flops import Arch, weight_calign  # noqa: E402
 
 OUTCOMES = ROOT / "docs" / "PREDICTION_OUTCOMES.csv"
 PREREG_HASH = "80bdc96ce9497c3d"
+SEEDS = 5  # docs/prereg/S5.md section 6, the headline K sweep
 DATE = "2026-08-02"
 W5_ACC = 64.41  # best weight-access rung on MNIST P-random, from the frozen ladder
 
@@ -33,10 +34,22 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset", default="mnist")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--rescore", action="store_true",
+                    help="permit appending rows for predictions already in the ledger, e.g. after "
+                         "a corrected re-run; the caller is responsible for removing the old ones")
     args = ap.parse_args()
 
     d = json.loads((ROOT / "results" / "s5" / f"pareto_{args.dataset}.json").read_text())
     fq = {r["n_probes"]: r for r in d["function_query"]}
+
+    # Two guards, both added after the incident in CLAIMS row 54.
+    under = {k: len(r["seeds"]) for k, r in fq.items() if len(r["seeds"]) != SEEDS}
+    if under and not args.dry_run:
+        raise SystemExit(
+            f"refusing to score an off-protocol artifact: K={sorted(under)} carry "
+            f"{sorted(set(under.values()))} seeds, and docs/prereg/S5.md section 6 fixes n={SEEDS}. "
+            "Re-run 35_s5_pareto.py at the registered seed count."
+        )
     arch = Arch(2, 32, 2, d["arch"]["out_dim"])
     w5 = weight_calign(arch, 256)
 
@@ -126,6 +139,14 @@ def main() -> None:
 
     if args.dry_run:
         return
+    already = {row["prediction"] for row in csv.DictReader(OUTCOMES.open())}
+    clash = sorted({r["prediction"] for r in out} & already)
+    if clash and not args.rescore:
+        raise SystemExit(
+            f"refusing to double-score: {len(clash)} of these predictions are already in "
+            f"{OUTCOMES.name} (first: {clash[0]!r}). A registered call is scored once. Pass "
+            "--rescore only after removing the superseded rows."
+        )
     fieldnames = list(csv.DictReader(OUTCOMES.open()).fieldnames)
     with OUTCOMES.open("a", newline="") as fh:
         csv.DictWriter(fh, fieldnames=fieldnames).writerows(out)
