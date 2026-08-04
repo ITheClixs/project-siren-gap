@@ -1061,6 +1061,60 @@ it alongside PSNR and relative parameter travel at every budget.
 
 \input{tables/sweep_table}
 
+\paragraph{The sweep did not reach stationarity, so it cannot answer the question it was built to
+answer.} This is the outcome S8 §4 pre-committed to reporting if P-S8-C failed, and P-S8-C failed.
+The registration asked for a $10\times$ fall in the median relative endpoint gradient norm between
+$300$ and $10000$ steps as evidence that the sweep moves toward stationarity rather than merely
+fitting harder. The observed ratio is $1.17$ on \texttt{P-random} and $0.91$ on
+\texttt{P-shared-det} --- no fall at all, and on the shared corpus a slight \emph{rise}. We
+therefore do not read the accuracy numbers at $10000$ steps as measurements ``after convergence'',
+and the question the external review asked --- whether the recoverable fraction survives
+convergence --- remains open. What follows are statements about the \emph{budget}, which is what
+this sweep actually varied.
+
+\paragraph{The fits never reach a stationary point because of the optimizer, not the budget.} Fit
+quality is not monotone in budget: median render PSNR rises $27$\,dB from $300$ to $1000$ steps and
+then \emph{falls} back $6$\,dB by $10000$, on both protocols, while the endpoint gradient norm falls
+$26\times$ and then climbs back to $0.86$ of its $300$-step value on \texttt{P-random} and to
+$1.10$ of it on \texttt{P-shared-det}. The fitter is constant-learning-rate Adam
+with no schedule (\S\ref{sec:bench}), and Adam's step size is set by a ratio of moments, so it
+does not shrink as the gradient does: past the end of descent the iterate stops converging and
+starts diffusing in a band whose width is set by the learning rate. The $1000$-step corpus catches
+the end of descent; the larger budgets sample the band. Adding steps under this fitter therefore
+cannot produce stationarity at any budget, and the repair is a decaying schedule or an explicit
+per-INR stationarity stopping rule, neither of which we ran.
+
+This mechanism, and the three scoring consequences it implies, were registered in
+\texttt{S8-addendum-02} after the $300$/$1000$/$3000$ arms were decoded and before any
+$10000$-step cell existed: P-S8-C resolving false at $0.72$, H-S8-6 missing high at $0.70$, H-S8-7
+missing low at $0.75$, and the two $f(\mathrm{W5})$ intervals hitting at $0.85$ and $0.88$. All five
+resolved as called, at a mean Brier score of $0.054$. A sixth call, on median PSNR, was struck out
+before scoring: the corpus generator prints per-shard PSNR into the same log the decode writes to,
+so that quantity had been seen while the job was being monitored. The declaration is in the
+addendum.
+
+\paragraph{What the budget does license.} Three things, none of which requires convergence.
+$f(\calign)$ declines monotonically --- $0.502$, $0.489$, $0.470$, $0.459$ --- across a $33\times$
+budget, a total of $\mathbf{-0.043}$, far smaller than the $-0.15$ we registered and comfortably
+inside its interval. Per the pre-commitment for that branch, the decline is reported as a real
+budget dependence with its magnitude, and every ladder number in this paper is accordingly labelled
+as measured at the frozen $300$-step configuration. The invariant encoding is flatter still
+($f(\mathrm{W10})$: $0.249$, $0.253$, $0.258$, $0.252$), consistent with its not referencing
+$\theta_0$. The falsifier --- $f(\calign) < 0.15$ at the largest budget, which would have made the
+recoverable fraction a property of the early-stopped regime and rescoped every ladder claim --- did
+not fire, and is not close.
+
+The third is the most informative, and it is the reason the first two are so flat. \emph{Relative
+parameter travel from $\theta_0$ saturates almost immediately}: $0.186$, $0.194$, $0.194$, $0.197$
+across the whole sweep. Alignment to $\theta_0$ keeps working not because the fits are
+under-trained but because they never leave $\theta_0$'s neighbourhood at all, at any budget we can
+reach with this fitter. That is a direct measurement of the lazy regime the mechanism section
+infers from displacement (\S\ref{sec:mechanism}), and it is a stronger statement than the
+registration anticipated --- but it is a statement about where $33\times$ more Adam steps take the
+fit, not about where a converged fit would sit. S8 scores $\mathbf{6/8}$ intervals; both misses are
+the stationarity diagnostics themselves (H-S8-6 high, H-S8-7 low), which is the same finding read
+through the registration.
+
 % =====================================================================================
 \section{Weight access against function access}\label{sec:s5}
 % =====================================================================================
@@ -1537,10 +1591,15 @@ and direction cosine. Those are not the standard diagnostics of a lazy or NTK re
 measure Jacobian or kernel drift, the error of the first-order linearization, or the accuracy of the
 corresponding linearized model. The production fits are also not at a stationary point --- the
 microcosm at the corpus budget ends with $\|\nabla\|\approx0.5$--$0.7$ --- so what we have shown may
-be specific to high-fidelity but early-stopped fits. A convergence sweep across step budgets,
-learning rates and optimizers, with checkpoints matched by PSNR as well as by iteration, would
-decide whether the recoverable fraction survives convergence. It is the single experiment we would
-most want added, and we have not run it.
+be specific to high-fidelity but early-stopped fits. The step-budget half of that experiment is now
+run (\S\ref{sec:convergence}) and answers less than it was meant to: across a $33\times$ budget the
+recoverable fraction moves $-0.043$ and travel saturates at $0.19$, but the endpoint gradient norm
+does not fall, so the sweep never reaches stationarity and cannot settle whether the fraction
+survives \emph{convergence}. The remaining halves --- learning rates and optimizers, with a decaying
+schedule or a per-INR stationarity stopping rule, and checkpoints matched by PSNR as well as by
+iteration --- are what would decide it. That is still the single experiment we would most want
+added, and the sweep sharpens rather than replaces it: it shows the missing ingredient is a fitter
+that can stop, not a larger budget.
 
 \textbf{Capacity is matched by rule, not across a frontier.} The decoder template is frozen, but
 input dimension changes across feature maps, so parameter counts do too: W10's MLP is $0.99$M

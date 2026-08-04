@@ -445,7 +445,7 @@ is still the wrong tool.
 
 ---
 
-## 6. The orbit-only intervention: the gap is *not* reducible to symmetry
+## 6. The orbit-only intervention: what removing the group leaves behind
 
 §5's $f$ intervenes on the initialization. To intervene on the **group** instead, take a corpus with
 no initialization nuisance (`P-shared-det`), hold each fitted network *and its realised function*
@@ -586,6 +586,46 @@ mechanism, and it predicts exactly the null W1−W2 rung we measured.
 > $w\approx0$ basin. An `unconverged` class had to be added; without it we would have made a false
 > claim about the landscape. The headline non-monotonicity survives; the sub-claim does not.
 > ([CLAIMS](docs/CLAIMS.md) row 11 is corrected by row 12 rather than edited.)
+
+### 8.1 The convergence sweep (S8), and what it could not answer
+
+The external review asked whether the recoverable fraction is a property of early-stopped fits. S8
+varies only the step budget — {300, 1000, 3000, 10000}, both protocols, same everything else:
+
+| quantity | 300 | 1,000 | 3,000 | 10,000 |
+|---|---|---|---|---|
+| gap W1−W3 | 77.64 | 76.69 | 76.50 | 75.94 |
+| $f(c_\text{align})$ | 0.502 | 0.489 | 0.470 | **0.459** |
+| $f$(invariants) | 0.249 | 0.253 | 0.258 | 0.252 |
+| median $\|\nabla\|/\|\theta\|$ | 7.4e−03 | 2.8e−04 | 4.6e−03 | **6.3e−03** |
+| median render PSNR | 37.4 dB | 64.6 dB | 62.4 dB | 58.4 dB |
+| median relative travel | 0.186 | 0.194 | 0.194 | **0.197** |
+
+**The sweep never reached stationarity, so it cannot answer the question.** P-S8-C registered a 10×
+fall in the gradient norm between 300 and 10000 steps; the observed ratio is 1.17 on `P-random` and
+0.91 on `P-shared-det`. S8 §4 pre-committed to saying exactly this rather than reading the accuracy
+numbers as though convergence had happened, and that is what we say.
+
+**The reason is the optimizer, not the budget.** Fit quality is *not monotone* in budget: PSNR rises
+27 dB then falls back 6, and the gradient norm falls 26× then climbs back. The fitter is
+constant-lr Adam with no schedule, and Adam's step size does not shrink with the gradient, so past
+the end of descent the iterate diffuses in a band set by the learning rate. More steps cannot buy
+stationarity here; a decaying schedule or a per-INR stopping rule would. That mechanism and its
+three scoring consequences were registered in
+[`S8-addendum-02`](docs/prereg/S8-addendum-02.md) *between* the 3000- and 10000-step decodes and
+resolved **5/5** at mean Brier 0.054. A sixth call was struck out before scoring: the generator
+prints per-shard PSNR into the log we were monitoring, so that quantity had been seen.
+
+**What the budget does license.** $f(c_\text{align})$ declines monotonically but by only **−0.043**
+across 33× — far less than the −0.15 registered — so the decline is reported as a real budget
+dependence and every ladder number here is labelled as measured at the frozen 300-step config. The
+falsifier (f < 0.15, which would have rescoped every ladder claim to the early-stopped regime) did
+not fire and is not close. And **travel from $\theta_0$ saturates at 0.19 at every budget**:
+alignment to $\theta_0$ keeps working not because the fits are under-trained but because they never
+leave $\theta_0$'s neighbourhood at all. That is a direct measurement of the lazy regime this
+section otherwise infers from displacement — a stronger result than the registration expected, and
+still a statement about budget rather than about convergence. S8 scores **6/8**; both misses are the
+stationarity diagnostics themselves.
 
 ---
 
@@ -843,8 +883,12 @@ nominal 80%.
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
 grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; before the
-external review, **49/63 = 78%**; with S6, S7 and S9 it is **55/75 = 73%** (grayscale 9/14, CIFAR 14/17,
-S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**, **S9 0/3**); 23 probability calls, mean Brier 0.233.
+external review, **49/63 = 78%**; with S6, S7, S9 and S8 it is **61/83 = 73%** (grayscale 9/14, CIFAR 14/17,
+S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**, **S9 0/3**, **S8 6/8**); 31 probability
+calls, mean Brier **0.197**. The Brier average improved because the eight calls made *after* the
+program had a mechanism in hand — S8's three and the five in `S8-addendum-02`, registered between the
+3000- and 10000-step decodes — average **0.095** against **0.233** for the twenty-three before them. Calibration is
+downstream of understanding, which is the same lesson S6-versus-S7 teaches at the arm level.
 S6 is the worst-scoring arm and S7 the best, and they were registered on the same day under the same
 template — arm-level coverage is mostly a statement about how well a mechanism was understood before
 the run, not about the care taken in registering it.

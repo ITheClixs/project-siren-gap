@@ -28,7 +28,7 @@
       ],
       "flops": 1320192,
       "probe_eval_flops": 2304,
-      "wallclock_s": 63.05414295196533
+      "wallclock_s": 114.2152030467987
     },
     {
       "name": "function-query K=4",
@@ -48,7 +48,7 @@
       ],
       "flops": 1333248,
       "probe_eval_flops": 9216,
-      "wallclock_s": 79.5470871925354
+      "wallclock_s": 136.77824997901917
     },
     {
       "name": "function-query K=16",
@@ -68,7 +68,7 @@
       ],
       "flops": 1385472,
       "probe_eval_flops": 36864,
-      "wallclock_s": 92.64817786216736
+      "wallclock_s": 154.95138001441956
     },
     {
       "name": "function-query K=64",
@@ -88,7 +88,7 @@
       ],
       "flops": 1594368,
       "probe_eval_flops": 147456,
-      "wallclock_s": 137.44581985473633
+      "wallclock_s": 139.37675499916077
     },
     {
       "name": "function-query K=256",
@@ -108,7 +108,7 @@
       ],
       "flops": 2429952,
       "probe_eval_flops": 589824,
-      "wallclock_s": 345.7479021549225
+      "wallclock_s": 213.55698609352112
     }
   ],
   "weight_access": [
@@ -167,6 +167,14 @@
       "flops": 119086080,
       "amortized": 0,
       "preprocess": 77824
+    },
+    {
+      "name": "W12 phasor-graded",
+      "access": "weight",
+      "acc": 87.64200000000001,
+      "flops": 163330520,
+      "amortized": 0,
+      "preprocess": 2432
     }
   ],
   "controls": {

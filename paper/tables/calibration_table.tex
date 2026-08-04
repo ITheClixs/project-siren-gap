@@ -1,6 +1,6 @@
 \begin{table}[t]
 \centering\small
-\caption{\textbf{Every registered interval that missed.} Realized coverage is 55/72 against a nominal 80\%. The misses fall into exactly two modes (last column): hedging a registered mechanism toward priors from another setting, and registering a contrast between two treatments of a nuisance that then turned out to be null, so that no contrast could exist at any magnitude.}
+\caption{\textbf{Every registered interval that missed.} Realized coverage is 61/83 against a nominal 80\%. The misses fall into exactly two modes (last column): hedging a registered mechanism toward priors from another setting, and registering a contrast between two treatments of a nuisance that then turned out to be null, so that no contrast could exist at any magnitude.}
 \label{tab:calibration}
 \begin{tabular}{@{}llrrl@{}}
 \toprule
@@ -23,6 +23,11 @@ H-S5-4 & function-query accuracy K=256 pct (pilot-informed) & 96 [91, 98] & 98.2
 H-S6-1 & delta\_sym identity permutation B=0 pts & 10.0 [2.0, 30.0] & 62.904 & --- \\
 H-S6-2 & delta\_sym identity permutation B=3 pts & 15.0 [3.0, 35.0] & 64.044 & --- \\
 H-S6-3 & permutation share of delta\_sym at B=3 pts & 64.0 [45.0, 76.0] & 14.744 & --- \\
+H-S9-1 & f(W12) MNIST P-random & 0.55 [0.35, 0.72] & 0.917 & --- \\
+H-S9-2 & f(W12) minus f(W11a) & 0.29 [0.10, 0.45] & 0.651 & --- \\
+H-S9-3 & f(W12) minus f(W11b) & 0.02 [-0.15, 0.18] & 0.390 & --- \\
+H-S8-6 & median relative endpoint gradient norm at 10000 & 0.0003 [3e-05, 0.003] & 0.006319 & --- \\
+H-S8-7 & median relative parameter travel at 10000 & 0.35 [0.2, 0.6] & 0.197149 & --- \\
 \bottomrule
 \end{tabular}
 \end{table}

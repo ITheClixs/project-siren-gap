@@ -97,3 +97,19 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-08-03,P-S9-A probability f(W12) exceeds f(W11a),probability,0.85,,,1,—,,0.0225,0.917 vs 0.265
 2026-08-03,P-S9-B probability f(W12) exceeds f(W11b),probability,0.45,,,1,—,,0.3025,0.917 vs 0.526
 2026-08-03,P-S9-C probability f(W12) exceeds f(W5),probability,0.25,,,1,—,,0.5625,"0.917 vs 0.628; per S9 section 4 the paper's practical claim is withdrawn"
+2026-08-04,H-S8-1 W1 accuracy at 300 steps,interval,88.0,82.0,93.0,88.5,HIT,0.5,,
+2026-08-04,H-S8-3 f(W5) at 300 steps,interval,0.6,0.45,0.72,0.501791,HIT,0.098209,,
+2026-08-04,H-S8-2 W1 - W3 gap at 10000 steps,interval,75.0,60.0,85.0,75.94,HIT,0.94,,
+2026-08-04,H-S8-4 f(W5) at 10000 steps,interval,0.45,0.2,0.65,0.458867,HIT,0.008867,,
+2026-08-04,H-S8-8 f(W10) at 10000 steps,interval,0.25,0.05,0.45,0.25221,HIT,0.00221,,
+2026-08-04,H-S8-6 median relative endpoint gradient norm at 10000,interval,0.0003,3e-05,0.003,0.006319,MISS,0.006019,,
+2026-08-04,H-S8-7 median relative parameter travel at 10000,interval,0.35,0.2,0.6,0.197149,MISS,0.152851,,
+2026-08-04,H-S8-5 f(W5) at 10000 minus at 300,interval,-0.15,-0.4,0.05,-0.042924,HIT,0.107076,,
+2026-08-04,P-S8-A probability f(W5) at 10000 steps is still above 0.30,probability,0.7,,,1,—,,0.09,
+2026-08-04,P-S8-B probability the W1-W3 gap at 10000 steps is still at least 50 points,probability,0.8,,,1,—,,0.04,
+2026-08-04,P-S8-C probability the median relative gradient norm falls 10x from 300 to 10000 steps,probability,0.6,,,0,—,,0.36,
+2026-08-04,A02-S8-1 probability P-S8-C resolves FALSE (the sweep does not reach stationarity),probability,0.72,,,1,—,,0.0784,registered in docs/prereg/S8-addendum-02.md (commit 117c5e6) before any 10000-step cell was decoded
+2026-08-04,A02-S8-2 probability H-S8-6 misses high (grad norm at 10000 above 3e-3),probability,0.7,,,1,—,,0.09,registered in docs/prereg/S8-addendum-02.md (commit 117c5e6) before any 10000-step cell was decoded
+2026-08-04,A02-S8-3 probability H-S8-7 misses low (travel at 10000 below 0.20),probability,0.75,,,1,—,,0.0625,registered in docs/prereg/S8-addendum-02.md (commit 117c5e6) before any 10000-step cell was decoded
+2026-08-04,"A02-S8-4 probability H-S8-4 hits (f(W5) at 10000 inside [0.20, 0.65])",probability,0.85,,,1,—,,0.0225,registered in docs/prereg/S8-addendum-02.md (commit 117c5e6) before any 10000-step cell was decoded
+2026-08-04,"A02-S8-5 probability H-S8-5 hits (f(W5) 10000 minus 300 inside [-0.40, +0.05])",probability,0.88,,,1,—,,0.0144,registered in docs/prereg/S8-addendum-02.md (commit 117c5e6) before any 10000-step cell was decoded
