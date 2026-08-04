@@ -817,11 +817,11 @@ the triple establishes is that \emph{some} residual survives an intervention tha
 entirely, which the canonicalizer residual of \S\ref{sec:bounds} could not show; what it no longer
 establishes is that the residual is large.
 
-One further consequence of the re-measurement. W12 does not merely close the gap on
-\texttt{P-shared-det} --- it exceeds the raw-weight ceiling W1 there, $95.46\%$ against $94.36\%$,
-with $f = 1.014$ [$1.008$, $1.021$] strictly above one. The symmetry-adapted coordinates therefore
-help where there is no nuisance to quotient at all, so part of W12's advantage on \texttt{P-random}
-is reader quality rather than group removal. This is the same lesson the matched ungraded control
+One further consequence of the re-measurement. On the shared-initialization corpus W12 does not
+merely close the gap: it exceeds the raw-weight ceiling W1 there, $95.46\%$ against $94.36\%$, with
+$f = 1.014$ [$1.008$, $1.021$] strictly above one. The symmetry-adapted coordinates therefore help
+where there is no nuisance to quotient at all, so part of W12's advantage on the independently
+initialized corpus is reader quality rather than group removal. This is the same lesson the matched ungraded control
 returns in \S\ref{sec:w11}, arriving from the other side, and it caps how much of the recovery any
 invariant construction may claim as symmetry work.
 
@@ -967,9 +967,9 @@ crossover does not reverse ($f(\mathrm{W10}) = 0.493$, still above W5). Luminanc
 RGB CIFAR, not like the grayscale corpora. Both probability calls resolved false.
 
 The arm also removes one alternative explanation. Dropping channels makes the fit
-over-parameterised, taking median render PSNR from $40$\,dB to $59.8$\,dB --- so this corpus is
-fitted \emph{much more accurately} than MNIST's $39.2$\,dB and still aligns far worse. Higher
-fidelity does not buy alignment recovery.
+over-parameterised, taking median render PSNR from $40$ to $59.8$\,dB, so this corpus is fitted
+\emph{much more accurately} than MNIST at $39.2$\,dB and still aligns far worse. Higher fidelity
+does not buy alignment recovery.
 
 \paragraph{What survives.} Three candidate causes for the cross-dataset behaviour have now been
 tested and eliminated: fit length (parameter travel is identical across corpora), output-channel
@@ -1084,11 +1084,11 @@ the end of descent; the larger budgets sample the band. Adding steps under this 
 cannot produce stationarity at any budget, and the repair is a decaying schedule or an explicit
 per-INR stationarity stopping rule, neither of which we ran.
 
-This mechanism, and the three scoring consequences it implies, were registered in
-\texttt{S8-addendum-02} after the $300$/$1000$/$3000$ arms were decoded and before any
-$10000$-step cell existed: P-S8-C resolving false at $0.72$, H-S8-6 missing high at $0.70$, H-S8-7
-missing low at $0.75$, and the two $f(\mathrm{W5})$ intervals hitting at $0.85$ and $0.88$. All five
-resolved as called, at a mean Brier score of $0.054$. A sixth call, on median PSNR, was struck out
+This mechanism, and the three scoring consequences it implies, were registered in addendum~02 after
+the $300$, $1000$ and $3000$ arms were decoded and before any $10000$-step cell existed: P-S8-C
+resolving false at $0.72$, H-S8-6 missing high at $0.70$, H-S8-7 missing low at $0.75$, and the two
+$f(\mathrm{W5})$ intervals hitting at $0.85$ and $0.88$. All five resolved as called, at a mean
+Brier score of $0.054$. A sixth call, on median PSNR, was struck out
 before scoring: the corpus generator prints per-shard PSNR into the same log the decode writes to,
 so that quantity had been seen while the job was being monitored. The declaration is in the
 addendum.
