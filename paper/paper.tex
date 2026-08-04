@@ -172,8 +172,9 @@ computed, and scored against the frozen text.
 \item \textbf{An orbit-only intervention} (\S\ref{sec:orbit}). Holding each fitted network and its
 realized function fixed while randomizing the group isolates the degradation the group alone
 causes, which the ladder's shared-versus-random contrast cannot. It shows that the group reproduces
-nearly the whole gap, and --- via a reader whose invariance to it we measure rather than assume ---
-that the gap is nevertheless not reducible to the group.
+nearly the whole gap, and --- via readers whose invariance to it we measure rather than assume ---
+that a residual nevertheless survives removing the group, one whose size falls from $28.6$ points to
+$7.8$ when the invariant reader improves, and which we therefore bound rather than measure.
 \item \textbf{A reader that quotients the group on raw parameters} (\S\ref{sec:w11}). Bias phasors
 reduce the winding to a parity, leaving a finite $\Z_2\times\Z_2$ grading that the network preserves
 layer by layer; it recovers $92\%$ of the gap at matched capacity and overturns this paper's own
@@ -200,11 +201,14 @@ an exact reframing creates no function-level information, but it can still route
 property into a coordinate the reader finds accessible, so the inference from ``no information
 created'' to ``the gain measures nuisance removal'' does not hold (\S\ref{sec:bounds}). The causal
 quantity is measured separately, by intervening on the group directly (\S\ref{sec:orbit}), and the
-answer has two halves: randomizing the group costs $79.1$ of the $80.4$ points, and yet a reader
-whose invariance to that randomization is \emph{measured} at $0.59$ points still loses $28.6$
-between the two corpora. Acting on the group characterization closes most of what remains: a reader
-that quotients $\Dinf \wr S_n$ on the raw parameters recovers $92\%$ of the gap
-(\S\ref{sec:w11}), against $63\%$ for the best exact reframing. Under our
+answer has two halves: randomizing the group costs $79.1$ of the $80.4$ points, and yet an exactly
+invariant reader still loses points between the two corpora --- $28.6$ for the equivariant reader
+over invariants, but only $7.8$ for the stronger phasor-graded one, so that residual is a property
+of the reader and we report the smaller figure as an upper bound on what is not symmetry rather
+than as a measurement of it. Acting on the group characterization closes most of what remains: a
+reader that quotients $\Dinf \wr S_n$ on the raw parameters recovers $92\%$ of the gap
+(\S\ref{sec:w11}), against $63\%$ for the best exact reframing, and on the corpus with no nuisance
+at all it beats reading the raw parameters directly. Under our
 implementations and training budgets, the treatments most often applied to this nuisance ---
 augmenting by group elements \citep{shamsian2024augmentations}, marginalizing over refits, averaging
 over a frame \citep{puny2022frame} --- recover at most $13\%$ on any dataset and under $6\%$ on both
@@ -776,8 +780,8 @@ within seed noise, and the registered call P-S6-B ($0.85$) resolves as expected.
 $\calign$ reaches $64.39\%$ on the scattered \texttt{P-random} corpus against $64.41\%$ on the
 unscattered one, a second empirical statement of the canonicalizer property of \S\ref{sec:bounds}.
 
-\paragraph{An exactly invariant reader still loses $28.6$ points, and the group cannot explain it.}
-This is the sharpest result of the intervention, and it comes from a triple. W11b --- the
+\paragraph{An exactly invariant reader still loses points, but how many is a property of the
+reader.} This is the sharpest result of the intervention, and it comes from a triple. W11b --- the
 $G$-invariant equivariant reader of \S\ref{sec:w11} --- scores $84.81\%$ on the untouched
 \texttt{P-shared-det} corpus and $85.39\%$ on the \emph{same corpus after the group has been
 randomized} at $B=3$. The difference, $0.59$ points, is seed noise: its invariance is not merely
@@ -786,16 +790,40 @@ same reader scores $56.24\%$ on \texttt{P-random}. So a reader that is empirical
 $\Dinf \wr S_n$ still loses $28.6$ points between the shared-initialization and
 independent-initialization corpora, and \emph{that} loss cannot be group scatter.
 
-What it can be is narrower than before but not yet settled. It is not lost class information in the
-signal: the render gates pass on both protocols and function-query accuracy moves only $5.4$ points
-between them (\S\ref{sec:s5}). It is not the group. The two surviving explanations are that
-independent fits land on genuinely different orbits --- which S4e measures directly, two fits of the
-same image sitting at orbit distance $0.279$ against $0.280$ for two fits of \emph{different} images
---- and that W10's invariant family is incomplete in a way that reads more from a shared chart than
-from independently scattered ones. An incomplete invariant cannot separate those two, so we do not
-claim a decomposition; what the triple does establish is that the residual survives an intervention
-that removes the group entirely, which the canonicalizer residual of \S\ref{sec:bounds} could not
-show.
+\emph{That number is not a property of the corpora.} Re-running the same triple with W12, the
+phasor-graded reader of \S\ref{sec:w11}, collapses it. W12 scores $95.46\%$ [$95.03$, $95.99$] on
+\texttt{P-shared-det} against $87.64\%$ on \texttt{P-random}: a loss of $7.8$ points, not $28.6$,
+from a reader whose invariance is exact by construction and audited at a $3.3\times10^{-6}$ logit
+move out to winding $|j|=40$ (\S\ref{sec:w11}), so the randomized-corpus leg of the triple is
+redundant for it rather than unmeasured. Normalized against each reader's own shared-initialization
+ceiling instead of W1's, W11b carries $59.7\%$ of its own gap across and W12 carries $90.4\%$. The
+residual after removing the group is therefore \emph{reader-relative}, exactly as the recovery
+fraction is (\S\ref{sec:bounds}, Prop.~4): a better invariant reader cut it by a factor of $3.7$,
+and nothing here certifies that the next one cannot cut it further. We therefore report $7.8$ points
+--- $9.7\%$ of the $80.4$-point gap --- as an \emph{upper} bound on whatever is not symmetry, and
+withdraw the earlier reading on which $28.6$ points ($36\%$) measured it.
+
+What survives is qualitative and weaker than it was. The loss is real: the two intervals do not
+overlap, so it is at least $6.7$ points. It is not group scatter. But the argument that it is not
+lost signal either --- function-query accuracy moves only $5.4$ points between the same two corpora
+(\S\ref{sec:s5}) --- had a $23$-point margin against W11b and has a $2.4$-point margin against W12,
+which is no longer comfortably outside the fit-quality difference between the corpora that the
+function side already sees. The two candidate explanations are unchanged: independent fits landing
+on genuinely different orbits --- which S4e measures directly, two fits of the same image sitting at
+orbit distance $0.279$ against $0.280$ for two fits of \emph{different} images --- and an invariant
+family incomplete in a way that reads more from a shared chart than from independently scattered
+ones. An incomplete invariant cannot separate those two, so we do not claim a decomposition. What
+the triple establishes is that \emph{some} residual survives an intervention that removes the group
+entirely, which the canonicalizer residual of \S\ref{sec:bounds} could not show; what it no longer
+establishes is that the residual is large.
+
+One further consequence of the re-measurement. W12 does not merely close the gap on
+\texttt{P-shared-det} --- it exceeds the raw-weight ceiling W1 there, $95.46\%$ against $94.36\%$,
+with $f = 1.014$ [$1.008$, $1.021$] strictly above one. The symmetry-adapted coordinates therefore
+help where there is no nuisance to quotient at all, so part of W12's advantage on \texttt{P-random}
+is reader quality rather than group removal. This is the same lesson the matched ungraded control
+returns in \S\ref{sec:w11}, arriving from the other side, and it caps how much of the recovery any
+invariant construction may claim as symmetry work.
 
 \paragraph{Within the group, reflection dominates and winding is nearly free.} With the permutation
 fixed to the identity, $\Delta_{\mathrm{sym}}$ is still $62.9$ points at $B=0$ and $64.1$ at
@@ -1193,6 +1221,16 @@ phase components carry four fifths of the damage and neuron relabelling one fift
 all of it and recovers $0.917$. The group characterization is not decoration on the empirical part
 of the paper --- it is what tells you which quotient a reader has to take.
 
+\paragraph{On the corpus with no nuisance, it beats reading the raw parameters.} Run on
+\texttt{P-shared-det}, where every INR is fitted from the same initialization and there is nothing
+to quotient, W12 reaches $95.46\%$ [$95.03$, $95.99$] against W1's $94.36\%$ --- $f = 1.014$
+[$1.008$, $1.021$], strictly above one. So the phasor coordinates are a better way to read
+parameters even when no group scatter is present, and part of what W12 gains on \texttt{P-random} is
+architecture rather than invariance. That is the ungraded control's finding reached from the other
+side, and it has a consequence for the intervention: the residual that survives removing the group
+is not a fixed quantity but a property of the reader used to expose it, which \S\ref{sec:orbit}
+re-measures at $7.8$ points against W11b's $28.6$.
+
 \paragraph{But the layer-level grading is not what does the work.} Applying S7's argument to W12,
 the matched control removes the grading and keeps everything else: same skeleton, same block shapes,
 same phasor features, capacity re-solved by the same rule (width $122$, $1{,}888{,}212$ parameters).
@@ -1472,9 +1510,19 @@ written down for $L\ge3$. A second route we did not take reads the shallow netwo
 measure of \eqref{eq:atoms}, whose atoms at $\pm w_i$ with coefficient proportional to
 $u_i e^{\mathrm i b_i}$ quotient the phase shift automatically and turn orientation reversal into
 complex conjugation; that is likely the cleaner object and it is not obviously equivalent to the
-graded construction. Finally, W12 is decoded on one corpus: whether the ordering it produces holds
-on natural images, where the two exact treatments already trade places (\S\ref{sec:crossover}), is
-untested.
+graded construction. Finally, W12 is decoded on one \emph{dataset}: it is now run on both MNIST
+protocols, which is what licenses the re-measured residual of \S\ref{sec:orbit}, but whether the
+ordering it produces holds on natural images, where the two exact treatments already trade places
+(\S\ref{sec:crossover}), is untested.
+
+\textbf{The non-symmetry residual is bounded above and never measured.} The orbit intervention
+establishes that some accuracy loss survives removing the group, but its size is whatever the best
+invariant reader we happen to have built leaves behind: $28.6$ points with W11b, $7.8$ with W12
+(\S\ref{sec:orbit}). Every such figure can only fall as readers improve, so the program has an upper
+bound on the non-symmetry share and no lower bound at all, and at $7.8$ points the margin over the
+$5.4$-point fit-quality movement visible from the function side is $2.4$ points. What would settle
+it is not a better reader but a corpus pair matched on fit quality --- refits of the \emph{same}
+functions from independent initializations, held to the same render PSNR --- which we did not build.
 
 \textbf{Signal complexity remains confounded with image statistics.} CIFAR-10 differed from the
 grayscale corpora in three ways: image statistics, output-channel count and fit budget. Two are now
@@ -1550,14 +1598,18 @@ flips account for about $63$ of those points, neuron relabelling for about $15$,
 $|j|=10$ for about one --- so the affine phase component is mathematically necessary for the
 identifiability statement and empirically minor as a source of scatter, and we report it as both.
 
-The intervention also settles, in one direction, a question the ladder could not. A reader that is
-$G$-invariant --- and whose invariance we \emph{measure}, at $0.59$ points under the same
-randomization --- scores $84.81\%$ on the shared-initialization corpus and $56.24\%$ on the
-independently initialized one. That $28.6$-point loss cannot be group scatter, and it is not lost
-signal, since function-query accuracy moves only $5.4$ points between the same two corpora. The
-weight-space perception gap is therefore not reducible to parameter symmetry. What the residual
-\emph{is} --- genuinely different orbits, or an incomplete invariant family that reads more from a
-shared chart --- an incomplete invariant cannot decide, and we do not claim it does.
+The intervention also settles, in one direction, a question the ladder could not --- though less
+than we first reported. A reader that is $G$-invariant --- and whose invariance we \emph{measure},
+at $0.59$ points under the same randomization --- scores $84.81\%$ on the shared-initialization
+corpus and $56.24\%$ on the independently initialized one, and that $28.6$-point loss cannot be
+group scatter. But the loss is a property of the reader, not of the corpora: the exactly invariant
+phasor-graded reader loses $7.8$ points across the same pair, $9.7\%$ of the gap. Some residual
+survives an intervention that removes the group entirely, so the gap is not \emph{wholly} reducible
+to parameter symmetry; how much is not known, because every measurement of it we have is an upper
+bound that the next invariant reader may lower again, and at $7.8$ points it clears the $5.4$-point
+fit-quality movement that the function side sees between the same corpora by only $2.4$. What the
+residual \emph{is} --- genuinely different orbits, or an incomplete invariant family that reads more
+from a shared chart --- an incomplete invariant cannot decide, and we do not claim it does.
 
 A matched control settles the other open attribution. An encoding with the same monomials,
 trigonometric orders, pooling and dimension as our invariant one, differing only in whether $\Dinf$

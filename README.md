@@ -50,11 +50,13 @@ leaving a finite grading preserved layer by layer — recovers **0.917** at matc
 0.265 for a permutation-equivariant one. That reverses a claim this README previously made, and a
 pre-registration required us to withdraw rather than qualify it (§10).
 
-**Randomizing the group costs 79.1 of the 80.4 points** — yet the $G$-invariant reader, whose
-invariance to that randomization we *measure* at 0.59 points, still loses **28.6 points** between
-the two corpora. The gap looks like group scatter and is **not reducible** to it. Within the group,
-per-neuron sign flips carry ~63 of the 79 points, neuron relabelling ~15, and integer phase shifts
-~1.
+**Randomizing the group costs 79.1 of the 80.4 points** — yet an exactly $G$-invariant reader still
+loses points between the two corpora, so the gap is not *wholly* reducible to group scatter. How
+many points is a property of the reader, not of the corpora: **28.6** for the equivariant reader
+over invariants, **7.8** for the stronger phasor-graded one. We therefore report the smaller figure
+as an *upper bound* on what is not symmetry and withdraw the earlier reading in which 28.6 measured
+it (§10). Within the group, per-neuron sign flips carry ~63 of the 79 points, neuron relabelling
+~15, and integer phase shifts ~1.
 
 We hunt for a counterexample to identifiability at depth two and find none: one student recovers its
 teacher's parameters to **seven significant figures** at width 2, while at production width the
@@ -488,11 +490,29 @@ second empirical statement of the canonicalizer property.
 The 0.59-point difference between the first two is seed noise, so W11b's invariance is **measured**,
 not merely asserted (registered as validity check H-S6-5; HIT). Yet the same reader loses **28.6
 points** between the shared- and random-initialization corpora. *That loss cannot be group scatter.*
-It is also not lost signal — function-query accuracy moves only 5.4 points between the same corpora
-(§9). So the perception gap is **not reducible to parameter symmetry**. What the residual *is*
-— genuinely different orbits (S4e: same-image pairs at $R_\theta$ = 0.279 against 0.280 for
-*unrelated* pairs), or an incomplete invariant family that reads more from a shared chart — an
-incomplete invariant cannot decide, and we claim no decomposition.
+
+**…and the 28.6 is a property of the reader.** Re-running the triple with W12, whose invariance is
+exact by construction and audited at 3.3e−06 out to $|j|=40$ (so the middle row is redundant for
+it):
+
+| corpus | W12 accuracy |
+|---|---|
+| `P-shared-det` | **95.46%** [95.03, 95.99] — above W1's 94.36, $f = 1.014$ |
+| `P-random` | **87.64%** |
+
+The loss is **7.8 points**, 9.7% of the gap, against W11b's 28.6 — a factor of 3.7 from changing the
+reader. So every such figure is an **upper bound** on the non-symmetry share that a better invariant
+reader can lower, exactly as recovery fractions are (§6, Prop. 4), and the program has no lower
+bound at all. What survives: the loss is real (the intervals do not overlap, so ≥6.7 points) and it
+cannot be group scatter — but the "not lost signal" argument, that function-query accuracy moves
+only 5.4 points between the same corpora (§9), now clears the confound by **2.4 points** where it
+cleared it by 23. What the residual *is* — genuinely different orbits (S4e: same-image pairs at
+$R_\theta$ = 0.279 against 0.280 for *unrelated* pairs), or an incomplete invariant family that reads
+more from a shared chart — an incomplete invariant cannot decide, and we claim no decomposition.
+
+W12 also **beats reading the raw parameters** on the corpus with no nuisance at all ($f > 1$,
+CI strictly above one), so part of what it gains on `P-random` is reader quality rather than group
+removal — the ungraded control's finding (§10) arriving from the other side.
 
 **Within the group, reflection dominates and winding is nearly free.** Of the 79 points, ~63 are
 per-neuron **sign flips**, ~15 is relabelling 32 neurons, ~1 is windings up to $|j|=10$. We had
