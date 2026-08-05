@@ -2,3 +2,12 @@
 --- W12ub: the fourth cell (ungraded skeleton, raw bias) Wed Aug  5 15:41:50 +03 2026 ---
 W12ub: width 122 (capacity rule against the decoder's 1,873,162)
   W12ub seed 0: test 59.02 (val 59.76, 19 ep)
+  W12ub seed 1: test 58.26 (val 60.18, 19 ep)
+  W12ub seed 2: test 58.01 (val 59.30, 19 ep)
+  W12ub seed 3: test 58.69 (val 59.86, 18 ep)
+  W12ub seed 4: test 59.42 (val 59.62, 17 ep)
+W12ub: 58.68  f=0.5565  params=1,885,284  (5278s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W12ub.json
+--- W12 on fashionmnist Wed Aug  5 17:09:51 +03 2026 ---
+W12: width 186 (capacity rule against the decoder's 1,873,162)

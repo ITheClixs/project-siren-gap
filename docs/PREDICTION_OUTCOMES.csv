@@ -119,3 +119,6 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-08-05,P-S10-A probability f(W12b) < f(W12u),probability,0.85,,,1,—,,0.0225,
 2026-08-05,P-S10-B probability f(W12b) > f(W11a),probability,0.9,,,1,—,,0.01,
 2026-08-05,P-S10-C probability f(W12b) > 0.70 (architecture explains most of the step),probability,0.35,,,0,—,,0.1225,
+2026-08-05,"H-S11-1 f(W12ub), MNIST",interval,0.55,0.3,0.78,0.5565,HIT,0.0065,,
+2026-08-05,H-S11-2 the 2x2 interaction of grading and phasor lift,interval,0.0,-0.25,0.25,0.0131,HIT,0.0131,,
+2026-08-05,"P-S11-C probability the 2x2 interaction is outside [-0.10, +0.10]",probability,0.3,,,0,—,,0.09,

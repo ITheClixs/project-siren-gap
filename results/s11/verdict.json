@@ -1,0 +1,31 @@
+{
+  "study": "S11",
+  "prereg": "docs/prereg/S11.md",
+  "f": {
+    "W12": 0.916530843264125,
+    "W12u": 0.8578902769558884,
+    "W12b": 0.6020120448313417,
+    "W12ub": 0.5564647857559321,
+    "W11a": 0.2653100473965932
+  },
+  "cross_dataset": {
+    "fashionmnist": null,
+    "cifar10gray": null,
+    "cifar10": null
+  },
+  "decomposition": {
+    "skeleton_W11a_to_W12ub": 0.2912,
+    "phasor_lift_ungraded": 0.3014,
+    "phasor_lift_graded": 0.3145,
+    "grading_raw_bias": 0.0455,
+    "grading_phasor": 0.0586,
+    "interaction": 0.0131,
+    "additive_sum": 0.9165
+  },
+  "intervals": "2/2",
+  "still_owed": [
+    "H-S11-3",
+    "H-S11-4",
+    "H-S11-5"
+  ]
+}

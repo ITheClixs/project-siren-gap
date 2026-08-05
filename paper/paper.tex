@@ -105,10 +105,11 @@ the infinite winding to a parity, leaving a finite grading that a network can pr
 layer, and the resulting reader on \emph{raw} parameters recovers $\mathbf{92\%}$ of the gap at
 matched capacity, against $63\%$ for the best reframing and $27\%$ for a permutation-equivariant
 one. This reverses a claim an earlier version of this paper made, which a pre-registration required
-us to withdraw rather than qualify. Two capacity-matched controls then locate the effect: dropping
-the grading but keeping the coordinates still gives $86\%$, while keeping the grading and feeding
-it the raw bias gives $60\%$, so coordinates and architecture contribute comparably and enforced
-layer-wise equivariance contributes little.
+us to withdraw rather than qualify. A capacity-matched $2\times2$ then locates the effect. Dropping the grading but keeping the
+coordinates gives $86\%$; keeping the grading and feeding it the raw bias gives $60\%$; dropping
+both gives $56\%$. The interaction is $0.013$, so the symmetry-adapted coordinates and the
+message-passing skeleton contribute comparably and near-additively, while enforcing equivariance
+layer by layer contributes little.
 
 Querying the same INR at $64$ learned coordinates is more accurate than every weight-space
 pipeline we built, and about $100\times$ cheaper than the strongest of them. All empirical results
@@ -1390,24 +1391,42 @@ grading and keeps the coordinates. The converse arm, W12b, keeps the graded skel
 structure and the edge coupling exactly, re-solves capacity by the same rule (width $186$,
 $1{,}873{,}782$ parameters, within $0.06\%$ of W12), and changes only the feature map: the bias
 enters \emph{raw} instead of phasor-lifted. It reaches $s(\mathrm{W12b}) = \mathbf{0.602}$. The
-$0.265 \to 0.917$ step from a permutation-equivariant reader on raw weights therefore splits as
+$0.265 \to 0.917$ step from a permutation-equivariant reader on raw weights therefore has three
+identifiable parts. Filling the fourth cell of the square makes this a factorial design rather than
+two one-at-a-time comparisons: W12ub, the same skeleton carrying neither the lift nor the grading,
+reaches $s(\mathrm{W12ub}) = \mathbf{0.557}$.
 
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+ & raw bias & phasor bias \\
+\midrule
+ungraded skeleton & $0.557$ & $0.858$ \\
+graded skeleton   & $0.602$ & $0.917$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The phasor lift is worth $+0.301$ without the grading and $+0.315$ with it; the grading is
+worth $+0.046$ on the raw bias and $+0.059$ on the phasor. The interaction is $\mathbf{+0.013}$, so
+inside this skeleton the two ingredients are close to additive:
 \[
-\underbrace{+0.337}_{\text{architecture, within the graded skeleton}}
-\;+\;
-\underbrace{+0.315}_{\text{phasor coordinates}}
-\;\;\text{with}\;\;
-\underbrace{+0.059}_{\text{layer-level grading}}\;\text{inside the second term.}
+0.265 \;\xrightarrow{\;+0.291\ \text{skeleton}\;}\; 0.557
+\;\xrightarrow{\;+0.301\ \text{phasor lift}\;}\; 0.858
+\;\xrightarrow{\;+0.059\ \text{grading}\;}\; 0.917 .
 \]
+Because W12ub carries neither ingredient, the first step is also the cleanest estimate this design
+offers of what the message-passing skeleton alone buys, and it replaces the $+0.337$ we reported
+when the square had a hole in it.
 
-We registered this in advance (S10, $3/3$ intervals; point predictions $0.60$, $0.26$ and $0.34$
-against observed $0.602$, $0.256$ and $0.337$), \emph{including} the rule for reading the outcome.
-At $s \ge 0.75$ we had committed to withdrawing the claim that the coordinates carry the win, at
-$s \le 0.55$ to keeping it, and in between, which is where the number fell, to reporting a split
-attribution rather than picking the closer side. So we do not claim the coordinates carry it. Within
-this skeleton, representing the bias in symmetry-adapted coordinates and reading it with a graded
-message-passing architecture are worth about the same, and the layer-level grading is worth little
-next to either.
+Both controls were registered before running, with their reading rules fixed, and between them they
+score $5/5$ intervals. S10 committed that at $s \ge 0.75$ we would withdraw the claim that the
+coordinates carry the win, at $s \le 0.55$ keep it, and in between report a split attribution
+without picking the closer side; $0.602$ fell in between, so we do not claim the coordinates carry
+it. S11 committed that an interaction outside $\pm0.25$ would retire the additive language
+altogether; at $+0.013$ it does not. Within this skeleton, representing the bias in
+symmetry-adapted coordinates and reading it with a graded message-passing architecture are worth
+about the same, and the layer-level grading is worth little next to either.
 
 Two scope conditions, both registered before the arm was run. First, W12b is handicapped by
 construction: under the grading only the neutral block reaches the head, so a \emph{non}-character
@@ -1670,12 +1689,13 @@ for sine networks, is a plausible reason.
 
 \textbf{W12's gain is now attributed, but only within one skeleton.} Both controls have been run
 (\S\ref{sec:w11}): the layer grading is worth $+0.059$, the phasor coordinates $+0.315$ and the
-graded message-passing architecture $+0.337$ of the $0.265 \to 0.917$ step. What that does not
-license is a general statement about coordinates versus architecture. W12b is handicapped by the
-grading it retains --- a non-character feature reaches the head only through even products --- so
-$+0.337$ bounds the architecture's contribution \emph{inside the graded skeleton} rather than
-measuring it in general, and a fourth arm without the grading would be needed to remove that
-condition. The three numbers also come from one dataset and one protocol.
+graded message-passing architecture $+0.337$ of the $0.265 \to 0.917$ step. The square is now complete, and its interaction of $+0.013$ is what licenses reading the
+parts additively. What it still does not license is a general statement about coordinates versus
+architecture: every cell shares one message-passing skeleton, so $+0.291$ is what \emph{this}
+skeleton buys over a permutation-equivariant reader rather than a claim about architectures at
+large, and the graded row remains handicapped in the sense that a non-character feature reaches the
+head only through even products. The numbers also come from one protocol, and from MNIST for the
+$2\times2$ specifically.
 
 \textbf{The $\Dinf$-aware reader is built at $L=2$ only, and by one route.} W12
 (\S\ref{sec:w11}) quotients the group on the raw parameters, and it is the strongest weight-space
