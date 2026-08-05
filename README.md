@@ -716,8 +716,8 @@ conclusion ([`S9.md`](docs/prereg/S9.md)).
   **The phasor route was proposed by an external reviewer of this paper**; ours is the two-layer
   realization ([PROVENANCE](docs/PROVENANCE.md) row M7).
 
-All three sized *by rule* to the frozen decoder's 1,873,162 params (within 1.5%), so no row loses
-for being smaller.
+Every reader sized *by rule* to the frozen decoder's 1,873,162 params (within 1.5%), so no row
+loses for being smaller.
 
 | rung | construction | reader | acc | $f$ | quotients |
 |---|---|---|---:|---:|---|

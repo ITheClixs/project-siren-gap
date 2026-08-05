@@ -25,3 +25,4 @@ results/raw/
 # compiled chapter PDFs (tectonic output)
 *.pdf
 paper/*.log
+dist/

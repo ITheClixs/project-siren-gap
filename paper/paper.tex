@@ -1238,8 +1238,9 @@ asserted --- logits move by less than $10^{-4}$ relative under random group elem
 up to $|j| = 40$, far outside anything a fitted network occupies, because the phasor quotients the
 integer translation exactly rather than approximately.
 
-All three readers are sized by rule to the frozen decoder's $1{,}873{,}162$ parameters (W11a and
-W11b within $1.5\%$; W12 at width $186$, $+0.09\%$), so no row loses for being smaller.
+Every reader here is sized by rule to the frozen decoder's $1{,}873{,}162$ parameters (W11a and
+W11b within $1.5\%$; W12 at width $186$, $+0.09\%$; the two controls at $+0.80\%$ and $+0.03\%$),
+so no row loses for being smaller.
 
 \input{tables/w11_table}
 
@@ -1258,8 +1259,8 @@ symmetry.
 practical claim is withdrawn.} $f(\mathrm{W12}) = \mathbf{0.917}$, i.e.\ $87.64\%$ against the
 shared-initialization ceiling's $94.36\%$, from weights fitted independently. That is $+0.651$ over
 the permutation-only reader, $+0.390$ over the same-family reader fed a fixed invariant front-end,
-and $+0.288$ over the best exact reframing. All three readers sit within $1.5\%$ of the frozen
-decoder's parameter count, so none of it is capacity.
+and $+0.288$ over the best exact reframing. Every reader compared here sits within $1.5\%$ of the
+frozen decoder's parameter count, so none of it is capacity.
 
 We registered this badly. H-S9-1 put $f(\mathrm{W12})$ at $0.55\,[0.35,0.72]$, H-S9-2 the gain over
 W11a at $0.29\,[0.10,0.45]$, H-S9-3 the gain over W11b at $0.02\,[-0.15,0.18]$; the observed values

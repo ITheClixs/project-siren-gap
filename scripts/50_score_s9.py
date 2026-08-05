@@ -145,8 +145,8 @@ def table(rep: dict) -> str:
     rows = [r for r in rows if r[0] in rep["f"]]
     lines = [
         r"\begin{table}[t]", r"\centering\small",
-        r"\caption{\textbf{Readers at matched capacity (MNIST, \texttt{P-random}).} All three "
-        r"readers are sized by rule to the frozen decoder's $1{,}873{,}162$ parameters. The "
+        r"\caption{\textbf{Readers at matched capacity (MNIST, \texttt{P-random}).} Every reader "
+        r"is sized by rule to the frozen decoder's $1{,}873{,}162$ parameters. The "
         r"invariance column is what each construction actually quotients: W11a nothing beyond "
         r"permutations, W11b the full group but only because its input already is invariant, W12 "
         r"the full group on the raw parameters, and neither control anything. The two controls vary "
