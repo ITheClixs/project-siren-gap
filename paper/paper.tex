@@ -1,5 +1,5 @@
 % =====================================================================================
-%  How Much of the Weight-Space Perception Gap Is Symmetry?
+%  How Much of the Weight-Space Perception Gap Is Symmetry? Evidence from Sine Networks
 %  Mehmet Demir Güven — Department of Computer Science, ETH Zürich
 %
 %  Build:  tectonic paper/paper.tex
@@ -68,7 +68,7 @@
 \makeatother
 
 \title{How Much of the Weight-Space Perception Gap Is Symmetry?\\[2pt]
-\large An Exact Decomposition for Periodic-Activation Networks}
+\large Evidence from Sine Networks}
 \date{}
 
 \begin{document}
@@ -91,14 +91,16 @@ previous classifications cover, and a layer carries $\Dinf \wr S_n$. For generic
 sine networks we prove this group exhausts functional equivalence.
 
 Measurement then splits the attribution in two. Exact orbit-valued reframing recovers $63\%$,
-$66\%$ and $32\%$ of the gap on three datasets, but that number is algorithm-relative rather than a
-causal share, so we also intervene: randomizing the group while holding every network and its
-realized function fixed costs $79$ of the $80$ points, four fifths of it from sign flips. The
-symmetry story is therefore right about the cause and wrong about the remedy, since the treatments
-the literature applies to it (augmentation, refit marginalization, frame averaging) recover under
-$13\%$.
+$66\%$ and $32\%$ of the gap on three datasets, but that number is relative to the reader and its
+training algorithm rather than a causal share, so we also intervene. Applying random group
+transformations to a shared-initialization corpus, leaving every realized function unchanged, costs
+$79$ of the $80$ points, four fifths of it from sign flips. Scatter within the group is therefore
+\emph{sufficient} to reproduce almost the whole degradation; the experiment does not identify what
+fraction of the naturally occurring gap symmetry mediates, and we do not claim it does. The
+implementations of the standard remedies that we evaluate (bounded augmentation, refit
+marginalization, feature-level frame averaging) recover under $13\%$.
 
-What the characterization buys is knowing which quotient a reader must take. Bias phasors reduce
+The characterization is useful because it says which quotient a reader must take. Bias phasors reduce
 the infinite winding to a parity, leaving a finite grading that a network can preserve layer by
 layer, and the resulting reader on \emph{raw} parameters recovers $\mathbf{92\%}$ of the gap at
 matched capacity, against $63\%$ for the best reframing and $27\%$ for a permutation-equivariant
@@ -108,8 +110,10 @@ the grading but keeping the coordinates still gives $86\%$, while keeping the gr
 it the raw bias gives $60\%$, so coordinates and architecture contribute comparably and enforced
 layer-wise equivariance contributes little.
 
-The practical conclusion cuts against the enterprise. Querying the same INR at $64$ learned
-coordinates is more accurate than every weight-space pipeline we built and $100\times$ cheaper.
+Querying the same INR at $64$ learned coordinates is more accurate than every weight-space
+pipeline we built, and about $100\times$ cheaper than the strongest of them. All empirical results
+are for two-hidden-layer SIRENs fitted by constant-step Adam, a protocol our own sweep shows does
+not reach stationarity, and the group-aware reader is so far evaluated on MNIST alone.
 \end{minipage}
 \end{center}
 \vskip 1.2em
@@ -147,7 +151,7 @@ is \emph{not} a group action, and so cannot be removed by any canonicalization, 
 equivariant layer at all. The two accounts prescribe opposite research programmes and the field has
 been proceeding on the first without checking.
 
-This paper checks. Our contributions:
+This paper tests it. Our contributions:
 
 \begin{enumerate}\itemsep2pt
 \item \textbf{The group these transformations generate} (\S\ref{sec:group}). The two
@@ -161,7 +165,7 @@ a layer carries $\Dinf \wr S_n$ (Theorem~\ref{thm:po1}), and that the phase gene
 actions cannot contain them.
 \item \textbf{Generic identifiability at one hidden layer} (\S\ref{sec:identifiability}).
 $\Dinf \wr S_n$ is \emph{all} of the functional equivalence on an explicit generic stratum
-(Theorem~\ref{thm:po2}), by a Fourier-atom argument that is the periodic-activation analogue of a
+(Theorem~\ref{thm:po2}), by a Fourier-atom argument that is the sine-network analogue of a
 classical line \citep{hechtnielsen1990algebraic,sussmann1992uniqueness,fefferman1994reconstructing}.
 Two consequences follow rather than stand alone: the sine instance of
 \citeauthor{dym2024impossibility}'s continuous-canonicalization obstruction, which here is global
@@ -171,8 +175,9 @@ rather than confined to sorting ties (Proposition~\ref{prop:po5}); and the obser
 being deliberately incomplete.
 \item \textbf{Exact invariants at depth two} (\S\ref{sec:deep}). Per-neuron invariants break at
 $L\ge 2$ because a hidden neuron's outgoing vector is acted on by the next layer. Coupling the
-layers through the second-layer Gram $G = W_2^\top W_2$ repairs this and yields a finite family
-of exactly invariant features, verified numerically to $3\times10^{-7}$ relative. A control
+layers through the second-layer Gram $G = W_2^\top W_2$ repairs this and yields a finite family of
+features that are exactly invariant on the no-tie stratum, where the order statistics used for
+pooling have distinct keys, and are verified numerically to $3\times10^{-7}$ relative. A control
 matched to it in monomial degree, trigonometric order, pooling and dimension, differing only in
 whether the $\Dinf$ component is quotiented out, separates the encoding's gain from generic
 nonlinear feature engineering (\S\ref{sec:control}).
@@ -339,7 +344,7 @@ impossible. In the vocabulary of maximal symmetry groups, $\Dinf\wr S_n$ is a ma
 group of the $L=1$ sine architecture. The result is \emph{non-asymptotic}: the only hypothesis is
 membership in $\Thgen$, an explicit and measurable condition.
 
-Theorem~\ref{thm:po2} is the periodic-activation entry in a classical line: permutation and sign
+Theorem~\ref{thm:po2} is the sine-network entry in a classical line: permutation and sign
 for odd activations \citep{hechtnielsen1990algebraic}, uniqueness for minimal tanh networks
 \citep{sussmann1992uniqueness}, functional equivalence more generally
 \citep{kurkova1994functionally}, and reconstruction of sigmoid networks from their output via pole
@@ -404,7 +409,7 @@ we present it as such.
 \end{remark}
 
 Corollary~\ref{cor:ceiling} is a ceiling on the enterprise, not a refutation of it: it says the
-justification for weight-space learning has to be stated in the currency of compute or of
+justification for weight-space learning has to rest on computational efficiency or on
 deliberate lossiness, and it is what makes a FLOPs-matched comparison against function-query
 methods such as \citet{horwitz2025probegen} the appropriate test.
 
@@ -441,7 +446,10 @@ B = (\cos b_i w_i \!\cdot\! \cos b_l w_l)\,G_2, \qquad
 C = (\sin 2b_i w_i \!\cdot\! \sin 2b_l w_l)
 \end{equation}
 are sign-cancelling and transform as $M \mapsto P M P^\top$ under the layer-1 permutation. Their
-sorted eigenvalue spectra are therefore invariant under the full product group.
+sorted eigenvalue spectra are therefore invariant under the full product group, exactly so wherever
+the spectrum is simple; at an exact tie the sort is only invariant as a multiset, which is the
+stratum the appendix excludes and which no fitted network in our corpora occupies to float32
+resolution.
 \end{proposition}
 
 Per-neuron even scalars are emitted as order statistics under a shared invariant sort key, and
@@ -501,8 +509,12 @@ generated on a single Apple M4 laptop. CIFAR-10 alone is $540{,}000$ fits ($60$k
 $60$k $+$ $8\times45$k) in $55{,}510$\,s of recorded wall-clock, i.e.\ $15.4$ hours at $9.7$ fits per
 second. That rate comes from fitting a whole shard as one batched optimization: the shard's INRs
 share the forward pass, with per-INR parameters carried in the leading tensor dimension, and
-per-INR losses share no parameters, so Adam on their mean is exactly independent per-INR Adam. A
-``fit'' is therefore an independently initialized and independently optimized parameter vector, not
+per-INR losses share no parameters, so the batched optimization is separable: no gradient crosses
+INRs. We optimize the \emph{sum} rather than the mean, so each INR's gradient reaches the optimizer
+unscaled and its update matches an independent Adam run exactly in exact arithmetic; the
+qualification is that Adam's $\varepsilon$ and float32 rounding are not perfectly scale-free, so the
+correspondence is up to those, and T9 asserts it numerically rather than by construction. A ``fit''
+is therefore an independently initialized and independently optimized parameter vector, though not
 an independent process. Shard sizes, batch dimensions, peak memory, per-corpus wall-clock and the
 separate active-compute accounting are in the released compute ledger. Every corpus, gate and audit
 is generated by a numbered, idempotent script.
@@ -523,7 +535,7 @@ rung & corpus & feature map \\
 \midrule
 P0 & --- & real pixels (the reference task) \\
 P1 & shared-det & oracle render of the fitted INR (information-preservation control) \\
-W1 & shared-det & raw flattened weights, \emph{no} nuisance \\
+W1 & shared-det & raw flattened weights, \emph{no} nuisance (the raw-weight reference, not a ceiling over readers) \\
 W2 & shared-stoch & raw weights, optimization noise only \\
 W3 & random & raw weights, the realistic setting \\
 W4 & random & $\csort$: exact canonicalization by neuron sort, template-free \\
@@ -545,7 +557,21 @@ f(\mathrm{W}k) \;=\; \frac{\mathrm{W}k - \mathrm{W3}}{\mathrm{W1} - \mathrm{W3}}
 \end{equation}
 the share of the shared-versus-random \emph{accuracy} gap that feature map $k$ recovers for this
 learning algorithm. Absolute accuracies inherit the task ceiling; $f$ does not, which makes it the
-object that can be compared across datasets. It is \emph{not} a causal share of the gap, for
+object that can be compared across datasets.
+
+\eqref{eq:f} is well defined only while the reader and its training procedure are held fixed, which
+they are for every rung of this ladder: one frozen MLP, one schedule, one seed policy, and only the
+feature map changing. Sections \ref{sec:w11} onward compare \emph{architectures}, so the same
+symbol would mix numerator and denominator from different learning algorithms. There we write
+\begin{equation}
+s(A) \;=\; \frac{\mathrm{acc}_A(\texttt{P-random}) - \mathrm{W3}}{\mathrm{W1} - \mathrm{W3}}
+\label{eq:s}
+\end{equation}
+and call it a \textbf{reference-normalized score}: the accuracy of architecture $A$ on the
+independently initialized corpus, placed on the scale set by the frozen MLP's two raw-weight
+anchors. It is a common yardstick, not a recovered share, and unlike $f$ it is not bounded by one,
+as \S\ref{sec:orbit} shows when a reader beats W1 on the shared corpus. It is \emph{not} a causal
+share of the gap either, for
 reasons set out in \S\ref{sec:bounds}; negative values occur (W8, W9) and simply mean the map is
 worse than raw weights.
 
@@ -598,18 +624,21 @@ and vice versa ($10.7 / 13.2$ on MNIST; $10.4 / 12.0$ on CIFAR-10).
 \paragraph{It is not decoder inadequacy.} P1 $\approx$ P0 everywhere --- on MNIST TOST declares
 equivalence at a $1.0$-point margin ($p = 2.5\times10^{-5}$), and on CIFAR-10 the render is
 \emph{marginally better} than real pixels ($56.23$ vs $55.81$), which at $40$\,dB is the mild
-denoising a near-exact render provides. Fitting destroys no class information. W1 then sits
-$3.2$ points below P1 on MNIST and $11.9$ on CIFAR-10, which bounds decoder-vs-representation loss
-under \emph{zero} nuisance. A decoder that were simply too weak could not be rescued by a
-function-preserving change of frame --- and reframing rescues it by $50$ points on MNIST.
+denoising a near-exact render provides. Fitting causes no loss the render classifier can detect, which is
+the strongest statement this control supports; it is not an information-theoretic claim about all
+class information. W1 then sits $3.2$ points below P1 on MNIST and $11.9$ on CIFAR-10, which bounds
+decoder-versus-representation loss under \emph{zero} nuisance. (An earlier version argued here that
+a decoder too weak to read the corpus could not be rescued by a function-preserving change of
+frame. \S\ref{sec:bounds} refutes that argument: an exact reframing changes no function yet can
+route an invariant property into a coordinate the reader finds accessible, so reframing gains
+measure accessibility rather than spare capacity. The sentence is withdrawn.)
 (A striking aside: on CIFAR-10 a \emph{linear} probe reads the shared-init weights better than it
 reads the pixels, $40.1$ vs $33.0$. The fit map is doing useful feature extraction; the problem is
 purely that independent fits write the result in incompatible coordinates.)
 
-\paragraph{Optimization noise is null on all three datasets.} W1 $-$ W2 $= -0.68$ (MNIST),
+\paragraph{Optimizer seed, at fixed initialization.} W1 $-$ W2 $= -0.68$ (MNIST),
 $-0.70$ (FashionMNIST), $-0.90$ (CIFAR-10): stochastic fitting from a shared initialization is, if
-anything, marginally \emph{better}. We had registered $+2.0$ points $[0,6]$ on MNIST and were
-wrong; having learned that, we registered $-0.7$ $[-2.5,+1.0]$ for CIFAR-10 and hit. The gap is
+anything, marginally \emph{better}, contrary to our prediction of $+2.0$ points on MNIST. The gap is
 attributable to the initialization, not to the trajectory.
 
 \paragraph{Reframing recovers much of the gap, and the fraction is not a constant.}
@@ -621,13 +650,13 @@ orbit-valued reframing recovers about two thirds of the accuracy gap on these co
 We then registered that restatement as a prediction for CIFAR-10 --- $f(\mathrm{W5}) = 0.62$,
 $80\%$ $[0.42, 0.78]$, with an explicit falsifier at $f < 0.30$ --- and it missed in the other
 direction: $f(\mathrm{W5}) = \mathbf{0.325}$, just clear of the falsification line. The two-thirds
-figure is a property of the grayscale corpora, not a law. What survives on all three datasets is
+figure is a property of the grayscale corpora, not a law. What holds on all three datasets is
 the weaker claim that \emph{an exact reframing recovers between a third and two thirds of the
 accuracy gap, while no inexact treatment recovers more than an eighth of it}. Whether the
 unrecovered part is non-group structure or merely a better representative we did not find is not
 decided by these numbers; \S\ref{sec:orbit} is the design that addresses it.
 
-\paragraph{The 0.11-to-0.63 span is a property of the frame, not of the information.} Template-free
+\paragraph{Dependence of recovery on the choice of reframing.} Template-free
 sorting recovers $f = 0.177 / 0.170 / 0.108$; aligning to a fixed reference network recovers
 $0.628 / 0.664 / 0.325$. Both are exact elements of $G$; the difference is entirely which orbit
 representative is chosen. The practical message for architecture designers is that the ceiling on
@@ -639,7 +668,7 @@ frame choice is high and current template-free canonicalization is nowhere near 
 \caption{\textbf{Alignment buys a consistent frame, not privileged knowledge.} $f(\mathrm{W5})$ on
 MNIST under five alignment templates. An \emph{unrelated} random initialization does marginally
 better than the corpus's own $\theta_0$, and every template clears the pre-registered
-falsification line at $0.5$. Exploratory, watermarked as such in the results.}
+falsification line at $0.5$. Exploratory, and labelled as such in the results.}
 \label{fig:template}
 \end{figure}
 
@@ -660,7 +689,7 @@ MNIST / FashionMNIST / CIFAR-10: bounded group augmentation recovers $f = 0.054 
 $K$-marginalization $0.048 / 0.034 / 0.101$; frame averaging $0.003 / -0.008 / 0.001$. The largest
 of these anywhere is $0.128$, against $0.325$ for the best exact \emph{reframing} on the same
 corpus and $0.534$ for the invariant encoding. We had
-registered that marginalization would beat augmentation by $15$ points on MNIST; the observed
+predicted that marginalization would beat augmentation by $15$ points on MNIST; the observed
 difference was $-0.52$ ($p = .21$) because \emph{neither} works, and the null replicates on both
 later datasets ($+0.16$, $-0.84$; registered $0.0\,[-2,+2]$ for CIFAR-10 and hit). Of W7's small
 gain, $+3.2$ points on MNIST and $+3.1$ on CIFAR-10 is explained by its $8\times$ training rows
@@ -679,7 +708,7 @@ independent training rows rather than jointly at inference, which is the weaker 
 ``marginalization'' can mean. What the ladder establishes is that \emph{these} instantiations
 recover at most $12.8\%$ of the gap; it does not establish that principled invariant integration
 cannot do better. The one place augmentation looks best is CIFAR-10, where its $0.128$ edges past
-$\csort$'s $0.108$ and past its own registered ceiling of $0.12$; we record that as a miss (H-C1-9).
+$\csort$'s $0.108$, above the top of our predicted interval.
 
 % =====================================================================================
 \section{What the ladder measures, and what it does not}\label{sec:bounds}
@@ -775,7 +804,7 @@ phase component this paper emphasises matters empirically or only mathematically
 
 \input{tables/orbit_table}
 
-\paragraph{The group alone costs about as much as the whole observed gap.} Randomizing $g$ over the
+\paragraph{Degradation induced by random group transformations.} Randomizing $g$ over the
 untouched \texttt{P-shared-det} corpus takes the decoder from $94.36\%$ to $15.3\%$:
 $\Delta_{\mathrm{sym}} = 79.07$ at $B=0$ and $79.09$ at $B=10$, flat in the winding bound. The
 entire shared-versus-random gap on the same dataset is $80.4$ points. Known group scatter alone
@@ -788,19 +817,23 @@ contains something the group does not. The registration named the caveat in adva
 corpus is a favourable case for $\calign$ by construction, since every scattered network is exactly
 a group image of one fitted from the template's own initialization.
 
-\paragraph{An independently initialized corpus is already group-saturated.} Applying the same
-intervention to \texttt{P-random} costs $+0.13$ points at $B=0$ and $-0.50$ at $B=3$ --- nothing,
-within seed noise, and the registered call P-S6-B ($0.85$) resolves as expected. The raw reader on
-\texttt{P-random} is at a floor that additional exact group scatter cannot lower. Note also that
+\paragraph{Effect of extra scatter on the independently initialized corpus.} Applying the
+same intervention to \texttt{P-random} costs $+0.13$ points at $B=0$ and $-0.50$ at $B=3$: nothing,
+within seed noise, as we predicted. Two readings are
+compatible with that. The corpus may already be scattered across the group, or the raw reader may
+simply sit at a floor from which no intervention can push it lower, and an accuracy that cannot
+fall is weak evidence for either. Distinguishing them needs a distributional test, showing the
+parameter law approximately invariant under sampled group actions, or group-coordinate statistics
+estimated from the fits; we did not run one, so we report the null and not the saturation
+interpretation we previously drew from it. Note also that
 $\calign$ reaches $64.39\%$ on the scattered \texttt{P-random} corpus against $64.41\%$ on the
 unscattered one, a second empirical statement of the canonicalizer property of \S\ref{sec:bounds}.
 
-\paragraph{An exactly invariant reader still loses points, but how many is a property of the
-reader.} This is the sharpest result of the intervention, and it comes from a triple. W11b --- the
+\paragraph{Residual difference under invariant readers.} This is the sharpest result of the intervention, and it comes from a triple. W11b --- the
 $G$-invariant equivariant reader of \S\ref{sec:w11} --- scores $84.81\%$ on the untouched
 \texttt{P-shared-det} corpus and $85.39\%$ on the \emph{same corpus after the group has been
 randomized} at $B=3$. The difference, $0.59$ points, is seed noise: its invariance is not merely
-asserted by construction but measured (this was registered as validity check H-S6-5 and hits). The
+asserted by construction but measured. The
 same reader scores $56.24\%$ on \texttt{P-random}. So a reader that is empirically blind to
 $\Dinf \wr S_n$ still loses $28.6$ points between the shared-initialization and
 independent-initialization corpora, and \emph{that} loss cannot be group scatter.
@@ -812,19 +845,23 @@ $28.6$. Its invariance is exact by construction and audited at a $3.3\times10^{-
 to winding $|j|=40$ (\S\ref{sec:w11}), which makes the randomized-corpus leg of the triple
 redundant for it rather than unmeasured. Normalized against each reader's own shared-initialization
 ceiling instead of W1's, W11b carries $59.7\%$ of its own gap across and W12 carries $90.4\%$. The
-residual after removing the group is therefore \emph{reader-relative}, just as the recovery fraction
-is (\S\ref{sec:bounds}, Prop.~4). A better invariant reader cut it by a factor of $3.7$, and
-nothing here certifies that the next one cannot cut it again. So we report $7.8$ points, $9.7\%$ of
-the $80.4$-point gap, as an \emph{upper} bound on whatever is not symmetry, and withdraw the
-earlier reading on which $28.6$ points ($36\%$) measured it.
+residual after removing the group is therefore reader-relative, just as the recovery fraction is
+(\S\ref{sec:bounds}, Prop.~4). A better invariant reader cut it by a factor of $3.7$. We therefore
+report $7.8$ points as \emph{the shared-versus-random accuracy difference of the strongest
+invariant reader we have built}, and nothing more: it is not an upper bound on a latent
+non-symmetry share, because no such quantity is defined here and no monotonicity theorem says a
+stronger invariant reader must shrink the difference. Taking an unconstrained infimum over
+invariant readers would in any case be vacuous, since a constant classifier achieves zero
+difference. The earlier reading, on which $28.6$ points measured what is not symmetry, is
+withdrawn.
 
-What survives is qualitative and weaker than it was. The loss is real, since the two intervals do
+What remains is a weaker, qualitative statement. The loss is real, since the two intervals do
 not overlap, so it is at least $6.7$ points, and it is not group scatter. But the second half of the
-argument has thinned. That the loss is not simply lost signal rested on function-query accuracy
+argument is now much weaker. That the loss is not simply lost signal rested on function-query accuracy
 moving only $5.4$ points between the same two corpora (\S\ref{sec:s5}); against W11b that left a
 $23$-point margin, against W12 it leaves $2.4$, which is no longer comfortably outside the
 fit-quality difference the function side already sees. The two candidate explanations are unchanged. Independent fits may land on genuinely different
-orbits, which S4e measures directly: two fits of the same image sit at orbit distance $0.279$
+orbits, which S4e probes directly: two fits of the same image sit at a best-found distance of $0.279$
 against $0.280$ for two fits of \emph{different} images. Or the invariant family may be incomplete
 in a way that reads more from a shared chart than from independently scattered ones. An incomplete invariant cannot separate those two, so we do not claim a decomposition. What the triple establishes is that \emph{some} residual survives an intervention removing the
 group entirely, which the canonicalizer residual of \S\ref{sec:bounds} could not show. What it no
@@ -838,7 +875,7 @@ corpus is reader quality rather than group removal. The matched ungraded control
 \S\ref{sec:w11} reaches the same conclusion from the other side. Between them they cap how much of
 the recovery any invariant construction may claim as symmetry work.
 
-\paragraph{Within the group, reflection dominates and winding is nearly free.} With the permutation
+\paragraph{Contributions of sign, permutation and winding.} With the permutation
 fixed to the identity, $\Delta_{\mathrm{sym}}$ is still $62.9$ points at $B=0$ and $64.1$ at
 $B=10$: of the $79$ points that the full group costs, roughly $63$ are already bought by
 per-neuron sign flips alone, about $15$ by relabelling $32$ neurons, and about $1$ by windings up
@@ -879,7 +916,7 @@ attributable to the $\Dinf$ component specifically.
 
 \paragraph{Most of the encoding's CIFAR-10 gain is invariance; a substantial minority is not.}
 $f(\mathrm{W10c}) = 0.125$ on MNIST against W10's $0.269$, and $0.216$ on CIFAR-10 against
-$0.534$. All three registered intervals hit --- $0.14\,[0.02,0.28]$, $0.22\,[0.05,0.42]$ and, for
+$0.534$. All three predictions hit ($0.14\,[0.02,0.28]$, $0.22\,[0.05,0.42]$ and, for
 the difference the review actually asked for, $0.31\,[0.11,0.48]$ against an observed $0.318$. The
 pre-committed falsifier ($f(\mathrm{W10c}) \ge f(\mathrm{W10}) - 0.05$ on CIFAR-10, which would
 have voided every symmetry reading of the CIFAR-10 encoding result) did not fire.
@@ -890,7 +927,7 @@ encoding's advantage over an exact reframing on natural images is therefore a ge
 effect and not a feature-engineering artifact --- but it is not \emph{purely} a symmetry effect
 either, and the second registered probability call is the one that says so.
 
-\paragraph{The nonlinearity contributes on its own, which changes how W10 and W4 compare.}
+\paragraph{Contribution of the nonlinearity, and the W10--W4 comparison.}
 P-S7-B put $0.55$ on $f(\mathrm{W10c}) \le f(\mathrm{W4})$ on CIFAR-10 --- that breaking $\Dinf$
 invariance would cost more than the nonlinear pooling buys. It resolves false: $0.216$ against
 $\csort$'s $0.108$. A feature map with the same nonlinearity and \emph{no} $\Dinf$ invariance
@@ -926,7 +963,7 @@ encoding grows from $D = 320$ to $D = 384$). That call resolved correctly. The c
 that the grayscale ordering $f(\mathrm{W5}) > f(\mathrm{W10})$ would persist, $P = 0.65$ ---
 resolved incorrectly, and the crossover is the reason.
 
-\paragraph{The registered mechanism is real but small (ablation).} P-C1-B attributed W10's rise to
+\paragraph{Ablation of the registered channel mechanism.} P-C1-B attributed W10's rise to
 the three output channels. We can test that \emph{within} the CIFAR corpus, without new fitting,
 by changing only what the encoder is allowed to read (exploratory, not registered):
 
@@ -945,13 +982,13 @@ averaged    & the three channels' mean                 & 320 & 0.425 \\
 Truncating to one channel --- which restores exactly the grayscale encoding dimension --- costs
 only $0.077$. Against the $0.265$ rise from MNIST's $0.269$ to CIFAR's $0.534$, the channel count
 therefore explains about $29\%$; the other $71\%$ survives at $D = 320$ and is a property of the
-corpus, not of $c$. The registered mechanism is therefore right in direction and wrong in magnitude. (The \emph{averaged} arm is
+corpus, not of $c$: the mechanism we predicted operates, but it is far smaller than we expected. (The \emph{averaged} arm is
 the useful control: it has the same dimension as \emph{truncated} and strictly more of the
 network's information, yet does \emph{worse}, so the effect is not ``more feature dimensions'' and
 not ``more information'' --- channel-averaging cancels the per-channel sign structure that
 $(\sin b_i)u_i$ exists to carry.)
 
-\paragraph{It is not that CIFAR's fits ran further.} The obvious confound is fit length: the
+\paragraph{Fit length as a candidate explanation.} The obvious confound is fit length: the
 CIFAR corpora were frozen at $1000$ steps against $300$ for the grayscale ones, and a fit that
 travels further from $\theta_0$ should be harder to align back to it. We measured the travel
 directly on the shared-initialization corpora, with no new fitting. It is
@@ -984,14 +1021,14 @@ over-parameterised, taking median render PSNR from $40$ to $59.8$\,dB, so this c
 \emph{much more accurately} than MNIST at $39.2$\,dB and still aligns far worse. Higher fidelity
 does not buy alignment recovery.
 
-\paragraph{What survives.} Three candidate causes for the cross-dataset behaviour have now been
+\paragraph{Remaining candidate explanation.} Three candidate causes for the cross-dataset behaviour have now been
 tested and eliminated: fit length (parameter travel is identical across corpora), output-channel
 count (this arm), and render fidelity (this arm, in the helpful direction). What remains is image
 statistics --- natural scenes versus centred strokes and silhouettes. We do not offer a replacement
 mechanism: the one we did offer was well motivated by the algebra and false, and a second
 explanation fitted to the same evidence would carry no more weight than the first.
 
-\paragraph{The practical reading.} On low-complexity grayscale corpora, choosing a good orbit
+\paragraph{Practical implication for method choice.} On low-complexity grayscale corpora, choosing a good orbit
 representative is the dominant lever and an exact invariant front-end is a poor second. On natural
 images the ranking reverses, at either channel count. A weight-space method that fixes one strategy
 will therefore look much better on some benchmarks than others for reasons that have nothing to do
@@ -1074,8 +1111,7 @@ it alongside PSNR and relative parameter travel at every budget.
 
 \input{tables/sweep_table}
 
-\paragraph{The sweep did not reach stationarity, so it cannot answer the question it was built to
-answer.} This is the outcome S8 §4 pre-committed to reporting if P-S8-C failed, and P-S8-C failed.
+\paragraph{Stationarity was not reached, so the convergence question stays open.} This is the outcome S8 §4 pre-committed to reporting if P-S8-C failed, and P-S8-C failed.
 The registration asked for a $10\times$ fall in the median relative endpoint gradient norm between
 $300$ and $10000$ steps as evidence that the sweep moves toward stationarity rather than merely
 fitting harder. The observed ratio is $1.17$ on \texttt{P-random} and $0.91$ on
@@ -1084,7 +1120,7 @@ do not read the accuracy numbers at $10000$ steps as measurements ``after conver
 question the external review asked, whether the recoverable fraction survives convergence, remains
 open. What follows are statements about the \emph{budget}, which is what this sweep varied.
 
-\paragraph{The fits never reach a stationary point because of the optimizer, not the budget.} Fit
+\paragraph{Why stationarity is not reached: the optimizer.} Fit
 quality is not monotone in budget: median render PSNR rises $27$\,dB from $300$ to $1000$ steps and
 then \emph{falls} back $6$\,dB by $10000$, on both protocols, while the endpoint gradient norm falls
 $26\times$ and then climbs back to $0.86$ of its $300$-step value on \texttt{P-random} and to
@@ -1105,7 +1141,7 @@ before scoring: the corpus generator prints per-shard PSNR into the same log the
 so that quantity had been seen while the job was being monitored. The declaration is in the
 addendum.
 
-\paragraph{What the budget does license.} Three things, none of which requires convergence.
+\paragraph{Conclusions the budget sweep does support.} Three things, none of which requires convergence.
 $f(\calign)$ declines monotonically across a $33\times$ budget, $0.502$, $0.489$, $0.470$,
 $0.459$, for a total of $\mathbf{-0.043}$: far smaller than the $-0.15$ we registered, and
 comfortably inside its interval. Per the pre-commitment for that branch, the decline is reported as a real
@@ -1153,25 +1189,26 @@ function-query's entire per-task cost, so the lines never cross.}
 \label{fig:pareto}
 \end{figure}
 
-\paragraph{Weight access is dominated on both axes.} At $K = 64$, function access reaches
+\paragraph{Accuracy and compute compared at matched FLOPs.} At $K = 64$, function access reaches
 $95.34\%$ for $1.59$\,MFLOP per INR. The best weight-access rung \emph{at the time this comparison
 was registered}, $\calign$, reaches $64.41\%$ for $5.45$\,MFLOP: $30.9$ accuracy points worse at
 $3.4\times$ the compute. At $K = 256$ function access reaches $98.23\%$, which is above the
 real-pixel MLP's $97.97\%$ --- learned query points are a better input to the same decoder than the
 pixels are.
 
-\paragraph{The best reader narrows the accuracy gap and widens the compute one.}
+\paragraph{Re-pricing the frontier with the strongest weight reader.}
 Fig.~\ref{fig:pareto} plots the frontier and the amortization argument together. W12
 (\S\ref{sec:w11}) is a weight-access pipeline that did not exist when S5 was registered, and the
 claim above is quantified over all of them, so it has to be re-priced rather than left to speak for
 a set that no longer contains the best reader. W12 reaches $87.64\%$ at $163$\,MFLOP per INR under
 the same analytic accounting: \textbf{$7.7$ accuracy points worse at $103\times$ the compute}. The
+$103\times$ is against the strongest weight reader; against $\calign$ the factor is $3.4$. The
 conclusion survives --- function access still dominates on both axes --- but the shape of the
 domination changes, from a large accuracy deficit at comparable cost to a small accuracy deficit at
 two orders of magnitude more compute. The grading is what costs: W12 drops the edge MLP over the
 $n^2$ pairs but pays for eighteen $d\times d$ per-node maps a round against the graph reader's two.
 
-\paragraph{Amortization does not rescue it.} Corollary~\ref{cor:ceiling} left one escape: canonicalize
+\paragraph{Amortization over many downstream tasks.} Corollary~\ref{cor:ceiling} left one escape: canonicalize
 once, decode many times. Priced, that escape closes. Weight access costs
 $1.70 + 3.74\,T$\,MFLOP over $T$ downstream tasks; function-query with task-specific probes costs
 $1.59\,T$. The lines never cross, because the weight reader's \emph{per-task} cost on a $1185$-dimensional
@@ -1181,7 +1218,7 @@ $\approx 2PW$, while querying $K$ points costs $\approx 2KcW + K\cdot\mathrm{sir
 access is cheaper whenever $Kc \ll P$ --- a condition on how many probes the task needs, not on how
 big the INR is.
 
-\paragraph{And the nuisance simply does not arise.} Between \texttt{P-random} and
+\paragraph{Sensitivity of function access to the protocol.} Between \texttt{P-random} and
 \texttt{P-shared-det}, function-query accuracy moves $5.4$ points --- a fit-quality effect, since the
 two corpora differ in median PSNR ($37.5$ vs $39.2$\,dB), not a symmetry effect. Weight access moves
 $\mathbf{80.4}$ points between the same two corpora. The entire object this paper decomposes is
@@ -1232,16 +1269,54 @@ the raw parameters sort into four blocks,
 (0,0)\!: \|w_i\|^2,\ \cos 2b_i \qquad (1,0)\!: w_i,\ \sin 2b_i \qquad
 (0,1)\!: \cos b_i \qquad (1,1)\!: \sin b_i,\ u_i ,
 \]
-and every layer preserves the grading: linear maps act within a character, products add characters,
-the nonlinearity is odd off the neutral block, and only $(0,0)$ channels reach the head. The
-coupling matrix $W^2$ carries character $(1,1)$ on the layer-1 side and $(1,0)$ on the layer-2 side,
-which leaves exactly two legitimate message channels per direction ---
-$\sum_i W^2_{ki} f_i^{(1,1)}$ and $\sum_i (W^2_{ki})^2 f_i^{(0,0)}$, and their transposes. That is
-the Gram coupling of Proposition~\ref{prop:deep} reappearing as a message rule, except that here it
-is neither pooled nor fixed: the network learns which couplings to use, and a graded bilinear layer
-lets characters that cannot pass alone combine into one that can. Invariance is verified rather than asserted: logits move by less than $10^{-4}$ relative under random group elements with windings
-up to $|j| = 40$, far outside anything a fitted network occupies, because the phasor quotients the
-integer translation exactly rather than approximately.
+and the coupling matrix $W^2$ carries character $(1,1)$ on the layer-1 side and $(1,0)$ on the
+layer-2 side, which leaves exactly two legitimate message channels per direction,
+$\sum_i W^2_{ki} f_i^{(1,1)}$ and $\sum_i (W^2_{ki})^2 f_i^{(0,0)}$, together with their transposes.
+That is the Gram coupling of Proposition~\ref{prop:deep} reappearing as a message rule, except that
+here it is neither pooled nor fixed: the network learns which couplings to use, and a graded
+bilinear layer lets characters that cannot pass alone combine into one that can.
+
+Each layer of the reader is then constrained so that the grading is preserved, and the invariance
+follows as a proposition rather than as a numerical observation.
+
+\begin{proposition}[Invariance of the phasor-graded reader]\label{prop:w12}
+Write $\chi \in \{(0,0),(1,0),(0,1),(1,1)\}$ for the characters of $\Z_2 \times \Z_2$, and let
+$f^{(\chi)}(\theta) \in \R^{n \times d_\chi}$ denote the block of node features of character
+$\chi$. For every $g \in \Dinf \wr S_n$ acting on a layer, the feature map above satisfies
+$f^{(\chi)}(g\theta) = \chi(g)\, P_g\, f^{(\chi)}(\theta)$ with $\chi(g) \in \{\pm1\}$ and
+$P_g$ the induced node permutation. Then a reader built from \emph{(i)} per-character linear maps,
+carrying a bias only on $\chi = (0,0)$, \emph{(ii)} bilinear products routed to the sum of their
+characters, \emph{(iii)} an \emph{odd} nonlinearity on every block with $\chi \ne (0,0)$ and an
+arbitrary one on $(0,0)$, \emph{(iv)} the two message channels above, and \emph{(v)} a head reading
+only the $(0,0)$ block after mean and max pooling over nodes, computes a function of $\theta$ that
+is exactly invariant under $\Dinf \wr S_n$.
+\end{proposition}
+
+\begin{proof}
+Induct on the layers, with the hypothesis that every block satisfies the covariance
+$f^{(\chi)} \mapsto \chi(g) P_g f^{(\chi)}$. \emph{(i)} A linear map applied along the feature
+axis commutes with $P_g$ and with the scalar $\chi(g)$; a bias would add a constant to a block whose
+sign flips, which is why bias is permitted only where $\chi \equiv 1$. \emph{(ii)} Products are
+taken node-wise, so they commute with $P_g$, and characters are multiplicative,
+$\chi_1(g)\chi_2(g) = (\chi_1\chi_2)(g)$, which is exactly the routing rule. \emph{(iii)} For odd
+$\sigma$ and $\chi(g) = \pm1$, $\sigma(\chi(g) z) = \chi(g)\,\sigma(z)$, so covariance survives;
+on $\chi = (0,0)$ the scalar is $+1$ and any $\sigma$ is admissible. \emph{(iv)} $W^2$ transforms
+with character $(1,1)$ on its layer-1 index and $(1,0)$ on its layer-2 index and is permuted on both,
+so each admitted channel sums a product whose total character matches its destination, and the sum
+over the contracted index absorbs the permutation. \emph{(v)} Mean and max over the node axis are
+$P_g$-invariant, and on $\chi = (0,0)$ the scalar is $+1$, so the pooled vector is fixed. The head
+is then an arbitrary function of an invariant. Finally the winding enters the features only through
+$\cos b$, $\sin b$, $\cos 2b$, $\sin 2b$, on which $b \mapsto b + \pi j$ acts by $(-1)^j$ or
+trivially, so $j$ is absorbed into the characters and the argument is uniform in $|j|$.
+\end{proof}
+
+Two things the proposition does not say. It is a statement about the architecture in exact
+arithmetic, so it is agnostic to the trained weights but not to floating point; the audit is what
+covers the latter, and it puts the relative logit movement at $3\times10^{-6}$ on $512$ fitted
+networks under windings to $|j| = 40$. And it requires the feature standardization to be
+scale-only: dividing each channel by a constant commutes with the sign action, while subtracting a
+mean would not, so the implementation never centres a non-neutral channel. In our implementation
+the odd nonlinearity of \emph{(iii)} is $\tanh$ and the neutral one is GELU.
 
 Every reader here is sized by rule to the frozen decoder's $1{,}873{,}162$ parameters (W11a and
 W11b within $1.5\%$; W12 at width $186$, $+0.09\%$; the two controls at $+0.80\%$ and $+0.03\%$),
@@ -1251,23 +1326,24 @@ so no row loses for being smaller.
 
 \input{tables/w12_table}
 
-\paragraph{Permutation equivariance alone is not enough, and the ordering is the finding.}
-$f(\mathrm{W11a}) = 0.265$ against $f(\mathrm{W5}) = 0.628$: a capacity-matched
-permutation-equivariant reader on raw weights recovers about the same share of the gap as an exact
-invariant encoding with lossy pooling ($0.269$), and less than half of what an exact change of frame
-recovers. On its own that comparison invites the reading we gave it in an earlier version, that
+\paragraph{Permutation-only equivariance against exact reframing.}
+$s(\mathrm{W11a}) = 0.265$ against $f(\mathrm{W5}) = 0.628$; the first is a reference-normalized
+score \eqref{eq:s} and the second a recovered share \eqref{eq:f}, so they are comparable as
+positions on one scale but not as the same estimand. A capacity-matched permutation-equivariant
+reader on raw weights lands about where an exact invariant encoding with lossy pooling does
+($0.269$), and less than half as far up the scale as an exact change of frame. On its own that comparison invites the reading we gave it in an earlier version, that
 frame choice beats reader architecture. W12 shows the reading was wrong, and that what W11a
 demonstrates is narrower: permutation equivariance alone does not compensate for unmodelled phase
 symmetry.
 
 \paragraph{A $G$-aware reader on raw parameters beats every other treatment here, and the paper's
-practical claim is withdrawn.} $f(\mathrm{W12}) = \mathbf{0.917}$, i.e.\ $87.64\%$ against the
+practical claim is withdrawn.} $s(\mathrm{W12}) = \mathbf{0.917}$, i.e.\ $87.64\%$ against the
 shared-initialization ceiling's $94.36\%$, from weights fitted independently. That is $+0.651$ over
 the permutation-only reader, $+0.390$ over the same-family reader fed a fixed invariant front-end,
 and $+0.288$ over the best exact reframing. Every reader compared here sits within $1.5\%$ of the
 frozen decoder's parameter count, so none of it is capacity.
 
-We registered this badly. H-S9-1 put $f(\mathrm{W12})$ at $0.55\,[0.35,0.72]$, H-S9-2 the gain over
+We registered this badly. H-S9-1 put $s(\mathrm{W12})$ at $0.55\,[0.35,0.72]$, H-S9-2 the gain over
 W11a at $0.29\,[0.10,0.45]$, H-S9-3 the gain over W11b at $0.02\,[-0.15,0.18]$; the observed values
 are $0.917$, $0.651$ and $0.390$, so S9 scores $\mathbf{0/3}$ and every miss is in the same
 direction. The probability call that mattered, P-S9-C at $0.25$ that a $G$-aware reader would beat $\calign$, resolved true at a Brier score of $0.56$. Section~4 of the frozen registration
@@ -1282,7 +1358,7 @@ phase components carry four fifths of the damage and neuron relabelling one fift
 (\S\ref{sec:orbit}); W11a quotients only the relabelling and recovers $0.265$, while W12 quotients
 all of it and recovers $0.917$. The group characterization is not decoration on the empirical part of the paper. It tells you which quotient a reader has to take.
 
-\paragraph{On the corpus with no nuisance, it beats reading the raw parameters.} Run on
+\paragraph{Performance on the shared-initialization corpus.} Run on
 \texttt{P-shared-det}, where every INR is fitted from the same initialization and there is nothing
 to quotient, W12 reaches $95.46\%$ [$95.03$, $95.99$] against W1's $94.36\%$ --- $f = 1.014$
 [$1.008$, $1.021$], strictly above one. So the phasor coordinates are a better way to read
@@ -1292,11 +1368,11 @@ side, and it has a consequence for the intervention: the residual that survives 
 is not a fixed quantity but a property of the reader used to expose it, which \S\ref{sec:orbit}
 re-measures at $7.8$ points against W11b's $28.6$.
 
-\paragraph{But the layer-level grading is not what does the work.} Applying S7's argument to W12,
+\paragraph{Effect of removing the layer grading.} Applying S7's argument to W12,
 the matched control removes the grading and keeps everything else: same skeleton, same block shapes,
 same phasor features, capacity re-solved by the same rule (width $122$, $1{,}888{,}212$ parameters).
 It is genuinely not invariant, its logits moving $0.25$ relative under the group on fitted INRs
-against W12's $3\times10^{-6}$, and it still reaches $f(\mathrm{W12u}) = \mathbf{0.858}$. The
+against W12's $3\times10^{-6}$, and it still reaches $s(\mathrm{W12u}) = \mathbf{0.858}$. The
 grading is therefore worth $+0.059$ of W12's $0.917$, and the control on its own already beats
 $\calign$'s $0.628$ and W11b's $0.526$.
 
@@ -1309,11 +1385,11 @@ enforcing equivariance in the layers. That is still the group characterization p
 table is what says which coordinates those are, but it is a different mechanism from the one we
 would have named, and the control is the only reason we can tell.
 
-\paragraph{The third arm: coordinates and architecture contribute comparably.} W12u varies the
+\paragraph{Effect of removing the phasor coordinates.} W12u varies the
 grading and keeps the coordinates. The converse arm, W12b, keeps the graded skeleton, the block
 structure and the edge coupling exactly, re-solves capacity by the same rule (width $186$,
 $1{,}873{,}782$ parameters, within $0.06\%$ of W12), and changes only the feature map: the bias
-enters \emph{raw} instead of phasor-lifted. It reaches $f(\mathrm{W12b}) = \mathbf{0.602}$. The
+enters \emph{raw} instead of phasor-lifted. It reaches $s(\mathrm{W12b}) = \mathbf{0.602}$. The
 $0.265 \to 0.917$ step from a permutation-equivariant reader on raw weights therefore splits as
 
 \[
@@ -1326,8 +1402,8 @@ $0.265 \to 0.917$ step from a permutation-equivariant reader on raw weights ther
 
 We registered this in advance (S10, $3/3$ intervals; point predictions $0.60$, $0.26$ and $0.34$
 against observed $0.602$, $0.256$ and $0.337$), \emph{including} the rule for reading the outcome.
-At $f \ge 0.75$ we had committed to withdrawing the claim that the coordinates carry the win, at
-$f \le 0.55$ to keeping it, and in between, which is where the number fell, to reporting a split
+At $s \ge 0.75$ we had committed to withdrawing the claim that the coordinates carry the win, at
+$s \le 0.55$ to keeping it, and in between, which is where the number fell, to reporting a split
 attribution rather than picking the closer side. So we do not claim the coordinates carry it. Within
 this skeleton, representing the bias in symmetry-adapted coordinates and reading it with a graded
 message-passing architecture are worth about the same, and the layer-level grading is worth little
@@ -1374,7 +1450,7 @@ pre-registered attack on that gap (S4e) asks the question empirically: if two tw
 networks realise nearly the same function, are their parameters nearly related by an element of
 $G$?
 
-\paragraph{The instrument, and the control that makes it non-vacuous.} A large residual after
+\paragraph{The alignment instrument and its control.} A large residual after
 $\calign$ proves nothing, because $\calign$ is a heuristic choice of representative. We therefore
 minimise over the group directly. Given the other layers fixed, the optimum for one layer is
 \emph{exact}: the per-neuron $\Dinf$ cost
@@ -1431,10 +1507,14 @@ absolute floor $R_\theta > 10^{-3}$, marked as post-hoc with the frozen text una
 the registered probability call against the criterion \emph{as written}.
 
 \paragraph{The production arm.} At production width, two independent fits \emph{of the same image}
-sit at $R_\theta = 0.279$ after optimal alignment. Two fits of \emph{different} images sit at
-$0.280$. The difference is $-0.001$. Modulo the entire symmetry group, a same-image pair is no
-closer than an unrelated pair --- which is the S1 ladder's W1-versus-W3 gap seen from parameter
-space rather than from a decoder.
+sit at $R_\theta = 0.279$ after the registered alignment procedure. Two fits of \emph{different}
+images sit at $0.280$. The difference is $-0.001$. The alignment is exact for one layer conditional
+on the other, but alternating between layers is not guaranteed to reach the global optimum over the
+product group, and planted recovery certifies the solver only on planted transformations. These are
+therefore the smallest distances the registered solver found, and they bound the true orbit
+distances from above. Read that way, a same-image pair is not measurably closer than an unrelated
+pair under this procedure, which is the S1 ladder's W1-versus-W3 gap seen from parameter space
+rather than from a decoder.
 
 \paragraph{What this licenses.} Conjecture~\ref{conj:deep} survives, with one width's worth of
 direct positive evidence and no counterexample. But identifiability at $L=2$ has \emph{no empirical
@@ -1549,14 +1629,14 @@ sine instance. \citet{lim2024empirical} remove symmetries by \emph{architecture}
 by canonicalization on a fixed architecture, which is the complementary intervention and the one
 that leaves the function untouched.
 
-\paragraph{Concurrent 2026 work.} Three preprints bear directly on results here and are cited by
-identifier, since our engagement with them is through the close-read memos released with this code
-rather than through published versions: arXiv:2602.01083 proves approximation-theoretic
-universality for permutation-invariant weight-space networks. Proposition~\ref{prop:po6} is
+\paragraph{Concurrent 2026 work.} Three preprints bear directly on results here; our engagement
+with them is through the close-read memos released with this code.
+\citet{wsn2026expressivity} prove approximation-theoretic universality for permutation-invariant
+weight-space networks. Proposition~\ref{prop:po6} is
 \emph{not} a competing universality theorem --- it is a quotient factorization, and all of its
 content comes from Theorem~\ref{thm:po2}, without which it says nothing about sine networks;
-arXiv:2604.23720 supplies the maximal-symmetry-group vocabulary in which
-Theorem~\ref{thm:po2} is stated; and arXiv:2605.08281 reports that in a meta-learned regime the
+\citet{quasiequiv2026} supply the maximal-symmetry-group vocabulary in which
+Theorem~\ref{thm:po2} is stated; and \citet{clustered2026} report that in a meta-learned regime the
 bias column is a causal readout route while weight-space geometry does not predict reader accuracy
 --- a dissociation that runs counter to the mechanism of \S\ref{sec:mechanism} and was named in
 our pre-registrations.
@@ -1752,6 +1832,22 @@ appears. Errors are ours.
 \small
 \bibliographystyle{plainnat}
 \begin{thebibliography}{99}
+
+\bibitem[WSN expressivity(2026)]{wsn2026expressivity}
+On the expressive power of permutation-equivariant weight-space networks.
+\newblock Preprint, February 2026. arXiv:2602.01083. \emph{Author list to be completed from the
+arXiv record.}
+
+\bibitem[Quasi-equivariant metanetworks(2026)]{quasiequiv2026}
+Quasi-equivariant metanetworks.
+\newblock In \emph{ICLR}, 2026. arXiv:2604.23720. \emph{Author list to be completed from the
+arXiv record.}
+
+\bibitem[Clustered or routed(2026)]{clustered2026}
+Is class signal clustered or routed in task-induced INR weight spaces?
+\newblock Preprint, May 2026. arXiv:2605.08281. \emph{Author list to be completed from the
+arXiv record.}
+
 
 \bibitem[Ainsworth et al.(2023)]{ainsworth2023rebasin}
 S.~K. Ainsworth, J.~Hayase, and S.~Srinivasa.
@@ -1993,8 +2089,16 @@ f_\theta(x) \;=\; \sum_{i=1}^{n} u_i \sin\!\big(\langle w_i, x\rangle + b_i\big)
 \qquad x \in \R^m,
 \label{eq:app-l1}
 \end{equation}
-with $w_i \in \R^m$, $b_i,\beta \in \R$ and $u_i \in \R^c$; for readability we take $c=1$, the
-general case being coordinatewise in the output index. Recall
+with $w_i \in \R^m$, $b_i,\beta \in \R$ and $u_i \in \R^c$. For readability we take $c=1$ in the
+proof. The vector-output case does not simply follow coordinatewise, because a coordinatewise
+argument would appear to permit a different sign on each output coordinate, so we record the step
+that rules this out. Matching atoms at a shared support point gives $u'\,e^{\mathrm i b'} =
+u\,e^{\mathrm i b}$ as an identity between vectors in $\C^c$ with $u, u' \in \R^c \setminus
+\{0\}$. Choose any index $k$ with $u_k \ne 0$; then $u'_k e^{\mathrm i b'} = u_k e^{\mathrm i b}$
+with $u_k, u'_k$ real forces $e^{\mathrm i (b - b')} \in \R$, hence $e^{\mathrm i (b-b')} = \pm 1$
+and $b' = b + \pi j$ for an integer $j$. That single value of $j$ then determines
+$u' = (-1)^{j} u$ simultaneously in \emph{every} coordinate, so one common sign is enforced across
+the whole output vector, which is what the normal form $g_{d,j}$ asserts. Recall
 $\Thgen = \{\theta : w_i \neq 0,\ u_i \neq 0\ \forall i,\ w_j \neq \pm w_i\ \forall j \neq i\}$ and
 the normal form $g_{d,j}(w,b,u) = ((-1)^d w,\ (-1)^d b + \pi j,\ (-1)^{d+j}u)$.
 

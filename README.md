@@ -1,6 +1,6 @@
 # How Much of the Weight-Space Perception Gap Is Symmetry?
 
-### An Exact Decomposition for Periodic-Activation Networks
+### Evidence from Sine Networks
 
 **Mehmet Demir Güven**
 Department of Computer Science, ETH Zürich · Zürich, Switzerland
@@ -50,12 +50,15 @@ leaving a finite grading preserved layer by layer — recovers **0.917** at matc
 0.265 for a permutation-equivariant one. That reverses a claim this README previously made, and a
 pre-registration required us to withdraw rather than qualify it (§10).
 
-**Randomizing the group costs 79.1 of the 80.4 points** — yet an exactly $G$-invariant reader still
-loses points between the two corpora, so the gap is not *wholly* reducible to group scatter. How
-many points is a property of the reader, not of the corpora: **28.6** for the equivariant reader
-over invariants, **7.8** for the stronger phasor-graded one. We therefore report the smaller figure
-as an *upper bound* on what is not symmetry and withdraw the earlier reading in which 28.6 measured
-it (§10). Within the group, per-neuron sign flips carry ~63 of the 79 points, neuron relabelling
+**Randomizing the group costs 79.1 of the 80.4 points.** Scatter within the group is therefore
+*sufficient* to reproduce almost the whole degradation. That is not the same as showing symmetry
+mediates the naturally occurring gap, and this experiment does not identify that fraction — we
+report sufficiency and stop there. An exactly $G$-invariant reader does still lose points between
+the two corpora, but how many is a property of the reader: **28.6** for the equivariant reader over
+invariants, **7.8** for the stronger phasor-graded one. The smaller figure is reported as that
+reader's shared-versus-random difference, not as a bound on a latent non-symmetry share, since no
+such quantity is defined here and an unconstrained infimum over invariant readers would be vacuous
+(a constant classifier achieves zero). Within the group, per-neuron sign flips carry ~63 of the 79 points, neuron relabelling
 ~15, and integer phase shifts ~1.
 
 We hunt for a counterexample to identifiability at depth two and find none: one student recovers its

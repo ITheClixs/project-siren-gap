@@ -155,10 +155,11 @@ def table(rep: dict) -> str:
         r"are $+0.059$ and $+0.315$, against $+0.337$ from W11a to W12b, so within this "
         r"skeleton the coordinates and the architecture contribute comparably and the "
         r"layer-level grading contributes little. $\calign$ is listed for reference; it "
-        r"is a change of frame rather than a reader.}",
+        r"is a change of frame rather than a reader, and its column is the recovered share $f$ "
+        r"of \eqref{eq:f} rather than the reference-normalized score $s$ of \eqref{eq:s}.}",
         r"\label{tab:w12}",
         r"\begin{tabular}{@{}llrrl@{}}", r"\toprule",
-        r"rung & construction & acc.\ (\%) & $f$ & invariance \\", r"\midrule",
+        r"rung & construction & acc.\ (\%) & $s$ & invariance \\", r"\midrule",
     ]
     for key, desc, inv in rows:
         p = rep["reader_params"].get(key)
