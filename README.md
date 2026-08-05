@@ -741,6 +741,33 @@ reflection/phase carry ~64. W11a quotients only the relabelling and recovers 0.2
 all of it and recovers 0.917. **The group characterization is not decoration on the empirical part —
 it tells you which quotient a reader has to take.**
 
+### 10.1 Two matched controls, and what actually does the work
+
+W12 changes two things at once against W11a — the bias is lifted to phasor coordinates, *and* those
+coordinates are read by a graded message-passing skeleton. Each control varies exactly one, with
+capacity re-solved by the same rule:
+
+| arm | what it varies | acc | $f$ | invariance (measured) |
+|---|---|---:|---:|---|
+| W11a | neither: raw weights, permutations only | 35.26 | 0.265 | $S_n$ only |
+| **W12b** | grading kept, **coordinates removed** (raw bias) | 62.34 | **0.602** | none — logits move 6.2 / 1.7e2 / 2.4e4 at $\|j\|\le$ 3/10/40 |
+| **W12u** | coordinates kept, **grading removed** | 82.93 | **0.858** | none — logits move 0.25 |
+| W12 | both | 87.64 | **0.917** | exact, 3e−06 |
+
+So the 0.265 → 0.917 step splits into **+0.337 architecture**, **+0.315 coordinates**, with the
+layer-level grading's **+0.059** inside the second. [`S10.md`](docs/prereg/S10.md) §4 fixed the
+reading rule *before* the arm ran — ≥0.75 would have withdrawn the claim that the coordinates carry
+the win, ≤0.55 would have confirmed it, in between means reporting a split and not picking the
+closer side. 0.602 fell in between, so we report the split: **coordinates and architecture matter
+about equally, and enforcing equivariance layer-by-layer matters little.**
+
+Two scope conditions, both registered in advance. W12b keeps the grading, so a non-character
+feature like a raw bias reaches the head only through the bilinear rounds' even products — +0.337
+bounds the architecture's contribution *within the graded skeleton*, not in general. And its
+non-invariance **grows with the winding**, because a raw bias grows linearly in $\pi j$ where its
+phasor does not; its feature-level neutral block is exactly fixed under $D_\infty$ (0.00), so
+invariance dies precisely where the theory says it must, in the bilinear rounds.
+
 **On the invariant encoding's pooling.** Keeping W10's invariants and changing only the pooling
 takes $f$ from 0.269 to 0.526. We previously split that 0.359 shortfall into "72% pooling, 28%
 incompleteness"; that split is **withdrawn** ([CLAIMS](docs/CLAIMS.md) row 38), because W10 and W11b
@@ -883,11 +910,13 @@ nominal 80%.
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
 grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; before the
-external review, **49/63 = 78%**; with S6, S7, S9 and S8 it is **61/83 = 73%** (grayscale 9/14, CIFAR 14/17,
-S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**, **S9 0/3**, **S8 6/8**); 31 probability
-calls, mean Brier **0.197**. The Brier average improved because the eight calls made *after* the
-program had a mechanism in hand — S8's three and the five in `S8-addendum-02`, registered between the
-3000- and 10000-step decodes — average **0.095** against **0.233** for the twenty-three before them. Calibration is
+external review, **49/63 = 78%**; with S6, S7, S9, S8 and S10 it is **64/86 = 74%** (grayscale 9/14, CIFAR 14/17,
+S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**, **S9 0/3**, **S8 6/8**, **S10 3/3**); 34 probability
+calls, mean Brier **0.184**. The Brier average improved because the eleven calls made *after* the
+program had a mechanism in hand — S8's three, the five in `S8-addendum-02` registered between the
+3000- and 10000-step decodes, and S10's three — average **0.083** against **0.233** for the
+twenty-three before them. S10 is the sharpest case: its three interval points were 0.60, 0.26 and
+0.34 against observed **0.602, 0.256 and 0.337**. Calibration is
 downstream of understanding, which is the same lesson S6-versus-S7 teaches at the arm level.
 S6 is the worst-scoring arm and S7 the best, and they were registered on the same day under the same
 template — arm-level coverage is mostly a statement about how well a mechanism was understood before
@@ -951,14 +980,20 @@ bash scripts/20_cifar_ladder.sh                       # CIFAR-10 ladder
 
 .venv/bin/python scripts/37_orbit_intervention.py ... # S6 orbit-only intervention
 .venv/bin/python scripts/11_ladder.py --rungs W10c    # S7 matched non-invariant control
-.venv/bin/python scripts/47_w12_phasor.py             # S9 phasor-graded reader (--ungraded = control)
+.venv/bin/python scripts/47_w12_phasor.py             # S9 phasor-graded reader
+.venv/bin/python scripts/47_w12_phasor.py --ungraded  # W12u: coordinates kept, grading removed
+.venv/bin/python scripts/47_w12_phasor.py --raw-bias  # W12b: grading kept, coordinates removed (S10)
 bash scripts/51_master_chain_s8_s9.sh                 # S8 convergence sweep + S9, serialized
+bash scripts/53_resume_s8_decodes.sh                  # resumes that chain if its shell dies
 .venv/bin/python scripts/42_canon_equivariance_audit.py   # is c_align a canonicalizer here?
 .venv/bin/python scripts/52_w12_invariance_audit.py       # is W12 invariant on fitted INRs?
+.venv/bin/python scripts/52_w12_invariance_audit.py --raw-bias  # ... and how far from it is W12b?
+.venv/bin/python scripts/56_score_s10.py              # scores S10 and picks its pre-committed branch
 
 .venv/bin/python scripts/21_paper_figures.py          # every figure above
 .venv/bin/python scripts/22_paper_tables.py           # every table above
-tectonic paper/paper.tex                              # paper.pdf
+tectonic paper/paper.tex --keep-logs                  # paper.pdf (--keep-logs, or paper.log goes stale)
+bash scripts/55_build_arxiv_package.sh                # arXiv tarball, compiled in a clean dir
 ```
 
 Scripts are numbered, idempotent and resumable (an existing ladder cell is skipped unless
@@ -971,7 +1006,7 @@ committed artifacts by scripts 21 and 22 — none are hand-edited.
 src/sirengap/    fitting/ symmetry/ canon/ models/ geometry/ data/ eval/ queue/
 tests/           property tests T1–T16 (CPU-runnable)
 configs/         one YAML per experiment, no hidden defaults
-scripts/         numbered idempotent entrypoints (00_lit_scan.sh … 52_w12_invariance_audit.py)
+scripts/         numbered idempotent entrypoints (00_lit_scan.sh … 56_score_s10.py)
 results/         committed per-seed cells + figures (raw weight shards gitignored)
 paper/           paper.tex/pdf, figures/, tables/, thesis/ chapters
 docs/            LAB_NOTEBOOK, prereg/, THINKING/, ADVISOR_REVIEWS/, ledgers, RELATED_WORK

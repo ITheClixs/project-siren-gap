@@ -1,0 +1,14 @@
+\begin{table}[t]
+\centering\small
+\caption{\textbf{The gap, and what an exact \emph{reframing} recovers.} The shared-versus-random accuracy gap W1$-$W3 shrinks with the task ceiling. The rung reported is the best orbit-valued \emph{reframing} (W4 or W5). The invariant \emph{encodings} W10 and W11b are excluded here and reported separately, because their gain is separated from nonlinear feature engineering only by the matched control of \S\ref{sec:control}. $f$ is algorithm-relative and the last column is what this reframing did not recover, not a measurement of non-symmetry.}
+\label{tab:gap}
+\begin{tabular}{@{}lrrlrr@{}}
+\toprule
+dataset & ceiling P0 & gap W1$-$W3 & best reframing & recovered & unrecovered \\
+\midrule
+MNIST & 97.97 & 80.43 & W5 $\calign$ & 50.49 & 37.2\% \\
+FashionMNIST & 89.62 & 70.31 & W5 $\calign$ & 46.69 & 33.6\% \\
+CIFAR-10 & 55.81 & 31.64 & W5 $\calign$ & 10.27 & 67.5\% \\
+\bottomrule
+\end{tabular}
+\end{table}

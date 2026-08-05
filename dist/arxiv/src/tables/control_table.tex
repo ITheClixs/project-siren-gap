@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering\small
+\caption{\textbf{The matched non-invariant control.} W10c emits the same monomials in $(w,u)$ at the same trigonometric orders, pooled the same way, at the same dimension, decoded by the same apparatus; only the parity classes differ, so it stays exactly permutation-invariant and is not $\Dinf$-invariant. The gap between the two rows is the part of the encoding's recovery attributable to the $\Dinf$ component.}
+\label{tab:control}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+ & \multicolumn{2}{c}{MNIST} & \multicolumn{2}{c}{CIFAR-10} \\
+rung & acc.\ (\%) & $f$ & acc.\ (\%) & $f$ \\
+\midrule
+W4 $\csort$ (reference) & 28.19 & 0.177 & 16.05 & 0.108 \\
+W10 exact invariants & 35.54 & 0.269 & 29.54 & 0.534 \\
+W10c matched control & 23.94 & 0.125 & 19.47 & 0.216 \\
+\midrule
+$f(\mathrm{W10}) - f(\mathrm{W10c})$ & \multicolumn{2}{c}{0.144} & \multicolumn{2}{c}{0.318} \\
+\bottomrule
+\end{tabular}
+\end{table}

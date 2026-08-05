@@ -113,3 +113,9 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-08-04,A02-S8-3 probability H-S8-7 misses low (travel at 10000 below 0.20),probability,0.75,,,1,—,,0.0625,registered in docs/prereg/S8-addendum-02.md (commit 117c5e6) before any 10000-step cell was decoded
 2026-08-04,"A02-S8-4 probability H-S8-4 hits (f(W5) at 10000 inside [0.20, 0.65])",probability,0.85,,,1,—,,0.0225,registered in docs/prereg/S8-addendum-02.md (commit 117c5e6) before any 10000-step cell was decoded
 2026-08-04,"A02-S8-5 probability H-S8-5 hits (f(W5) 10000 minus 300 inside [-0.40, +0.05])",probability,0.88,,,1,—,,0.0144,registered in docs/prereg/S8-addendum-02.md (commit 117c5e6) before any 10000-step cell was decoded
+2026-08-05,H-S10-1 f(W12b),interval,0.6,0.35,0.8,0.602,HIT,0.002,,
+2026-08-05,"H-S10-2 f(W12u) - f(W12b), the coordinate contribution",interval,0.26,0.06,0.48,0.2559,HIT,0.0041,,
+2026-08-05,"H-S10-3 f(W12b) - f(W11a), the architecture contribution",interval,0.34,0.1,0.55,0.3367,HIT,0.0033,,
+2026-08-05,P-S10-A probability f(W12b) < f(W12u),probability,0.85,,,1,—,,0.0225,
+2026-08-05,P-S10-B probability f(W12b) > f(W11a),probability,0.9,,,1,—,,0.01,
+2026-08-05,P-S10-C probability f(W12b) > 0.70 (architecture explains most of the step),probability,0.35,,,0,—,,0.1225,

@@ -56,6 +56,9 @@ def main() -> None:
     ap.add_argument("--root", default="data/inrbench")
     ap.add_argument("--ungraded", action="store_true",
                     help="audit the matched control instead: how far from invariant is it really?")
+    ap.add_argument("--raw-bias", action="store_true",
+                    help="audit the third arm (W12b): same graded skeleton, unlifted bias, which "
+                         "must move under a winding or the control is vacuous (S10 section 5)")
     args = ap.parse_args()
 
     cache = CorpusCache(Path(args.root) / args.dataset, args.dataset)
@@ -63,7 +66,7 @@ def main() -> None:
     full = by_split["test"]
     params = _index(full, torch.arange(min(args.n, full.batch)))
 
-    base = phasor_features(params)
+    base = phasor_features(params, raw_bias=args.raw_bias)
     stats = feature_scale(base)
 
     torch.manual_seed(0)
@@ -76,7 +79,7 @@ def main() -> None:
     report: dict = {
         "dataset": args.dataset, "protocol": args.protocol,
         "n_inrs": int(params.batch), "width": args.width, "tolerance": TOL,
-        "graded": not args.ungraded,
+        "graded": not args.ungraded, "raw_bias": bool(args.raw_bias),
         "note": "logit move under group elements, on fitted networks; a random reader, since "
                 "invariance is a property of the architecture and not of trained weights",
         "by_winding": {},
@@ -86,7 +89,7 @@ def main() -> None:
         for trial in range(args.trials):
             gen = torch.Generator().manual_seed(900 + trial)
             g = random_element(params, gen, max_windings=b)
-            moved = phasor_features(apply(g, params))
+            moved = phasor_features(apply(g, params), raw_bias=args.raw_bias)
             with torch.no_grad():
                 out = model(apply_scale(moved, stats))
             scale = logits.abs().amax(dim=1).clamp_min(1e-12)
@@ -95,7 +98,7 @@ def main() -> None:
             # reorders its rows, so comparing it elementwise after one is meaningless. Measure
             # it under an identity-permutation element instead, where it must be exactly fixed.
             g_dinf = random_element(params, gen, max_windings=b, identity_perm=True)
-            dinf_only = phasor_features(apply(g_dinf, params))
+            dinf_only = phasor_features(apply(g_dinf, params), raw_bias=args.raw_bias)
             fm = max(
                 float((base[layer][(0, 0)] - dinf_only[layer][(0, 0)]).abs().max()
                       / base[layer][(0, 0)].abs().max().clamp_min(1e-12))
@@ -115,11 +118,11 @@ def main() -> None:
     )
     out_dir = ROOT / "results" / "audits"
     out_dir.mkdir(parents=True, exist_ok=True)
-    tag = "w12u" if args.ungraded else "w12"
+    tag = "w12b" if args.raw_bias else "w12u" if args.ungraded else "w12"
     path = out_dir / f"{tag}_invariance_{args.dataset}.json"
     path.write_text(json.dumps(report, indent=2))
     print(f"\nwrote {path}")
-    if args.ungraded:
+    if args.ungraded or args.raw_bias:
         # the control is *supposed* to fail; the number is the point, not the verdict
         return
     if not report["all_within_tolerance"]:

@@ -102,3 +102,31 @@ def test_raw_bias_reader_trains_end_to_end() -> None:
     logits.sum().backward()
     grads = [q.grad for q in model.parameters() if q.grad is not None and q.numel()]
     assert grads and any(float(g.abs().sum()) > 0 for g in grads)
+
+
+def test_empty_blocks_carry_no_parameters_and_no_zero_element_tensors() -> None:
+    """MPS cannot allocate zero-element tensors, so empty blocks must be skipped, not encoded.
+
+    The semantics must match a zero-column linear map exactly: output zeros, no parameters, and
+    nothing invented to fill the block.
+    """
+    from sirengap.models.phasor import GradedLinear
+
+    dims = {(0, 0): 3, (1, 0): 4, (0, 1): 0, (1, 1): 0}
+    lin = GradedLinear(dims, width=8, graded=True)
+    assert set(lin.empty) == {(0, 1), (1, 1)}
+    assert all(p.numel() > 0 for p in lin.parameters()), "no zero-element parameter may exist"
+
+    x = {c: torch.randn(2, 5, d) for c, d in dims.items()}
+    y = lin(x)
+    assert all(y[c].shape == (2, 5, 8) for c in dims)
+    assert float(y[(0, 1)].abs().sum()) == 0.0 and float(y[(1, 1)].abs().sum()) == 0.0
+
+
+def test_raw_bias_reader_has_no_zero_element_parameters() -> None:
+    p = _params()
+    torch.manual_seed(0)
+    model = PhasorGradedReader.from_features(
+        phasor_features(p, raw_bias=True), width=32, n_classes=10)
+    empty = [n for n, q in model.named_parameters() if q.numel() == 0]
+    assert not empty, f"zero-element parameters break MPS: {empty}"

@@ -42,6 +42,8 @@ def main() -> None:
     w11 = json.loads((LADDER / "W11.json").read_text())["variants"]
     w12u_path = LADDER / "W12u.json"
     w12u = json.loads(w12u_path.read_text()) if w12u_path.exists() else None
+    w12b_path = LADDER / "W12b.json"   # the S10 third arm, present once it has been run
+    w12b = json.loads(w12b_path.read_text()) if w12b_path.exists() else None
     cells = {r: json.loads((LADDER / f"{r}.json").read_text()) for r in ("W1", "W3", "W4", "W5")}
 
     w1, w3 = np.array(cells["W1"]["acc"]), np.array(cells["W3"]["acc"])
@@ -58,16 +60,22 @@ def main() -> None:
     }
     if w12u:
         f["W12u"] = w12u["recovery_fraction"]
+    if w12b:
+        f["W12b"] = w12b["recovery_fraction"]
     acc = {
         "W4": cells["W4"]["mean"], "W5": cells["W5"]["mean"],
         "W11a": w11["W11a"]["mean"], "W11b": w11["W11b"]["mean"], "W12": w12["mean"],
     }
     if w12u:
         acc["W12u"] = w12u["mean"]
+    if w12b:
+        acc["W12b"] = w12b["mean"]
     params = {"W11a": w11["W11a"]["reader_params"], "W11b": w11["W11b"]["reader_params"],
               "W12": w12["reader_params"]}
     if w12u:
         params["W12u"] = w12u["reader_params"]
+    if w12b:
+        params["W12b"] = w12b["reader_params"]
 
     observed = {
         "H-S9-1": f["W12"],
@@ -127,7 +135,10 @@ def table(rep: dict) -> str:
     rows = [
         ("W11a", r"perm.-equivariant, raw weights", r"$S_{n_1}\times S_{n_2}$ only"),
         ("W11b", r"equivariant reader over W10's invariants", r"$G$, via a fixed front-end"),
-        ("W12u", r"\quad matched control: grading removed", r"none (logits move $0.25$)"),
+        ("W12u", r"\quad control: grading removed, coordinates kept",
+         r"none (logits move $0.25$)"),
+        ("W12b", r"\quad control: coordinates removed, grading kept",
+         r"none (logits move $6$ at $|j|\le3$)"),
         ("W12", r"phasor-graded, raw weights", r"$G$, on the parameters"),
         ("W5", r"$\calign$ + the frozen MLP", r"--- (a reframing, not a reader)"),
     ]
@@ -138,8 +149,12 @@ def table(rep: dict) -> str:
         r"readers are sized by rule to the frozen decoder's $1{,}873{,}162$ parameters. The "
         r"invariance column is what each construction actually quotients: W11a nothing beyond "
         r"permutations, W11b the full group but only because its input already is invariant, W12 "
-        r"the full group on the raw parameters, W12u nothing --- its logits move $0.25$ relative "
-        r"under the group, against W12's $3\times10^{-6}$. $\calign$ is listed for reference; it "
+        r"the full group on the raw parameters, and neither control anything. The two controls vary "
+        r"one thing each against W12: W12u removes the layer grading and keeps the phasor "
+        r"coordinates, W12b keeps the grading and feeds it the raw bias. Their gaps to W12 "
+        r"are $+0.059$ and $+0.315$, against $+0.337$ from W11a to W12b, so within this "
+        r"skeleton the coordinates and the architecture contribute comparably and the "
+        r"layer-level grading contributes little. $\calign$ is listed for reference; it "
         r"is a change of frame rather than a reader.}",
         r"\label{tab:w12}",
         r"\begin{tabular}{@{}llrrl@{}}", r"\toprule",

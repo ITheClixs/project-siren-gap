@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering\small
+\caption{\textbf{Reader architecture against frame choice} (MNIST, \texttt{P-random}). W11a is the equivariant coverage the field has for sine networks; W11b feeds W10's own invariants to an equivariant reader with \emph{learned} pooling instead of sorted eigenvalue spectra. Reader parameter counts are matched to the frozen decoder by rule, so no row loses for being smaller. The W10$\to$W11b$\to$W5 chain splits the invariant encoding's shortfall into a pooling part and an incompleteness part.}
+\label{tab:w11}
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+rung & construction & reader & acc. (\%) & $f$ \\
+\midrule
+W3 & raw weights, random init & matched MLP (1.87M) & 13.92 & 0.000 \\
+W4 & $\csort$ (exact reframing) & matched MLP (1.87M) & 28.19 & 0.177 \\
+W11a & permutation-equivariant, raw weights & graph reader (1.88M) & 35.26 & 0.265 \\
+\midrule
+W10 & exact invariants, eigenvalue pooling & matched MLP (0.99M) & 35.54 & 0.269 \\
+W11b & same invariants, learned pooling & graph reader (1.85M) & 56.24 & 0.526 \\
+\midrule
+W5 & $\calign$ (exact reframing) & matched MLP (1.87M) & 64.41 & 0.628 \\
+W1 & raw weights, shared init & matched MLP (1.87M) & 94.36 & 1.000 \\
+\bottomrule
+\end{tabular}
+\end{table}

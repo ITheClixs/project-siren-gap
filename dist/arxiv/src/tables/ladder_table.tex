@@ -1,0 +1,29 @@
+\begin{table}[t]
+\centering\small
+\caption{\textbf{The decomposition ladder.} One frozen decoder, thirteen feature maps, the same underlying corpora. \emph{acc.} is mean test accuracy (\%) over the pre-registered seed count; $f$ is the algorithm-relative recoverable fraction \eqref{eq:f}, computed seed-paired for the registered rungs and as a ratio of means for the two unregistered ones (W7-1/8, W8). Every bootstrap 95\% CI on $f$ is narrower than $\pm0.021$. Rungs marked $\dagger$ act on the random-initialization corpus. W4 and W5 are orbit-valued \emph{reframings}; W10 is an invariant \emph{encoding}, separated from nonlinear feature engineering only by the matched control of \S\ref{sec:control}, and therefore not directly comparable to the reframings as a symmetry measurement.}
+\label{tab:ladder}
+\begin{tabular}{@{}llr@{\hspace{5pt}}rr@{\hspace{5pt}}rr@{\hspace{5pt}}r@{}}
+\toprule
+& & \multicolumn{2}{c}{MNIST} & \multicolumn{2}{c}{FashionMNIST} & \multicolumn{2}{c}{CIFAR-10} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8}
+rung & feature map & acc. & $f$ & acc. & $f$ & acc. & $f$ \\
+\midrule
+P0 & real pixels & 97.97 & --- & 89.62 & --- & 55.81 & --- \\
+P1 & oracle render of the fit & 97.59 & --- & 89.44 & --- & 56.23 & --- \\
+\midrule
+W1 & raw weights, \textbf{shared init} & 94.36 & --- & 82.97 & --- & 44.29 & --- \\
+W2 & raw weights, shared init + SGD noise & 95.04 & --- & 83.67 & --- & 45.19 & --- \\
+W3 & raw weights, \textbf{random init} & 13.92 & --- & 12.66 & --- & 12.64 & --- \\
+\midrule
+W4$^\dagger$ & $\csort$ --- exact, template-free & 28.19 & 0.177 & 24.61 & 0.170 & 16.05 & 0.108 \\
+W5$^\dagger$ & $\calign$ --- exact, aligned to $\theta_0$ & 64.41 & 0.628 & 59.34 & 0.664 & 22.92 & 0.324 \\
+W10$^\dagger$ & exact $L{=}2$ invariants (Prop.~\ref{prop:deep}) & 35.54 & 0.269 & 42.77 & 0.428 & 29.54 & 0.534 \\
+\midrule
+W6$^\dagger$ & bounded group augmentation & 18.12 & 0.054 & 14.86 & 0.032 & 16.57 & 0.128 \\
+W7$^\dagger$ & $K$-marginalization ($K{=}8$) & 17.75 & 0.048 & 15.05 & 0.034 & 15.86 & 0.101 \\
+W7$_{1/8}$$^\dagger$ & \quad control: $K$ corpus, rows matched & 14.59 & 0.008 & 13.20 & 0.008 & 12.75 & 0.003 \\
+W9$^\dagger$ & frame averaging, $R{=}64$ & 14.13 & 0.003 & 12.12 & -0.008 & 12.68 & 0.001 \\
+W8$^\dagger$ & canonicalize, then augment & 10.27 & -0.045 & 10.20 & -0.035 & 10.65 & -0.063 \\
+\bottomrule
+\end{tabular}
+\end{table}

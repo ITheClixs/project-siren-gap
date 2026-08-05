@@ -1,0 +1,66 @@
+{
+  "study": "S10",
+  "prereg": "docs/prereg/S10.md",
+  "f": {
+    "W11a": 0.2653100473965932,
+    "W12b": 0.6020120448313417,
+    "W12u": 0.8578902769558884,
+    "W12": 0.916530843264125
+  },
+  "acc_W12b": 62.34400000000001,
+  "reader_params": 1873782,
+  "intervals": "3/3",
+  "branch": "split",
+  "branch_text": "Both contribute materially and neither dominates. The paper reports the number and states the attribution is split, without picking the closer side.",
+  "decomposition": {
+    "architecture_within_the_graded_skeleton": 0.3367,
+    "coordinates_added_to_that_skeleton": 0.3145,
+    "layer_level_grading": 0.0586
+  },
+  "registered": {
+    "H-S10-1": {
+      "point": 0.6,
+      "interval": [
+        0.35,
+        0.8
+      ],
+      "observed": 0.602,
+      "verdict": "HIT"
+    },
+    "H-S10-2": {
+      "point": 0.26,
+      "interval": [
+        0.06,
+        0.48
+      ],
+      "observed": 0.2559,
+      "verdict": "HIT"
+    },
+    "H-S10-3": {
+      "point": 0.34,
+      "interval": [
+        0.1,
+        0.55
+      ],
+      "observed": 0.3367,
+      "verdict": "HIT"
+    }
+  },
+  "calls": {
+    "P-S10-A": {
+      "p": 0.85,
+      "resolved": true,
+      "brier": 0.0225
+    },
+    "P-S10-B": {
+      "p": 0.9,
+      "resolved": true,
+      "brier": 0.01
+    },
+    "P-S10-C": {
+      "p": 0.35,
+      "resolved": false,
+      "brier": 0.1225
+    }
+  }
+}

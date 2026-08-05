@@ -157,17 +157,31 @@ class GradedLinear(nn.Module):
     def __init__(self, dims_in: dict[Character, int], width: int, graded: bool = True) -> None:
         super().__init__()
         self.graded = graded
+        self.width = width
+        # A block may legitimately be empty -- the raw-bias arm (W12b) has no feature of character
+        # (0,1) or (1,1) at layer 1. A zero-column nn.Linear carries no parameters and would be
+        # the natural encoding, but MPS cannot allocate zero-element tensors ("device may not be
+        # nil"), so empty blocks are skipped and their output is materialised as zeros instead.
+        # Semantics are identical to the zero-column map; nothing is faked into the block.
+        self.empty = tuple(c for c in CHARACTERS if dims_in[c] == 0)
         if graded:
             self.lin = nn.ModuleDict(
-                {str(c): nn.Linear(dims_in[c], width, bias=(c == (0, 0))) for c in CHARACTERS}
+                {str(c): nn.Linear(dims_in[c], width, bias=(c == (0, 0)))
+                 for c in CHARACTERS if dims_in[c] > 0}
             )
         else:
             self.mixed = nn.Linear(sum(dims_in[c] for c in CHARACTERS), 4 * width)
-            self.width = width
 
     def forward(self, x: dict[Character, Tensor]) -> dict[Character, Tensor]:
         if self.graded:
-            return {c: self.lin[str(c)](x[c]) for c in CHARACTERS}
+            out = {}
+            for c in CHARACTERS:
+                if c in self.empty:
+                    ref = x[c]
+                    out[c] = ref.new_zeros(*ref.shape[:-1], self.width)
+                else:
+                    out[c] = self.lin[str(c)](x[c])
+            return out
         y = self.mixed(torch.cat([x[c] for c in CHARACTERS], dim=-1))
         parts = y.split(self.width, dim=-1)
         return dict(zip(CHARACTERS, parts))
