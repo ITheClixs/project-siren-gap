@@ -176,11 +176,16 @@ def main() -> None:
     fs = {s: apply_scale(feats[s], stats) for s in SPLITS}
     del feats
 
-    if args.ungraded and args.raw_bias:
-        raise SystemExit("--ungraded and --raw-bias are different controls; run them separately")
+    # The 2x2 is (grading on/off) x (phasor/raw bias). W12u and W12b are the off-diagonal arms;
+    # the combination is the fourth cell, which the review asks for to make the design factorial.
     graded = not args.ungraded
     width = args.width or matched_width(fs["train"], graded=graded)
-    name = args.out_name or ("W12b" if args.raw_bias else "W12" if graded else "W12u")
+    if args.out_name:
+        name = args.out_name
+    elif args.ungraded and args.raw_bias:
+        name = "W12ub"
+    else:
+        name = "W12b" if args.raw_bias else "W12" if graded else "W12u"
     print(f"{name}: width {width} (capacity rule against the decoder's {DECODER_PARAMS:,})",
           flush=True)
 
