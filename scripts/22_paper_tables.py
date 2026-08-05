@@ -97,7 +97,8 @@ def ladder_table(available) -> str:
         r"pre-registered seed count; $f$ is the algorithm-relative recoverable fraction "
         r"\eqref{eq:f}, computed seed-paired for the registered rungs and as a ratio of means for "
         rf"the two unregistered ones (W7-1/8, W8). Every bootstrap 95\% CI on $f$ is narrower than "
-        rf"$\pm{hw:.3f}$. Rungs marked $\dagger$ act on the random-initialization corpus. W4 and W5 "
+        rf"$\pm{hw:.3f}$, and every CI on an accuracy cell is narrower than $\pm0.60$ points "
+        rf"(median $\pm0.27$), so no ordering in this table is within seed noise. Rungs marked $\dagger$ act on the random-initialization corpus. W4 and W5 "
         r"are orbit-valued \emph{reframings}; W10 is an invariant \emph{encoding}, separated from "
         r"nonlinear feature engineering only by the matched control of \S\ref{sec:control}, and "
         r"therefore not directly comparable to the reframings as a symmetry measurement.}",
