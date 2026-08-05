@@ -1,0 +1,28 @@
+{
+  "dataset": "cifar10",
+  "protocol": "P-random",
+  "n_inrs": 512,
+  "width": 186,
+  "tolerance": 0.0001,
+  "graded": true,
+  "raw_bias": false,
+  "note": "logit move under group elements, on fitted networks; a random reader, since invariance is a property of the architecture and not of trained weights",
+  "by_winding": {
+    "3": {
+      "logit_move_max": 1.349446506537788e-06,
+      "neutral_block_move_max_dinf_only": 2.7808436442455786e-08,
+      "within_tolerance": true
+    },
+    "10": {
+      "logit_move_max": 1.870299456641078e-06,
+      "neutral_block_move_max_dinf_only": 1.389627186654252e-07,
+      "within_tolerance": true
+    },
+    "40": {
+      "logit_move_max": 3.2644068141962634e-06,
+      "neutral_block_move_max_dinf_only": 5.250232675280131e-07,
+      "within_tolerance": true
+    }
+  },
+  "all_within_tolerance": true
+}

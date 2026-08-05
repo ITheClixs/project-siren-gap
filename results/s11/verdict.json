@@ -9,9 +9,9 @@
     "W11a": 0.2653100473965932
   },
   "cross_dataset": {
-    "fashionmnist": null,
-    "cifar10gray": null,
-    "cifar10": null
+    "fashionmnist": 0.8279956028097282,
+    "cifar10gray": 0.8262997130784709,
+    "cifar10": 0.9645097472778625
   },
   "decomposition": {
     "skeleton_W11a_to_W12ub": 0.2912,
@@ -22,10 +22,6 @@
     "interaction": 0.0131,
     "additive_sum": 0.9165
   },
-  "intervals": "2/2",
-  "still_owed": [
-    "H-S11-3",
-    "H-S11-4",
-    "H-S11-5"
-  ]
+  "intervals": "4/5",
+  "still_owed": []
 }

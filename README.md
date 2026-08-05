@@ -757,8 +757,10 @@ capacity re-solved by the same rule:
 | **W12u** | coordinates kept, **grading removed** | 82.93 | **0.858** | none — logits move 0.25 |
 | W12 | both | 87.64 | **0.917** | exact, 3e−06 |
 
-So the 0.265 → 0.917 step splits into **+0.337 architecture**, **+0.315 coordinates**, with the
-layer-level grading's **+0.059** inside the second. [`S10.md`](docs/prereg/S10.md) §4 fixed the
+The fourth cell, **W12ub** (neither ingredient), reaches **0.557**, so the square is complete and
+the interaction is **+0.013** — the ingredients are additive. The 0.265 → 0.917 step is therefore
+**+0.291 skeleton, +0.301 phasor lift, +0.059 grading**, summing to 0.9165, W12's exact value.
+(This supersedes an earlier +0.337/+0.315 reading taken when the square still had a hole in it.) [`S10.md`](docs/prereg/S10.md) §4 fixed the
 reading rule *before* the arm ran — ≥0.75 would have withdrawn the claim that the coordinates carry
 the win, ≤0.55 would have confirmed it, in between means reporting a split and not picking the
 closer side. 0.602 fell in between, so we report the split: **coordinates and architecture matter
@@ -913,14 +915,15 @@ nominal 80%.
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
 grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; before the
-external review, **49/63 = 78%**; with S6, S7, S9, S8 and S10 it is **64/86 = 74%** (grayscale 9/14, CIFAR 14/17,
-S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**, **S9 0/3**, **S8 6/8**, **S10 3/3**); 34 probability
-calls, mean Brier **0.184**. The Brier average improved because the eleven calls made *after* the
-program had a mechanism in hand — S8's three, the five in `S8-addendum-02` registered between the
-3000- and 10000-step decodes, and S10's three — average **0.083** against **0.233** for the
+external review, **49/63 = 78%**; with S6-S11 it is **68/91 = 75%** (grayscale 9/14, CIFAR 14/17,
+S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**, **S9 0/3**, **S8 6/8**, **S10 3/3**,
+**S11 4/5**); 37 probability calls, mean Brier **0.178**. The average improved because the fourteen
+calls made *after* the program had a mechanism in hand average **0.089** against **0.233** for the
 twenty-three before them. S10 is the sharpest case: its three interval points were 0.60, 0.26 and
-0.34 against observed **0.602, 0.256 and 0.337**. Calibration is
-downstream of understanding, which is the same lesson S6-versus-S7 teaches at the arm level.
+0.34 against observed **0.602, 0.256 and 0.337**. The one S11 miss is the recurring one: H-S11-5 put
+W12 on RGB CIFAR-10 at 0.60 [0.30, 0.85] and it scored **0.965**. Under-predicting our own
+construction has now cost five intervals. Calibration is downstream of understanding, which is the
+same lesson S6-versus-S7 teaches at the arm level.
 S6 is the worst-scoring arm and S7 the best, and they were registered on the same day under the same
 template — arm-level coverage is mostly a statement about how well a mechanism was understood before
 the run, not about the care taken in registering it.

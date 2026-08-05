@@ -424,6 +424,43 @@ def sweep_table() -> str | None:
     return "\n".join(lines)
 
 
+def w12_cross_table() -> str | None:
+    """W12 on every corpus it has been run on, against the best of each other family."""
+    best = {  # from the frozen ladder: best exact reframing, best invariant encoding
+        "mnist": ("MNIST", 0.628, 0.269),
+        "fashionmnist": ("FashionMNIST", 0.664, 0.428),
+        "cifar10gray": ("CIFAR-10 (luminance)", 0.324, 0.493),
+        "cifar10": ("CIFAR-10 (RGB)", 0.324, 0.534),
+    }
+    rows = []
+    for ds, (label, calign, enc) in best.items():
+        path = ROOT / "results" / "ladder" / ds / "W12.json"
+        if not path.exists():
+            continue
+        d = json.loads(path.read_text())
+        rows.append((label, d["mean"], d["recovery_fraction"], calign, enc))
+    if not rows:
+        return None
+    lines = [
+        r"\begin{table}[t]", r"\centering\small",
+        r"\caption{\textbf{The phasor-graded reader across corpora.} $s$ is the "
+        r"reference-normalized score \eqref{eq:s}; the last two columns are the best exact "
+        r"reframing and the best invariant encoding on the same corpus, quoted as recovered "
+        r"fractions \eqref{eq:f}. W12 is above both families everywhere, including on the two "
+        r"CIFAR corpora where those families trade places with each other. Capacity is set by the "
+        r"same rule per dataset, and invariance is audited on each corpus's own fitted networks "
+        r"(maximum relative logit movement $3.7\times10^{-6}$ at $|j| \le 40$).}",
+        r"\label{tab:w12cross}",
+        r"\begin{tabular}{@{}lrrrr@{}}", r"\toprule",
+        r"corpus & W12 acc.\ (\%) & $s(\mathrm{W12})$ & best reframing & best encoding \\",
+        r"\midrule",
+    ]
+    for label, acc, s, calign, enc in rows:
+        lines.append(f"{label} & {acc:.2f} & \\textbf{{{s:.3f}}} & {calign:.3f} & {enc:.3f} " + r"\\")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    return "\n".join(lines)
+
+
 def calibration_table() -> str:
     rows = list(csv.DictReader((ROOT / "docs" / "PREDICTION_OUTCOMES.csv").open()))
     iv = [r for r in rows if r["kind"] == "interval"]
@@ -519,6 +556,9 @@ def main() -> None:
     (OUT / "ladder_table.tex").write_text(ladder_table(available))
     (OUT / "gap_table.tex").write_text(gap_table(available))
     (OUT / "calibration_table.tex").write_text(calibration_table())
+    xt = w12_cross_table()
+    (OUT / "w12_cross_table.tex").write_text(xt or "% W12 cross-dataset pending\n")
+    print(f"wrote {OUT / 'w12_cross_table'}.tex" if xt else "w12_cross_table: pending")
     for f in ("ladder_table", "gap_table", "calibration_table"):
         print(f"wrote {OUT / f}.tex")
     swp = sweep_table()

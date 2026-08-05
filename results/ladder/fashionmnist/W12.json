@@ -1,0 +1,36 @@
+{
+  "dataset": "fashionmnist",
+  "protocol": "P-random",
+  "prereg": "docs/prereg/S9.md",
+  "W1": 82.96799999999999,
+  "W3": 12.655999999999999,
+  "width": 186,
+  "reader_params": 1874898,
+  "graded": true,
+  "raw_bias": false,
+  "acc": [
+    70.9,
+    70.87,
+    70.88,
+    71.17,
+    70.55
+  ],
+  "mean": 70.874,
+  "ci95_bootstrap": [
+    70.68400000000001,
+    71.052
+  ],
+  "recovery_fraction": 0.8279956028097282,
+  "f_ci95": [
+    0.8266214075731535,
+    0.8290797912253296
+  ],
+  "epochs_ran": [
+    16,
+    12,
+    16,
+    17,
+    18
+  ],
+  "wallclock_s": 4740.404721260071
+}

@@ -11,3 +11,50 @@ W12ub: 58.68  f=0.5565  params=1,885,284  (5278s)
 wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W12ub.json
 --- W12 on fashionmnist Wed Aug  5 17:09:51 +03 2026 ---
 W12: width 186 (capacity rule against the decoder's 1,873,162)
+  W12 seed 0: test 70.90 (val 72.34, 16 ep)
+  W12 seed 1: test 70.87 (val 72.54, 12 ep)
+  W12 seed 2: test 70.88 (val 72.30, 16 ep)
+  W12 seed 3: test 71.17 (val 72.10, 17 ep)
+  W12 seed 4: test 70.55 (val 71.74, 18 ep)
+W12: 70.87  f=0.8280  params=1,874,898  (4740s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/fashionmnist/W12.json
+--- invariance audit on fashionmnist Wed Aug  5 18:28:54 +03 2026 ---
+|j|<=  3: logits move 1.15e-06, neutral blocks (D_inf only) 3.28e-08 -> OK
+|j|<= 10: logits move 2.08e-06, neutral blocks (D_inf only) 1.49e-07 -> OK
+|j|<= 40: logits move 3.73e-06, neutral blocks (D_inf only) 5.95e-07 -> OK
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/audits/w12_invariance_fashionmnist.json
+--- W12 on cifar10gray Wed Aug  5 18:28:59 +03 2026 ---
+W12: width 186 (capacity rule against the decoder's 1,873,162)
+  W12 seed 0: test 33.36 (val 34.80, 12 ep)
+  W12 seed 1: test 33.39 (val 35.32, 13 ep)
+  W12 seed 2: test 33.46 (val 34.46, 14 ep)
+  W12 seed 3: test 33.10 (val 35.16, 16 ep)
+  W12 seed 4: test 33.50 (val 35.12, 14 ep)
+W12: 33.36  f=0.8263  params=1,874,898  (3487s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/cifar10gray/W12.json
+--- invariance audit on cifar10gray Wed Aug  5 19:27:09 +03 2026 ---
+|j|<=  3: logits move 1.40e-06, neutral blocks (D_inf only) 3.34e-08 -> OK
+|j|<= 10: logits move 1.40e-06, neutral blocks (D_inf only) 1.59e-07 -> OK
+|j|<= 40: logits move 3.31e-06, neutral blocks (D_inf only) 6.23e-07 -> OK
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/audits/w12_invariance_cifar10gray.json
+--- W12 on cifar10 Wed Aug  5 19:27:14 +03 2026 ---
+W12: width 186 (capacity rule against the decoder's 1,873,162)
+  W12 seed 0: test 42.99 (val 43.80, 13 ep)
+  W12 seed 1: test 43.51 (val 44.46, 14 ep)
+  W12 seed 2: test 43.56 (val 44.12, 10 ep)
+  W12 seed 3: test 42.34 (val 43.26, 20 ep)
+  W12 seed 4: test 43.40 (val 44.76, 15 ep)
+W12: 43.16  f=0.9645  params=1,875,270  (3368s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/cifar10/W12.json
+--- invariance audit on cifar10 Wed Aug  5 20:23:24 +03 2026 ---
+|j|<=  3: logits move 1.35e-06, neutral blocks (D_inf only) 2.78e-08 -> OK
+|j|<= 10: logits move 1.87e-06, neutral blocks (D_inf only) 1.39e-07 -> OK
+|j|<= 40: logits move 3.26e-06, neutral blocks (D_inf only) 5.25e-07 -> OK
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/audits/w12_invariance_cifar10.json
+=== S11 chain complete Wed Aug  5 20:23:30 +03 2026 ===

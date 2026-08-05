@@ -111,10 +111,12 @@ both gives $56\%$. The interaction is $0.013$, so the symmetry-adapted coordinat
 message-passing skeleton contribute comparably and near-additively, while enforcing equivariance
 layer by layer contributes little.
 
-Querying the same INR at $64$ learned coordinates is more accurate than every weight-space
-pipeline we built, and about $100\times$ cheaper than the strongest of them. All empirical results
-are for two-hidden-layer SIRENs fitted by constant-step Adam, a protocol our own sweep shows does
-not reach stationarity, and the group-aware reader is so far evaluated on MNIST alone.
+The reader was designed on MNIST and then run unchanged on three further corpora, where it scores
+$0.83$, $0.83$ and $0.96$ and stays above both the reframing and the encoding families on each,
+including the two on which those families trade places with one another. Querying the same INR at
+$64$ learned coordinates is nonetheless more accurate than every weight-space pipeline we built,
+and about $100\times$ cheaper than the strongest. All results are for two-hidden-layer SIRENs
+fitted by constant-step Adam, a protocol our own sweep shows does not reach stationarity.
 \end{minipage}
 \end{center}
 \vskip 1.2em
@@ -194,8 +196,8 @@ residual surviving the group's removal, though that residual falls from $28.6$ p
 the invariant reader improves, so we bound it rather than claim to have measured it.
 \item \textbf{A reader that quotients the group on raw parameters, and two controls that say what
 in it works} (\S\ref{sec:w11}). Bias phasors reduce the winding to a parity, leaving a finite
-$\Z_2\times\Z_2$ grading that the network preserves layer by layer; it recovers $92\%$ of the gap at
-matched capacity and overturns this paper's own earlier claim that frame choice beats reader
+$\Z_2\times\Z_2$ grading that the network preserves layer by layer; it scores $0.92$ at matched capacity on MNIST and $0.83$--$0.96$ on three
+further corpora, and overturns this paper's own earlier claim that frame choice beats reader
 architecture. Two arms at the same capacity vary one ingredient each, coordinates without grading and grading
 without coordinates. They split the gain into comparable coordinate and architecture halves, with
 layer-wise equivariance worth little, an attribution registered before either arm ran.
@@ -1369,6 +1371,25 @@ side, and it has a consequence for the intervention: the residual that survives 
 is not a fixed quantity but a property of the reader used to expose it, which \S\ref{sec:orbit}
 re-measures at $7.8$ points against W11b's $28.6$.
 
+\paragraph{The same construction on three further corpora.} W12 was designed on MNIST, after the
+MNIST ladder had been seen, so MNIST cannot test whether the construction generalizes. We therefore
+ran it unchanged --- same capacity rule, optimizer, schedule and seed policy --- on FashionMNIST
+and on both CIFAR-10 corpora, with the invariance audit repeated on each corpus's own fitted
+networks (Table~\ref{tab:w12cross}).
+
+\input{tables/w12_cross_table}
+
+\noindent It stays above both families everywhere, and by the largest margin on RGB CIFAR-10,
+which is where the reframing family is weakest. That corpus also produced the one registered
+interval S11 missed: we put $s(\mathrm{W12})$ at $0.60\,[0.30,0.85]$ and observed $0.965$, a miss
+in the same direction as every S9 miss. Under-predicting our own construction is now the
+best-evidenced failure mode in this program's forecasting record, and it has cost five intervals.
+
+The cross-dataset result also sharpens \S\ref{sec:crossover}. The crossover we report there is
+between the \emph{reframing} and \emph{encoding} families: which of those two wins depends on the
+signal. It is not a statement about reading weights in general, because a reader that quotients the
+group on the raw parameters is above both on all four corpora.
+
 \paragraph{Effect of removing the layer grading.} Applying S7's argument to W12,
 the matched control removes the grading and keeps everything else: same skeleton, same block shapes,
 same phasor features, capacity re-solved by the same rule (width $122$, $1{,}888{,}212$ parameters).
@@ -1705,10 +1726,9 @@ written down for $L\ge3$. A second route we did not take reads the shallow netwo
 measure of \eqref{eq:atoms}, whose atoms at $\pm w_i$ with coefficient proportional to
 $u_i e^{\mathrm i b_i}$ quotient the phase shift automatically and turn orientation reversal into
 complex conjugation; that is likely the cleaner object and it is not obviously equivalent to the
-graded construction. Finally, W12 is decoded on one \emph{dataset}: it is now run on both MNIST
-protocols, which is what licenses the re-measured residual of \S\ref{sec:orbit}, but whether the
-ordering it produces holds on natural images, where the two exact treatments already trade places
-(\S\ref{sec:crossover}), is untested.
+graded construction. W12 is now run on four corpora and on both MNIST protocols, and the ordering
+holds on all of them, so the single-dataset limitation recorded here in an earlier version is
+discharged. What remains dataset-bound is the $2\times2$ attribution, which was run on MNIST only.
 
 \textbf{The non-symmetry residual is bounded above and never measured.} The orbit intervention
 establishes that some accuracy loss survives removing the group, but its size is whatever the best
