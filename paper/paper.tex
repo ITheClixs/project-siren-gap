@@ -1132,7 +1132,7 @@ $300$ and $10000$ steps as evidence that the sweep moves toward stationarity rat
 fitting harder. The observed ratio is $1.17$ on \texttt{P-random} and $0.91$ on
 \texttt{P-shared-det}: no fall at all, and on the shared corpus a slight \emph{rise}. We therefore
 do not read the accuracy numbers at $10000$ steps as measurements ``after convergence'', and the
-question the external review asked, whether the recoverable fraction survives convergence, remains
+question that review asked, whether the recoverable fraction survives convergence, remains
 open. What follows are statements about the \emph{budget}, which is what this sweep varied.
 
 \paragraph{Why stationarity is not reached: the optimizer.} Fit
@@ -1273,7 +1273,7 @@ attempt. \textbf{W11b} feeds W10's \emph{own} invariants, the per-neuron even sc
 \emph{learned} pooling in place of sorted eigenvalue spectra.
 
 \textbf{W12} is the reader neither of those is: exactly $G$-invariant on the \emph{raw} parameters.
-The route is not ours. An external review of this paper proposed replacing the raw bias by its
+The route is not ours. A language model reviewing an earlier draft proposed replacing the raw bias by its
 phasor, on the grounds that this removes the integer $2\pi$ translation and leaves sign and
 reflection to be carried by finite-dimensional linear maps. It is exactly right, and what follows is
 the two-layer realization. Under $g_{d,j}$ the phasor coordinates of the bias transform with $j$
@@ -1656,7 +1656,7 @@ the shared-vs-random initialization gap
 orbit-only intervention; matched non-invariant control
  & ours$^\ast$
  & none known
- & \S\ref{sec:orbit}, \S\ref{sec:control}; both were added in response to external review \\
+  & \S\ref{sec:orbit}, \S\ref{sec:control}; both added in response to AI-assisted review \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1871,14 +1871,29 @@ for the four-budget sweep of \S\ref{sec:convergence} on one Apple M-series GPU; 
 in the paper decodes from those corpora in minutes to hours. Numbered scripts map one-to-one onto
 the sections: the mapping is in the repository's README.
 
-\paragraph{Acknowledgments.} The phasor route to a $\Dinf$-aware reader, replacing the raw bias $b$ by $(\cos b, \sin b)$ so that the integer translation is removed, was proposed by an
-anonymous external reviewer of an earlier draft, and is credited at first mention in
-\S\ref{sec:w11} and in row M7 of the provenance ledger. The realization at $L=2$ is ours: the
-$\Z_2\times\Z_2$ character grading, the identification of which message channels remain
-character-legal once $W^2$ is graded, and the invariance verification at unbounded windings. The
-same review asked for the orbit-only intervention of \S\ref{sec:orbit}, the matched control of
-\S\ref{sec:control} and the convergence sweep of \S\ref{sec:convergence}; each is credited where it
-appears. Errors are ours.
+\paragraph{Use of AI systems, and what it contributed.} This program used large language models
+as adversarial reviewers and as an implementation and drafting assistant, and two of those roles
+produced content in the paper rather than only around it. We state both, because neither is
+visible from the text.
+
+\emph{Ideas.} The phasor route to a $\Dinf$-aware reader --- replacing the raw bias $b$ by
+$(\cos b, \sin b)$ so that the integer translation is removed --- was proposed by a language model
+acting as a reviewer of an earlier draft. It is not our idea, and it is the idea the strongest
+empirical result in this paper rests on. It is credited at first mention in \S\ref{sec:w11} and in
+row M7 of the provenance ledger. The realization at $L=2$ is ours: the $\Z_2\times\Z_2$ character
+grading, the identification of which message channels remain character-legal once $W^2$ is graded,
+and Proposition~\ref{prop:w12} with its proof. Three experiments were also prompted by such review
+passes rather than conceived by us: the orbit-only intervention (\S\ref{sec:orbit}), the matched
+non-invariant control (\S\ref{sec:control}) and the convergence sweep (\S\ref{sec:convergence}).
+The provenance ledger marks each.
+
+\emph{Implementation and prose.} Language models were used to write and revise code in this
+repository, and to draft and edit the prose of this manuscript, including passages that survive in
+the final text. Every theorem, proof, experimental design, pre-registration, threshold and
+numerical claim was checked by the author against the artifacts, and the author takes
+responsibility for all of them. Readers who want to audit that boundary can: the repository carries
+the full commit history, the frozen pre-registrations with their hashes, and the artifact behind
+every number quoted here.
 
 % =====================================================================================
 \small
@@ -2442,7 +2457,7 @@ total                              & 75 & 55 & realized coverage $73\%$ \\
 \end{center}
 
 Running coverage at earlier points in the program is quoted against prefixes of this table ---
-$9/14$ through the grayscale arms, $23/31$ after CIFAR-10, $49/63$ before the external review --- and
+$9/14$ through the grayscale arms, $23/31$ after CIFAR-10, $49/63$ before the review pass --- and
 the probability calls are scored separately, $23$ of them at mean Brier $0.233$.
 
 Two arms tie for worst. S6 scores $3/6$ and its three misses are one finding: we registered the

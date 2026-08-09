@@ -592,7 +592,7 @@ mechanism, and it predicts exactly the null W1−W2 rung we measured.
 
 ### 8.1 The convergence sweep (S8), and what it could not answer
 
-The external review asked whether the recoverable fraction is a property of early-stopped fits. S8
+An AI review pass asked whether the recoverable fraction is a property of early-stopped fits. S8
 varies only the step budget — {300, 1000, 3000, 10000}, both protocols, same everything else:
 
 | quantity | 300 | 1,000 | 3,000 | 10,000 |
@@ -716,7 +716,7 @@ conclusion ([`S9.md`](docs/prereg/S9.md)).
   $(-1)^{ad+cj}$, every layer preserves the grading, and $W^2$ — character $(1,1)$ on the layer-1
   side, $(1,0)$ on the layer-2 side — admits exactly two legal message channels per direction. That
   is §2's Gram coupling as a *learned* message rule rather than a fixed pooled family.
-  **The phasor route was proposed by an external reviewer of this paper**; ours is the two-layer
+  **The phasor route was proposed by an AI system reviewing this paper** (see the disclosure in the paper and [PROVENANCE](docs/PROVENANCE.md) row M7); ours is the two-layer
   realization ([PROVENANCE](docs/PROVENANCE.md) row M7).
 
 Every reader sized *by rule* to the frozen decoder's 1,873,162 params (within 1.5%), so no row
@@ -915,7 +915,7 @@ nominal 80%.
 Probability calls: **P-C1-B** (f(W10) rises with output channels — the algebra call) resolved
 correctly, Brier 0.16; **P-C1-C** (label shuffles at chance) correct, Brier 0.0625; **P-C1-A** (the
 grayscale ordering persists) wrong, Brier 0.4225. Program coverage after the CIFAR arm was **23/31 = 74%**; before the
-external review, **49/63 = 78%**; with S6-S11 it is **68/91 = 75%** (grayscale 9/14, CIFAR 14/17,
+the review pass, **49/63 = 78%**; with S6-S11 it is **68/91 = 75%** (grayscale 9/14, CIFAR 14/17,
 S4e 7/9, luminance 9/10, W11 5/5, S5 5/8, **S6 3/6**, **S7 3/3**, **S9 0/3**, **S8 6/8**, **S10 3/3**,
 **S11 4/5**); 37 probability calls, mean Brier **0.178**. The average improved because the fourteen
 calls made *after* the program had a mechanism in hand average **0.089** against **0.233** for the
