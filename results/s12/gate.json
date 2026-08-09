@@ -1,0 +1,23 @@
+{
+  "conditions": {
+    "P-random-r0 present": false,
+    "P-shared-det-r1 present": false,
+    "P-random-r1 present": false,
+    "P-shared-det-r2 present": false,
+    "P-random-r2 present": false
+  },
+  "per_corpus": {
+    "P-shared-det-r0": {
+      "n": 512,
+      "psnr_median": 69.3064956665039,
+      "grad_norm_median": 0.00012117470032535493
+    },
+    "P-random-r0": null,
+    "P-shared-det-r1": null,
+    "P-random-r1": null,
+    "P-shared-det-r2": null,
+    "P-random-r2": null
+  },
+  "gate_passed": false,
+  "reason": "not every replication is present"
+}

@@ -1,0 +1,5 @@
+=== S12 chain start Sun Aug  9 13:43:50 +03 2026 ===
+--- P-shared-det replication 0, converged Sun Aug  9 13:43:50 +03 2026 ---
+shard_000000: 256 fits in 113.5s  psnr_med=69.2dB  overall 2.3 fits/s
+shard_000256: 256 fits in 111.5s  psnr_med=69.3dB  overall 2.3 fits/s
+shard_000512: 256 fits in 105.8s  psnr_med=69.4dB  overall 2.3 fits/s
