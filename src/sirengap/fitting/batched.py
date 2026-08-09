@@ -32,6 +32,9 @@ class FitResult:
     # parameter scales; render fidelity is not one, because a network can interpolate the
     # sampled grid while sitting far from a stationary point.
     final_grad_norm: Tensor | None = None
+    # [B] step at which each INR met the stationarity tolerance and was frozen, when the
+    # converged protocol of S12 is used; None under the frozen constant-step protocol.
+    stopped_at: Tensor | None = None
 
 
 def make_coord_grid(height: int, width: int, device: str = "cpu") -> Tensor:
@@ -121,13 +124,24 @@ def fit_batch(
     init_seeds: list[int] | None = None,
     coord_batch: int | None = None,
     fit_seed: int = 0,
+    schedule: str = "constant",
+    lr_final: float | None = None,
+    stop_grad_norm: float | None = None,
 ) -> FitResult:
     """Fit B INRs to targets [B, P, c] on coords [P, in_dim].
 
     Deterministic full-batch by default (P-shared-det / P-random given init_seeds).
     coord_batch=k enables per-INR coordinate minibatching driven by fit_seed
     (P-shared-stoch). init_seeds overrides (seed, shared_init) with per-INR seeds.
+
+    S12's converged protocol adds two options, both off by default so that every corpus fitted
+    before it stays bit-reproducible: ``schedule="cosine"`` anneals the learning rate to
+    ``lr_final``, and ``stop_grad_norm`` freezes each INR once its own relative gradient norm
+    falls below that tolerance. Constant-step Adam holds its step size as the gradient shrinks,
+    so without the schedule the iterate diffuses rather than converging (S8-addendum-02).
     """
+    if schedule not in ("constant", "cosine"):
+        raise ValueError(f"unknown schedule {schedule!r}")
     if targets.ndim != 3 or coords.ndim != 2 or targets.shape[1] != coords.shape[0]:
         raise ValueError(f"bad shapes: targets {tuple(targets.shape)}, coords {tuple(coords.shape)}")
     b_sz, n_pts, ch = targets.shape
@@ -144,7 +158,17 @@ def fit_batch(
     mb_gen = torch.Generator().manual_seed(fit_seed)
     opt = torch.optim.Adam(tensors, lr=lr)
     curve: list[float] = []
+    import math
+
+    active = torch.ones(b_sz, device=device)          # 1 while an INR is still training
+    stopped_at = (torch.full((b_sz,), steps, dtype=torch.long)
+                  if stop_grad_norm is not None else None)
     for step in range(steps):
+        if schedule == "cosine":
+            end = lr if lr_final is None else lr_final
+            frac = 0.5 * (1.0 + math.cos(math.pi * step / max(steps - 1, 1)))
+            for grp in opt.param_groups:
+                grp["lr"] = end + (lr - end) * frac
         opt.zero_grad(set_to_none=True)
         if coord_batch is None:
             x_step, t_step = coords, targets
@@ -156,7 +180,24 @@ def fit_batch(
         per_inr = ((pred - t_step) ** 2).mean(dim=(1, 2))
         # sum (not mean): Adam on the sum is exactly independent per-INR Adam,
         # because per-INR losses share no parameters (protocol A.1 / T9)
-        per_inr.sum().backward()
+        # Freezing is applied to the gradient, not the loss: an INR that has met the tolerance
+        # contributes no update, and Adam's state for it stops advancing, so later steps cannot
+        # undo its convergence. Per-INR because convergence is per-INR.
+        if stop_grad_norm is not None:
+            (per_inr * active).sum().backward()
+            with torch.no_grad():
+                gsq = sum((q.grad**2).flatten(1).sum(1) for q in tensors if q.grad is not None)
+                psq = sum((q.detach() ** 2).flatten(1).sum(1) for q in tensors)
+                rel = gsq.sqrt() / psq.sqrt().clamp_min(1e-12)
+                newly = (rel < stop_grad_norm) & (active > 0)
+                if bool(newly.any()):
+                    stopped_at[newly.cpu()] = step
+                    active = active * (~newly).to(active.dtype)
+                for q in tensors:
+                    if q.grad is not None:
+                        q.grad = q.grad * active.view(-1, *([1] * (q.grad.dim() - 1)))
+        else:
+            per_inr.sum().backward()
         opt.step()
         if step % log_every == 0 or step == steps - 1:
             curve.append(float(per_inr.detach().mean().cpu()))
@@ -174,7 +215,7 @@ def fit_batch(
         final = per_inr_full.detach().cpu()
     return FitResult(
         params=absorb_omega(tensors), final_loss=final, loss_curve=tuple(curve),
-        final_grad_norm=grad_norm,
+        final_grad_norm=grad_norm, stopped_at=stopped_at,
     )
 
 

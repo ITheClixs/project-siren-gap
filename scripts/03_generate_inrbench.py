@@ -58,11 +58,15 @@ def split_of(image_id: int, val_start: int) -> str:
     return "val" if image_id >= val_start else "train"
 
 
-def init_seed_for(protocol: str, image_id: int, k: int = 0) -> int:
+def init_seed_for(protocol: str, image_id: int, k: int = 0, seed_offset: int = 0) -> int:
+    """Seed policy. ``seed_offset`` is 0 for every corpus frozen before S12, which needs
+    independent replications: offsetting redraws the shared template for the shared protocols
+    and redraws every independent initialization for P-random, so replications differ in the
+    corpus-generation draw rather than only in decoder seeds."""
     if protocol in ("P-shared-det", "P-shared-stoch"):
-        return 0
+        return 0 + seed_offset
     if protocol == "P-random":
-        return (3000000 if image_id >= TEST_ID_OFFSET else 1000000) + image_id
+        return (3000000 if image_id >= TEST_ID_OFFSET else 1000000) + image_id + seed_offset
     if protocol == "P-random-K":
         return 10000000 + image_id * 10 + k
     raise ValueError(protocol)
@@ -106,6 +110,9 @@ def generate(args: argparse.Namespace) -> None:
     out.mkdir(parents=True, exist_ok=True)
     config = {
         "dataset": args.dataset, "protocol": args.protocol, "steps": args.steps, "lr": args.lr,
+        "seed_offset": args.seed_offset,
+        "schedule": args.schedule, "lr_final": args.lr_final,
+        "stop_grad_norm": args.stop_grad_norm,
         "width": args.width, "layers": args.layers, "batch": args.batch, "code_version": git_hash(),
         "torch": torch.__version__, "device": device, "limit": args.limit, "split": args.split,
         "side": spec.side, "channels": spec.channels, "val_start": spec.val_start,
@@ -125,9 +132,10 @@ def generate(args: argparse.Namespace) -> None:
                 continue
             t0 = time.time()
             targets = images_for(chunk)
-            iseeds = [init_seed_for(args.protocol, i, k) for i in chunk]
+            iseeds = [init_seed_for(args.protocol, i, k, args.seed_offset) for i in chunk]
             kwargs = dict(widths=widths, steps=args.steps, lr=args.lr, device=device,
-                          init_seeds=iseeds)
+                          init_seeds=iseeds, schedule=args.schedule,
+                          lr_final=args.lr_final, stop_grad_norm=args.stop_grad_norm)
             if args.protocol == "P-shared-stoch":
                 kwargs.update(coord_batch=256, fit_seed=500000 + start)
             result = fit_batch(targets, coords, **kwargs)
@@ -197,6 +205,14 @@ def main() -> None:
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--out-root", default="data/inrbench")
     ap.add_argument("--tag", default="")
+    # S12's converged protocol. Both default to the frozen constant-step behaviour, so every
+    # corpus generated before S12 regenerates bit-identically.
+    ap.add_argument("--seed-offset", type=int, default=0,
+                    help="shifts the whole init-seed policy; 0 reproduces every frozen corpus")
+    ap.add_argument("--schedule", default="constant", choices=["constant", "cosine"])
+    ap.add_argument("--lr-final", type=float, default=None)
+    ap.add_argument("--stop-grad-norm", type=float, default=None,
+                    help="freeze each INR once its own relative gradient norm falls below this")
     generate(ap.parse_args())
 
 
