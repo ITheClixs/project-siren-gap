@@ -157,6 +157,10 @@ def main() -> None:
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--root", default="data/inrbench")
     ap.add_argument("--out-name", default="")
+    # S12 decodes each replication against its own anchors, never the frozen ladder's.
+    ap.add_argument("--anchors-dir", default="", help="directory holding the W1/W3 anchor cells")
+    ap.add_argument("--anchors-prefix", default="", help="filename prefix for those cells")
+    ap.add_argument("--out-dir", default="", help="write the cell here instead of results/ladder")
     ap.add_argument("--ungraded", action="store_true",
                     help="the matched control: same skeleton and capacity, grading removed")
     ap.add_argument("--raw-bias", action="store_true",
@@ -167,7 +171,9 @@ def main() -> None:
     cache = CorpusCache(Path(args.root) / args.dataset, args.dataset)
     by_split, labels = cache.split_params(args.protocol)
     ladder = ROOT / "results" / "ladder" / args.dataset
-    anchors = {r: json.loads((ladder / f"{r}.json").read_text())["acc"] for r in ("W1", "W3")}
+    anchor_dir = Path(args.anchors_dir) if args.anchors_dir else ladder
+    anchors = {r: json.loads(
+        (anchor_dir / f"{args.anchors_prefix}{r}.json").read_text())["acc"] for r in ("W1", "W3")}
     w1, w3 = np.array(anchors["W1"]), np.array(anchors["W3"])
 
     t0 = time.time()
@@ -213,7 +219,8 @@ def main() -> None:
     print(f"{name}: {out['mean']:.2f}  f={out['recovery_fraction']:.4f}  "
           f"params={params_n:,}  ({out['wallclock_s']:.0f}s)", flush=True)
 
-    path = ladder / f"{name}.json"
+    path = (Path(args.out_dir) if args.out_dir else ladder) / f"{name}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(out, indent=2))
     print(f"\nwrote {path}")
 

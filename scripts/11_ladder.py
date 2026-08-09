@@ -55,24 +55,30 @@ def flat_splits(by_split: dict[str, SirenParams]) -> dict[str, torch.Tensor]:
     return {s: p.flat() for s, p in by_split.items()}
 
 
+# S12 decodes the same rungs from tagged replication corpora. Rather than thread a protocol
+# argument through every rung, the two protocol names are indirected here and overridden once by
+# --shared-protocol / --random-protocol. Defaults reproduce the frozen ladder exactly.
+PROTO = {"shared": "P-shared-det", "random": "P-random"}
+
+
 def build_rung(name: str, cache: CorpusCache, dataset: str, device: str) -> Rung:
     """Feature maps of docs/prereg/S1.md §1."""
     if name == "P0":
-        feats, labels = cache.images("P-shared-det")
+        feats, labels = cache.images(PROTO["shared"])
         return Rung("P0", feats, labels, notes="real pixels")
 
     if name == "P1":
-        by_split, labels = cache.split_params("P-shared-det")
+        by_split, labels = cache.split_params(PROTO["shared"])
         feats = {s: render_features(p, dataset, device) for s, p in by_split.items()}
         return Rung("P1", feats, labels, notes="oracle render of the fitted INR")
 
     if name in ("W1", "W2", "W3"):
-        protocol = {"W1": "P-shared-det", "W2": "P-shared-stoch", "W3": "P-random"}[name]
+        protocol = {"W1": PROTO["shared"], "W2": "P-shared-stoch", "W3": PROTO["random"]}[name]
         by_split, labels = cache.split_params(protocol)
         return Rung(name, flat_splits(by_split), labels, notes=f"raw weights, {protocol}")
 
     if name in ("W4", "W5"):
-        by_split, labels = cache.split_params("P-random")
+        by_split, labels = cache.split_params(PROTO["random"])
         if name == "W4":
             fn = lambda p: c_sort(p)[0].flat()  # noqa: E731
             note = "c_sort canonicalization"
@@ -85,7 +91,7 @@ def build_rung(name: str, cache: CorpusCache, dataset: str, device: str) -> Rung
         return Rung(name, feats, labels, notes=note)
 
     if name == "W6":
-        by_split, labels = cache.split_params("P-random")
+        by_split, labels = cache.split_params(PROTO["random"])
         return Rung(
             "W6", flat_splits(by_split), labels,
             params_train=by_split["train"], augment=bounded_aug,
@@ -94,7 +100,7 @@ def build_rung(name: str, cache: CorpusCache, dataset: str, device: str) -> Rung
         )
 
     if name in ("W7", "W7-1/8"):
-        by_split, labels = cache.split_params("P-random")
+        by_split, labels = cache.split_params(PROTO["random"])
         k_split, k_labels = cache.split_params("P-random-K")
         feats = {s: by_split[s].flat() for s in SPLITS}
         lab = {s: labels[s] for s in SPLITS}
@@ -109,7 +115,7 @@ def build_rung(name: str, cache: CorpusCache, dataset: str, device: str) -> Rung
         return Rung(name, feats, lab, notes=note)
 
     if name == "W8":
-        by_split, labels = cache.split_params("P-random")
+        by_split, labels = cache.split_params(PROTO["random"])
         canon = {s: c_sort(p)[0] for s, p in by_split.items()}
         return Rung(
             "W8", flat_splits(canon), labels,
@@ -119,19 +125,19 @@ def build_rung(name: str, cache: CorpusCache, dataset: str, device: str) -> Rung
         )
 
     if name == "W9":
-        by_split, labels = cache.split_params("P-random")
+        by_split, labels = cache.split_params(PROTO["random"])
         frames = {r: build_frame(by_split["train"], seed=0, size=r) for r in FRAME_SIZES}
         best = max(FRAME_SIZES)  # cells for every R are reported; the decoder runs on the largest
         feats = {s: frame_average(p, frames[best]) for s, p in by_split.items()}
         return Rung("W9", feats, labels, notes=f"frame averaging, R={best}, frame fixed per seed")
 
     if name == "W10":
-        by_split, labels = cache.split_params("P-random")
+        by_split, labels = cache.split_params(PROTO["random"])
         feats = {s: _chunked(encode_deep, p) for s, p in by_split.items()}
         return Rung("W10", feats, labels, notes="deep phase-invariant encoding (L=2, Ch3.6)")
 
     if name == "W10c":
-        by_split, labels = cache.split_params("P-random")
+        by_split, labels = cache.split_params(PROTO["random"])
         feats = {s: _chunked(encode_deep_control, p) for s, p in by_split.items()}
         return Rung(
             "W10c", feats, labels,
@@ -200,17 +206,26 @@ def main() -> None:
     ap.add_argument("--device", default="mps" if torch.backends.mps.is_available() else "cpu")
     ap.add_argument("--root", default="data/inrbench")
     ap.add_argument("--out", default="results/ladder")
+    ap.add_argument("--out-prefix", default="", help="filename prefix, for S12 replications")
+    ap.add_argument("--flat-out", action="store_true",
+                    help="write into --out directly rather than --out/<dataset>")
+    ap.add_argument("--shared-protocol", default=None)
+    ap.add_argument("--random-protocol", default=None)
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--shuffle-controls", nargs="*", default=["W1", "W3", "W5"])
     args = ap.parse_args()
 
+    if args.shared_protocol:
+        PROTO["shared"] = args.shared_protocol
+    if args.random_protocol:
+        PROTO["random"] = args.random_protocol
     wanted = list(ALL_RUNGS) if args.rungs == ["all"] else args.rungs
     cache = CorpusCache(Path(args.root) / args.dataset, args.dataset)
-    out_dir = Path(args.out) / args.dataset
+    out_dir = Path(args.out) if args.flat_out else Path(args.out) / args.dataset
     out_dir.mkdir(parents=True, exist_ok=True)
 
     for name in wanted:
-        dest = out_dir / f"{name.replace('/', '-')}.json"
+        dest = out_dir / f"{args.out_prefix}{name.replace('/', '-')}.json"
         if dest.exists() and not args.force:
             print(f"{name}: cell exists, skipping", flush=True)
             continue
