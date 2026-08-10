@@ -58,8 +58,8 @@ def _add(x: Character, y: Character) -> Character:
     return ((x[0] + y[0]) % 2, (x[1] + y[1]) % 2)
 
 
-def phasor_features(params: SirenParams,
-                    raw_bias: bool = False) -> dict[str, dict[Character, Tensor]]:
+def phasor_features(params: SirenParams, raw_bias: bool = False,
+                    u_mode: str = "full") -> dict[str, dict[Character, Tensor]]:
     """Graded node features and the coupling matrix: no learned parameters, no pooling.
 
     Returns {"l1": {char: [B, n, d]}, "l2": {char: [B, p, d]}, "edge": [B, p, n]}.
@@ -72,7 +72,17 @@ def phasor_features(params: SirenParams,
     feature map hands them. It is necessarily *not* invariant, because a winding
     $b \\mapsto b + \\pi j$ is precisely what the phasor lift quotients and the raw bias does not;
     T18 asserts that it moves under one.
+
+    ``u_mode`` ablates the output weights inside the $(1,1)$ block, which is the only place whose
+    width grows with the output dimension $c$ (the block is ``cat([sin b, u])``, of width $1+c$).
+    ``"mean"`` replaces $u$ by its channel mean, narrowing the block and removing colour
+    information at once; ``"mean_pad"`` broadcasts that mean back to $c$ channels, keeping the
+    width while carrying the same information. Comparing the two separates block width from
+    information, which a single collapse cannot (S14). Everything outside that block, including
+    the $\|u\|^2$ energy in the neutral block, is untouched in every mode.
     """
+    if u_mode not in ("full", "mean", "mean_pad"):
+        raise ValueError(f"unknown u_mode {u_mode!r}")
     if params.n_layers != 2:
         raise ValueError(f"phasor_features is derived for L=2 (got L={params.n_layers})")
 
@@ -80,6 +90,10 @@ def phasor_features(params: SirenParams,
     w2, b2 = params.hidden[1]  # [B, p, n], [B, p]
     e = outgoing(params, 0)  # [B, p, n] = W^2, the coupling matrix
     u = params.w_out.transpose(1, 2)  # [B, p, c]
+    u_block = u
+    if u_mode != "full":
+        m = u.mean(dim=2, keepdim=True)
+        u_block = m if u_mode == "mean" else m.expand_as(u)
 
     ones_n = torch.ones_like(b1)[:, :, None]
     ones_p = torch.ones_like(b2)[:, :, None]
@@ -116,7 +130,7 @@ def phasor_features(params: SirenParams,
                            torch.cos(2 * b2)[:, :, None], ones_p], dim=2),
         (1, 0): torch.sin(2 * b2)[:, :, None],
         (0, 1): torch.cos(b2)[:, :, None],
-        (1, 1): torch.cat([torch.sin(b2)[:, :, None], u], dim=2),
+        (1, 1): torch.cat([torch.sin(b2)[:, :, None], u_block], dim=2),
     }
     return {"l1": l1, "l2": l2, "edge": e}
 

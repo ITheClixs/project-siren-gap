@@ -65,7 +65,7 @@ def matched_width(feats: dict, graded: bool = True, lo: int = 32, hi: int = 320)
 
 
 def extract(by_split: dict[str, SirenParams], chunk: int = 4096,
-            raw_bias: bool = False) -> dict[str, dict]:
+            raw_bias: bool = False, u_mode: str = "full") -> dict[str, dict]:
     """Graded features per split, in chunks so a 60k-INR corpus fits in memory."""
     out: dict[str, dict] = {}
     for split in SPLITS:
@@ -79,7 +79,7 @@ def extract(by_split: dict[str, SirenParams], chunk: int = 4096,
                 hidden=tuple((w[idx], b[idx]) for w, b in p.hidden),
                 w_out=p.w_out[idx], b_out=p.b_out[idx],
             )
-            f = phasor_features(sub, raw_bias=raw_bias)
+            f = phasor_features(sub, raw_bias=raw_bias, u_mode=u_mode)
             for c in CHARACTERS:
                 l1[c].append(f["l1"][c])
                 l2[c].append(f["l2"][c])
@@ -163,6 +163,8 @@ def main() -> None:
     ap.add_argument("--out-dir", default="", help="write the cell here instead of results/ladder")
     ap.add_argument("--ungraded", action="store_true",
                     help="the matched control: same skeleton and capacity, grading removed")
+    ap.add_argument("--u-mode", default="full", choices=["full", "mean", "mean_pad"],
+                    help="S14 ablation of the output weights inside the (1,1) block")
     ap.add_argument("--raw-bias", action="store_true",
                     help="the third arm (W12b): same graded skeleton, bias entering raw instead "
                          "of phasor-lifted, so it separates coordinates from architecture")
@@ -177,7 +179,7 @@ def main() -> None:
     w1, w3 = np.array(anchors["W1"]), np.array(anchors["W3"])
 
     t0 = time.time()
-    feats = extract(by_split, raw_bias=args.raw_bias)
+    feats = extract(by_split, raw_bias=args.raw_bias, u_mode=args.u_mode)
     stats = feature_scale(feats["train"])
     fs = {s: apply_scale(feats[s], stats) for s in SPLITS}
     del feats
@@ -211,7 +213,7 @@ def main() -> None:
         "dataset": args.dataset, "protocol": args.protocol, "prereg": "docs/prereg/S9.md",
         "W1": float(w1.mean()), "W3": float(w3.mean()),
         "width": width, "reader_params": params_n, "graded": graded,
-        "raw_bias": bool(args.raw_bias),
+        "raw_bias": bool(args.raw_bias), "u_mode": args.u_mode,
         "acc": accs, "mean": float(a.mean()), "ci95_bootstrap": bootstrap_ci_mean(a),
         "recovery_fraction": float(f.mean()), "f_ci95": bootstrap_ci_mean(f),
         "epochs_ran": epochs, "wallclock_s": time.time() - t0,
