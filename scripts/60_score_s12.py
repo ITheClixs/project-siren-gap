@@ -133,7 +133,35 @@ def main() -> None:
 
     g = json.loads((S12 / "gate.json").read_text())
     if not g.get("gate_passed"):
-        raise SystemExit("refusing to score: the S12 validity gate has not passed")
+        # The study still has one decidable registered call: P-S12-B asked whether the validity
+        # conditions would be met on the first attempt. A failed gate resolves it, and the
+        # failure is recorded rather than quietly retried at a looser threshold.
+        print("gate failed: recording the failure and scoring P-S12-B only.")
+        stmt, prob = CALLS["P-S12-B"]
+        row = {"date_scored": "2026-08-10", "prediction": f"P-S12-B {stmt}",
+               "kind": "probability", "point": prob, "lo80": "", "hi80": "", "observed": 0,
+               "verdict": "—", "brier": round((prob - 0) ** 2, 4), "abs_error": "",
+               "note": "gate failed on the first attempt: median relative gradient norm "
+                       "1.0e-4 to 7.3e-4 against a registered threshold of 1e-4"}
+        if not args.dry_run:
+            with OUTCOMES.open(newline="") as fh:
+                already = {r["prediction"] for r in csv.DictReader(fh)}
+            if row["prediction"] not in already:
+                with OUTCOMES.open(newline="") as fh:
+                    fieldnames = list(csv.DictReader(fh).fieldnames)
+                with OUTCOMES.open("a", newline="") as fh:
+                    csv.DictWriter(fh, fieldnames=fieldnames).writerows([row])
+                print(f"appended 1 row to {OUTCOMES}")
+            (S12 / "verdict.json").write_text(json.dumps(
+                {"study": "S12", "prereg": "docs/prereg/S12.md", "gate": False,
+                 "outcome": "failed to produce converged corpora; nothing decoded",
+                 "grad_norm_median_by_corpus": {
+                     k: v.get("grad_norm_median") for k, v in g["per_corpus"].items()},
+                 "threshold": GRAD_TOL,
+                 "P-S12-B": {"p": prob, "resolved": False,
+                             "brier": round((prob - 0) ** 2, 4)}}, indent=2))
+            print(f"wrote {S12 / 'verdict.json'}")
+        return
 
     ladder = S12 / "ladder"
     need = ["W1", "W3", "W5", "W12"]

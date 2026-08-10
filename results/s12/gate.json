@@ -1,23 +1,49 @@
 {
   "conditions": {
-    "P-random-r0 present": false,
-    "P-shared-det-r1 present": false,
-    "P-random-r1 present": false,
-    "P-shared-det-r2 present": false,
-    "P-random-r2 present": false
+    "P-shared-det-r0 grad_norm < 0.0001": false,
+    "P-random-r0 grad_norm < 0.0001": false,
+    "r0 render PSNR matched within 2.0 dB": true,
+    "P-shared-det-r1 grad_norm < 0.0001": false,
+    "P-random-r1 grad_norm < 0.0001": false,
+    "r1 render PSNR matched within 2.0 dB": false,
+    "P-shared-det-r2 grad_norm < 0.0001": false,
+    "P-random-r2 grad_norm < 0.0001": false,
+    "r2 render PSNR matched within 2.0 dB": true
   },
   "per_corpus": {
     "P-shared-det-r0": {
-      "n": 512,
-      "psnr_median": 69.3064956665039,
-      "grad_norm_median": 0.00012117470032535493
+      "n": 28000,
+      "psnr_median": 69.25374603271484,
+      "grad_norm_median": 0.00011938277748413384
     },
-    "P-random-r0": null,
-    "P-shared-det-r1": null,
-    "P-random-r1": null,
-    "P-shared-det-r2": null,
-    "P-random-r2": null
+    "P-random-r0": {
+      "n": 28000,
+      "psnr_median": 70.22529602050781,
+      "grad_norm_median": 0.000131319320644252
+    },
+    "P-shared-det-r1": {
+      "n": 28000,
+      "psnr_median": 68.03047943115234,
+      "grad_norm_median": 0.0007344929035753012
+    },
+    "P-random-r1": {
+      "n": 28000,
+      "psnr_median": 70.19273376464844,
+      "grad_norm_median": 0.0001362816256005317
+    },
+    "P-shared-det-r2": {
+      "n": 28000,
+      "psnr_median": 70.91465759277344,
+      "grad_norm_median": 0.00010263485455652699
+    },
+    "P-random-r2": {
+      "n": 28000,
+      "psnr_median": 70.21147155761719,
+      "grad_norm_median": 0.0001318125578109175
+    }
   },
-  "gate_passed": false,
-  "reason": "not every replication is present"
+  "psnr_gap_r0": -0.972,
+  "psnr_gap_r1": -2.162,
+  "psnr_gap_r2": 0.703,
+  "gate_passed": false
 }

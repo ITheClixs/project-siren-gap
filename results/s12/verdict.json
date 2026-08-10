@@ -1,0 +1,20 @@
+{
+  "study": "S12",
+  "prereg": "docs/prereg/S12.md",
+  "gate": false,
+  "outcome": "failed to produce converged corpora; nothing decoded",
+  "grad_norm_median_by_corpus": {
+    "P-shared-det-r0": 0.00011938277748413384,
+    "P-random-r0": 0.000131319320644252,
+    "P-shared-det-r1": 0.0007344929035753012,
+    "P-random-r1": 0.0001362816256005317,
+    "P-shared-det-r2": 0.00010263485455652699,
+    "P-random-r2": 0.0001318125578109175
+  },
+  "threshold": 0.0001,
+  "P-S12-B": {
+    "p": 0.7,
+    "resolved": false,
+    "brier": 0.49
+  }
+}
