@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering\small
+\caption{\textbf{The phasor-graded reader on the standard MNIST-INR benchmark.} Test accuracy (\%) on the corpus of \citet{navon2023dws}, which the published weight-space literature reports on and whose INRs have the architecture our readers already take. Baseline numbers are quoted from the ScaleGMN paper's Table~1. W12 is run in its frozen configuration with no tuning against this benchmark, at five seeds. It is third of seven: ahead of DWSNets, both NFN variants and NG-GNN, and behind ScaleGMN. The official split file is not in the distributed archive, so validation is carved deterministically from the training half (54k/6k/10k), which is our split and not theirs.}
+\label{tab:bench}
+\begin{tabular}{@{}lr@{}}
+\toprule
+method & MNIST-INR test accuracy (\%) \\
+\midrule
+ScaleGMN-B \citep{kalogeropoulos2024scalegmn} & 96.59 $\pm$ 0.24 \\
+ScaleGMN \citep{kalogeropoulos2024scalegmn} & 96.57 $\pm$ 0.10 \\
+\textbf{W12 (ours)} & 93.08 $\pm$ 0.44 \\
+NG-GNN \citep{kofinas2024graph} & 91.40 $\pm$ 0.60 \\
+DWSNets \citep{navon2023dws} & 85.71 $\pm$ 0.57 \\
+NFN$_{HNP}$ \citep{zhou2023nfn} & 79.11 $\pm$ 0.84 \\
+NFN$_{NP}$ \citep{zhou2023nfn} & 78.50 $\pm$ 0.23 \\
+\bottomrule
+\end{tabular}
+\end{table}

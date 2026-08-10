@@ -114,10 +114,17 @@ layer by layer contributes little.
 
 The reader was designed on MNIST and then run unchanged on three further corpora, where it scores
 $0.83$, $0.83$ and $0.96$ and stays above both the reframing and the encoding families on each,
-including the two on which those families trade places with one another. Querying the same INR at
-$64$ learned coordinates is nonetheless more accurate than every weight-space pipeline we built,
-and about $100\times$ cheaper than the strongest. All results are for two-hidden-layer SIRENs
-fitted by constant-step Adam, a protocol our own sweep shows does not reach stationarity.
+including the two on which those families trade places with one another. On the standard
+MNIST-INR benchmark that the published weight-space literature reports on, it reaches
+$\mathbf{93.1\%}$: ahead of DWSNets ($85.7$), both NFN variants ($78.5$, $79.1$) and NG-GNN
+($91.4$), and $3.5$ points behind ScaleGMN ($96.6$). It is therefore a competitive reader and not
+a leading one, which is the comparison we think the construction earns. That benchmark is also
+\emph{independently} initialized by our own measure, so the published leaderboard is already set
+in the hard regime rather than the easy one. Querying the same INR at $64$ learned coordinates is
+nonetheless more accurate than every weight-space pipeline we built, and about $100\times$ cheaper
+than the strongest. Except where the benchmark is named, all results are for two-hidden-layer
+SIRENs we fitted with constant-step Adam, a protocol our own sweep shows does not reach
+stationarity.
 \end{minipage}
 \end{center}
 \vskip 1.2em
@@ -1401,6 +1408,30 @@ The cross-dataset result also sharpens \S\ref{sec:crossover}. The crossover we r
 between the \emph{reframing} and \emph{encoding} families: which of those two wins depends on the
 signal. It is not a statement about reading weights in general, because a reader that quotients the
 group on the raw parameters is above both on all four corpora.
+
+\paragraph{Against the published leaderboard.} Every comparison so far has been against readers
+we built. The standard MNIST-INR corpus of \citet{navon2023dws} is what DWSNets, NFN, NG-GNN and
+ScaleGMN all report on, and its INRs have exactly the architecture our readers take, so W12 runs on
+it unchanged. In its frozen configuration, with nothing tuned against this benchmark, it reaches
+$\mathbf{93.08 \pm 0.44}$ over five seeds (Table~\ref{tab:bench}): third of seven, ahead of
+DWSNets, both NFN variants and NG-GNN, and $3.5$ points behind ScaleGMN. We report it as a
+competitive reader rather than a leading one.
+
+\input{tables/bench_table}
+
+\noindent Two things this comparison establishes beyond the ranking. First, the benchmark corpus is
+\emph{independently} initialized: median pairwise relative parameter distance over a random sample
+of its INRs is $1.419$, against $1.40$ for our own \texttt{P-random} and $0.19$ for our
+shared-initialization corpus. The published leaderboard is therefore set in the hard regime, and
+since our raw-weight rung reaches $13.9\%$ there while these methods reach $78$--$97\%$, it is
+their architectures rather than their corpora doing that work. This paper has emphasised how much
+a corpus can flatter a reader, and it is worth saying plainly that the field's main benchmark is
+not an instance of it.
+
+Second, W12 scores $93.1\%$ on that corpus against $87.6\%$ on ours, at the same architecture,
+regime and reader. The two corpora differ in who fitted them and how, so some of our ladder's
+difficulty is a property of our fitting protocol rather than of the problem, which is the same
+caution \S\ref{sec:convergence} raises from the other direction.
 
 \paragraph{Effect of removing the layer grading.} Applying S7's argument to W12,
 the matched control removes the grading and keeps everything else: same skeleton, same block shapes,

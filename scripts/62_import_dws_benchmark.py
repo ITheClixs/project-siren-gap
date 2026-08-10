@@ -82,11 +82,17 @@ def main() -> None:
         tensors.append([sd["seq.0.weight"], sd["seq.0.bias"], sd["seq.1.weight"],
                         sd["seq.1.bias"], sd["seq.2.weight"], sd["seq.2.bias"]])
         split = "test" if half == "testing" else ("val" if image_id in val_ids else "train")
-        rows.append({"image_id": image_id, "label": label, "split": split,
+        # The archive restarts its numbering between the training and testing halves, so the two
+        # halves collide in image_id while referring to different images. Namespacing the test
+        # half keeps the id space unique; the schema's split-disjointness check catches this.
+        uid = image_id + (10_000_000 if half == "testing" else 0)
+        rows.append({"image_id": uid, "label": label, "split": split,
                      "activation": "sine", "protocol": args.protocol,
-                     "init_seed": -1, "fit_seed": -1, "steps": -1, "lr": float("nan"),
-                     "final_psnr": float("nan"), "final_loss": float("nan"),
-                     "final_grad_norm": float("nan"), "wallclock_s": float("nan"),
+                     # sentinels, not measurements: this corpus was fitted by its authors and
+                     # the archive carries no fit metadata. -1 marks "not applicable here".
+                     "init_seed": -1, "fit_seed": -1, "steps": -1, "lr": -1.0,
+                     "final_psnr": -1.0, "final_loss": -1.0,
+                     "final_grad_norm": -1.0, "wallclock_s": -1.0,
                      "code_version": "imported:navon-dwsnets-mnist-inrs"})
 
     meta = pd.DataFrame(rows)

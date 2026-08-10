@@ -1,0 +1,36 @@
+{
+  "dataset": "mnist",
+  "protocol": "P-dws-bench",
+  "prereg": "docs/prereg/S9.md",
+  "W1": 94.35600000000001,
+  "W3": 13.922,
+  "width": 186,
+  "reader_params": 1874898,
+  "graded": true,
+  "raw_bias": false,
+  "acc": [
+    93.25,
+    92.95,
+    93.43,
+    92.28,
+    93.5
+  ],
+  "mean": 93.082,
+  "ci95_bootstrap": [
+    92.66799999999998,
+    93.422
+  ],
+  "recovery_fraction": 0.984159264383139,
+  "f_ci95": [
+    0.9779715038932804,
+    0.9876156110649253
+  ],
+  "epochs_ran": [
+    32,
+    28,
+    33,
+    20,
+    28
+  ],
+  "wallclock_s": 6813.110935688019
+}

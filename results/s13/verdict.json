@@ -1,0 +1,25 @@
+{
+  "study": "S13",
+  "prereg": "docs/prereg/S13.md",
+  "w12_benchmark_acc": 93.082,
+  "seeds": [
+    93.25,
+    92.95,
+    93.43,
+    92.28,
+    93.5
+  ],
+  "published": {
+    "DWS": 85.71,
+    "NFN_NP": 78.5,
+    "NFN_HNP": 79.11,
+    "NG-GNN": 91.4,
+    "ScaleGMN": 96.57,
+    "ScaleGMN-B": 96.59
+  },
+  "rank": 3,
+  "of": 7,
+  "intervals": "3/3",
+  "branch": "between NG-GNN and ScaleGMN: competitive, not leading",
+  "note": "the runner's recovery_fraction is computed against OUR anchors and is meaningless on this corpus; absolute accuracy is the only comparable quantity here"
+}
