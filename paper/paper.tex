@@ -114,11 +114,12 @@ layer by layer contributes little.
 
 The reader was designed on MNIST and then run unchanged on three further corpora, where it scores
 $0.83$, $0.83$ and $0.96$ and stays above both the reframing and the encoding families on each,
-including the two on which those families trade places with one another. On the standard
-MNIST-INR benchmark that the published weight-space literature reports on, it reaches
-$\mathbf{93.1\%}$: ahead of DWSNets ($85.7$), both NFN variants ($78.5$, $79.1$) and NG-GNN
-($91.4$), and $3.5$ points behind ScaleGMN ($96.6$). It is therefore a competitive reader and not
-a leading one, which is the comparison we think the construction earns. That benchmark is also
+including the two on which those families trade places with one another. On the three standard INR-classification
+benchmarks the published weight-space literature reports on, it places third, third and second of
+seven, at $93.1$, $75.2$ and $38.2$: above DWSNets, both NFN variants and NG-GNN on every one, and
+above ScaleGMN itself on CIFAR-10, while trailing ScaleGMN-B throughout. It is therefore a
+competitive reader and not a leading one, which is the comparison we think the construction
+earns. That benchmark is also
 \emph{independently} initialized by our own measure, so the published leaderboard is already set
 in the hard regime rather than the easy one. Querying the same INR at $64$ learned coordinates is
 nonetheless more accurate than every weight-space pipeline we built, and about $100\times$ cheaper
@@ -1412,10 +1413,13 @@ group on the raw parameters is above both on all four corpora.
 \paragraph{Against the published leaderboard.} Every comparison so far has been against readers
 we built. The standard MNIST-INR corpus of \citet{navon2023dws} is what DWSNets, NFN, NG-GNN and
 ScaleGMN all report on, and its INRs have exactly the architecture our readers take, so W12 runs on
-it unchanged. In its frozen configuration, with nothing tuned against this benchmark, it reaches
-$\mathbf{93.08 \pm 0.44}$ over five seeds (Table~\ref{tab:bench}): third of seven, ahead of
-DWSNets, both NFN variants and NG-GNN, and $3.5$ points behind ScaleGMN. We report it as a
-competitive reader rather than a leading one.
+it unchanged. The same holds for the FashionMNIST and CIFAR-10 releases. In its frozen configuration, with
+nothing tuned per dataset, W12 reaches $93.08 \pm 0.44$, $75.15 \pm 0.31$ and
+$38.16 \pm 0.22$ over five seeds each (Table~\ref{tab:bench}): third, third and second of seven.
+It is above DWSNets, both NFN variants and NG-GNN on all three, and above ScaleGMN itself on
+CIFAR-10 by $1.7$ points, while trailing ScaleGMN-B everywhere --- by $3.5$ and $5.6$ points on the
+two grayscale corpora and by $0.7$ on CIFAR-10. We report it as a competitive reader rather than a
+leading one.
 
 \input{tables/bench_table}
 

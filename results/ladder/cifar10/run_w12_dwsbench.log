@@ -1,0 +1,11 @@
+=== W12 on the CIFAR-10 INR benchmark Mon Aug 10 20:48:14 +03 2026 ===
+W12_dwsbench: width 186 (capacity rule against the decoder's 1,873,162)
+  W12_dwsbench seed 0: test 38.03 (val 39.10, 16 ep)
+  W12_dwsbench seed 1: test 38.45 (val 38.32, 13 ep)
+  W12_dwsbench seed 2: test 38.38 (val 38.66, 10 ep)
+  W12_dwsbench seed 3: test 38.07 (val 38.28, 13 ep)
+  W12_dwsbench seed 4: test 37.87 (val 38.42, 15 ep)
+W12_dwsbench: 38.16  f=0.8063  params=1,875,270  (3737s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/cifar10/W12_dwsbench.json
+=== done Mon Aug 10 21:50:34 +03 2026 ===
