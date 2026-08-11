@@ -1,0 +1,3 @@
+Tue Aug 11 12:45:05 +03 2026: watching scripts/67_s12_attempt2.sh via results/s12/run_attempt2.log
+Tue Aug 11 13:05:05 +03 2026: STALL - idle 1203s > 1092s (median 273s), swap 4102.75M; restarting
+Tue Aug 11 13:06:01 +03 2026: watching scripts/67_s12_attempt2.sh via results/s12/run_attempt2.log (grace 2400s, baseline 22 shards)

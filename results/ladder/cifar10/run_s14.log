@@ -1,0 +1,5 @@
+=== S14 start Tue Aug 11 12:44:56 +03 2026 ===
+--- arm B: collapse u to its channel mean Tue Aug 11 12:44:56 +03 2026 ---
+W12_umean: width 186 (capacity rule against the decoder's 1,873,162)
+  W12_umean seed 0: test 36.83 (val 37.78, 12 ep)
+  W12_umean seed 1: test 37.34 (val 36.78, 16 ep)
