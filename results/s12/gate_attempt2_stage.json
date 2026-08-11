@@ -1,0 +1,21 @@
+{
+  "conditions": {
+    "P-shared-det-r0 grad_norm < 0.0001": false,
+    "P-random-r0 grad_norm < 0.0001": false,
+    "r0 render PSNR matched within 2.0 dB": true
+  },
+  "per_corpus": {
+    "P-shared-det-r0": {
+      "n": 28000,
+      "psnr_median": 69.25654602050781,
+      "grad_norm_median": 0.00036601402098312974
+    },
+    "P-random-r0": {
+      "n": 28000,
+      "psnr_median": 70.18922424316406,
+      "grad_norm_median": 0.0003792996285483241
+    }
+  },
+  "psnr_gap_r0": -0.933,
+  "gate_passed": false
+}

@@ -33,6 +33,7 @@ sys.path.insert(0, str(ROOT / "src"))
 OUTCOMES = ROOT / "docs" / "PREDICTION_OUTCOMES.csv"
 S12 = ROOT / "results" / "s12"
 REPS = (0, 1, 2)
+TAG = "s12r"          # attempt 1; attempt 2's staged corpora use --tag s12b --reps 0
 PROTOCOLS = ("P-shared-det", "P-random")
 SEEDS = 5
 
@@ -58,7 +59,7 @@ FALSIFIER = 0.15
 
 
 def corpus_dir(protocol: str, rep: int) -> Path:
-    return ROOT / "data" / "inrbench" / "mnist" / f"{protocol}-s12r{rep}"
+    return ROOT / "data" / "inrbench" / "mnist" / f"{protocol}-{TAG}{rep}"
 
 
 def corpus_stats(protocol: str, rep: int) -> dict | None:
@@ -116,7 +117,13 @@ def main() -> None:
     ap.add_argument("--gate", action="store_true")
     ap.add_argument("--score", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--tag", default=TAG, help="corpus tag prefix, e.g. s12b for attempt 2")
+    ap.add_argument("--reps", type=int, nargs="+", default=list(REPS),
+                    help="which replications to require; the staged check uses 0 alone")
+    ap.add_argument("--out", default="gate.json")
     args = ap.parse_args()
+    globals()["TAG"] = args.tag
+    globals()["REPS"] = tuple(args.reps)
     S12.mkdir(parents=True, exist_ok=True)
 
     if args.gate or not args.score:
@@ -126,8 +133,8 @@ def main() -> None:
         print(f"\nS12 gate: {'PASSED' if rep['gate_passed'] else 'FAILED'}")
         if not rep["gate_passed"]:
             print("Per S12 section 5, nothing is decoded and the failure is what gets reported.")
-        (S12 / "gate.json").write_text(json.dumps(rep, indent=2))
-        print(f"wrote {S12 / 'gate.json'}")
+        (S12 / args.out).write_text(json.dumps(rep, indent=2))
+        print(f"wrote {S12 / args.out}")
         if not args.score:
             return
 
