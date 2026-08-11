@@ -69,16 +69,17 @@
 \makeatletter
 \renewcommand{\maketitle}{%
   \begin{center}
-    % NeurIPS-style pair: a heavier rule above the title, a lighter one under the author block.
+    % The rule pair brackets the title alone: heavier above it, lighter below it, with the
+    % author block sitting outside them.
     \rule{\textwidth}{1.1pt}
     \vskip 0.55em
     {\LARGE\bfseries \@title \par}
+    \vskip 0.55em
+    \rule{\textwidth}{0.4pt}
     \vskip 0.8em
     {\large Mehmet Demir Güven\textsuperscript{$\dagger$} \par}
     \vskip 0.35em
     {\normalsize Department of Computer Science\\ ETH Zürich\\ Zürich, Switzerland \par}
-    \vskip 0.55em
-    \rule{\textwidth}{0.4pt}
   \end{center}
   \vskip 0.5em
   \blfootnote{\hspace{-1.8em}$^\dagger$\,Carried out independently. ETH Zürich neither funded,
