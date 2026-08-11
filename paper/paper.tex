@@ -52,18 +52,30 @@
 \DeclareMathOperator{\Orb}{Orb}
 
 % ---- NeurIPS-like title block -------------------------------------------------------
+% Unnumbered footnotes, for the affiliation disclaimer and the preprint status line.
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
 \makeatletter
 \renewcommand{\maketitle}{%
   \begin{center}
     {\LARGE\bfseries \@title \par}
     \vskip 1.1em
-    {\large Mehmet Demir Güven \par}
+    {\large Mehmet Demir Güven\textsuperscript{$\dagger$} \par}
     \vskip 0.35em
     {\normalsize Department of Computer Science\\ ETH Zürich\\ Zürich, Switzerland \par}
     \vskip 0.35em
     {\small\texttt{demirguven178@gmail.com} \par}
   \end{center}
   \vskip 1.0em
+  \blfootnote{\hspace{-1.8em}$^\dagger$\,This work was carried out independently. ETH Zürich
+  neither funded, sponsored, supervised nor endorsed it, and the affiliation is given for
+  identification only; no institutional support, compute or review is claimed, and the views and
+  any errors are the author's alone.}
+  \blfootnote{\hspace{-1.8em}Preprint. Under review.}
 }
 \makeatother
 
