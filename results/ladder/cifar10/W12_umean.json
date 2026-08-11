@@ -1,0 +1,37 @@
+{
+  "dataset": "cifar10",
+  "protocol": "P-random",
+  "prereg": "docs/prereg/S9.md",
+  "W1": 44.288000000000004,
+  "W3": 12.644,
+  "width": 186,
+  "reader_params": 1874898,
+  "graded": true,
+  "raw_bias": false,
+  "u_mode": "mean",
+  "acc": [
+    36.83,
+    37.34,
+    36.75,
+    37.01,
+    37.1
+  ],
+  "mean": 37.006,
+  "ci95_bootstrap": [
+    36.833999999999996,
+    37.190000000000005
+  ],
+  "recovery_fraction": 0.769825205229125,
+  "f_ci95": [
+    0.7576669915469221,
+    0.7806020281879429
+  ],
+  "epochs_ran": [
+    12,
+    16,
+    17,
+    15,
+    16
+  ],
+  "wallclock_s": 2884.803290128708
+}

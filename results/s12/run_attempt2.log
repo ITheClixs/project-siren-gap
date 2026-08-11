@@ -24,3 +24,49 @@ shard_005120: 256 fits in 273.4s  psnr_med=69.4dB  overall 0.9 fits/s
 shard_005376: 256 fits in 2469.5s  psnr_med=69.1dB  overall 0.7 fits/s
 === S12 chain start Tue Aug 11 12:45:02 +03 2026 ===
 === S12 chain start Tue Aug 11 13:05:22 +03 2026 ===
+=== S12 chain start Tue Aug 11 13:46:21 +03 2026 ===
+=== S12 chain start Tue Aug 11 13:49:41 +03 2026 ===
+--- P-shared-det replication 0, converged Tue Aug 11 14:41:43 +03 2026 ---
+shard_005632: 256 fits in 275.4s  psnr_med=69.1dB  overall 21.4 fits/s
+shard_005888: 256 fits in 309.9s  psnr_med=69.0dB  overall 10.5 fits/s
+shard_006144: 256 fits in 300.3s  psnr_med=68.7dB  overall 7.2 fits/s
+shard_006400: 256 fits in 298.8s  psnr_med=68.8dB  overall 5.6 fits/s
+shard_006656: 256 fits in 295.6s  psnr_med=69.7dB  overall 4.7 fits/s
+shard_006912: 256 fits in 294.3s  psnr_med=68.8dB  overall 4.0 fits/s
+shard_007168: 256 fits in 293.6s  psnr_med=69.9dB  overall 3.6 fits/s
+shard_007424: 256 fits in 293.2s  psnr_med=69.7dB  overall 3.3 fits/s
+shard_007680: 256 fits in 291.4s  psnr_med=69.0dB  overall 3.0 fits/s
+shard_007936: 256 fits in 290.6s  psnr_med=68.9dB  overall 2.8 fits/s
+shard_008192: 256 fits in 290.2s  psnr_med=68.9dB  overall 2.6 fits/s
+shard_008448: 256 fits in 290.0s  psnr_med=68.5dB  overall 2.5 fits/s
+shard_008704: 256 fits in 291.3s  psnr_med=68.9dB  overall 2.3 fits/s
+shard_008960: 256 fits in 290.1s  psnr_med=69.5dB  overall 2.2 fits/s
+shard_009216: 256 fits in 289.5s  psnr_med=69.6dB  overall 2.2 fits/s
+shard_009472: 256 fits in 289.0s  psnr_med=69.3dB  overall 2.1 fits/s
+shard_009728: 256 fits in 289.6s  psnr_med=69.5dB  overall 2.0 fits/s
+shard_009984: 256 fits in 290.6s  psnr_med=69.3dB  overall 1.9 fits/s
+shard_010240: 256 fits in 288.9s  psnr_med=69.2dB  overall 1.9 fits/s
+shard_010496: 256 fits in 289.5s  psnr_med=69.2dB  overall 1.8 fits/s
+shard_010752: 256 fits in 289.5s  psnr_med=69.5dB  overall 1.8 fits/s
+shard_011008: 256 fits in 290.1s  psnr_med=69.5dB  overall 1.8 fits/s
+shard_011264: 256 fits in 289.9s  psnr_med=69.5dB  overall 1.7 fits/s
+shard_011520: 256 fits in 288.0s  psnr_med=69.4dB  overall 1.7 fits/s
+shard_011776: 256 fits in 279.3s  psnr_med=68.8dB  overall 1.7 fits/s
+shard_012032: 256 fits in 278.4s  psnr_med=69.2dB  overall 1.6 fits/s
+shard_012288: 256 fits in 278.1s  psnr_med=69.3dB  overall 1.6 fits/s
+shard_012544: 256 fits in 276.0s  psnr_med=69.3dB  overall 1.6 fits/s
+shard_012800: 256 fits in 276.2s  psnr_med=69.0dB  overall 1.6 fits/s
+shard_013056: 256 fits in 276.1s  psnr_med=69.5dB  overall 1.5 fits/s
+shard_013312: 256 fits in 275.6s  psnr_med=69.6dB  overall 1.5 fits/s
+shard_013568: 256 fits in 275.6s  psnr_med=69.3dB  overall 1.5 fits/s
+shard_013824: 176 fits in 193.3s  psnr_med=69.4dB  overall 1.5 fits/s
+{
+  "n_inrs": 14000,
+  "psnr_median": 69.25654602050781,
+  "psnr_q05": 63.80712451934814,
+  "corr_psnr_label": 0.1811818699779862,
+  "wallclock_total_s": 9408.035016059875,
+  "grad_norm_median": 0.00036601402098312974,
+  "grad_norm_q95": 0.003636115184053777
+}
+--- P-random replication 0, converged Tue Aug 11 17:18:32 +03 2026 ---

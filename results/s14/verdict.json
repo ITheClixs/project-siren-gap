@@ -1,0 +1,14 @@
+{
+  "study": "S14",
+  "prereg": "docs/prereg/S14.md",
+  "f": {
+    "A": 0.9645097472778625,
+    "B": 0.769825205229125,
+    "C": 0.7557201548944342
+  },
+  "width_effect": -0.0141,
+  "information_effect": 0.2088,
+  "luminance_arm": 0.8262997130784709,
+  "intervals": "3/4",
+  "branch": "information"
+}

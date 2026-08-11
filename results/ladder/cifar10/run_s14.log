@@ -3,3 +3,20 @@
 W12_umean: width 186 (capacity rule against the decoder's 1,873,162)
   W12_umean seed 0: test 36.83 (val 37.78, 12 ep)
   W12_umean seed 1: test 37.34 (val 36.78, 16 ep)
+  W12_umean seed 2: test 36.75 (val 37.56, 17 ep)
+  W12_umean seed 3: test 37.01 (val 37.48, 15 ep)
+  W12_umean seed 4: test 37.10 (val 37.76, 16 ep)
+W12_umean: 37.01  f=0.7698  params=1,874,898  (2885s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/cifar10/W12_umean.json
+--- arm C: pad that mean back to c channels Tue Aug 11 13:33:04 +03 2026 ---
+W12_umeanpad: width 186 (capacity rule against the decoder's 1,873,162)
+  W12_umeanpad seed 0: test 37.10 (val 37.60, 13 ep)
+  W12_umeanpad seed 1: test 36.01 (val 36.78, 9 ep)
+  W12_umeanpad seed 2: test 36.19 (val 36.84, 14 ep)
+  W12_umeanpad seed 3: test 36.91 (val 37.88, 11 ep)
+  W12_umeanpad seed 4: test 36.58 (val 37.74, 15 ep)
+W12_umeanpad: 36.56  f=0.7557  params=1,875,270  (4058s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/cifar10/W12_umeanpad.json
+=== S14 complete Tue Aug 11 14:40:45 +03 2026 ===
