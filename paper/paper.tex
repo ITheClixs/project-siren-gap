@@ -119,9 +119,11 @@ does not identify what fraction of the natural gap symmetry mediates.
 
 Acting on the characterization, bias phasors reduce the winding to a parity, leaving a finite
 grading a network preserves layer by layer; we prove the resulting reader on \emph{raw} parameters
-is exactly invariant. On the three standard INR-classification benchmarks it places third, third and
-second of seven, above DWSNets, both NFN variants and NG-GNN everywhere and above ScaleGMN on
-CIFAR-10: competitive, not leading. Querying the same INR at $64$ learned coordinates is
+is exactly invariant. Against the numbers published for the three
+standard INR-classification benchmarks it is competitive rather than leading: above DWSNets, both
+NFN variants and NG-GNN on all three, above ScaleGMN on CIFAR-10, below ScaleGMN-B throughout. We
+quote those baselines from their papers rather than rerunning them, so this is a comparison with
+published results and not a controlled head-to-head. Querying the same INR at $64$ learned coordinates is
 nonetheless more accurate than every weight-space pipeline we built, and about $100\times$ cheaper.
 All fits use constant-step Adam, which our own sweep shows does not reach stationarity.
 \end{minipage}
@@ -179,7 +181,7 @@ $\Dinf \wr S_n$ is \emph{all} of the functional equivalence on an explicit gener
 classical line \citep{hechtnielsen1990algebraic,sussmann1992uniqueness,fefferman1994reconstructing}.
 Two consequences follow rather than stand alone: the sine instance of
 \citeauthor{dym2024impossibility}'s continuous-canonicalization obstruction, which here is global
-rather than confined to sorting ties (Proposition~\ref{prop:po5}); and the observation that any
+rather than confined to the sorting canonicalizer's tie set (Proposition~\ref{prop:po5}); and the observation that any
 \emph{complete} invariant factors through the realized function
 (Proposition~\ref{prop:po6}), so weight access can beat function access only computationally or by
 being deliberately incomplete.
@@ -359,8 +361,10 @@ for odd activations \citep{hechtnielsen1990algebraic}, uniqueness for minimal ta
 \citep{sussmann1992uniqueness}, functional equivalence more generally
 \citep{kurkova1994functionally}, and reconstruction of sigmoid networks from their output via pole
 structure \citep{fefferman1994reconstructing} --- of which our Fourier-atom argument is the
-periodic analogue. What is new here is the \emph{phase} component: none of those groups contains a
-continuous family of bias shifts, and it is the $\tau$-circle that makes canonicalization globally
+periodic analogue. What is new here is the \emph{phase} component. Those groups are finite; ours contains an
+infinite translation subgroup $\pi\Z$ acting on the bias, which is discrete rather than
+continuous. Because $\sin$ is $2\pi$-periodic the bias direction of parameter space closes into a
+loop, and it is that loop, not the subgroup itself, which makes canonicalization globally
 obstructed (Proposition~\ref{prop:po5}) rather than obstructed only at ties.
 
 \begin{conjecture}[Deep case]\label{conj:deep}
@@ -392,9 +396,11 @@ form \eqref{eq:normalform} gives a difference of $(-1)^d 2\pi \neq 0$.
 
 This is the sine-specific counterpart of the general topological obstruction of
 \citet{dym2024impossibility}. It is stronger than the permutation case in an operationally
-relevant way: for permutations alone the obstruction is confined to sorting-key ties, whereas the
-$\tau$-circle makes it global. Any exact canonicalizer must therefore be discontinuous on a set
-meeting every loop that winds the bias circle; we measure the empirical mass near those sets.
+relevant way. For the usual sorting canonicalizer the discontinuity appears at sorting-key ties;
+the periodic bias direction instead produces a loop obstruction already for a single neuron, so
+any exact canonicalizer must be discontinuous on a set meeting every loop that winds the bias
+circle. We measure the empirical mass near those sets. We do not claim a taxonomy of obstructions
+for arbitrary permutation canonicalizers.
 
 \begin{proposition}[Completeness is function access]\label{prop:po6}
 Assume the conclusion of Theorem~\ref{thm:po2}. If $I : \Thgen \to X$ is $G$-invariant and
@@ -1939,10 +1945,14 @@ as adversarial reviewers and as an implementation and drafting assistant, and tw
 produced content in the paper rather than only around it. We state both, because neither is
 visible from the text.
 
-\emph{Ideas.} The phasor route to a $\Dinf$-aware reader --- replacing the raw bias $b$ by
-$(\cos b, \sin b)$ so that the integer translation is removed --- was proposed by a language model
-acting as a reviewer of an earlier draft. It is not our idea, and it is the idea the strongest
-empirical result in this paper rests on. It is credited at first mention in \S\ref{sec:w11} and in
+\emph{Ideas.} The phasor parameterization --- replacing the raw bias $b$ by $(\cos b, \sin b)$ so
+that the integer translation is removed --- was suggested during language-model-assisted
+adversarial review of an earlier draft. That suggestion, and the observation that the remaining
+sign and reflection actions then become finite-dimensional, are not ours, and the strongest
+empirical result here builds on them. What follows from them is: the $L=2$ character grading, the
+derivation of which message channels stay character-legal once $W^2$ is graded, the invariance
+proposition and its proof, the implementation, and the empirical evaluation including the controls
+that limit what the construction may be credited with. It is credited at first mention in \S\ref{sec:w11} and in
 row M7 of the provenance ledger. The realization at $L=2$ is ours: the $\Z_2\times\Z_2$ character
 grading, the identification of which message channels remain character-legal once $W^2$ is graded,
 and Proposition~\ref{prop:w12} with its proof. Three experiments were also prompted by such review
