@@ -24,7 +24,8 @@ PUBLISHED = [
 ]
 CAPTION = (
     r"\caption{\textbf{The phasor-graded reader against the published weight-space leaderboard.} "
-    r"Test accuracy (\%) on the standard INR-classification corpora, whose networks have the "
+    r"Test accuracy (\%) on the standard INR-classification corpora --- MNIST and FashionMNIST "
+    r"released by \citet{navon2023dws}, CIFAR-10 by \citet{zhou2023nfn} --- whose networks have the "
     r"architecture our readers already take, so W12 runs on them unchanged and in its frozen "
     r"configuration with nothing tuned per dataset. Baselines are quoted from the ScaleGMN "
     r"paper's Table~1; ours are five seeds. W12 places third, third and second, above DWSNets, "

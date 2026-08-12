@@ -79,7 +79,7 @@ abstract = (
 "mediates. Bias phasors then reduce the winding to a parity, leaving a finite grading a network "
 "preserves layer by layer, and we prove the resulting reader on raw parameters is exactly "
 "invariant. On the three standard INR-classification benchmarks it places third, third and second "
-"of seven, at 93.1, 75.2 and 38.2, above DWSNets, both NFN variants and NG-GNN on every one and "
+"of seven, at 93.1, 75.1 and 38.2, above DWSNets, both NFN variants and NG-GNN on every one and "
 "above ScaleGMN on CIFAR-10, while trailing ScaleGMN-B throughout: a competitive reader, not a "
 "leading one. Those benchmarks are independently initialized by our own measure, so the published "
 "leaderboard is already set in the hard regime. Querying the same INR at 64 learned coordinates "
