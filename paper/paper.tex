@@ -1727,7 +1727,13 @@ weight-space networks. Proposition~\ref{prop:po6} is
 \emph{not} a competing universality theorem --- it is a quotient factorization, and all of its
 content comes from Theorem~\ref{thm:po2}, without which it says nothing about sine networks;
 \citet{quasiequiv2026} supply the maximal-symmetry-group vocabulary in which
-Theorem~\ref{thm:po2} is stated; and \citet{clustered2026} report that in a meta-learned regime the
+Theorem~\ref{thm:po2} is stated; and \citet{chiba2026observable} also read symmetry off weights through Gram-type observables, and
+argue that what is visible from weights is an \emph{observable} symmetry set fixed by the
+parameters, the positional encoding and the readout rather than the true group. Their setting is
+MLPs on 2-D signed distance functions with positional encodings, not sine networks, and they make
+no invariance claim of the kind in Proposition~\ref{prop:deep}; the shared ingredient is the use of
+a Gram to cancel a layer's action, which is standard. Finally, \citet{clustered2026} report that in
+a meta-learned regime the
 bias column is a causal readout route while weight-space geometry does not predict reader accuracy
 --- a dissociation that runs counter to the mechanism of \S\ref{sec:mechanism} and was named in
 our pre-registrations.
@@ -1994,6 +2000,12 @@ weight spaces?
 S.~K. Ainsworth, J.~Hayase, and S.~Srinivasa.
 \newblock Git Re-Basin: Merging models modulo permutation symmetries.
 \newblock In \emph{ICLR}, 2023. arXiv:2209.04836.
+
+\bibitem[Chiba et al.(2026)]{chiba2026observable}
+N.~Chiba, S.~Sugiyama, and Y.~Uranishi.
+\newblock Observable- and positional-encoding-dependent symmetry readout from neural network
+  weights.
+\newblock Preprint, 2026. arXiv:2607.03108.
 
 \bibitem[Chizat et al.(2019)]{chizat2019lazy}
 L.~Chizat, E.~Oyallon, and F.~Bach.
