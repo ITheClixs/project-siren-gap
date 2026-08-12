@@ -2,10 +2,7 @@
 
 ### Evidence from Sine Networks
 
-**Mehmet Demir Güven**
-Department of Computer Science, ETH Zürich · Zürich, Switzerland
-
-📄 **[paper.pdf](paper/paper.pdf)** · 🔬 [pre-registrations](docs/prereg/) · 📓 [lab notebook](docs/LAB_NOTEBOOK.md) · 📊 [prediction ledger](docs/PREDICTION_OUTCOMES.csv) · 🧾 [claims](docs/CLAIMS.md)
+ **[paper.pdf](paper/paper.pdf)** ·  [pre-registrations](docs/prereg/) ·  [lab notebook](docs/LAB_NOTEBOOK.md) ·  [prediction ledger](docs/PREDICTION_OUTCOMES.csv) ·  [claims](docs/CLAIMS.md)
 
 ---
 
