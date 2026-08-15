@@ -5,7 +5,7 @@
 %  Build:  tectonic paper/paper.tex
 %  Layout follows the NeurIPS single-column convention (10pt Times, 5.5in x 9in block).
 % =====================================================================================
-\documentclass[10pt,letterpaper]{article}
+\documentclass[10pt,twocolumn,letterpaper]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -14,8 +14,8 @@
 \usepackage{courier}
 \usepackage{geometry}
 \usepackage{fancyhdr}
-\geometry{letterpaper, textwidth=5.5in, textheight=9.0in, top=1.0in, left=1.5in,
-          headheight=12pt, headsep=18pt, footskip=30pt}
+\geometry{letterpaper, textwidth=6.9in, textheight=9.1in, top=0.9in, left=0.8in,
+          columnsep=0.28in, headheight=12pt, headsep=16pt, footskip=26pt}
 
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{graphicx}
@@ -85,9 +85,6 @@
     {\small\texttt{dgueven@student.ethz.ch} \par}
   \end{center}
   \vskip 0.5em
-  \blfootnote{\hspace{-1.8em}$^\dagger$\,Carried out independently. ETH Zürich neither funded,
-  sponsored, supervised nor endorsed this work; the affiliation is given for identification only.
-  No institutional support, compute or review is claimed, and any errors are the author's alone.}
 }
 \makeatother
 
@@ -96,11 +93,9 @@
 \date{}
 
 \begin{document}
-\maketitle
-\thispagestyle{fancy}
-
+\twocolumn[\maketitle
 \begin{center}
-\begin{minipage}{0.86\textwidth}
+\begin{minipage}{0.88\textwidth}
 \begin{center}\textbf{Abstract}\end{center}
 \small
 A classifier reading the raw weights of independently fitted implicit neural representations (INRs)
@@ -131,6 +126,13 @@ All fits use constant-step Adam, which our own sweep shows does not reach statio
 \end{minipage}
 \end{center}
 \vskip 0.9em
+]
+\thispagestyle{fancy}
+\blfootnote{\hspace{-1.8em}$^\dagger$\,Carried out independently. ETH Zürich neither funded,
+sponsored, supervised nor endorsed this work; the affiliation is given for identification only.
+No institutional support, compute or review is claimed, and any errors are the author's alone.}
+
+
 
 % =====================================================================================
 \section{Introduction}
@@ -254,8 +256,10 @@ most $13\%$ on any dataset and under $6\%$ on both grayscale ones: augmenting by
 Fix input dimension $m$ (for images $m=2$), output dimension $c$, and hidden widths
 $n_1,\dots,n_L$. A \emph{sine network} in canonical form is
 \begin{equation}
-h^0 = x, \qquad h^\ell = \sin\!\big(W^\ell h^{\ell-1} + b^\ell\big)\ \ (\ell = 1,\dots,L),
-\qquad f_\theta(x) = W^{L+1} h^L + b^{L+1},
+\begin{aligned}
+h^0 &= x, \quad h^\ell = \sin\!\big(W^\ell h^{\ell-1} + b^\ell\big)\ (\ell = 1,\dots,L),\\
+f_\theta(x) &= W^{L+1} h^L + b^{L+1},
+\end{aligned}
 \label{eq:siren}
 \end{equation}
 with $\theta = (W^1,b^1,\dots,W^{L+1},b^{L+1})$. SIREN's frequency scale $\omega_0$
@@ -272,8 +276,10 @@ $\sigma : (w,b,u) \mapsto (-w,\, -b,\, -u)$.
 \begin{lemma}[Normal form]\label{lem:normal}
 Every element of $\langle \tau_1,\rho,\sigma\rangle$ acts as
 \begin{equation}
-g_{d,j}\colon (w,b,u)\ \longmapsto\ \big((-1)^d w,\ (-1)^d b + \pi j,\ (-1)^{d+j} u\big),
-\qquad d \in \{0,1\},\ j\in\Z,
+\begin{aligned}
+g_{d,j}\colon (w,b,u)\ \longmapsto\ &\big((-1)^d w,\ (-1)^d b + \pi j,\ (-1)^{d+j} u\big),\\
+&d \in \{0,1\},\ j\in\Z,
+\end{aligned}
 \label{eq:normalform}
 \end{equation}
 with composition $g_{d_2,j_2}\circ g_{d_1,j_1} = g_{\,d_1\oplus d_2,\ j_2 + (-1)^{d_2} j_1}$.
@@ -441,7 +447,10 @@ the minimal-frequency solutions $(\alpha,\beta) = (0,0) : 1, \cos 2b$; $(1,0): \
 $(0,1): \sin b$; $(1,1): \cos b$, and hence a separating per-neuron feature map on
 $\{w\neq0,u\neq0\}$:
 \begin{equation}
-\Phi(w,b,u) \;=\; \Big( w\otimes w,\ \cos 2b,\ (\sin 2b)\,w,\ (\sin b)\,u,\ (\cos b)\,(w\otimes u)\Big).
+\begin{aligned}
+\Phi(w,b,u) \;=\; \Big( &w\otimes w,\ \cos 2b,\ (\sin 2b)\,w,\\
+&(\sin b)\,u,\ (\cos b)\,(w\otimes u)\Big).
+\end{aligned}
 \label{eq:phi}
 \end{equation}
 \emph{Note} that the features one would guess --- $\cos(2b)(w\otimes u)$, $\sin(2b)(w\otimes u)$
@@ -459,9 +468,11 @@ $b^2$ and $W^3$ only), and under layer~1 it picks up $\varepsilon_i \varepsilon_
 $\varepsilon_i = (-1)^{d_i + j_i}$. Since $\sin b_i$ carries exactly $\varepsilon_i$ and
 $\cos b_i\, w_i$ carries $\varepsilon_i$ after contraction, the matrices
 \begin{equation}
-A = (\sin b_i \sin b_l)\,G_2, \qquad
-B = (\cos b_i w_i \!\cdot\! \cos b_l w_l)\,G_2, \qquad
-C = (\sin 2b_i w_i \!\cdot\! \sin 2b_l w_l)
+\begin{aligned}
+A &= (\sin b_i \sin b_l)\,G_2,\\
+B &= (\cos b_i w_i \!\cdot\! \cos b_l w_l)\,G_2,\\
+C &= (\sin 2b_i w_i \!\cdot\! \sin 2b_l w_l)
+\end{aligned}
 \end{equation}
 are sign-cancelling and transform as $M \mapsto P M P^\top$ under the layer-1 permutation. Their
 sorted eigenvalue spectra are therefore invariant under the full product group, with no genericity
@@ -500,6 +511,7 @@ the arguments of the fit map $F : (y, \theta_0, \xi) \mapsto \theta_T$, where $y
 signal, $\theta_0$ the initialization and $\xi$ the optimization noise:
 
 \begin{center}\small
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{@{}llll@{}}
 \toprule
 protocol & $\theta_0$ & $\xi$ & isolates \\
@@ -510,6 +522,7 @@ protocol & $\theta_0$ & $\xi$ & isolates \\
 \texttt{P-random-K}     & $K{=}8$ draws per image & drawn & the nuisance, sampled, for marginalization \\
 \bottomrule
 \end{tabular}
+}
 \end{center}
 
 \paragraph{Quality gates.} A corpus is admitted only if a small CNN trained on \emph{renders} of
@@ -554,7 +567,7 @@ $0.1$, AdamW $10^{-3}$, cosine schedule, early stopping on a held-out INR valida
 the feature map changes.
 
 \begin{center}\small
-\begin{tabular}{@{}llp{7.6cm}@{}}
+\footnotesize\begin{tabular}{@{}llp{4.6cm}@{}}
 \toprule
 rung & corpus & feature map \\
 \midrule
@@ -625,7 +638,7 @@ and the paired tests here resolve only the last of those.
 \section{Results}\label{sec:results}
 % =====================================================================================
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig1_ladder.pdf}
 \caption{\textbf{The perception gap and its decomposition.} (a) Absolute accuracy of the same
@@ -634,7 +647,7 @@ fraction \eqref{eq:f}, in which the task ceiling cancels, against datasets order
 complexity. The two \emph{exact}, function-preserving methods move in opposite directions and
 cross over (\S\ref{sec:crossover}); the three inexact treatments (grey) sit near zero everywhere.}
 \label{fig:ladder}
-\end{figure}
+\end{figure*}
 
 \input{tables/ladder_table}
 
@@ -689,7 +702,7 @@ $0.628 / 0.664 / 0.325$. Both are exact elements of $G$; the difference is entir
 representative is chosen. The practical message for architecture designers is that the ceiling on
 frame choice is high and current template-free canonicalization is nowhere near it.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=0.62\textwidth]{figures/fig4_template.pdf}
 \caption{\textbf{Alignment buys a consistent frame, not privileged knowledge.} $f(\mathrm{W5})$ on
@@ -697,7 +710,7 @@ MNIST under five alignment templates. An \emph{unrelated} random initialization 
 better than the corpus's own $\theta_0$, and every template clears the pre-registered
 falsification line at $0.5$. Exploratory, and labelled as such in the results.}
 \label{fig:template}
-\end{figure}
+\end{figure*}
 
 \paragraph{The alignment template does not matter} (Fig.~\ref{fig:template}). A natural objection
 is that $\theta_0$ exists only because we built the corpus with a known shared initialization.
@@ -971,6 +984,7 @@ is W10 against W10c, and it is the one we now quote.
 
 The two exact methods move in \emph{opposite} directions as the signal gets harder:
 \begin{center}\small
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{@{}lccc@{}}
 \toprule
 & MNIST & FashionMNIST & CIFAR-10 \\
@@ -979,6 +993,7 @@ $f(\mathrm{W5})$, alignment to a fixed reference & 0.628 & 0.664 & \textbf{0.325
 $f(\mathrm{W10})$, exact $L{=}2$ invariants      & 0.269 & 0.428 & \textbf{0.534} \\
 \bottomrule
 \end{tabular}
+}
 \end{center}
 
 Alignment halves; the invariant encoding nearly doubles, and on CIFAR-10 it \emph{overtakes}
@@ -1068,7 +1083,7 @@ properties of the corpus either.
 \section{Mechanism: the fit map does not leave its initialization}\label{sec:mechanism}
 % =====================================================================================
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig2_mechanism.pdf}
 \caption{\textbf{Why the initialization dominates.} (a) The profiled loss of the one-neuron
@@ -1080,7 +1095,7 @@ $\approx\omega$, and this replicates across Nelder--Mead, Adam and plain gradien
 $\approx0.24$ \emph{independently of the initialization range}: the fit stays in its
 initialization's neighbourhood.}
 \label{fig:mechanism}
-\end{figure}
+\end{figure*}
 
 Why should the initialization matter so much more than the trajectory? We answer in a microcosm
 where everything is computable (Fig.~\ref{fig:mechanism}): one neuron, $g(t) = u\sin(wt+b)+c$ fitted to
@@ -1206,7 +1221,7 @@ the strong form of the baseline: it can only move the function frontier up, whic
 conservative direction for the comparison being made here. FLOPs are analytic (one MAC $=2$ FLOPs, per INR, at
 inference), not wall-clock, so the frontier reproduces off this laptop.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig7_pareto.pdf}
 \caption{\textbf{The FLOPs--accuracy frontier (MNIST, \texttt{P-random}).} (a) Function access
@@ -1217,7 +1232,7 @@ corpora.
 (b) Amortization does not rescue weight access: its \emph{per-task} decoder cost already exceeds
 function-query's entire per-task cost, so the lines never cross.}
 \label{fig:pareto}
-\end{figure}
+\end{figure*}
 
 \paragraph{Accuracy and compute compared at matched FLOPs.} At $K = 64$, function access reaches
 $95.34\%$ for $1.59$\,MFLOP per INR. The best weight-access rung \emph{at the time this comparison
@@ -1296,8 +1311,10 @@ $b$ by $(\cos b, \sin b)$ turns the infinite group $\Z\rtimes\Z_2$ into a finite
 acting by signs. Writing a \emph{character} $\chi=(a,c)$ for a feature picking up $(-1)^{ad+cj}$,
 the raw parameters sort into four blocks,
 \[
-(0,0)\!: \|w_i\|^2,\ \cos 2b_i \qquad (1,0)\!: w_i,\ \sin 2b_i \qquad
-(0,1)\!: \cos b_i \qquad (1,1)\!: \sin b_i,\ u_i ,
+\begin{aligned}
+(0,0)&\!: \|w_i\|^2,\ \cos 2b_i &\quad (1,0)&\!: w_i,\ \sin 2b_i\\
+(0,1)&\!: \cos b_i &\quad (1,1)&\!: \sin b_i,\ u_i ,
+\end{aligned}
 \]
 and the coupling matrix $W^2$ carries character $(1,1)$ on the layer-1 side and $(1,0)$ on the
 layer-2 side, which leaves exactly two legitimate message channels per direction,
@@ -1485,9 +1502,11 @@ graded skeleton   & $0.602$ & $0.917$ \\
 worth $+0.046$ on the raw bias and $+0.059$ on the phasor. The interaction is $\mathbf{+0.013}$, so
 inside this skeleton the two ingredients are close to additive:
 \[
-0.265 \;\xrightarrow{\;+0.291\ \text{skeleton}\;}\; 0.557
-\;\xrightarrow{\;+0.301\ \text{phasor lift}\;}\; 0.858
-\;\xrightarrow{\;+0.059\ \text{grading}\;}\; 0.917 .
+\begin{aligned}
+0.265 &\;\xrightarrow{\;+0.291\ \text{skeleton}\;}\; 0.557\\
+&\;\xrightarrow{\;+0.301\ \text{phasor lift}\;}\; 0.858\\
+&\;\xrightarrow{\;+0.059\ \text{grading}\;}\; 0.917 .
+\end{aligned}
 \]
 Because W12ub carries neither ingredient, the first step is also the cleanest estimate this design
 offers of what the message-passing skeleton alone buys, It is smaller than the $+0.337$ obtained by differencing
@@ -1615,7 +1634,7 @@ content at production width}: the configuration that would witness it is not rea
 optimiser will leave the true orbit even when placed on it. What this supports is that the $L=1$ theorem is the guarantee we have, and that the $L=2$ corpora
 this paper decodes are governed by basin structure rather than by identifiability.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig5_s4e.pdf}
 \caption{\textbf{S4e: identifiability versus reachability at $L=2$.} (a) Independent students
@@ -1624,7 +1643,7 @@ conditioning line $R_\theta = \kappa R_f$ and the band occupied by unrelated net
 fraction of runs that return to the true orbit when started a relative distance $\varepsilon$ from
 it --- the basin collapses with width. (c) The local condition number $\kappa$ against width.}
 \label{fig:s4e}
-\end{figure}
+\end{figure*}
 
 % =====================================================================================
 \section{Related work}\label{sec:related}
@@ -1635,14 +1654,15 @@ rather than in an appendix because several of the ingredients this paper builds 
 mistake for its contributions. The full version, including the queries behind each ``new'' row, is
 released with the code as \texttt{docs/PROVENANCE.md}.
 
-\begin{table}[t]\centering\small
+\begin{table*}[t]\centering\small
 \setlength{\tabcolsep}{4pt}
 \caption{\textbf{Provenance.} What this paper inherits and what it adds. A null keyword search is
 weak evidence of novelty, and the two rows marked $\ast$ rest on one: eight targeted arXiv queries
 (2026-08-03) returned no matching construction.}
 \label{tab:provenance}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
-\begin{tabular}{@{}L{3.35cm}L{1.75cm}L{3.35cm}L{4.3cm}@{}}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}L{2.1cm}L{1.3cm}L{2.2cm}L{2.6cm}@{}}
 \toprule
 component & status & closest prior work & what is ours \\
 \midrule
@@ -1700,7 +1720,8 @@ orbit-only intervention; matched non-invariant control
   & \S\ref{sec:orbit}, \S\ref{sec:control}; both added in response to AI-assisted review \\
 \bottomrule
 \end{tabular}
-\end{table}
+}
+\end{table*}
 
 \paragraph{Weight-space architectures.} DWSNets \citep{navon2023dws}, NFN/NFT
 \citep{zhou2023nfn,zhou2023nft}, graph metanetworks \citep{lim2024gmn,kofinas2024graph},
@@ -2221,6 +2242,9 @@ A.~Zhou, C.~Finn, and J.~Harrison.
 
 % =====================================================================================
 \appendix
+% Proofs and the full invariant derivation carry displays too wide for a column, so the
+% appendix runs single-column while the body stays two-column.
+\onecolumn
 \normalsize
 % =====================================================================================
 \section{Proof of Theorem~\ref{thm:po2}}\label{app:po2}
@@ -2443,14 +2467,14 @@ separated from generic nonlinear feature engineering only by the matched control
 \section{Calibration of the program's own forecasts}\label{sec:calibration}
 % =====================================================================================
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig3_calibration.pdf}
 \caption{\textbf{Scoring our own predictions.} (a) Every registered interval, rescaled to its own
 $[\text{lo80},\text{hi80}]$; blue is a hit, red a miss, arrows are off-scale. (b) Realized
 coverage against nominal. The intervals are too \emph{narrow}, not too wide.}
 \label{fig:calibration}
-\end{figure}
+\end{figure*}
 
 Because every prediction was registered with an interval, the program can be scored as a
 forecaster \citep{gneiting2007scoring}. Through the two grayscale arms, realized coverage was

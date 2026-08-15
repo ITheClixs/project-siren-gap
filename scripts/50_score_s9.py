@@ -144,7 +144,7 @@ def table(rep: dict) -> str:
     ]
     rows = [r for r in rows if r[0] in rep["f"]]
     lines = [
-        r"\begin{table}[t]", r"\centering\small",
+        r"\begin{table*}[t]", r"\centering\small",
         r"\caption{\textbf{Readers at matched capacity (MNIST, \texttt{P-random}).} Every reader "
         r"is sized by rule to the frozen decoder's $1{,}873{,}162$ parameters. The "
         r"invariance column is what each construction actually quotients: W11a nothing beyond "
@@ -165,7 +165,7 @@ def table(rep: dict) -> str:
         p = rep["reader_params"].get(key)
         pstr = f"{p:,}" if p else "---"
         lines.append(f"{key} & {desc} & {rep['acc'][key]:.2f} & {rep['f'][key]:.3f} & {inv} \\\\")
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     return "\n".join(lines)
 
 

@@ -1,4 +1,4 @@
-\begin{table}[t]
+\begin{table*}[t]
 \centering\small
 \caption{\textbf{Readers at matched capacity (MNIST, \texttt{P-random}).} Every reader is sized by rule to the frozen decoder's $1{,}873{,}162$ parameters. The invariance column is what each construction actually quotients: W11a nothing beyond permutations, W11b the full group but only because its input already is invariant, W12 the full group on the raw parameters, and neither control anything. The two controls vary one thing each against W12: W12u removes the layer grading and keeps the phasor coordinates, W12b keeps the grading and feeds it the raw bias. Their gaps to W12 are $+0.059$ and $+0.315$, against $+0.337$ from W11a to W12b, so within this skeleton the coordinates and the architecture contribute comparably and the layer-level grading contributes little. $\calign$ is listed for reference; it is a change of frame rather than a reader, and its column is the recovered share $f$ of \eqref{eq:f} rather than the reference-normalized score $s$ of \eqref{eq:s}.}
 \label{tab:w12}
@@ -14,4 +14,4 @@ W12 & phasor-graded, raw weights & 87.64 & 0.917 & $G$, on the parameters \\
 W5 & $\calign$ + the frozen MLP & 64.41 & 0.628 & --- (a reframing, not a reader) \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}

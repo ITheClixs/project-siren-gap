@@ -43,7 +43,7 @@ def main() -> None:
         d = json.loads((ROOT / "results" / "ladder" / ds / "W12_dwsbench.json").read_text())
         acc.append(d["mean"])
         sd.append(statistics.pstdev(d["acc"]))
-    lines = [r"\begin{table}[t]", r"\centering\small", CAPTION, r"\label{tab:bench}",
+    lines = [r"\begin{table*}[t]", r"\centering\small", CAPTION, r"\label{tab:bench}",
              r"\begin{tabular}{@{}lrrr@{}}", r"\toprule",
              r"method & MNIST & FashionMNIST & CIFAR-10 \\", r"\midrule"]
     for name, vals in PUBLISHED:
@@ -53,7 +53,7 @@ def main() -> None:
                                       for a, s in zip(acc, sd)) + r" \\")
         else:
             lines.append(f"{name} & " + " & ".join(f"{v:.2f}" for v in vals) + r" \\")
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     out = ROOT / "paper" / "tables" / "bench_table.tex"
     out.write_text("\n".join(lines))
     print(f"wrote {out}: " + ", ".join(f"{a:.2f}" for a in acc))

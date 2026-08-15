@@ -90,7 +90,7 @@ def ladder_table(available) -> str:
     hw = max_ci_halfwidth(available)
 
     lines = [
-        r"\begin{table}[t]",
+        r"\begin{table*}[t]",
         r"\centering\small",
         r"\caption{\textbf{The decomposition ladder.} One frozen decoder, thirteen feature maps, "
         r"the same underlying corpora. \emph{acc.} is mean test accuracy (\%) over the "
@@ -123,7 +123,7 @@ def ladder_table(available) -> str:
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
-        r"\end{table}",
+        r"\end{table*}",
         "",
     ]
     return "\n".join(lines)
@@ -131,7 +131,7 @@ def ladder_table(available) -> str:
 
 def gap_table(available) -> str:
     lines = [
-        r"\begin{table}[t]",
+        r"\begin{table*}[t]",
         r"\centering\small",
         r"\caption{\textbf{The gap, and what an exact \emph{reframing} recovers.} The "
         r"shared-versus-random accuracy gap W1$-$W3 shrinks with the task ceiling. The rung "
@@ -160,7 +160,7 @@ def gap_table(available) -> str:
             f"{label} & {m['P0']:.2f} & {gap:.2f} & {name} & {removed:.2f} "
             f"& {1 - removed / gap:.1%}".replace("%", r"\%") + r" \\"
         )
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     return "\n".join(lines)
 
 
@@ -182,7 +182,7 @@ def s4e_table() -> str | None:
     widths = sorted(teach)
 
     lines = [
-        r"\begin{table}[t]",
+        r"\begin{table*}[t]",
         r"\centering\small",
         rf"\caption{{\textbf{{S4e: the anatomy of deep identifiability at $L=2$.}} "
         rf"\emph{{planted}} is the validity control (a known group element, undone). "
@@ -211,7 +211,7 @@ def s4e_table() -> str | None:
             + f" & {teach[w]['R_theta_at_best_R_f']:.3f}"
             + f" & {null[w]['R_theta_median']:.3f}" + r" \\"
         )
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     return "\n".join(lines)
 
 
@@ -232,7 +232,7 @@ def gray_arm_table() -> str | None:
     if not g or not {"W1", "W3", "W5", "W10"} <= g[0].keys():
         return None
     lines = [
-        r"\begin{table}[t]",
+        r"\begin{table*}[t]",
         r"\centering\small",
         r"\caption{\textbf{Images or channels?} Luminance CIFAR-10 is the identical images at the "
         r"identical geometry, architecture and fit budget, with the output-channel count changed "
@@ -257,7 +257,7 @@ def gray_arm_table() -> str | None:
             f"{label} & {c} & {_psnr_of(key)} & " + (f"{m['P0']:.2f}" if "P0" in m else "---")
             + f" & {m['W1'] - m['W3']:.2f} & {frac(m, fr, 'W5')} & {frac(m, fr, 'W10')}" + r" \\"
         )
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     return "\n".join(lines)
 
 
@@ -282,7 +282,7 @@ def w11_table() -> str | None:
         ("W1", "raw weights, shared init", "matched MLP", means["W1"], 1.0, 1873162),
     ]
     lines = [
-        r"\begin{table}[t]",
+        r"\begin{table*}[t]",
         r"\centering\small",
         r"\caption{\textbf{Reader architecture against frame choice} (MNIST, \texttt{P-random}). "
         r"W11a is the equivariant coverage the field has for sine networks; W11b feeds W10's own "
@@ -300,7 +300,7 @@ def w11_table() -> str | None:
         lines.append(f"{name} & {desc} & {reader} ({npar/1e6:.2f}M) & {acc:.2f} & {f:.3f}" + r" \\")
         if name in ("W11a", "W11b"):
             lines.append(r"\midrule")
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     return "\n".join(lines)
 
 
@@ -335,7 +335,7 @@ def orbit_table() -> str | None:
               "W11b": "equivariant, invariant (W11b)"}
     Bs = sorted(perm["by_winding"], key=int)
     lines = [
-        r"\begin{table}[t]", r"\centering\small",
+        r"\begin{table*}[t]", r"\centering\small",
         r"\caption{\textbf{The orbit-only intervention (MNIST).} Each fitted network and its "
         r"realised function are held fixed; an independent $g_i\sim\mu_B$ is applied to each. "
         rf"The baseline is the untouched corpus at ${perm['baseline']['mean']:.2f}\%$. "
@@ -369,7 +369,7 @@ def orbit_table() -> str | None:
         vals = {b: c["delta_sym"] for b, c in pr["by_winding"].items()}
         lines.append(r"$\Delta_{\mathrm{sym}}$, applied to \texttt{P-random} instead & "
                      + " & ".join(f"{vals[b]:+.2f}" if b in vals else "---" for b in Bs) + r" \\")
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     return "\n".join(lines)
 
 
@@ -384,7 +384,7 @@ def sweep_table() -> str | None:
         return None
     col = "@{}l" + "r" * len(steps) + "@{}"
     lines = [
-        r"\begin{table}[t]", r"\centering\small",
+        r"\begin{table*}[t]", r"\centering\small",
         r"\caption{\textbf{The ladder against the step budget (MNIST).} Same images, "
         r"architecture, optimizer and seed policy; only the number of steps changes. The corpus "
         r"is reduced to 10k/2k/2k so the largest budget is affordable, so the 300-step column is "
@@ -420,7 +420,7 @@ def sweep_table() -> str | None:
         lambda r: r["diagnostics"]["random"]["psnr_median"], "{:.1f}")
     row(r"median relative travel",
         lambda r: r["diagnostics"]["shared"]["travel_median"], "{:.3f}")
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     return "\n".join(lines)
 
 
@@ -442,7 +442,7 @@ def w12_cross_table() -> str | None:
     if not rows:
         return None
     lines = [
-        r"\begin{table}[t]", r"\centering\small",
+        r"\begin{table*}[t]", r"\centering\small",
         r"\caption{\textbf{The phasor-graded reader across corpora.} $s$ is the "
         r"reference-normalized score \eqref{eq:s}; the last two columns are the best exact "
         r"reframing and the best invariant encoding on the same corpus, quoted as recovered "
@@ -457,7 +457,7 @@ def w12_cross_table() -> str | None:
     ]
     for label, acc, s, calign, enc in rows:
         lines.append(f"{label} & {acc:.2f} & \\textbf{{{s:.3f}}} & {calign:.3f} & {enc:.3f} " + r"\\")
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     return "\n".join(lines)
 
 
@@ -466,7 +466,7 @@ def calibration_table() -> str:
     iv = [r for r in rows if r["kind"] == "interval"]
     miss = [r for r in iv if r["verdict"] == "MISS"]
     lines = [
-        r"\begin{table}[t]",
+        r"\begin{table*}[t]",
         r"\centering\small",
         rf"\caption{{\textbf{{Every registered interval that missed.}} Realized coverage is "
         rf"{len(iv) - len(miss)}/{len(iv)} against a nominal 80\%. The misses fall into exactly "
@@ -494,7 +494,7 @@ def calibration_table() -> str:
             f"{pid} & {desc} & {r['point']} [{r['lo80']}, {r['hi80']}] & {r['observed']} "
             f"& {mode.get(pid, '---')} " + r"\\"
         )
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}", ""]
     return "\n".join(lines)
 
 

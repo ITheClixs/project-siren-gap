@@ -1,4 +1,4 @@
-\begin{table}[t]
+\begin{table*}[t]
 \centering\small
 \caption{\textbf{The phasor-graded reader against the published weight-space leaderboard.} Test accuracy (\%) on the standard INR-classification corpora --- MNIST and FashionMNIST released by \citet{navon2023dws}, CIFAR-10 by \citet{zhou2023nfn} --- whose networks have the architecture our readers already take, so W12 runs on them unchanged and in its frozen configuration with nothing tuned per dataset. Baselines are quoted from the ScaleGMN paper's Table~1; ours are five seeds. W12 places third, third and second, above DWSNets, both NFN variants and NG-GNN everywhere, and above ScaleGMN itself on CIFAR-10. The FashionMNIST cell uses the authors' own split file; for MNIST and CIFAR-10 no split file is distributed, so validation is carved deterministically from the training half and the test half is theirs. All three corpora are independently initialized by the measure of \S\ref{sec:orbit}.}
 \label{tab:bench}
@@ -15,4 +15,4 @@ NFN$_{HNP}$ \citep{zhou2023nfn} & 79.11 & 68.94 & 28.64 \\
 NFN$_{NP}$ \citep{zhou2023nfn} & 78.50 & 68.19 & 33.41 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
