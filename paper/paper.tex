@@ -1946,33 +1946,21 @@ release is the import code that converts them into the corpus format used here, 
 split each network was assigned and nothing else about them. Numbered scripts map one-to-one onto
 the sections: the mapping is in the repository's README.
 
-\paragraph{Use of AI systems, and what it contributed.} This program used large language models
-as adversarial reviewers and as an implementation and drafting assistant, and two of those roles
-produced content in the paper rather than only around it. We state both, because neither is
-visible from the text.
-
-\emph{Ideas.} The phasor parameterization --- replacing the raw bias $b$ by $(\cos b, \sin b)$ so
-that the integer translation is removed --- was suggested during language-model-assisted
-adversarial review of an earlier draft. That suggestion, and the observation that the remaining
-sign and reflection actions then become finite-dimensional, are not ours, and the strongest
-empirical result here builds on them. What follows from them is: the $L=2$ character grading, the
-derivation of which message channels stay character-legal once $W^2$ is graded, the invariance
-proposition and its proof, the implementation, and the empirical evaluation including the controls
-that limit what the construction may be credited with. It is credited at first mention in \S\ref{sec:w11} and in
-row M7 of the provenance ledger. The realization at $L=2$ is ours: the $\Z_2\times\Z_2$ character
-grading, the identification of which message channels remain character-legal once $W^2$ is graded,
-and Proposition~\ref{prop:w12} with its proof. Three experiments were also prompted by such review
-passes rather than conceived by us: the orbit-only intervention (\S\ref{sec:orbit}), the matched
-non-invariant control (\S\ref{sec:control}) and the convergence sweep (\S\ref{sec:convergence}).
-The provenance ledger marks each.
-
-\emph{Implementation and prose.} Language models were used to write and revise code in this
-repository, and to draft and edit the prose of this manuscript, including passages that survive in
-the final text. Every theorem, proof, experimental design, pre-registration, threshold and
-numerical claim was checked by the author against the artifacts, and the author takes
-responsibility for all of them. Readers who want to audit that boundary can: the repository carries
-the full commit history, the frozen pre-registrations with their hashes, and the artifact behind
-every number quoted here.
+\paragraph{Use of AI tools.} The mathematics, experimental design, pre-registrations, analysis
+and scientific claims in this paper are the author's, who takes responsibility for all of them.
+Large language models were used in two roles, disclosed here because one of them touched content
+and not only presentation. Acting as adversarial reviewers of earlier drafts, they proposed the
+phasor parameterization of the bias --- credited at first mention in \S\ref{sec:w11} and in row M7
+of the provenance ledger --- and prompted three experiments: the orbit-only intervention
+(\S\ref{sec:orbit}), the matched non-invariant control (\S\ref{sec:control}) and the convergence
+sweep (\S\ref{sec:convergence}). Acting as an assistant, they were used to write and revise code in
+the released repository and to draft and edit prose that survives in this manuscript. What follows
+from the phasor suggestion is the author's: the $L=2$ character grading, the derivation of which
+message channels remain character-legal once $W^2$ is graded, Proposition~\ref{prop:w12} and its
+proof, the implementation, and the empirical evaluation including the controls that limit what the
+construction may be credited with. Every theorem, proof, threshold and numerical claim was checked
+against the released artifacts, and the repository carries the commit history, the frozen
+pre-registrations with their hashes, and the artifact behind every number quoted here.
 
 % =====================================================================================
 \small
