@@ -26,3 +26,17 @@ results/raw/
 *.pdf
 paper/*.log
 dist/
+
+# Manuscript sources are kept out of the public tree. Result figures under
+# paper/figures/ stay tracked because the README displays them.
+paper/*.tex
+paper/*.log
+paper/tables/
+paper/icml/
+paper/icml-anon/
+paper/thesis/
+paper/paperA/
+paper/paperB/
+paper/paperC/
+# Packages the manuscript, which is not tracked here.
+scripts/55_build_arxiv_package.sh
