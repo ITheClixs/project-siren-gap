@@ -139,7 +139,7 @@ def fig_ladder(available: list[tuple[str, str, str, dict]]) -> None:
     ax0.legend(frameon=False, loc="lower right", handlelength=1.1, fontsize=6.6)
     ax0.tick_params(axis="y", length=0)
 
-    # (b) recovery fraction against signal complexity — the crossover
+    # (b) recovery fraction against signal complexity: the crossover
     exact = [
         ("W5", r"W5  $c_{\mathrm{align}}$", "#3B6EA5", "o"),
         ("W10", r"W10  invariants", "#4E9A6A", "D"),
@@ -294,9 +294,9 @@ def fig_calibration() -> None:
     if n_c:
         div = y[n_g] + 0.5
         ax0.axhline(div, color="0.35", lw=0.6, ls=(0, (2, 2)))
-        ax0.text(-0.72, div + 0.55, f"grayscale arms — {sum(hits_g)}/{n_g}",
+        ax0.text(-0.72, div + 0.55, f"grayscale arms: {sum(hits_g)}/{n_g}",
                  fontsize=6, color="0.3", va="bottom")
-        ax0.text(-0.72, div - 0.55, f"CIFAR-10 arm — {sum(hits_c)}/{n_c}",
+        ax0.text(-0.72, div - 0.55, f"CIFAR-10 arm: {sum(hits_c)}/{n_c}",
                  fontsize=6, color="0.3", va="top")
     ax0.set_yticks(y)
     ax0.set_yticklabels(names, fontsize=5.4)

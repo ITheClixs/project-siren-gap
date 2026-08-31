@@ -1,0 +1,15 @@
+\begin{table*}[t]
+\centering\small
+\caption{\textbf{The phasor-graded reader across corpora.} $s$ is the reference-normalized score \eqref{eq:s}; the last two columns are the best exact reframing and the best invariant encoding on the same corpus, quoted as recovered fractions \eqref{eq:f}. W12 is above both families everywhere, including on the two CIFAR corpora where those families trade places with each other. Capacity is set by the same rule per dataset, and invariance is audited on each corpus's own fitted networks (maximum relative logit movement $3.7\times10^{-6}$ at $|j| \le 40$).}
+\label{tab:w12cross}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+corpus & W12 acc.\ (\%) & $s(\mathrm{W12})$ & best reframing & best encoding \\
+\midrule
+MNIST & 87.64 & \textbf{0.917} & 0.628 & 0.269 \\
+FashionMNIST & 70.87 & \textbf{0.828} & 0.664 & 0.428 \\
+CIFAR-10 (luminance) & 33.36 & \textbf{0.826} & 0.324 & 0.493 \\
+CIFAR-10 (RGB) & 43.16 & \textbf{0.965} & 0.324 & 0.534 \\
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -1,0 +1,101 @@
+\section{A reader that quotients the group}\label{sec:reader}
+
+Every rung so far changes the feature map and holds the reader fixed. That is what makes the
+decomposition interpretable, and it is also the obvious objection: the field does not read weights
+with a plain MLP, it builds permutation-equivariant architectures
+\citep{navon2023dws,zhou2023nfn,lim2024gmn,kofinas2024graph,tran2024monomial}. \textbf{W11a} is
+capacity-matched bipartite message passing on the raw weights, equivariant to
+$S_{n_1}\times S_{n_2}$ and \emph{not} invariant to $\Dinf$, which matches what that family covers
+for periodic activations. \textbf{W11b} feeds W10's own invariants to an equivariant reader with
+learned pooling.
+
+\textbf{W12} is the reader neither of those is: exactly $G$-invariant on the \emph{raw} parameters.
+Under $g_{d,j}$ the phasor coordinates of the bias transform with $j$ only through its
+\emph{parity}, since $\cos b \mapsto (-1)^j \cos b$ and $\sin b \mapsto (-1)^{d+j}\sin b$, so
+replacing $b$ by $(\cos b, \sin b)$ turns the infinite group $\Z\rtimes\Z_2$ into a finite
+$\Z_2\times\Z_2$ acting by signs. Writing a \emph{character} $\chi=(a,c)$ for a feature picking up
+$(-1)^{ad+cj}$, the raw parameters sort into four blocks,
+\[
+\begin{aligned}
+(0,0)&: \|w_i\|^2,\ \cos 2b_i &\quad (1,0)&: w_i,\ \sin 2b_i\\
+(0,1)&: \cos b_i &\quad (1,1)&: \sin b_i,\ u_i ,
+\end{aligned}
+\]
+and the coupling matrix $W^2$ carries character $(1,1)$ on the layer-1 side and $(1,0)$ on the
+layer-2 side, which leaves exactly two legitimate message channels per direction,
+$\sum_i W^2_{ki} f_i^{(1,1)}$ and $\sum_i (W^2_{ki})^2 f_i^{(0,0)}$, together with their transposes.
+That is the Gram coupling of Proposition~\ref{prop:deep} reappearing as a message rule, except that
+here the network learns which couplings to use.
+
+\begin{proposition}[Invariance of the phasor-graded reader]\label{prop:w12}
+Let $f^{(\chi)}(\theta) \in \R^{n \times d_\chi}$ denote the block of node features of character
+$\chi \in \{(0,0),(1,0),(0,1),(1,1)\}$. For every $g \in \Dinf \wr S_n$ acting on a layer, the
+feature map above satisfies $f^{(\chi)}(g\theta) = \chi(g)\, P_g\, f^{(\chi)}(\theta)$ with
+$\chi(g) \in \{\pm1\}$. Then a reader built from \emph{(i)} per-character linear maps, carrying a
+bias only on $\chi = (0,0)$, \emph{(ii)} bilinear products routed to the sum of their characters,
+\emph{(iii)} an \emph{odd} nonlinearity on every block with $\chi \ne (0,0)$, \emph{(iv)} the two
+message channels above, and \emph{(v)} a head reading only the $(0,0)$ block after mean and max
+pooling over nodes, computes a function of $\theta$ that is exactly invariant under
+$\Dinf \wr S_n$.
+\end{proposition}
+
+The proof is an induction on layers carrying the covariance
+$f^{(\chi)} \mapsto \chi(g) P_g f^{(\chi)}$; it is in Appendix~\ref{app:w12}. Two things it does not
+say. It is a statement in exact arithmetic, so the floating-point audit is what covers the
+implementation, and that audit puts the relative logit movement at $3\times10^{-6}$ on $512$ fitted
+networks under windings to $|j| = 40$. And it requires feature standardization to be scale-only,
+since dividing by a constant commutes with the sign action while subtracting a mean would not.
+
+Every reader is sized by rule to the frozen decoder's $1{,}873{,}162$ parameters, so no row loses
+for being smaller.
+
+\input{tables/w12_table}
+
+\paragraph{A $G$-aware reader on raw parameters beats every other treatment here.}
+$s(\mathrm{W12}) = \mathbf{0.917}$, that is $87.64\%$ against the shared-initialization anchor at
+$94.36\%$, from weights fitted independently. That is $+0.651$ over the permutation-only reader,
+$+0.390$ over the same-family reader fed a fixed invariant front-end, and $+0.288$ over the best
+exact reframing. We registered this badly: three hypotheses scored $0/3$ and every miss is in the
+same direction. The probability call that mattered, at $0.25$ that a $G$-aware reader would beat
+$\calign$, resolved true. Section~4 of the frozen registration committed in advance that if it did,
+this paper's claim that within weight space the choice of orbit representative matters more than
+reader architecture would be \textbf{withdrawn rather than qualified}. It is withdrawn. The
+supported claim is the opposite one.
+
+This closes a loop the theory had left open. The intervention found that within $\Dinf\wr S_n$ the
+reflection and phase components carry four fifths of the damage and neuron relabelling one fifth
+(\S\ref{sec:orbit}); W11a quotients only the relabelling and recovers $0.265$, while W12 quotients
+all of it and recovers $0.917$. The group characterization is not decoration on the empirical part
+of the paper. It tells you which quotient a reader has to take.
+
+\paragraph{On the shared-initialization corpus.} Where there is nothing to quotient, W12 reaches
+$95.46\%$ against W1's $94.36\%$, giving $f = 1.014$ strictly above one. So the phasor coordinates
+are a better way to read parameters even with no group scatter present, and part of what W12 gains
+on \texttt{P-random} is architecture rather than invariance. That caps how much of the recovery any
+invariant construction may claim as symmetry work.
+
+\paragraph{Against the published leaderboard.} The standard MNIST-INR corpus of
+\citet{navon2023dws} is what DWSNets, NFN, NG-GNN and ScaleGMN all report on, and its INRs have
+exactly the architecture our readers take, so W12 runs on it unchanged. In its frozen
+configuration, with nothing tuned per dataset, W12 reaches $93.08 \pm 0.44$, $75.15 \pm 0.31$ and
+$38.16 \pm 0.22$ over five seeds: third, third and second of seven. It is above DWSNets, both NFN
+variants and NG-GNN on all three, and above ScaleGMN itself on CIFAR-10 by $1.7$ points, while
+trailing ScaleGMN-B everywhere (Table~\ref{tab:bench}, Appendix~\ref{app:bench}). We report it
+as a competitive reader rather than a leading one, and we quote the baselines from their papers
+rather than rerunning them.
+
+\noindent Two things this establishes beyond the ranking. The benchmark corpus is
+\emph{independently} initialized, with median pairwise relative parameter distance $1.419$ against
+$1.40$ for our own \texttt{P-random} and $0.19$ for our shared corpus, so the published leaderboard
+is set in the hard regime and it is those architectures rather than their corpora doing the work.
+And W12 scores $93.1\%$ there against $87.6\%$ on ours at the same architecture, so some of our
+ladder's difficulty is a property of our fitting protocol rather than of the problem.
+
+\paragraph{What in the construction works.} Two matched controls vary one ingredient each at the
+same capacity. Removing the layer grading while keeping the phasor coordinates gives $0.858$;
+keeping the grading and feeding it the raw bias gives $0.602$; carrying neither gives $0.557$. The
+phasor lift is worth about $+0.31$ and the grading about $+0.05$, with an interaction of $+0.013$,
+so within this skeleton the two are close to additive and the layer-level grading is worth little
+next to the coordinates. Both controls were registered before running and score $5/5$ intervals.
+Appendix~\ref{app:square} gives the full square and what the grading actually buys, which is not
+the mechanism we would have named.

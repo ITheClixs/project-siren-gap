@@ -1,0 +1,22 @@
+\begin{table*}[t]
+\centering\small
+\caption{\textbf{The ladder against the step budget (MNIST).} Same images, architecture, optimizer and seed policy; only the number of steps changes. The corpus is reduced to 10k/2k/2k so the largest budget is affordable, so the 300-step column is the internal control rather than the full-corpus ladder. $\|\nabla\|$ is the median relative endpoint gradient norm of each INR's own full-batch loss, which is the stationarity measure that render fidelity cannot supply.}
+\label{tab:sweep}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+quantity & 300 steps & 1,000 steps & 3,000 steps & 10,000 steps \\
+\midrule
+W1 (shared init) & 88.50 & 87.34 & 87.10 & 86.88 \\
+W3 (random init) & 10.86 & 10.65 & 10.60 & 10.94 \\
+gap W1$-$W3 & 77.64 & 76.69 & 76.50 & 75.94 \\
+\midrule
+$f(\mathrm{W4})$ $\csort$ & 0.116 & 0.101 & 0.098 & 0.121 \\
+$f(\mathrm{W5})$ $\calign$ & 0.502 & 0.489 & 0.470 & 0.459 \\
+$f(\mathrm{W10})$ invariants & 0.249 & 0.253 & 0.258 & 0.252 \\
+\midrule
+median $\|\nabla\|/\|\theta\|$ & 7.4e-03 & 2.8e-04 & 4.6e-03 & 6.3e-03 \\
+median render PSNR (dB) & 37.4 & 64.6 & 62.4 & 58.4 \\
+median relative travel & 0.186 & 0.194 & 0.194 & 0.197 \\
+\bottomrule
+\end{tabular}
+\end{table*}

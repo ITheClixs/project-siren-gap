@@ -1,0 +1,47 @@
+\section{Corpora and the decomposition ladder}\label{sec:bench}
+
+A decomposition needs corpora that differ in \emph{exactly} the nuisance under study. We fit one
+SIREN per image of MNIST \citep{lecun1998mnist}, FashionMNIST \citep{xiao2017fashion} and CIFAR-10
+\citep{krizhevsky2009cifar} ($L=2$, width $32$) under four protocols that intervene on the arguments
+of the fit map $F : (y, \theta_0, \xi) \mapsto \theta_T$: \texttt{P-shared-det} fixes the
+initialization and the optimization noise and carries no nuisance at all, \texttt{P-shared-stoch}
+isolates optimization noise, \texttt{P-random} draws both and is the realistic setting, and
+\texttt{P-random-K} draws $K=8$ initializations per image for marginalization. Three datasets by
+four protocols is approximately $1.8$M fitted INRs, generated on a single Apple M4 laptop. A corpus
+is admitted only if a decoder trained on \emph{renders} of the fitted INRs matches one trained on
+real pixels, so no rung can be explained by lost signal; all gates pass. We audit the strata of
+\S\ref{sec:group}: production fits satisfy genericity, but marginally, with minimal parallel angles
+of $3\times10^{-4}$ to $2\times10^{-3}$\,rad, which is a conditioning statement rather than an
+identifiability failure. Splits are assigned by image and enforced by a schema check.
+
+Each rung applies a different \emph{feature map} to the same corpora and decodes it with one frozen
+apparatus, a matched MLP with fixed optimizer, schedule and stopping rule. Only the feature map
+changes. W1, W2 and W3 are raw weights on the shared-deterministic, shared-stochastic and random
+corpora; W4 is $\csort$, exact canonicalization by neuron sort; W5 is $\calign$, sort plus sign and
+phase alignment to a fixed reference; W6 is bounded group augmentation, W7 is $K$-marginalization,
+W9 is frame averaging \citep{puny2022frame}, and W10 is the invariant encoding of
+\S\ref{sec:invariants}. Appendix~\ref{app:ladder} gives the full ladder with its information
+controls and cross-decode. The quantity of interest is the \textbf{algorithm-relative recoverable
+fraction}
+\begin{equation}
+f(\mathrm{W}k) \;=\; \frac{\mathrm{W}k - \mathrm{W3}}{\mathrm{W1} - \mathrm{W3}} \;\in\; \R .
+\label{eq:f}
+\end{equation}
+Absolute accuracies inherit the task ceiling; $f$ does not. Sections~\ref{sec:reader} onward compare
+\emph{architectures}, where that symbol would mix numerator and denominator from different learning
+algorithms, so there we write the \textbf{reference-normalized score}
+\begin{equation}
+s(A) \;=\; \frac{\mathrm{acc}_A(\texttt{P-random}) - \mathrm{W3}}{\mathrm{W1} - \mathrm{W3}},
+\label{eq:s}
+\end{equation}
+a common yardstick rather than a recovered share, and unlike $f$ not bounded by one.
+
+\paragraph{Pre-registration.} Every rung definition, hypothesis, point prediction with an $80\%$
+interval, seed count and falsification condition was frozen in a committed, hash-stamped document
+before any cell was computed \citep{munafo2017manifesto,nosek2018preregistration}. Comparisons use
+paired-by-seed tests with Holm correction \citep{holm1979simple} and equivalence via TOST
+\citep{schuirmann1987tost}. All registered predictions are scored, hits and misses alike, and the
+ledger with its calibration is in Appendix~\ref{app:calibration}. The registrations are
+\emph{sequential} rather than one joint confirmatory experiment, and the $1.8$M fits are not $1.8$M
+independent replications: the units of uncertainty are datasets, images, fit realizations and
+decoder seeds, and the paired tests resolve only the last.

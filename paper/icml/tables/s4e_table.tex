@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\centering\small
+\caption{\textbf{S4e: the anatomy of deep identifiability at $L=2$.} \emph{planted} is the validity control (a known group element, undone). $\kappa = R_\theta/R_f$ is the local condition number of the inverse map. \emph{basin} is the fraction of optimiser runs that return to the true orbit when started a relative $\varepsilon = 10^{-5}$ away. The last three columns are independent students fitted to a teacher's exact outputs: their best functional residual, the orbit residual there, and, for scale, the orbit residual between two \emph{unrelated} networks of the same shape.}
+\label{tab:s4e}
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{controls} & & \multicolumn{3}{c}{independent students} \\
+\cmidrule(lr){2-3} \cmidrule(lr){5-7}
+width $n$ & planted $R_\theta$ & basin & $\kappa$ & best $R_f$ & $R_\theta$ there & unrelated $R_\theta$ \\
+\midrule
+2 & 4.3e-08 & 78\% & 0.0422 & 5.9e-08 & 0.000 & 0.468 \\
+4 & 3.7e-08 & 91\% & 0.0351 & 1.6e-02 & 0.319 & 0.451 \\
+8 & 3.0e-08 & 91\% & 0.0198 & 1.1e-02 & 0.475 & 0.368 \\
+16 & 3.1e-08 & 44\% & 0.0146 & 7.9e-03 & 0.353 & 0.292 \\
+32 & 3.3e-08 & 0\% & 0.0055 & 1.2e-03 & 0.334 & 0.233 \\
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -1,0 +1,70 @@
+\section{Setting and the symmetry group}\label{sec:group}
+
+Fix input dimension $m$ (for images $m=2$), output dimension $c$, and hidden widths
+$n_1,\dots,n_L$. A \emph{sine network} in canonical form is
+\begin{equation}
+\begin{aligned}
+h^0 &= x, \quad h^\ell = \sin\!\big(W^\ell h^{\ell-1} + b^\ell\big)\ (\ell = 1,\dots,L),\\
+f_\theta(x) &= W^{L+1} h^L + b^{L+1},
+\end{aligned}
+\label{eq:siren}
+\end{equation}
+with $\theta = (W^1,b^1,\dots,W^{L+1},b^{L+1})$. SIREN's frequency scale $\omega_0$
+\citep{sitzmann2020siren} is absorbed into the stored weights at corpus creation. For a hidden
+neuron $i$ write $w_i$ for its row of $W^\ell$, $b_i$ for its bias, and $u_i$ for its column of
+$W^{\ell+1}$.
+
+\begin{definition}[Per-neuron maps]\label{def:gen}
+$\tau_k : (w,b,u) \mapsto (w,\, b + 2\pi k,\, u)$ for $k\in\Z$;
+$\rho : (w,b,u) \mapsto (w,\, b+\pi,\, -u)$;
+$\sigma : (w,b,u) \mapsto (-w,\, -b,\, -u)$.
+\end{definition}
+
+\begin{lemma}[Normal form]\label{lem:normal}
+Every element of $\langle \tau_1,\rho,\sigma\rangle$ acts as
+\begin{equation}
+g_{d,j}\colon (w,b,u) \longmapsto \big((-1)^d w,\ (-1)^d b + \pi j,\ (-1)^{d+j} u\big),
+\label{eq:normalform}
+\end{equation}
+with $d \in \{0,1\}$, $j\in\Z$ and composition
+$g_{d_2,j_2}\circ g_{d_1,j_1} = g_{\,d_1\oplus d_2,\ j_2 + (-1)^{d_2} j_1}$. Hence
+$\langle \tau_1,\rho,\sigma\rangle \cong \Z \rtimes \Z_2 = \Dinf$, with $\rho^2 = \tau_1$,
+$\sigma^2 = \mathrm{id}$ and $\sigma\rho\sigma = \rho^{-1}$.
+\end{lemma}
+
+\begin{theorem}[Symmetry group]\label{thm:po1}
+For every $g_{d,j}$ applied at any hidden neuron, and every permutation $\pi \in S_{n_\ell}$
+applied jointly to the rows of $W^\ell$, the entries of $b^\ell$ and the columns of $W^{\ell+1}$,
+the network function is exactly preserved. Hence
+\begin{equation}
+G \;=\; \prod_{\ell=1}^{L} \Dinf \wr S_{n_\ell}
+    \;=\; \prod_{\ell=1}^{L} \big(\Dinf^{\,n_\ell} \rtimes S_{n_\ell}\big)
+\end{equation}
+acts on parameter space with $f_{g\cdot\theta} = f_\theta$ for all $g\in G$, and the actions of
+distinct layers commute.
+\end{theorem}
+
+\begin{proof}
+With pre-activation $z = \langle w,h\rangle + b$,
+$(-1)^{d+j} u\,\sin\!\big((-1)^d z + \pi j\big)
+ = (-1)^{d+j}(-1)^{j}(-1)^{d} u \sin z = u \sin z$,
+so the neuron's contribution is unchanged. Permutations relabel neurons while re-wiring outgoing
+columns consistently. Row and column operations on $W^{\ell+1}$ touch different indices and
+commute.
+\end{proof}
+
+\begin{remark}\label{rem:affine}
+Theorem~\ref{thm:po1} asserts \emph{containment}; maximality is Theorem~\ref{thm:po2} for $L=1$.
+\citet{tran2024monomial} establish maximality among \emph{linear} (monomial-matrix) actions and
+leave the general sine case open. The phase maps $g_{0,j}$ with $j\neq0$ are affine and lie outside
+every linear action, which is exactly why that classification cannot see the phase component.
+\end{remark}
+
+\paragraph{Where genericity is needed.} Three closed, Lebesgue-null strata carry functional
+equivalences \emph{beyond} the $G$-orbit: $w_i = 0$ (dead), $u_i = 0$ (invisible), and
+$w_j = \pm w_i$ (parallel-frequency). On the last, phasor addition
+$u_i\sin(z+b_i) + u_j\sin(z+b_j) = \operatorname{Im}\big((u_ie^{\mathrm i b_i}
++ u_je^{\mathrm i b_j})e^{\mathrm i z}\big)$
+shows only the complex sums are functionally visible: two parallel neurons carry one neuron's worth
+of function, for \emph{arbitrary} bias pairs. Genericity is a condition we measure on every corpus
+rather than assume (\S\ref{sec:bench}).

@@ -1,0 +1,23 @@
+\section{Related work}\label{sec:related}
+
+DWSNets \citep{navon2023dws}, NFN \citep{zhou2023nfn}, graph metanetworks
+\citep{lim2024gmn,kofinas2024graph}, the monomial-matrix framework \citep{tran2024monomial} and
+ScaleGMN \citep{kalogeropoulos2024scalegmn} build readers equivariant to permutation and, in later
+work, to scaling and sign symmetries. Theorem~\ref{thm:po1} says what those frameworks miss for
+periodic activations, namely the affine phase component, and \S\ref{sec:reader} builds a reader that
+quotients it; \citet{tran2024monomial} establish maximality among linear actions and leave the
+general sine case open, which Theorem~\ref{thm:po2} closes at $L=1$. The classical identifiability
+line runs from \citet{hechtnielsen1990algebraic} through \citet{sussmann1992uniqueness} and
+\citet{fefferman1994reconstructing}, and ours is its periodic analogue;
+Proposition~\ref{prop:po5} is the sine instance of the obstruction of
+\citet{dym2024impossibility}, global rather than confined to a tie set.
+
+On the artifact itself, inr2vec \citep{deluigi2023inr2vec} relies on shared-initialization corpora
+and \citet{papa2024howtotrain} intervene on fit hyperparameters and observe downstream deltas; their
+shared-versus-random comparison is one rung-pair of our ladder, which we replicate seed for seed as
+a pre-registered anchor before decomposing it. \citet{shamsian2024augmentations} treat the nuisance
+by augmentation, and our W6 measures that treatment against an exact alternative.
+\citet{wsn2026expressivity} prove universality for permutation-invariant weight-space networks;
+Proposition~\ref{prop:po6} is not a competing universality theorem but a quotient factorization.
+Appendix~\ref{app:related} gives the provenance component by component, because several ingredients
+this paper builds on are easy to mistake for its contributions.
