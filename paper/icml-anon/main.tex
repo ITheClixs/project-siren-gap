@@ -79,6 +79,9 @@ identifiability, equivariance}
 \vskip 0.3in
 ]
 
+% The style prints this argument only under [accepted]; in blind mode it is suppressed and the
+% standard notice ("Preliminary work. Under review by ICML. Do not distribute.") is printed instead,
+% which is the submission-status declaration. Empty braces are required even with no notice.
 \printAffiliationsAndNotice{}
 
 \begin{abstract}
@@ -90,16 +93,15 @@ networks, showing that each hidden neuron carries an infinite dihedral action $\
 component is affine and therefore lies outside the monomial-matrix actions previous classifications
 cover, and we prove that at one hidden layer $\Dinf \wr S_n$ exhausts generic functional
 equivalence. Exact orbit-valued reframing recovers $63\%$, $66\%$ and $32\%$ of the gap, but that is
-relative to the reader and its training algorithm rather than a causal share, so we intervene
-directly: randomizing the group while holding every network and its realized function fixed costs
-$79$ of the $80$ points, which makes group scatter sufficient to reproduce almost the whole
-degradation without identifying what fraction of the natural gap symmetry mediates. Acting on the
-characterization, bias phasors reduce the winding to a parity and leave a finite grading a network
-preserves layer by layer, giving a reader on raw parameters that we prove exactly invariant and
-that is competitive rather than leading against published numbers for three standard benchmarks.
-Querying the same INR at $64$ learned coordinates is nonetheless more accurate than every
-weight-space pipeline we built and about $100\times$ cheaper, and all fits use constant-step Adam,
-which our own sweep shows does not reach stationarity.
+relative to the reader rather than a causal share, so we intervene directly: randomizing the group
+while holding every network and its realized function fixed costs $79$ of the $80$ points, which
+makes group scatter sufficient to reproduce almost the whole degradation without identifying what
+fraction of it symmetry mediates. Acting on the characterization, bias phasors reduce the winding to
+a parity and leave a finite grading a network preserves layer by layer, giving a reader on raw
+parameters that we prove exactly invariant and that is competitive rather than leading against
+published numbers for three standard benchmarks. Querying the same INR at $64$ learned coordinates
+is nonetheless more accurate than every weight-space pipeline we built and about $100\times$
+cheaper, and all fits use constant-step Adam, which our own sweep shows does not reach stationarity.
 \end{abstract}
 
 \input{sections/introduction}
@@ -123,16 +125,6 @@ require specific highlighting here beyond those common to machine learning resea
 practical implication is worth stating: several published results in this area are measured on
 corpora whose construction makes the task easier than the realistic setting, and a reader that
 appears to work may be exploiting that artifact rather than the structure it claims.
-
-\section*{Disclosure of AI Assistance}
-
-Large language models were used in two roles. Acting as adversarial reviewers of earlier drafts,
-they proposed the phasor parameterization of the bias, credited at first mention in
-\S\ref{sec:reader}, and prompted three of the experiments reported here. Acting as an assistant,
-they were used to write and revise code and to draft and edit prose. The mathematics, experimental
-design, pre-registrations, analysis and scientific claims are the authors', who take responsibility
-for all of them; every theorem, proof, threshold and numerical claim was checked against the
-recorded artifacts.
 
 \small
 
