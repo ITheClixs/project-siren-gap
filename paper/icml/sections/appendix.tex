@@ -571,15 +571,16 @@ rather than in an appendix because several of the ingredients this paper builds 
 mistake for its contributions. The full version, including the queries behind each ``new'' row, is
 released with the code as \texttt{docs/PROVENANCE.md}.
 
-\begin{table*}[t]\centering\small
+\begin{table}[t]\centering\small
 \setlength{\tabcolsep}{4pt}
 \caption{\textbf{Provenance.} What this paper inherits and what it adds. A null keyword search is
 weak evidence of novelty, and the two rows marked $\ast$ rest on one: eight targeted arXiv queries
 (2026-08-03) returned no matching construction.}
 \label{tab:provenance}
+% Sized for the single-column appendix. The body version rescaled a 2.1cm-wrapped
+% tabular, which wraps every cell to one or two words before the rescale sees it.
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{@{}L{2.1cm}L{1.3cm}L{2.2cm}L{2.6cm}@{}}
+\begin{tabular}{@{}L{3.4cm}L{2.0cm}L{5.4cm}L{5.6cm}@{}}
 \toprule
 component & status & closest prior work & what is ours \\
 \midrule
@@ -637,8 +638,7 @@ orbit-only intervention; matched non-invariant control
   & \S\ref{sec:orbit}, \S\ref{app:control}; both added in response to AI-assisted review \\
 \bottomrule
 \end{tabular}
-}
-\end{table*}
+\end{table}
 
 \paragraph{Weight-space architectures.} DWSNets \citep{navon2023dws}, NFN/NFT
 \citep{zhou2023nfn,zhou2023nft}, graph metanetworks \citep{lim2024gmn,kofinas2024graph},
