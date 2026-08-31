@@ -1,0 +1,30 @@
+\section{Exact invariants at depth two}\label{sec:invariants}
+
+Requiring monomial invariance $g(b)P_\alpha(w)Q_\beta(u)$ under \eqref{eq:normalform} forces $g$ to
+be $2\pi$-periodic with $g(b+\pi) = (-1)^\beta g(b)$ and $g(-b)=(-1)^{\alpha+\beta}g(b)$, whose
+minimal-frequency solutions give a separating per-neuron feature map on $\{w\neq0,u\neq0\}$:
+\begin{equation}
+\Phi(w,b,u) = \big(w\otimes w,\ \cos 2b,\ (\sin 2b)\,w,\ (\sin b)\,u,\ (\cos b)(w\otimes u)\big).
+\label{eq:phi}
+\end{equation}
+The features one would guess, $\cos(2b)(w\otimes u)$ and $\sin(2b)(w\otimes u)$, are \emph{not}
+invariant: the first has the wrong bias frequency for $\rho$, the second the wrong parity for
+$\sigma$, and both are refuted numerically in our test suite.
+
+Equation~\eqref{eq:phi} is scoped to $L=1$. At depth two a hidden neuron's outgoing vector is a
+column of a matrix the next layer's group also acts on, so per-neuron constructions fail. Coupling
+the layers repairs it.
+
+\begin{proposition}[Exact $L=2$ invariant encoding]\label{prop:deep}
+Let $G_2 = W_2^\top W_2$. Then $G_2$ is invariant under the entire layer-2 group and picks up
+$\varepsilon_i \varepsilon_l$ under layer~1, with $\varepsilon_i = (-1)^{d_i + j_i}$. Since
+$\sin b_i$ carries $\varepsilon_i$ and $\cos b_i w_i$ carries $\varepsilon_i$ after contraction, the
+matrices $A = (\sin b_i \sin b_l)G_2$, $B = (\cos b_i w_i \cdot \cos b_l w_l)G_2$ and
+$C = (\sin 2b_i w_i \cdot \sin 2b_l w_l)$ are sign-cancelling and transform as
+$M \mapsto P M P^\top$ under the layer-1 permutation, so their sorted eigenvalue spectra are
+invariant under the full product group with no genericity condition.
+\end{proposition} The genericity the encoder does need is in the order statistics, since per-neuron even scalars are
+sorted by the shared key $\|w_i\|^2$. Appendix~\ref{app:w10} gives the encoding coordinate by
+coordinate and states what is not claimed: the family is invariant but not shown to separate orbits.
+Random group elements with windings $|j|\le3$ and non-trivial permutations move it by
+$3\times10^{-7}$ relative, which is fp32 round-off.

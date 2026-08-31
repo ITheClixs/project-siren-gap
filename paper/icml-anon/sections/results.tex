@@ -1,0 +1,56 @@
+\section{Results: what the ladder measures}\label{sec:results}
+
+\paragraph{The size of the gap.} On MNIST, W1 $=94.36$ against W3 $=13.92$: an $80.4$-point gap
+between two corpora of networks fitted to \emph{the same images}, with the same architecture,
+differing only in whether the initialization was shared. FashionMNIST gives $70.3$ points and
+CIFAR-10 $31.6$. The two representations are not even rescalings of one another: a decoder trained
+on W1 features scores at chance on W3 features and the reverse.
+
+\paragraph{It is not decoder inadequacy.} A decoder reading oracle renders of the fitted INRs
+matches one reading real pixels everywhere, with TOST equivalence at a $1.0$-point margin on MNIST
+($p = 2.5\times10^{-5}$), so fitting causes no loss the render classifier can detect. Resampling the optimizer's stochasticity at
+fixed initialization moves accuracy by less than a point, against the $80$ that changing the
+initialization moves it (Appendix~\ref{app:ladder}).
+
+\paragraph{Reframing recovers much of the gap, and the fraction is not constant.}
+$f(\mathrm{W5}) = 0.628$ on MNIST and $0.664$ on FashionMNIST. We had registered $0.10$ with an
+$80\%$ interval reaching only to $0.30$, and a pre-committed rule stating that $f > 0.5$ falsifies
+the claim that canonicalization is not enough. It fired. We then registered the restatement as a
+CIFAR-10 prediction, $0.62$ with interval $[0.42,0.78]$, and it missed in the other direction:
+$f(\mathrm{W5}) = 0.325$. The two-thirds figure is a property of the grayscale corpora, not a law.
+What holds on all three is that an exact reframing recovers between a third and two thirds of the
+gap while no inexact treatment recovers more than an eighth.
+
+\paragraph{The choice of representative matters more than exactness.} Template-free sorting
+recovers $0.177$, $0.170$ and $0.108$; aligning to a fixed reference recovers $0.628$, $0.664$ and
+$0.325$. Both are exact elements of $G$, and the difference is entirely which orbit representative
+is chosen. A survey of five alignment templates shows the reference need not be privileged, since an
+unrelated random initialization does marginally better than the corpus's own $\theta_0$
+(Appendix~\ref{app:ladder}): alignment buys a consistent frame, and any fixed reference supplies
+one.
+
+\paragraph{The inexact treatments recover little.} Across the three datasets, bounded group
+augmentation recovers $0.054 / 0.032 / 0.128$, $K$-marginalization $0.048 / 0.034 / 0.101$, and
+frame averaging $0.003 / -0.008 / 0.001$. Canonicalizing and \emph{then} augmenting collapses to
+chance on all three, because augmenting inside a canonical frame destroys the frame the decoder just
+gained. Frame averaging fails in the expected way: parity-odd coordinates cancel toward zero, so it
+is a lossy invariantization where W10 is an exact one. $\Dinf$ is infinite, so there is no uniform measure to average or augment over: W6 and W9 are
+instantiated at one winding distribution, and what the ladder establishes is that \emph{these}
+instantiations recover at most $12.8\%$ (Appendix~\ref{app:ladder}).
+
+\subsection{What \texorpdfstring{$f$}{f} does not measure}\label{sec:bounds}
+
+An earlier version of this paper claimed $f$ is a certified lower bound on the share of the gap
+caused by symmetry. That claim is wrong, and it fails at a step that is implicit elsewhere in this
+literature: an exact reframing preserves the function, so it creates no information, so any accuracy
+it buys must come from removing nuisance. The last step does not follow, because an orbit-valued map
+can \emph{route} an orbit-invariant quantity into a coordinate the reader finds easy to read. Let
+$y(\theta)$ be any orbit-invariant binary property and define $c$ to apply $\tau_k$ at the first
+neuron with $k = M\,y(\theta)$ for a large constant $M$. Then $c(\theta) \in G\theta$ and
+$f_{c(\theta)} = f_\theta$ exactly, yet a linear probe on the first bias now predicts $y$: no
+function-level information was created, and the group's degrees of freedom were used as a
+communication channel. Two further gaps separate $f$ from a causal share: the decoder is retrained per rung, so what is
+held fixed is the learning \emph{algorithm}, and the comparison contrasts corpora fitted from
+\emph{different initializations}, an intervention on the fit map rather than on the group. The
+causal estimand requires intervening on the group with the network and its function held fixed,
+which is \S\ref{sec:orbit}.

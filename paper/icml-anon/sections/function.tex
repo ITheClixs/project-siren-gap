@@ -1,0 +1,27 @@
+\section{Weight access against function access}\label{sec:function}
+
+Corollary~\ref{cor:ceiling} says a \emph{complete} $G$-invariant of the weights carries exactly the
+information of the realized function, so weight access can only win on compute. Function access
+evaluates $f_\theta$ at $K$ \emph{learned} probe coordinates and classifies the outputs; nothing
+reads a weight, and our test suite certifies the reader is exactly $G$-invariant. Learning the
+probes is the strong form of the baseline, which is the conservative direction here, and FLOPs are
+analytic per INR at inference.
+
+At $K = 64$, function access reaches $95.34\%$ for $1.59$\,MFLOP per INR against $\calign$'s
+$64.41\%$ for $5.45$\,MFLOP, and at $K = 256$ it reaches $98.23\%$, above the real-pixel MLP's
+$97.97\%$, so learned query points are a better input to the same decoder than the pixels are. W12
+did not exist when this was registered and the claim is quantified over all weight pipelines, so it
+has to be re-priced: W12 reaches $87.64\%$ at $163$\,MFLOP, which is $7.7$ accuracy points worse at
+$103\times$ the compute. The conclusion survives, but its shape changes, from a large accuracy
+deficit at comparable cost to a small one at two orders of magnitude more compute. Amortizing does
+not rescue it. Weight access costs $1.70 + 3.74\,T$\,MFLOP over $T$ downstream tasks against
+function-query's $1.59\,T$, and the lines never cross, because the weight reader's \emph{per-task}
+cost on a $1185$-dimensional input already exceeds function-query's \emph{entire} per-task cost on a
+$64$-dimensional one. The mechanism is general: function access is cheaper whenever $Kc \ll P$, a
+condition on how many probes the task needs rather than on how big the INR is.
+
+One asymmetry is worth stating on its own. Between \texttt{P-random} and \texttt{P-shared-det},
+function-query accuracy moves $5.4$ points, a fit-quality effect, while weight access moves $80.4$:
+the entire object this paper decomposes is invisible from the function side. The result holds where
+the function is cheap to query relative to the parameter count, for targets that are functions of
+the realized signal, at width $32$ and depth $2$.
