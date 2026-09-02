@@ -34,6 +34,7 @@ paper/*.log
 paper/tables/
 paper/icml/
 paper/icml-anon/
+paper/iclr-anon/
 paper/thesis/
 paper/paperA/
 paper/paperB/
