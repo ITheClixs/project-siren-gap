@@ -1,0 +1,31 @@
+{
+  "rung": "W5",
+  "notes": "c_align canonicalization against the shared init theta_0",
+  "feature_dim": 17025,
+  "n_train_rows": 10000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    67.79999732971191,
+    67.25000143051147,
+    68.4000015258789,
+    68.50000023841858,
+    68.00000071525574
+  ],
+  "mean": 67.99000024795532,
+  "ci95_bootstrap": [
+    67.59000062942505,
+    68.36000084877014
+  ],
+  "epochs_ran": [
+    11,
+    11,
+    11,
+    11,
+    11
+  ],
+  "wallclock_s": 63.06390571594238,
+  "linear_probe": 60.79999804496765,
+  "knn10_cosine": 11.450000000000001,
+  "label_shuffle_test_acc": 10.450000315904617
+}

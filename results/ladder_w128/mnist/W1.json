@@ -1,0 +1,31 @@
+{
+  "rung": "W1",
+  "notes": "raw weights, P-shared-det-w128",
+  "feature_dim": 17025,
+  "n_train_rows": 10000,
+  "seeds": 5,
+  "augmentation_bearing": false,
+  "acc": [
+    95.74999809265137,
+    95.3499972820282,
+    95.14999985694885,
+    95.49999833106995,
+    95.3000009059906
+  ],
+  "mean": 95.4099988937378,
+  "ci95_bootstrap": [
+    95.24999976158142,
+    95.59999823570251
+  ],
+  "epochs_ran": [
+    13,
+    14,
+    15,
+    19,
+    29
+  ],
+  "wallclock_s": 68.8694818019867,
+  "linear_probe": 93.55000257492065,
+  "knn10_cosine": 90.5,
+  "label_shuffle_test_acc": 10.999999940395355
+}

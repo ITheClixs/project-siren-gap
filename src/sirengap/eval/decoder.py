@@ -41,6 +41,7 @@ class DecoderResult:
     val_acc: float
     epochs_ran: int
     extra_acc: dict[str, float] = field(default_factory=dict)
+    test_correct: Tensor | None = None
 
 
 def _standardize(train: Tensor, *others: Tensor) -> tuple[Tensor, ...]:
@@ -50,13 +51,22 @@ def _standardize(train: Tensor, *others: Tensor) -> tuple[Tensor, ...]:
 
 
 @torch.no_grad()
-def _acc(model: nn.Module, x: Tensor, y: Tensor, device: str, batch: int = 2048) -> float:
+def _correct(model: nn.Module, x: Tensor, y: Tensor, device: str, batch: int = 2048) -> Tensor:
+    """Per-example correctness over the split, in the split's own order.
+
+    Kept separate from the scalar accuracy so that uncertainty can be resampled over
+    evaluation items as well as over decoder seeds; the two levels are not interchangeable.
+    """
     model.eval()
-    correct = 0
+    hits = []
     for i in range(0, len(x), batch):
         pred = model(x[i : i + batch].to(device)).argmax(1).cpu()
-        correct += int((pred == y[i : i + batch]).sum())
-    return 100.0 * correct / len(x)
+        hits.append(pred == y[i : i + batch])
+    return torch.cat(hits)
+
+
+def _acc(model: nn.Module, x: Tensor, y: Tensor, device: str, batch: int = 2048) -> float:
+    return 100.0 * float(_correct(model, x, y, device, batch).float().mean())
 
 
 def train_matched_mlp(
@@ -121,11 +131,13 @@ def train_matched_mlp(
         name: _acc(model, (fx - mu) / sd, fy, device)
         for name, (fx, fy) in (extra_eval or {}).items()
     }
+    hits = _correct(model, x_te, y_te, device)
     return DecoderResult(
-        test_acc=_acc(model, x_te, y_te, device),
+        test_acc=100.0 * float(hits.float().mean()),
         val_acc=best_val,
         epochs_ran=epoch + 1,
         extra_acc=extra,
+        test_correct=hits,
     )
 
 
