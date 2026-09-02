@@ -22,6 +22,7 @@ Let $\Theta^{(2)}_{\mathrm{gen}}$ be the parameters satisfying:
 - **(G3)** $c_j \notin \tfrac{\pi}{2}\mathbb{Z}$ for every $j$.
 - **(G4)** for each $i$, the $|W_{ji}|$ are distinct across $j$.
 - **(G5)** $v_j \ne 0$ and $W_{ji} \ne 0$ for all $i,j$.
+- **(G6)** $J_0(W_{ji}) \ne 0$ for all $i,j$, i.e. no $W_{ji}$ is a zero of $J_0$.
 
 Each condition fails on a countable union of proper analytic subsets, so
 $\Theta^{(2)}_{\mathrm{gen}}$ has full measure. (G1) is inherited from the $L=1$ theorem; the rest
@@ -60,32 +61,75 @@ $\operatorname{Im}B(k) = \sum_j r_j(k)\sin c_j$.
 
 ## 5. The decay exponent recovers the $\ell^1$ norm
 
-For primitive $u \in \mathbb{Z}^{n_1}$ set
-$$\rho(u) \;=\; \lim_{m\to\infty} \frac{-\log|T(mu)|}{m\log m}.$$
+**Lemma 1 (explicit Bessel control).** Write $J_k(x) = \frac{(x/2)^{k}}{k!}\big(1+E_k(x)\big)$ for
+$k \ge 0$. Then
+$$|E_k(x)| \;\le\; \exp\Big(\frac{x^2}{4(k+1)}\Big) - 1 \;=\; O\!\big(x^2/k\big).$$
 
-**Proposition 1.** On $\Theta^{(2)}_{\mathrm{gen}}$, $\rho(u) = |u|_1$ for every primitive $u$.
+*Proof.* From the series $E_k(x) = \sum_{s\ge1}\frac{(-1)^s k!}{s!(s+k)!}(x/2)^{2s}$ and
+$\frac{k!}{(s+k)!} = \prod_{r=1}^{s}(k+r)^{-1} \le (k+1)^{-s}$,
+$$|E_k(x)| \;\le\; \sum_{s\ge1}\frac{1}{s!}\Big(\frac{(x/2)^2}{k+1}\Big)^{s} \;=\; e^{x^2/(4(k+1))}-1. \qquad\square$$
 
-*Proof.* $r_j(mu) = v_j\prod_i J_{mu_i}(W_{ji})$ and $J_k(x) = (x/2)^k/k!\,(1+O(x^2))$, so
-$$|r_j(mu)| \;=\; |v_j|\,\frac{P_j(u)^m}{\prod_i (m u_i)!}\big(1+o(1)\big),
-\qquad P_j(u) = \prod_i |W_{ji}/2|^{u_i}.$$
-By (G2) the map $j \mapsto \sum_i u_i \log|W_{ji}|$ is injective for every $u \ne 0$, so a unique
-$j^\star$ maximises $P_j(u)$ and dominates the sum. By (G3) neither $\cos c_{j^\star}$ nor
-$\sin c_{j^\star}$ vanishes, so whichever real part the parity selects is asymptotically
-$r_{j^\star}(mu)$ times a nonzero constant. Stirling gives
-$$\log \prod_i (mu_i)! \;=\; |u|_1\, m\log m \;+\; O(m),$$
-and $\log P_{j^\star}(u)^m = O(m)$, whence $-\log|T(mu)| = |u|_1\,m\log m + O(m)$. $\square$
+Because $J_{-k} = (-1)^kJ_k$ and $J_k(-x) = (-1)^kJ_k(x)$, the bound governs $|J_k(x)|$ for either
+sign of $k$ and of $x$ with $k$ replaced by $|k|$. For $|k| \ge x^2$ it gives $|E_k| \le e^{1/4}-1
+< 0.29$, hence a two-sided bound. This is the explicit, uniform-on-compacts, $O(1/k)$ control that
+the previous draft assumed without proof.
 
-The content is that $\rho$ is defined from $f$ alone. It refers to no basis, yet it reconstructs the
-$\ell^1$ norm that the true basis induces on the frequency module.
+*Verified: the bound holds in all 24 tested cases over $x \in [0.5,6]$, $k \in [1,60]$, with worst
+ratio $|E_k|/\text{bound} = 0.999$, so it is valid and not vacuous; and it agrees with $x^2/(4k)$ to
+three digits at $k = 1000$.*
 
-*Verified numerically at 200-digit precision: fitting
-$-\log|T(mu)| = \rho\,m\log m + \beta m + \gamma$ over $m = 10..60$ recovers $\rho = |u|_1$ to a
-worst deviation of $0.052$ over ten directions with $|u|_1 \in [1,6]$, and $0.057$ over random
-parameter draws.*
+Fix a primitive $u$ and set, for each $j$,
+$$P_j(u) = \prod_{i:u_i\ne0}\big|W_{ji}/2\big|^{|u_i|}, \qquad
+Q_j(u) = \prod_{i:u_i=0}\big|J_0(W_{ji})\big|,$$
+$s_j = \sin c_j$ or $\cos c_j$ according to the parity of $\sum_i k_i$, and let $j^\star$ maximise
+$P_j(u)$ with $\gamma(u) = P_{j^\star}(u)/P_{j^{\star\star}}(u)$ the ratio to the runner-up.
+
+**Proposition 1.** For each fixed primitive $u$, on $\Theta^{(2)}_{\mathrm{gen}}$,
+$$|T(mu)| \;=\; \frac{|v_{j^\star}|\,Q_{j^\star}(u)\,|s_{j^\star}|\;P_{j^\star}(u)^{m}}
+{\prod_{i:u_i\ne0}\big(m|u_i|\big)!}\;\Big(1 + O(m^{-1}) + O\big(\gamma(u)^{-m}\big)\Big),$$
+hence $-\log|T(mu)| = |u|_1\,m\log m + O(m)$ and $\rho(u) = |u|_1$.
+
+*Proof.* Coordinates with $u_i = 0$ contribute the constant $J_0(W_{ji})$, nonzero by (G6); without
+(G6) a single vanishing factor would kill a term for every $m$ at once. For the remaining
+coordinates $|mu_i| \to \infty$, so once $m \ge \max_{j,i}W_{ji}^2 / \min_{i:u_i\ne0}|u_i|$ Lemma 1
+applies to each, and since there are finitely many pairs $(i,j)$ the product of the $1+E$ factors is
+$1 + O(1/m)$ with a constant depending only on $\max|W_{ji}|$ and $n_1$. Therefore
+$$r_j(mu) \;=\; \pm\,\frac{|v_j|\,Q_j(u)\,P_j(u)^m}{\prod_{i:u_i\ne0}(m|u_i|)!}\,\big(1+O(1/m)\big).$$
+The denominator does not depend on $j$. This is the point: the entire $j$-dependence sits in
+$|v_j|Q_j(u)P_j(u)^m$, so comparing terms needs no control of the factorials. By (G2), $P_j(u) =
+P_{j'}(u)$ would force $u \perp (\log|W_{ji}|-\log|W_{j'i}|)_i$, impossible for $u \ne 0$; hence
+$j^\star$ is unique and $\gamma(u) > 1$ strictly. The other $n_2-1$ terms are therefore smaller by
+$O(\gamma(u)^{-m})$ relative to the leading one. By (G3) both $|\sin c_{j^\star}|$ and
+$|\cos c_{j^\star}|$ are nonzero, so whichever the parity selects is bounded below by a positive
+constant independent of $m$, and no cancellation can occur in the leading term. This is the display.
+Taking logarithms and applying Stirling coordinatewise,
+$$\log\!\!\prod_{i:u_i\ne0}\!(m|u_i|)! \;=\; \sum_{i}\Big[m|u_i|\log(m|u_i|) - m|u_i| +
+\tfrac12\log(2\pi m|u_i|)\Big] + O(1/m) \;=\; |u|_1\,m\log m + O(m),$$
+while $m\log P_{j^\star}(u)$ and the constants are $O(m)$ and $O(1)$. Dividing by $m\log m$ gives
+$\rho(u) = |u|_1$ with error $O(1/\log m)$. $\square$
+
+*Verified numerically at 220-digit precision, testing the constant and not merely the exponent. The
+ratio of $|T(mu)|$ to the predicted right-hand side tends to $1$ along every direction tested, and
+the two error terms separate cleanly: for $u = (1,1,1)$, where $\gamma = 1.0035$, the deviation falls
+$0.326 \to 0.0018$ across $m = 64 \dots 2400$ in step with $\gamma^{-m}$, while for $u = (1,1,0)$,
+where $\gamma = 1.043$, the $\gamma^{-m}$ term is spent by $m \approx 150$ and the residual then
+reads $0.0052, 0.0026, 0.0013$ at $m = 600, 1200, 2400$, halving as $m$ doubles exactly as the
+$O(1/m)$ of Lemma 1 requires.*
+
+**The limit is pointwise in $u$ and is not uniform.** $\gamma(u)$ may come arbitrarily close to $1$
+as $u$ ranges over the lattice, and then the approach to the limit is arbitrarily slow: the measured
+$\gamma = 1.0035$ direction needs $m \gtrsim 1/\log\gamma \approx 288$ before the subdominant term
+decays at all, and at $m = 64$ it is still at $80\%$ of full strength. Section 6 quantifies over each
+frequency separately and so needs only the pointwise statement, but any argument wanting a rate
+uniform over $u$ does not have one here. Convergence of $\rho$ itself is $O(1/\log m)$, which is
+brutally slow: the raw quotient for $u = (1,1,1)$ reads $2.37, 2.43, 2.49, 2.53$ at
+$m = 300 \dots 2400$ against a target of $3$. Estimating $\rho$ numerically requires fitting the
+$O(m)$ term rather than waiting it out.
 
 **Sharpness.** (G2) is not cosmetic. Take $W_2 = -W_1$ and $v_2 = -v_1$: then
 $T(mu) = v_1 \prod_i J_{mu_i}(W_{1i})(1 - (-1)^{m|u|_1})$, identically zero for even $|u|_1$.
-Measured: $\rho = 0$ on direction $(1,1,0)$. This stratum is exactly what (G2) excludes.
+Measured: $\rho = 0$ on direction $(1,1,0)$. This is exactly the stratum where $\gamma(u) = 1$ and
+$j^\star$ fails to be unique.
 
 ## 6. Layer 1 is pinned up to its group
 
@@ -152,15 +196,20 @@ $D_\infty \wr S_{n_1}$; §8 pins layer 2 up to $D_\infty \wr S_{n_2}$. $\square$
 
 ## 10. What is not yet rigorous
 
-One step is sketched rather than proved. **Proposition 1 needs the $o(1)$ made uniform.** The
-argument treats each $j$'s asymptotic separately and then takes the dominant term; making that a
-proof requires an explicit error bound on $J_k(x) - (x/2)^k/k!$ uniform over the relevant range of
-$k$, and a quantitative gap $P_{j^\star}(u)/P_{j^{\star\star}}(u)$ to absorb the subdominant terms.
-Both look routine and neither is written.
+Proposition 1 is now proved rather than sketched: Lemma 1 supplies the explicit Bessel error bound,
+the $j$-independence of the factorials removes the need to control them when comparing terms, and
+(G2) supplies the strict dominance gap. Closing it turned up one condition the earlier draft had
+silently assumed, **(G6)**, without which a coordinate outside the support of $u$ annihilates a term
+for every $m$ simultaneously.
 
-Two smaller gaps. The $n_1 \le 2$ and $n_2 = 1$ cases fall outside Kruskal and are excluded by
+What the repair does not give is uniformity in $u$, and that appears to be a fact about the problem
+rather than a defect of the argument, since $\gamma(u)$ genuinely approaches $1$ along some
+directions. Section 6 does not need uniformity. A quantitative or effective version of this theorem
+would.
+
+Two smaller gaps remain. The $n_1 \le 2$ and $n_2 = 1$ cases fall outside Kruskal and are excluded by
 hypothesis rather than handled. And §8 asserts that the shifted odd grid recovers $v_j\cos c_j$ by
-the same route; that is stated, not carried out.
+the same route as the even grid; that is stated, not carried out.
 
 Any claimed proof of this statement should be checked by someone other than its author. The route
 was found and the numerics were run by the same agent, and neither of those is a referee.
