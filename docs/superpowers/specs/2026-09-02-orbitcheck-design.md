@@ -75,6 +75,18 @@ at its boundary. A model with structured input is wrapped by the caller in a few
 is how a user tests their model against a deliberately weaker group to see what that would have
 missed.
 
+`magnitudes` is the sweep axis and each group interprets it in its own units, so the sweep means the
+same thing everywhere even though the number does not:
+
+| group | magnitude means | a sweep looks like |
+|---|---|---|
+| sine | bound on the integer winding of the phase shift | `(1, 3, 10, 40)` |
+| relu | bound on the log of the positive scale factor | `(0.1, 1.0, 3.0)` |
+| odd | no continuous magnitude; sign and permutation are discrete | a single point, sampled repeatedly |
+
+A group declares its own default sweep, so `certify()` without `magnitudes` does the right thing per
+family and the argument exists for users who want to push further.
+
 ## Modules
 
 Each unit has one purpose and a boundary that can be tested without its internals.
