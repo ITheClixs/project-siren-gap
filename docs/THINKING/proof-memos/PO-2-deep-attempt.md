@@ -77,3 +77,78 @@ S4e falsification hunt (production L=2 nets); Bessel rank numeric check (microco
 if needed later: synthetic L=2 identifiability probe — fit two-layer nets to functions realized
 by known two-layer teachers, align, and measure recovery rate (candidate E-track study, logged in
 OPEN_PROBLEMS #1).
+
+---
+
+# Addendum, 2026-09-02: one lemma closed, one dissolved, and a new obstacle named
+
+## (B) Truncation control is not needed for the theorem
+
+The memo lists truncation control as an open lemma: "identifying CP factors from finitely many
+observed coefficients with an infinite tail." That framing is algorithmic, and identifiability is
+not an estimation problem.
+
+If $f_\theta = f_{\theta'}$ then *every* Fourier-Bohr coefficient agrees, exactly. We hold the whole
+infinite tensor, not a truncation of it, and we are therefore free to *choose* a finite sub-block on
+which to run a uniqueness argument. The values on that block carry no error and there is no tail to
+control. Restricting $k_i$ to $\{0,\dots,K\}$ leaves both networks' rank-$n_2$ CP decompositions
+intact, so a uniqueness theorem on the block transfers to the factors.
+
+The lemma is not open. It is unnecessary. What it was really guarding against, noise-robust recovery
+through a near-singular Bessel system, matters only for a constructive algorithm.
+
+## (A) The Bessel-Vandermonde rank lemma is closed
+
+The argument sketched in the memo is complete once stated carefully. $\det[J_k(x_j)]_{k=0..n-1}$ is
+real-analytic on $(0,\infty)^n$. Substituting $x_j = \varepsilon t_j$ and using
+$J_k(x) = (x/2)^k/k!\,(1+O(x^2))$,
+$$\det[J_k(\varepsilon t_j)] \;=\; \varepsilon^{n(n-1)/2}\Big(\prod_{k<n}\tfrac{1}{k!\,2^k}\Big)
+\prod_{a<b}(t_b - t_a)\;\big(1 + O(\varepsilon^2)\big),$$
+which is nonzero for distinct $t_j$. So the determinant is not identically zero; its zero set is a
+proper analytic subset, of Lebesgue measure zero, and full column rank is generic. That is exactly
+the "off a proper analytic subset" the theorem statement asks for, so the memo's worry about
+intersecting with the network's parameter measure dissolves: any measure absolutely continuous with
+respect to Lebesgue gives the exceptional set zero mass.
+
+Numerically confirmed: the ratio of the determinant to the predicted leading term converges to
+$1.0000$ at $\varepsilon = 10^{-2}$ and $10^{-3}$ for $n = 2,3,4,5$.
+
+## Uniqueness scope
+
+With every factor matrix at full column rank, $k$-rank $= n_2$ and Kruskal's condition
+$n_1 n_2 \ge 2n_2 + (n_1 - 1)$ holds **for $n_1 \ge 3$ and $n_2 \ge 2$**. Production networks at
+$n_1 = n_2 = 32$ are far inside it. It fails only at $n_1 \le 2$ or $n_2 = 1$, which must be excluded
+or handled separately. Kruskal is conservative here: with full column rank in several modes, milder
+uniqueness results apply.
+
+## The ill-conditioning is not an obstacle to the theorem, and it does bound the numerics
+
+Smallest singular-value ratios of the factor matrices, 500 draws each: $10^{-4}$ at $n_2 = 2$,
+$10^{-7}$ at $4$, $10^{-13}$ at $8$, $10^{-27}$ at $16$, $10^{-57}$ at $32$. A nonzero determinant is
+a nonzero determinant in exact arithmetic, so this does not touch the proof. It does mean **float64
+cannot verify the rank claim beyond $n_2 \approx 8$**, and the numerics above should not be read as
+support at production width.
+
+## The remaining obstacle, and it is subtler than this memo recorded
+
+What is left is the memo's item 1, layer-1 peeling and spectral folding, listed there as "believed
+sound, drafted, not verified." It is harder than that suggests, for a reason not previously noted.
+
+For generic $v$ the $a_i$ are rationally independent, so the frequency module $\Lambda$ is free of
+rank $n_1$. But **a free module does not determine its basis**: any unimodular transformation gives
+another generating set. Recovering the $a_i$ therefore needs more than $\Lambda$ itself. The
+plausible route is the coefficient decay: $J_k(x) \sim (x/2)^{|k|}/|k|!$ falls super-exponentially in
+order, so the $a_i$ should be distinguished as the frequencies carrying the largest coefficients at
+$|k|_1 = 1$. Making that an argument requires a quantitative separation between order-one and
+higher-order coefficients that holds uniformly on the generic stratum, and large $W_{ji}$ works
+against it.
+
+That is now the critical path, and the honest estimate is that it is the substance of the conjecture
+rather than bookkeeping around it.
+
+## Status
+
+Two open lemmas at the last writing; one closed, one shown unnecessary, one new obstacle named and
+sharpened. The conjecture is not proved. It is closer, and what remains is now a single, precisely
+stated question about recovering a distinguished basis of the frequency module from coefficient
+decay.
