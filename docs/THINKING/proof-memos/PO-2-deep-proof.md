@@ -234,15 +234,67 @@ The residual freedoms are therefore: a per-neuron sign on the rows of $W$, the s
 $c_j \mapsto c_j + \pi$ with $v_j \mapsto -v_j$, and a permutation of $j$. That is
 $D_\infty \wr S_{n_2}$.
 
+### Small widths, where Kruskal does not apply
+
+Two cases sit outside the argument above. At $n_2 = 1$ Kruskal's condition reads
+$n_1 \ge 2 + (n_1-1)$, which is false. At $n_1 \le 2$ the tensor has at most two modes and CP is a
+matrix factorisation, non-unique for any rank. Neither case is actually undetermined; both need a
+different tool, and one tool covers both.
+
+**Lemma 3 (scale-free extraction).** Let $s_\kappa = \sum_j \alpha_j J_{2\kappa}(x_j)$ with all
+$\alpha_j \ne 0$ and the $|x_j|$ distinct. Then
+$$\max_j |x_j| \;=\; 2\lim_{\kappa\to\infty}\big(|s_\kappa|\,(2\kappa)!\big)^{1/(2\kappa)},
+\qquad \alpha_{j^\star} \;=\; \lim_{\kappa\to\infty}\frac{s_\kappa}{J_{2\kappa}(x_{j^\star})}.$$
+*Proof.* By Lemma 1, $s_\kappa(2\kappa)! = \sum_j \alpha_j (x_j/2)^{2\kappa}(1+E_{2\kappa}(x_j))$ with
+each $E \to 0$. The term of largest $|x_j|$ dominates strictly, so the sum is
+$\alpha_{j^\star}(x_{j^\star}/2)^{2\kappa}(1+o(1))$. Taking $2\kappa$-th roots and using
+$|\alpha_{j^\star}|^{1/(2\kappa)} \to 1$ gives the first claim; dividing by
+$J_{2\kappa}(x_{j^\star})$ gives the second. $\square$
+
+The point of the first limit is that it is insensitive to $\alpha_{j^\star}$, so the argument of a
+Bessel factor can be read off before its coefficient is known. Together the two limits give a peeling
+step: extract $|x_{j^\star}|$ and $\alpha_{j^\star}$, subtract that term, recurse. The remaining
+$|x_j|$ stay distinct, so the step repeats and the sequence is identically zero after $n_2$ rounds.
+
+**$n_1 = 1$.** Here $\operatorname{Im}B(2\kappa) = \sum_j \lambda_j J_{2\kappa}(W_{j1})$ is exactly
+Lemma 3's form, with $\lambda_j \ne 0$ by (G3) and (G5) and the $|W_{j1}|$ distinct by (G4). Peeling
+returns every $(|W_{j1}|, \lambda_j)$, the odd grid returns $\mu_j$, and §8 concludes unchanged.
+
+**$n_1 = 2$, and in fact any $n_1$.** Fix $\kappa_2$ and peel in $\kappa_1$. For each fixed $\kappa_2$
+the coefficient attached to the term of a given $|W_{j1}|$ is $\lambda_j J_{2\kappa_2}(W_{j2})$, so
+mode 1 supplies a label that persists across all $\kappa_2$, and applying the first limit again in
+$\kappa_2$ within each label returns $|W_{j2}|$. This is the same observation that removed the
+matching problem from the odd grid: a label established once is reused rather than rediscovered.
+Iterating over coordinates handles any $n_1$, so Kruskal is a convenience rather than a necessity;
+it is kept for $n_1 \ge 3$ because it is shorter and needs no limits.
+
+**$n_2 = 1$.** The sum has a single term, so no peeling is needed: the first limit of Lemma 3 returns
+$|W_{1i}|$ coordinate by coordinate, and $\lambda_1 = \operatorname{Im}B(0)/\prod_i J_0(W_{1i})$ with
+the denominator nonzero by (G6). Rank-one tensors are unique up to scaling by inspection. Note also
+that (G2) is vacuous when $n_2 = 1$, and Proposition 1 holds trivially there because no competing $j$
+exists, so $\gamma = \infty$.
+
+*Verified numerically. The extraction primitive recovers $|x|$ for coefficients $1$ and $-37.5$, and
+its error at $K = 160$ is $0.0080$ against the predicted $x\log|\alpha|/(2K) = 0.0079$, confirming the
+$O(1/\kappa)$ rate and its constant. On a three-term sum it returns $2.285, 2.297, 2.299$ at
+$K = 20, 80, 320$ against $\max_j|W_j| = 2.3$, and the coefficient limit is correct to ten digits by
+$K = 80$. One peeling step then yields $1.4056, 1.40140, 1.40056$ at $K = 80, 320, 800$ against
+$1.4$. That last check needs care: the peeled term is smaller than the leading one by
+$(1.4/2.3)^{2K}$, about $10^{-138}$ at $K = 320$, so at 120 digits the subtraction returns exactly
+zero. Raising the precision restores the limit, each level buying one further $K$, which identifies
+the collapse as cancellation rather than a failure of the limit. For $n_1 = 2$ the per-label mode-2
+extraction gives $1.8997, 2.6011, 1.0994$ against $1.9, 2.6, 1.1$.*
+
 ## 9. Theorem
 
 **Theorem.** Let $\theta, \theta' \in \Theta^{(2)}_{\mathrm{gen}}$ be two-hidden-layer sine networks
-with $n_1, n_1' \ge 3$ and $n_2, n_2' \ge 2$. If $f_\theta = f_{\theta'}$ on a nonempty open set,
+of any widths $n_1, n_2, n_1', n_2' \ge 1$. If $f_\theta = f_{\theta'}$ on a nonempty open set,
 then $n_1 = n_1'$, $n_2 = n_2'$, and $\theta' = g\theta$ for some
 $g \in (D_\infty \wr S_{n_1}) \times (D_\infty \wr S_{n_2})$.
 
 *Proof.* Analytic continuation extends the equality to $\mathbb{R}^m$. §6 and §7 pin layer 1 up to
-$D_\infty \wr S_{n_1}$; §8 pins layer 2 up to $D_\infty \wr S_{n_2}$. $\square$
+$D_\infty \wr S_{n_1}$ for every $n_1 \ge 1$; §8 pins layer 2 up to $D_\infty \wr S_{n_2}$, by
+Kruskal when $n_1 \ge 3$ and $n_2 \ge 2$ and by peeling otherwise. $\square$
 
 ## 10. What is not yet rigorous
 
@@ -257,8 +309,12 @@ rather than a defect of the argument, since $\gamma(u)$ genuinely approaches $1$
 directions. Section 6 does not need uniformity. A quantitative or effective version of this theorem
 would.
 
-One smaller gap remains: the $n_1 \le 2$ and $n_2 = 1$ cases fall outside Kruskal and are excluded by
-hypothesis rather than handled.
+The small-width cases are now handled rather than excluded, so the theorem holds at every width.
+Kruskal fails at $n_2 = 1$ and at $n_1 \le 2$ for structural reasons, not because those cases are
+undetermined, and Lemma 3 covers both: reading a Bessel argument off a sequence by a limit that is
+insensitive to its coefficient. That the same lemma also handles general $n_1$ makes Kruskal optional
+throughout, which is worth knowing, since Kruskal is the one step of §8 whose hypotheses are hardest
+to check.
 
 The odd grid of §8 is now carried out rather than asserted. Doing so needed an odd-order analogue of
 the Bessel rank lemma, and it showed that the natural route, a second CP decomposition, is the wrong
