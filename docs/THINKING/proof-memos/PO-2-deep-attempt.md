@@ -152,3 +152,64 @@ Two open lemmas at the last writing; one closed, one shown unnecessary, one new 
 sharpened. The conjecture is not proved. It is closer, and what remains is now a single, precisely
 stated question about recovering a distinguished basis of the frequency module from coefficient
 decay.
+
+---
+
+# Addendum 2, 2026-09-02: the peeling obstacle has a route, and the exceptional stratum is explicit
+
+The obstacle named in addendum 1 was that a free module does not determine its basis, so the
+frequency module alone cannot recover the $a_i$. The route below removes the need to identify them
+by magnitude at all.
+
+## Decay recovers the norm, not the basis
+
+For a primitive $u \in \mathbb{Z}^{n_1}$ define
+$$\rho(u) \;=\; \lim_{m\to\infty} \frac{-\log|T(mu)|}{m \log m}.$$
+Since $T(mu) = \sum_j \lambda_j \prod_i J_{m u_i}(W_{ji}) e^{ic_j}$ and
+$J_k(x) \sim (x/2)^k/k!$, the $j$ with the largest $\prod_i |W_{ji}|^{u_i}$ dominates and Stirling
+gives $-\log|T(mu)| = |u|_1\, m\log m + O(m)$. Hence
+$$\boxed{\rho(u) = |u|_1.}$$
+
+The point is that $\rho$ is defined without reference to any basis. It is a function on the module
+itself, and it reconstructs the $\ell^1$ norm that the true basis induces.
+
+**Consequence.** Let $\theta, \theta'$ realize the same $f$. Their frequency modules coincide, so
+$a' = Ua$ for some $U \in GL(n_1,\mathbb{Z})$. Both expansions are product-Bessel, so both induce the
+same $\rho$, so $U$ preserves the $\ell^1$ norm on $\mathbb{Z}^{n_1}$. The linear $\ell^1$
+isometries of $\mathbb{Z}^n$ are exactly the signed permutation matrices. Therefore $U$ is a signed
+permutation, which is precisely the layer-1 symmetry the theorem asserts.
+
+## Numerical status
+
+Fitting $-\log|T(mu)| = \rho\, m\log m + \beta m + \gamma$ over $m = 10..60$ at 200-digit precision:
+$\rho$ matches $|u|_1$ to a worst deviation of $0.052$ over ten directions with $|u|_1$ from 1 to 6,
+and to $0.057$ over random parameter draws at $n_2 \in \{2,3,4\}$. The residual shrinks with $|u|_1$
+in the way a remaining $\log\log$ correction predicts.
+
+## The exceptional stratum, found by trying to break it
+
+Take $W_2 = -W_1$ and $\lambda_2 = -\lambda_1$. Because $J_k(-x) = (-1)^k J_k(x)$,
+$$T(mu) \;=\; \lambda_1 \prod_i J_{m u_i}(W_{1i})\,\big(1 - (-1)^{m|u|_1}\big),$$
+identically zero whenever $|u|_1$ is even. Measured: $\rho = 0$ on direction $(1,1,0)$, while the
+odd directions are unaffected. So the non-cancellation hypothesis is not cosmetic, and the stratum
+it must exclude is explicit and algebraic: sign-tied neuron pairs with opposite readout. It is
+codimension at least one, hence measure zero, hence compatible with an "off a proper analytic
+subset" statement.
+
+## Where the conjecture now stands
+
+Every major obstacle has a route:
+
+| step | status |
+|---|---|
+| Jacobi-Anger reduction to a Bessel CP tensor | verified numerically to $6\times10^{-13}$ relative |
+| truncation control | not needed; identifiability has exact data |
+| Bessel-Vandermonde generic rank | closed by the small-argument expansion |
+| CP uniqueness | Kruskal, for $n_1 \ge 3$, $n_2 \ge 2$ |
+| layer-1 peeling | route above: decay recovers $\ell^1$, isometries are signed permutations |
+
+**This is a proof sketch, not a proof.** What is missing is rigour rather than ideas: the
+asymptotic for $\rho$ needs a statement with uniform control and a proof that the limit exists on
+the generic stratum, the dominance argument needs the tie cases handled rather than observed, and
+recovery of the biases $b_i$ once the $a_i$ are pinned has not been written. Those are a real piece
+of work, but they are the kind of work that finishes, which is not what could be said a day ago.
