@@ -1,6 +1,7 @@
 # PO-2 deep case: a proof of generic identifiability at $L = 2$
 
-Status: complete argument, one step sketched rather than proved (§7, uniformity of the asymptotic).
+Status: complete argument. The asymptotic of §5 is pointwise in $u$ and not uniform, which §6 does
+not need; see §10. Four corrections to an earlier draft are recorded in §10.
 Supersedes the roadmap in `PO-2-deep-attempt.md`; that memo's two open lemmas are resolved there.
 
 ## 1. Setting
@@ -23,10 +24,15 @@ Let $\Theta^{(2)}_{\mathrm{gen}}$ be the parameters satisfying:
 - **(G4)** for each $i$, the $|W_{ji}|$ are distinct across $j$.
 - **(G5)** $v_j \ne 0$ and $W_{ji} \ne 0$ for all $i,j$.
 - **(G6)** $J_0(W_{ji}) \ne 0$ for all $i,j$, i.e. no $W_{ji}$ is a zero of $J_0$.
+- **(G7)** $\operatorname{Re}B(e_i) \ne 0$ for every $i$, with $B$ the coefficient defined in §3.
 
 Each condition fails on a countable union of proper analytic subsets, so
-$\Theta^{(2)}_{\mathrm{gen}}$ has full measure. (G1) is inherited from the $L=1$ theorem; the rest
-are new and each is used exactly once below.
+$\Theta^{(2)}_{\mathrm{gen}}$ has full measure. For (G7) this holds because
+$$\operatorname{Re}B(e_i) \;=\; \sum_j v_j \cos c_j\, J_1(W_{ji}) \prod_{i' \ne i} J_0(W_{ji'})$$
+is real-analytic in the parameters and not identically zero: at $n_2 = 1$, $v_1 = 1$, $c_1 = 0$ it
+reduces to $J_1(W_{1i})\prod_{i'\ne i}J_0(W_{1i'})$, which is nonzero for suitable $W$. (G1) is
+inherited from the $L=1$ theorem; the rest are new. (G3) is used twice, in §5 and again in §8; the
+others are used once each.
 
 ## 3. Expansion
 
@@ -81,11 +87,14 @@ three digits at $k = 1000$.*
 Fix a primitive $u$ and set, for each $j$,
 $$P_j(u) = \prod_{i:u_i\ne0}\big|W_{ji}/2\big|^{|u_i|}, \qquad
 Q_j(u) = \prod_{i:u_i=0}\big|J_0(W_{ji})\big|,$$
-$s_j = \sin c_j$ or $\cos c_j$ according to the parity of $\sum_i k_i$, and let $j^\star$ maximise
-$P_j(u)$ with $\gamma(u) = P_{j^\star}(u)/P_{j^{\star\star}}(u)$ the ratio to the runner-up.
+$s^{(m)}_j = \sin c_j$ or $\cos c_j$ according to the parity of $\sum_i(mu)_i = m\sum_i u_i$, and
+let $j^\star$ maximise $P_j(u)$ with $\gamma(u) = P_{j^\star}(u)/P_{j^{\star\star}}(u)$ the ratio to
+the runner-up. The superscript is not decoration: when $\sum_i u_i$ is odd the parity alternates
+with $m$, so $s^{(m)}_j$ swaps between $\sin c_j$ and $\cos c_j$ along the ray. The index $j^\star$
+does not move, since $P_j(u)$ is parity-free.
 
 **Proposition 1.** For each fixed primitive $u$, on $\Theta^{(2)}_{\mathrm{gen}}$,
-$$|T(mu)| \;=\; \frac{|v_{j^\star}|\,Q_{j^\star}(u)\,|s_{j^\star}|\;P_{j^\star}(u)^{m}}
+$$|T(mu)| \;=\; \frac{|v_{j^\star}|\,Q_{j^\star}(u)\,\big|s^{(m)}_{j^\star}\big|\;P_{j^\star}(u)^{m}}
 {\prod_{i:u_i\ne0}\big(m|u_i|\big)!}\;\Big(1 + O(m^{-1}) + O\big(\gamma(u)^{-m}\big)\Big),$$
 hence $-\log|T(mu)| = |u|_1\,m\log m + O(m)$ and $\rho(u) = |u|_1$.
 
@@ -149,8 +158,15 @@ generator, which is what the theorem asserts for that layer.
 ## 7. Biases
 
 With $\sum_i k_i = 1$ odd, §4 gives $T(e_i) = e^{i(b_i - \pi/2)}\operatorname{Re}B(e_i)$ with
-$\operatorname{Re}B(e_i)$ real and, by (G3) and (G5), nonzero. Hence $\arg T(e_i)$ determines $b_i$
-**modulo $\pi$** and no better. That is precisely the $\rho$ generator's ambiguity
+$\operatorname{Re}B(e_i)$ real and nonzero by **(G7)**. Hence $\arg T(e_i)$ determines $b_i$
+**modulo $\pi$** and no better.
+
+(G7) cannot be dropped in favour of (G3) and (G5). Those two make every *summand* of
+$\operatorname{Re}B(e_i) = \sum_j v_j\cos c_j\,J_1(W_{ji})\prod_{i'\ne i}J_0(W_{ji'})$ nonzero, which
+is not the same as making the sum nonzero: the expression is a linear functional of $v$, and (G5)
+constrains $v$ only to have nonvanishing entries, which does not keep it out of that functional's
+kernel. For $n_2 \ge 2$ the kernel meets the region cut out by (G1)-(G6), and a parameter there has
+$T(e_i) = 0$, leaving $\arg T(e_i)$ undefined and $b_i$ unrecovered. Hence the separate condition. That is precisely the $\rho$ generator's ambiguity
 $b \mapsto b + \pi$, so layer 1 is now pinned exactly up to $D_\infty \wr S_{n_1}$.
 
 ## 8. Layer 2 by CP uniqueness on the even sublattice
@@ -175,27 +191,54 @@ real-analytic and not identically zero, so its zero set is a proper analytic sub
 By (G4) the hypothesis holds. *Verified numerically: full column rank in 300/300 draws at
 $n_2 = 2,\dots,5$.*
 
-Full column rank gives $k\text{-rank} = n_2$ in every mode, so Kruskal's condition
-$n_1 n_2 \ge 2n_2 + (n_1 - 1)$ holds whenever $n_1 \ge 3$ and $n_2 \ge 2$, and the CP decomposition
-is unique up to permutation and scaling of the columns. Therefore $n_2 = n_2'$ and, after
+Full column rank gives $k\text{-rank} = n_2$ in every mode, so the uniqueness condition
+$\sum_{i=1}^{n_1} k\text{-rank}_i \ge 2n_2 + (n_1 - 1)$, that is $n_1 n_2 \ge 2n_2 + (n_1-1)$,
+holds whenever $n_1 \ge 3$ and $n_2 \ge 2$; equivalently $n_2(n_1-2) \ge n_1-1$, which is tight at
+$(n_1,n_2) = (3,2)$. This is Kruskal's theorem [Kruskal 1977] when $n_1 = 3$ and its $N$-way
+extension [Sidiropoulos and Bro 2000] when $n_1 > 3$; the memo says "Kruskal" throughout for both.
+The CP decomposition is then unique up to permutation and scaling of the columns. Therefore $n_2 = n_2'$ and, after
 permutation, the factor vectors match: $\big(J_{2\kappa}(W_{ji})\big)_\kappa =
 \big(J_{2\kappa}(W'_{ji})\big)_\kappa$ for each $i$.
 
-Since $\sum_k J_k(x)e^{ik\phi} = e^{ix\sin\phi}$, the full Bessel vector determines $x$, and
-$J_{2\kappa}(-x) = J_{2\kappa}(x)$ leaves exactly the sign of $W_{ji}$ undetermined. So the even grid
-delivers $n_2$ and the matrix $W$ up to a per-row sign and a permutation of $j$.
+CP determines each factor vector only up to a column scaling, so what is read off it must be
+insensitive to that scaling. Lemma 3 below supplies exactly this: applied to the mode-$i$ factor
+vector of column $j$, whose $\kappa$-th entry is a fixed nonzero multiple of $J_{2\kappa}(W_{ji})$,
+its first limit returns $|W_{ji}|$ and is unaffected by the multiple. The all-orders generating
+identity $\sum_k J_k(x)e^{ik\phi} = e^{ix\sin\phi}$ is *not* available here, since this grid supplies
+even orders only; the even-order identity
+$\cos(x\sin\phi) = J_0(x) + 2\sum_{\kappa\ge1}J_{2\kappa}(x)\cos(2\kappa\phi)$ would serve, through
+$-\partial^2_\phi$ at $\phi = 0$, but only once the scaling is fixed, so Lemma 3 is the shorter route.
+Either extraction runs $\kappa \to \infty$, which is legitimate because $T(k)$ is observable at every
+lattice point; the truncation $\kappa \le K$ is needed only by the rank lemmas, and any
+$K \ge n_2 - 1$ serves there.
 
-### The odd grid
+Since $J_{2\kappa}(-x) = J_{2\kappa}(x)$, no even grid sees the sign of any $W_{ji}$. The even grid
+therefore delivers $n_2$, a labelling of the $j$ up to permutation, the coefficients $\lambda_j$, and
+the magnitudes $|W_{ji}|$ for every pair, and nothing whatever about their signs.
+
+**The signs are not free, and one odd grid will not fix them.** Write
+$W_{ji} = \epsilon_{ji}|W_{ji}|$ with $\epsilon_{ji} \in \{\pm 1\}$. A *row* flip
+$\epsilon_{j\cdot} \mapsto -\epsilon_{j\cdot}$, taken with $c_j \mapsto -c_j$ and
+$v_j \mapsto -v_j$, is the $\sigma$ generator on layer-two neuron $j$ and preserves $f$. A flip of a
+*single* entry is not a group element and does change $f$. So the observables have to separate
+single-entry flips, and the $n_1 n_2$ signs must collapse to $n_2$ row signs. That does not follow
+from the even grid together with a single odd grid, and the shortfall is not marginal. On the grid
+with $k_1$ odd and $k_i$ even for $i \ge 2$, every $k_i$ with $i \ge 2$ is even, so flipping
+$\epsilon_{ji}$ for any $i \ge 2$ leaves that grid and the even grid pointwise unchanged while moving
+$f$. One odd grid per coordinate is needed, and suffices.
+
+### The odd grids
 
 The even grid never sees $\operatorname{Re}B$, so it cannot separate $v_j$ from $c_j$: it returns
-only the single combination $\lambda_j = v_j\sin c_j$. To get the second combination we need a grid
-on which $\sum_i k_i$ is *odd*, and which is still a product so that the Bessel structure survives.
-Shifting one coordinate suffices. Put
-$$k_1 \in \{1,3,\dots,2K+1\}, \qquad k_i \in \{0,2,\dots,2K\}\ (i \ge 2),$$
-so $\sum_i k_i$ is odd throughout. There
-$$\operatorname{Re}B(k) = \sum_j \mu_j \prod_i J_{k_i}(W_{ji}), \qquad \mu_j = v_j\cos c_j,$$
-with mode-$1$ factor matrix $[J_{2\kappa+1}(W_{j1})]$ and the same even-order matrices as before in
-modes $i \ge 2$. By (G3) again, now in the form $\cos c_j \ne 0$, every neuron is visible.
+only the combination $\lambda_j = v_j\sin c_j$. It is also sign-blind. One family of grids repairs
+both deficits. For each coordinate $i$ put
+$$G_i: \qquad k_i \in \{1,3,\dots,2K+1\}, \qquad k_{i'} \in \{0,2,\dots,2K\}\ \ (i' \ne i),$$
+so $\sum_l k_l$ is odd throughout $G_i$, each $G_i$ is still a product grid, and
+$\operatorname{Re}B$ is observable on it:
+$$\operatorname{Re}B(k) = \sum_j \mu_j \prod_l J_{k_l}(W_{jl}), \qquad \mu_j = v_j\cos c_j,$$
+with mode-$i$ factor matrix $[J_{2\kappa+1}(W_{ji})]$ and even-order matrices in the other modes. By
+(G3) again, now as $\cos c_j \ne 0$, together with (G5), every $\mu_j$ is nonzero, so every neuron is
+visible on every $G_i$.
 
 **Lemma (odd-order Bessel rank).** For $|x_j|$ distinct and nonzero,
 $\det[J_{2\kappa+1}(x_j)]_{\kappa,j} \ne 0$ generically. *Proof.* With $x_j = \varepsilon t_j$ and
@@ -209,26 +252,56 @@ full column rank in 300/300 draws at $n_2 = 2,3,4$ and 298/300 at $n_2 = 5$, whe
 at min singular ratio $5.5\times10^{-13}$, against a $10^{-12}$ threshold, so they are conditioning
 rather than rank.*
 
-**No second CP, and hence no matching problem.** Running an independent decomposition on the odd grid
+**No second CP, and hence no matching problem.** Running an independent decomposition on each $G_i$
 would return $\{\mu_j\}$ under its own permutation and its own column scalings, and those would then
 have to be matched against $\{\lambda_j\}$ before the two could be combined. That step is
-unnecessary. The even grid has already produced $W$, so every number $\prod_i J_{k_i}(W_{ji})$ is
-known, and each of $\lambda$ and $\mu$ is the solution of a square linear system
-$$\Big[\textstyle\prod_i J_{k_i}(W_{ji})\Big]_{k,j}\;\lambda \;=\; \big[T(k)\big]_k$$
-over any $n_2$ lattice points of the appropriate parity making the matrix invertible, which the two
-rank lemmas supply. Both systems are solved against the same $W$ and therefore against the same
-labelling of $j$, so $\lambda_j$ and $\mu_j$ refer to the same neuron by construction.
+unnecessary. The even grid has already produced the magnitudes $|W_{jl}|$ under a fixed labelling of
+$j$, and the parity of each order decides whether a sign matters at all: since
+$J_k(\epsilon x) = \epsilon^k J_k(x)$ for $\epsilon = \pm1$, on $G_i$ every even-order factor is
+sign-free and only $\epsilon_{ji}$ survives. Hence
+$$\operatorname{Re}B(k) \;=\; \sum_j \big(\mu_j\,\epsilon_{ji}\big)\, J_{k_i}\big(|W_{ji}|\big)
+\prod_{i' \ne i} J_{k_{i'}}\big(|W_{ji'}|\big), \qquad k \in G_i,$$
+a linear system whose coefficient matrix is built entirely from magnitudes already known. Solving it
+over any $n_2$ points of $G_i$ that make it invertible returns
+$$m^{(i)}_j \;=\; \mu_j\,\epsilon_{ji}.$$
+Invertibility holds because every mode matrix has full column rank, by the odd-order rank lemma in
+mode $i$ and the even-order lemma in the others, and the Khatri-Rao product of full-column-rank
+matrices has full column rank again. The same solve with all orders even and $\operatorname{Im}B$ in
+place of $\operatorname{Re}B$ returns $\lambda_j$, on which no sign appears. Every system is solved
+against the same magnitudes and therefore the same labelling of $j$, so no matching problem arises.
+
+**Signs, and what is left.** Since $\mu_j \ne 0$, the vector
+$\big(m^{(1)}_j, \dots, m^{(n_1)}_j\big) = \mu_j\big(\epsilon_{j1},\dots,\epsilon_{jn_1}\big)$ has
+every entry of the same magnitude $|\mu_j|$, so its sign pattern determines each product
+$$\epsilon_{ji}\,\epsilon_{ji'} \;=\; \operatorname{sign}\big(m^{(i)}_j\, m^{(i')}_j\big),$$
+and leaves exactly one sign per row undetermined, namely that of $\mu_j$ itself. Fixing the
+representative $\epsilon_{j1} = +1$ gives $\mu_j = m^{(1)}_j$ and pins every $W_{ji}$; the opposite
+choice is the row flip, which is the $\sigma$ generator on neuron $j$. The residual sign freedom is
+therefore $2^{n_2}$, one per layer-two neuron, rather than the $2^{n_1 n_2}$ the even grid alone
+leaves. This is the step a single odd grid does not reach.
 
 Then $(\mu_j, \lambda_j) = v_j(\cos c_j, \sin c_j)$, so
 $$|v_j| = \sqrt{\lambda_j^2 + \mu_j^2}, \qquad c_j = \operatorname{atan2}(\lambda_j, \mu_j) \bmod \pi,$$
-both well defined since $v_j \ne 0$ by (G5). What is not determined is the joint sign: $(v_j, c_j)$
-and $(-v_j, c_j + \pi)$ produce the same pair $(\mu_j, \lambda_j)$ and hence the same function. That
-is exactly the $\rho$ generator on layer two, not a deficiency of the argument.
+both well defined since $v_j \ne 0$ by (G5). Two freedoms remain, and both are group elements. The
+joint sign: $(v_j, c_j)$ and $(-v_j, c_j+\pi)$ produce the same pair $(\mu_j,\lambda_j)$ and hence
+the same function, which is the $\rho$ generator on layer two. And the row flip of the previous
+paragraph: it fixes $\lambda_j = v_j\sin c_j$ and negates $\mu_j = v_j\cos c_j$, sending
+$c_j \mapsto -c_j \bmod \pi$ and $v_j \mapsto -v_j$ alongside $W_{j\cdot} \mapsto -W_{j\cdot}$, which
+is the $\sigma$ generator. Neither is a deficiency of the argument.
 
-*Verified end to end: recovering $|v_j|$ and $c_j \bmod \pi$ from the two grids by the linear solves
-above, over eight random networks at $n_1 = n_2 = 3$ with $c_j$ drawn across the full range so the
-sign of $v_j$ genuinely varies, gives worst error $2.1\times10^{-13}$ in $|v_j|$ and
-$2.8\times10^{-12}$ in $c_j \bmod \pi$, measured with a circular distance.*
+*Verified end to end, and the test is built so that it would fail if the sign step were wrong.
+Coefficient matrices are assembled from the magnitudes $|W_{ji}|$ alone, never from the signed $W$,
+which is what the argument is entitled to use. Across fifteen configurations spanning
+$(n_1,n_2) \in \{(2,2),(3,2),(3,3),(4,3),(3,4)\}$ at three seeds each, the solves return
+$m^{(i)}_j = \mu_j\epsilon_{ji}$ to worst error $6.0\times10^{-15}$, and the reconstruction
+$(W,c,v)$ obtained by normalising $\epsilon_{j1} = +1$ reproduces $f$ on 200 random points to worst
+error $2.7\times10^{-15}$. Reconstructing the function, rather than comparing parameters, is the
+right check here precisely because the residual freedom is a group action.*
+
+*The corresponding check on the earlier two-grid version is what exposed the gap. Flipping the single
+entry $W_{ji}$ for any $i \ge 2$ moves $f$ by $3.4\times10^{-1}$ while changing the even grid and the
+$k_1$-shifted odd grid by exactly $0$; a $k_2$-shifted grid, which that version never formed, moves
+by $1.5\times10^{-1}$. The zeros are exact, not small.*
 
 The residual freedoms are therefore: a per-neuron sign on the rows of $W$, the shift
 $c_j \mapsto c_j + \pi$ with $v_j \mapsto -v_j$, and a permutation of $j$. That is
@@ -258,13 +331,15 @@ $|x_j|$ stay distinct, so the step repeats and the sequence is identically zero 
 
 **$n_1 = 1$.** Here $\operatorname{Im}B(2\kappa) = \sum_j \lambda_j J_{2\kappa}(W_{j1})$ is exactly
 Lemma 3's form, with $\lambda_j \ne 0$ by (G3) and (G5) and the $|W_{j1}|$ distinct by (G4). Peeling
-returns every $(|W_{j1}|, \lambda_j)$, the odd grid returns $\mu_j$, and §8 concludes unchanged.
+returns every $(|W_{j1}|, \lambda_j)$, the single odd grid $G_1$ returns $\mu_j$ and its sign, and
+§8 concludes unchanged; at $n_1 = 1$ there is only one coordinate, so one odd grid is the whole
+family and the row-sign collapse of §8 is automatic.
 
 **$n_1 = 2$, and in fact any $n_1$.** Fix $\kappa_2$ and peel in $\kappa_1$. For each fixed $\kappa_2$
 the coefficient attached to the term of a given $|W_{j1}|$ is $\lambda_j J_{2\kappa_2}(W_{j2})$, so
 mode 1 supplies a label that persists across all $\kappa_2$, and applying the first limit again in
 $\kappa_2$ within each label returns $|W_{j2}|$. This is the same observation that removed the
-matching problem from the odd grid: a label established once is reused rather than rediscovered.
+matching problem from the odd grids: a label established once is reused rather than rediscovered.
 Iterating over coordinates handles any $n_1$, so Kruskal is a convenience rather than a necessity;
 it is kept for $n_1 \ge 3$ because it is shorter and needs no limits.
 
@@ -285,6 +360,14 @@ zero. Raising the precision restores the limit, each level buying one further $K
 the collapse as cancellation rather than a failure of the limit. For $n_1 = 2$ the per-label mode-2
 extraction gives $1.8997, 2.6011, 1.0994$ against $1.9, 2.6, 1.1$.*
 
+**The sign step is common to both routes.** Everything in this subsection recovers *magnitudes*
+$|W_{ji}|$ and a labelling of $j$, whether by Kruskal or by peeling; neither route sees a sign,
+because both read only even-order Bessel values. The signs come from the family $\{G_i\}$ and the
+collapse of $\big(m^{(i)}_j\big)_i = \mu_j\big(\epsilon_{ji}\big)_i$ to one sign per row, exactly as
+above, and that argument uses only the magnitudes and the linear solves. It is therefore independent
+of how the magnitudes were obtained and applies verbatim at every width, including $n_2 = 1$, where
+the single row leaves a single sign and the collapse is the whole of the layer-two $\sigma$ freedom.
+
 ## 9. Theorem
 
 **Theorem.** Let $\theta, \theta' \in \Theta^{(2)}_{\mathrm{gen}}$ be two-hidden-layer sine networks
@@ -302,7 +385,8 @@ Proposition 1 is now proved rather than sketched: Lemma 1 supplies the explicit 
 the $j$-independence of the factorials removes the need to control them when comparing terms, and
 (G2) supplies the strict dominance gap. Closing it turned up one condition the earlier draft had
 silently assumed, **(G6)**, without which a coordinate outside the support of $u$ annihilates a term
-for every $m$ simultaneously.
+for every $m$ simultaneously. A second such condition, **(G7)**, turned up later in §7 and is
+recorded with the other corrections below.
 
 What the repair does not give is uniformity in $u$, and that appears to be a fact about the problem
 rather than a defect of the argument, since $\gamma(u)$ genuinely approaches $1$ along some
@@ -316,11 +400,39 @@ insensitive to its coefficient. That the same lemma also handles general $n_1$ m
 throughout, which is worth knowing, since Kruskal is the one step of §8 whose hypotheses are hardest
 to check.
 
-The odd grid of §8 is now carried out rather than asserted. Doing so needed an odd-order analogue of
-the Bessel rank lemma, and it showed that the natural route, a second CP decomposition, is the wrong
-one: it would return the coefficients under an unrelated permutation and scaling, creating a matching
-problem that does not have to exist. Since the even grid already yields $W$, both coefficient
-vectors follow from linear solves on a shared labelling.
+The odd grids of §8 are now carried out rather than asserted. Doing so needed an odd-order analogue
+of the Bessel rank lemma, and it showed that the natural route, a second CP decomposition, is the
+wrong one: it would return the coefficients under an unrelated permutation and scaling, creating a
+matching problem that does not have to exist. Since the even grid already yields the magnitudes under
+a fixed labelling, every coefficient vector follows from a linear solve on that shared labelling.
 
-Any claimed proof of this statement should be checked by someone other than its author. The route
-was found and the numerics were run by the same agent, and neither of those is a referee.
+**Corrections made to an earlier draft of this memo.** Four are worth recording, because three of
+them were assertions that a reader could have taken on trust.
+
+1. That draft used a *single* odd grid and concluded that the even grid delivers $W$ "up to a per-row
+   sign". It does not. The even grid is blind to every sign, and a $k_1$-shifted odd grid recovers
+   only $\epsilon_{j1}$, leaving $2^{n_2(n_1-1)}$ of freedom that is not group freedom. One odd grid
+   per coordinate closes it, and the sign patterns then collapse to one sign per row.
+2. §7 derived the nonvanishing of $\operatorname{Re}B(e_i)$ from (G3) and (G5). Those make each
+   summand nonzero, not the sum; the expression is a linear functional of $v$ and its kernel meets
+   the region. Now **(G7)**.
+3. §8 invoked the all-orders identity $\sum_k J_k(x)e^{ik\phi} = e^{ix\sin\phi}$ on a grid supplying
+   even orders only, and did so before the CP column scaling had been fixed. Lemma 3's scale-free
+   limit is the correct instrument and was already in the memo.
+4. Proposition 1's $s_{j^\star}$ was written as a constant when it alternates with $m$ whenever
+   $\sum_i u_i$ is odd. The proof body was already correct; only the display was not.
+
+Any claimed proof of this statement should be checked by someone other than its author. The route was
+found, the numerics were run, and the four corrections above were found by the same agent, and none
+of those is a referee. The first correction in particular was a one-line assertion that survived
+until someone tested it, which is the specific failure mode this note exists to flag.
+
+## References
+
+- J. B. Kruskal. Three-way arrays: rank and uniqueness of trilinear decompositions.
+  *Linear Algebra and its Applications*, 18(2):95-138, 1977.
+- N. D. Sidiropoulos and R. Bro. On the uniqueness of multilinear decomposition of $N$-way arrays.
+  *Journal of Chemometrics*, 14(3):229-239, 2000.
+- G. N. Watson. *A Treatise on the Theory of Bessel Functions*. Cambridge University Press, 2nd
+  edition, 1944. (Jacobi-Anger, the even-order expansion of $\cos(x\sin\phi)$, and the ascending
+  series used in Lemma 1.)
