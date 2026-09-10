@@ -76,3 +76,37 @@ def test_converged_fit_is_deterministic() -> None:
     b = fit_batch(targets, coords, **kw)
     assert torch.equal(a.params.flat(), b.params.flat())
     assert torch.equal(a.stopped_at, b.stopped_at)
+
+
+def test_a_stopped_inr_does_not_move_afterwards() -> None:
+    """Finding 6 of the 2026-09-09 external review, as a regression test.
+
+    The stop masks the gradient and then calls ``opt.step()``. That is not immobilization: with
+    ``g = 0`` Adam still advances, since ``m <- beta1*m`` and ``v <- beta2*v`` decay but stay
+    nonzero and the bias corrections ``1 - beta1^t``, ``1 - beta2^t`` keep moving, so the update
+    ``-lr * mhat / (sqrt(vhat) + eps)`` is nonzero for many steps after the gradient vanishes.
+
+    The property that must hold: an INR detected as converged at step ``t`` has the parameters it
+    had entering step ``t``, whatever the total budget. Running to ``t`` and running well past it
+    must therefore agree bitwise on that INR. The pre-existing stopping test cannot see this,
+    because it checks that a stop was *recorded*, not that anything froze.
+    """
+    targets, coords = _problem(b=4)
+    long = fit_batch(targets, coords, widths=(16, 16), steps=400, lr=1e-3, seed=0, device="cpu",
+                     stop_grad_norm=1e-2)
+    assert long.stopped_at is not None
+    stops = [int(x) for x in long.stopped_at]
+    early = min(stops)
+    assert early < 400, f"no INR stopped, so this test proves nothing: {stops}"
+    i = stops.index(early)
+
+    # the same run truncated to the step that INR stopped on
+    short = fit_batch(targets, coords, widths=(16, 16), steps=early, lr=1e-3, seed=0,
+                      device="cpu", stop_grad_norm=1e-2)
+
+    a, b = long.params.flat()[i], short.params.flat()[i]
+    drift = float((a - b).abs().max())
+    assert torch.equal(a, b), (
+        f"INR {i} stopped at step {early} but kept moving for the remaining "
+        f"{400 - early} steps: max parameter drift {drift:.3e}"
+    )

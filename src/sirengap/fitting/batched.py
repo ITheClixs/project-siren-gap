@@ -163,6 +163,9 @@ def fit_batch(
     active = torch.ones(b_sz, device=device)          # 1 while an INR is still training
     stopped_at = (torch.full((b_sz,), steps, dtype=torch.long)
                   if stop_grad_norm is not None else None)
+    # parameter values of stopped INRs, captured at the step they stop on and restored after each
+    # optimizer step; rows of still-active INRs are never read.
+    frozen = ([q.detach().clone() for q in tensors] if stop_grad_norm is not None else None)
     for step in range(steps):
         if schedule == "cosine":
             end = lr if lr_final is None else lr_final
@@ -180,9 +183,14 @@ def fit_batch(
         per_inr = ((pred - t_step) ** 2).mean(dim=(1, 2))
         # sum (not mean): Adam on the sum is exactly independent per-INR Adam,
         # because per-INR losses share no parameters (protocol A.1 / T9)
-        # Freezing is applied to the gradient, not the loss: an INR that has met the tolerance
-        # contributes no update, and Adam's state for it stops advancing, so later steps cannot
-        # undo its convergence. Per-INR because convergence is per-INR.
+        # Freezing is applied to the gradient, not the loss, so a converged INR contributes no
+        # update. Masking the gradient is NOT on its own enough to immobilize it: with g = 0 Adam
+        # still moves, because m <- beta1*m and v <- beta2*v decay but stay nonzero while the bias
+        # corrections 1 - beta1^t and 1 - beta2^t keep changing, so -lr*mhat/(sqrt(vhat)+eps) is
+        # nonzero for many steps afterwards. Left alone that drifts a stopped INR by ~1e-1 over a
+        # few hundred steps. The parameters of a stopped INR are therefore snapshotted at the step
+        # it is detected on and written back after every opt.step(). Per-INR because convergence
+        # is per-INR.
         if stop_grad_norm is not None:
             (per_inr * active).sum().backward()
             with torch.no_grad():
@@ -193,12 +201,22 @@ def fit_batch(
                 if bool(newly.any()):
                     stopped_at[newly.cpu()] = step
                     active = active * (~newly).to(active.dtype)
+                    # the value entering this step is the converged one, so capture before
+                    # opt.step() runs
+                    for q, snap in zip(tensors, frozen, strict=True):
+                        snap[newly] = q.detach()[newly]
                 for q in tensors:
                     if q.grad is not None:
                         q.grad = q.grad * active.view(-1, *([1] * (q.grad.dim() - 1)))
         else:
             per_inr.sum().backward()
         opt.step()
+        if stop_grad_norm is not None:
+            done = active == 0
+            if bool(done.any()):
+                with torch.no_grad():
+                    for q, snap in zip(tensors, frozen, strict=True):
+                        q[done] = snap[done]
         if step % log_every == 0 or step == steps - 1:
             curve.append(float(per_inr.detach().mean().cpu()))
     # endpoint stationarity, on the full-batch loss regardless of how the fit was driven
