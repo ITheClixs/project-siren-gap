@@ -151,10 +151,11 @@ def table(rep: dict) -> str:
         r"permutations, W11b the full group but only because its input already is invariant, W12 "
         r"the full group on the raw parameters, and neither control anything. The two controls vary "
         r"one thing each against W12: W12u removes the layer grading and keeps the phasor "
-        r"coordinates, W12b keeps the grading and feeds it the raw bias. Their gaps to W12 "
-        r"are $+0.059$ and $+0.315$, against $+0.337$ from W11a to W12b, so within this "
-        r"skeleton the coordinates and the architecture contribute comparably and the "
-        r"layer-level grading contributes little. $\calign$ is listed for reference; it "
+        r"coordinates, W12b keeps the grading and feeds it the raw bias. With the fourth cell "
+        r"W12ub (no grading, raw bias, $s=0.557$), the $2\times2$ of Appendix~\ref{app:square} "
+        r"splits the step from W11a to W12 additively into $+0.291$ for the skeleton, $+0.301$ "
+        r"for the phasor coordinates and $+0.059$ for the grading, with interaction $+0.013$. "
+        r"$\calign$ is listed for reference; it "
         r"is a change of frame rather than a reader, and its column is the recovered share $f$ "
         r"of \eqref{eq:f} rather than the reference-normalized score $s$ of \eqref{eq:s}.}",
         r"\label{tab:w12}",
