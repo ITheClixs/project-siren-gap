@@ -1,6 +1,6 @@
-# How Much of the Weight-Space Perception Gap Is Symmetry?
+# SIREN-GAP
 
-### Evidence from Sine Networks
+### Research code: parameter symmetry and weight-space learning on sine-network INRs
 
  [pre-registrations](docs/prereg/) ·  [lab notebook](docs/LAB_NOTEBOOK.md) ·  [prediction ledger](docs/PREDICTION_OUTCOMES.csv) ·  [claims](docs/CLAIMS.md)
 

@@ -41,3 +41,4 @@ paper/paperB/
 paper/paperC/
 # Packages the manuscript, which is not tracked here.
 scripts/55_build_arxiv_package.sh
+paper/tmlr-anon/
