@@ -38,19 +38,21 @@ script, test, pre-registration and result behind the numbers below.
 
 3. **The group alone is enough to reproduce the gap.** Taking the shared-initialization corpus,
    keeping every network and its function fixed, and applying a random group element to each one
-   costs **79.1 of the 80.4 points**. A factorial experiment splits that damage across the four
-   kinds of change (Shapley values, MNIST):
+   costs **79.1 of the 80.4 points** on MNIST. A factorial experiment splits that damage across the
+   four kinds of change (Shapley values, in accuracy points):
 
-   | change | share of the damage (points) |
-   |---|---:|
-   | reordering neurons | 44.2 |
-   | sign flips | 29.9 |
-   | $\pi$ bias shifts | 4.3 |
-   | $2\pi$ bias windings | 0.4 |
+   | change | MNIST | FashionMNIST | CIFAR-10 |
+   |---|---:|---:|---:|
+   | reordering neurons | 44.2 | 39.1 | 10.3 |
+   | sign flips | 29.9 | 20.5 | 10.6 |
+   | $\pi$ bias shifts | 4.3 | 4.9 | 5.1 |
+   | $2\pi$ bias windings | 0.4 | 0.4 | 0.7 |
+   | total | 78.8 | 64.9 | 26.8 |
 
-   A scramble that *does* change the function (reordering first-layer neurons without rewiring the
-   next layer) costs only 1.1 points, so the damage comes from the group, not from any reordering.
-   Three independent random draws of the group agree to within 0.3 points.
+   Reordering and sign flips carry most of the damage everywhere. A scramble that *does* change the
+   function (reordering first-layer neurons without rewiring the next layer) costs only 0.7 to 2.0
+   points, so the damage comes from the group, not from any reordering. Independent random draws of
+   the group agree to within 0.7 points.
 
 4. **A reader that understands the group closes most of the gap.** Replacing each bias $b$ by
    $(\cos b, \sin b)$ turns the infinite group into a finite one that acts by sign changes, and a

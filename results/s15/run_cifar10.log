@@ -1,0 +1,23 @@
+=== S15 cifar10 Sun Sep 13 20:42:37 CEST 2026 ===
+baseline 44.29
+  pi                       acc  19.45  delta +24.84  gap 8.3e-07
+  tau                      acc  43.34  delta  +0.94  gap 8.4e-06
+  tau+pi                   acc  18.36  delta +25.93  gap 8.5e-06
+  rho                      acc  29.52  delta +14.76  gap 4.0e-06
+  rho+pi                   acc  17.77  delta +26.52  gap 3.9e-06
+  rho+tau                  acc  27.64  delta +16.65  gap 1.4e-05
+  rho+tau+pi               acc  16.98  delta +27.30  gap 1.0e-05
+  sigma                    acc  18.36  delta +25.93  gap 0.0e+00
+  sigma+pi                 acc  17.18  delta +27.11  gap 8.9e-07
+  sigma+tau                acc  17.28  delta +27.01  gap 7.6e-06
+  sigma+tau+pi             acc  17.06  delta +27.22  gap 1.0e-05
+  sigma+rho                acc  18.02  delta +26.27  gap 5.1e-06
+  sigma+rho+pi             acc  17.67  delta +26.62  gap 4.1e-06
+  sigma+rho+tau            acc  17.37  delta +26.92  gap 1.1e-05
+  sigma+rho+tau+pi         acc  17.51  delta +26.78  gap 8.9e-06
+  full_draw5678            acc  17.39  delta +26.90  gap 9.3e-06
+  full_draw9012            acc  16.83  delta +27.46  gap 9.8e-06
+  non_group_scramble       acc  42.24  delta  +2.04  gap 2.7e+00
+shapley: {'sigma': 10.64, 'rho': 5.12, 'tau': 0.74, 'pi': 10.27} sum 26.78
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s15/factorial_cifar10.json
+=== done Sun Sep 13 21:06:51 CEST 2026 ===

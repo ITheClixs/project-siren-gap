@@ -1,0 +1,23 @@
+=== S15 fashionmnist Sun Sep 13 20:02:48 CEST 2026 ===
+baseline 82.97
+  pi                       acc  26.83  delta +56.14  gap 7.7e-07
+  tau                      acc  82.74  delta  +0.23  gap 1.0e-05
+  tau+pi                   acc  26.12  delta +56.85  gap 8.9e-06
+  rho                      acc  72.47  delta +10.50  gap 4.1e-06
+  rho+pi                   acc  18.93  delta +64.04  gap 3.7e-06
+  rho+tau                  acc  71.12  delta +11.85  gap 1.0e-05
+  rho+tau+pi               acc  18.33  delta +64.63  gap 9.3e-06
+  sigma                    acc  41.31  delta +41.66  gap 0.0e+00
+  sigma+pi                 acc  18.89  delta +64.08  gap 7.7e-07
+  sigma+tau                acc  40.50  delta +42.46  gap 8.6e-06
+  sigma+tau+pi             acc  18.10  delta +64.87  gap 9.0e-06
+  sigma+rho                acc  40.71  delta +42.25  gap 4.5e-06
+  sigma+rho+pi             acc  18.44  delta +64.53  gap 3.4e-06
+  sigma+rho+tau            acc  41.48  delta +41.49  gap 9.3e-06
+  sigma+rho+tau+pi         acc  18.12  delta +64.85  gap 9.9e-06
+  full_draw5678            acc  18.16  delta +64.81  gap 1.0e-05
+  full_draw9012            acc  17.83  delta +65.14  gap 1.3e-05
+  non_group_scramble       acc  82.25  delta  +0.72  gap 2.5e+00
+shapley: {'sigma': 20.47, 'rho': 4.9, 'tau': 0.43, 'pi': 39.05} sum 64.85
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s15/factorial_fashionmnist.json
+=== done Sun Sep 13 20:42:37 CEST 2026 ===
