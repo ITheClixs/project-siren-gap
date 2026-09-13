@@ -115,3 +115,22 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-08-03,S9,P-S9-A probability f(W12) exceeds f(W11a),"P=0.85",NA,NA,1c74280c55a1a3f0
 2026-08-03,S9,P-S9-B probability f(W12) exceeds f(W11b),"P=0.45",NA,NA,1c74280c55a1a3f0
 2026-08-03,S9,P-S9-C probability f(W12) exceeds f(W5),"P=0.25",NA,NA,1c74280c55a1a3f0
+2026-09-13,S15,H-S15-1 Delta({pi}),65,45,80,8faf57c988b70a22
+2026-09-13,S15,H-S15-2 Delta({rho}),60,40,78,8faf57c988b70a22
+2026-09-13,S15,H-S15-3 Delta({tau}),25,5,55,8faf57c988b70a22
+2026-09-13,S15,H-S15-4 Shapley phi_sigma,27,15,40,8faf57c988b70a22
+2026-09-13,S15,H-S15-5 Shapley phi_pi,22,12,35,8faf57c988b70a22
+2026-09-13,S15,H-S15-6 Shapley phi_tau,10,2,25,8faf57c988b70a22
+2026-09-13,S15,H-S15-7 Delta(non-group scramble),70,50,82,8faf57c988b70a22
+2026-09-13,S15,P-S15-A probability the three full-cell draw replicates span less than 1.0 point,P=0.80,NA,NA,8faf57c988b70a22
+2026-09-13,S15,P-S15-B probability phi_sigma is the largest Shapley value,P=0.40,NA,NA,8faf57c988b70a22
+2026-09-13,S15,P-S15-C probability phi_tau < 5 points,P=0.35,NA,NA,8faf57c988b70a22
+2026-09-13,S16,"H-S16-1 D_16 (shared-det minus random, function access)",4.5,1.5,8.0,598a4437583cce1f
+2026-09-13,S16,H-S16-2 D_64,1.5,0.0,4.0,598a4437583cce1f
+2026-09-13,S16,H-S16-3 D_256,0.8,-0.5,2.5,598a4437583cce1f
+2026-09-13,S16,P-S16-A probability D_64 < D_16,P=0.80,NA,NA,598a4437583cce1f
+2026-09-13,S16,P-S16-B probability the 95% interval of D_64 lies below 7.8,P=0.85,NA,NA,598a4437583cce1f
+2026-09-13,S17,"H-S17-1 W1_k minus W1_0, each of draws 1 and 2",0.0,-2.0,2.0,85f3b6347f87449a
+2026-09-13,S17,"H-S17-2 f_k(W5), each of draws 1 and 2",0.50,0.38,0.62,85f3b6347f87449a
+2026-09-13,S17,"H-S17-3 Delta_k at B=0, each of draws 1 and 2",76,68,81,85f3b6347f87449a
+2026-09-13,S17,P-S17-A probability all three f_k(W5) lie within 0.08 of each other,P=0.70,NA,NA,85f3b6347f87449a
