@@ -499,8 +499,8 @@ def calibration_table() -> str:
 
 
 MD_LABEL = {
-    "W4": r"$c_\text{sort}$ — exact, template-free",
-    "W5": r"$c_\text{align}$ — exact, aligned to $\theta_0$",
+    "W4": r"$c_\text{sort}$, exact, template-free",
+    "W5": r"$c_\text{align}$, exact, aligned to $\theta_0$",
     "W10": r"exact $L{=}2$ invariants",
     "W7-1/8": r"*control:* $K$ corpus, rows matched",
 }
@@ -518,8 +518,8 @@ def ladder_markdown(available) -> str:
         d = (d.replace(r"\textbf{", "**").replace("}", "**") if r"\textbf" in d else d)
         cells = []
         for _, _, means, fracs in available:
-            cells.append(f"{means[rung]:.2f}" if rung in means else "—")
-            cells.append(frac(means, fracs, rung).replace("---", "—") if dagger else "—")
+            cells.append(f"{means[rung]:.2f}" if rung in means else "")
+            cells.append(frac(means, fracs, rung).replace("---", "") if dagger else "")
         name = ("**" + rung + "**") if rung in ("W1", "W3", "W5") else rung
         mark = " †" if dagger else ""
         lines.append(f"| {name}{mark} | {d} | " + " | ".join(cells) + " |")
@@ -534,7 +534,7 @@ def patch_readme(markdown: str) -> None:
     start, end = "<!-- LADDER_TABLE:START -->", "<!-- LADDER_TABLE:END -->"
     text = path.read_text()
     if start not in text or end not in text:
-        print("README markers absent — skipping table injection")
+        print("README markers absent, skipping table injection")
         return
     head, rest = text.split(start, 1)
     _, tail = rest.split(end, 1)
