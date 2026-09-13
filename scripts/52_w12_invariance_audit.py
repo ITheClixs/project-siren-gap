@@ -119,7 +119,10 @@ def main() -> None:
     out_dir = ROOT / "results" / "audits"
     out_dir.mkdir(parents=True, exist_ok=True)
     tag = "w12b" if args.raw_bias else "w12u" if args.ungraded else "w12"
-    path = out_dir / f"{tag}_invariance_{args.dataset}.json"
+    # Non-default protocols get their own file so an audit of another corpus never overwrites the
+    # registered P-random artifact.
+    suffix = "" if args.protocol == "P-random" else f"_{args.protocol}"
+    path = out_dir / f"{tag}_invariance_{args.dataset}{suffix}.json"
     path.write_text(json.dumps(report, indent=2))
     print(f"\nwrote {path}")
     if args.ungraded or args.raw_bias:

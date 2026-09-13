@@ -1,0 +1,11 @@
+=== W12 on the mnist INR benchmark, omega_0 absorbed, Sun Sep 13 10:24:56 CEST 2026 ===
+W12_dwsbench_w0: width 186 (capacity rule against the decoder's 1,873,162)
+  W12_dwsbench_w0 seed 0: test 93.17 (val 91.62, 24 ep)
+  W12_dwsbench_w0 seed 1: test 93.23 (val 91.70, 45 ep)
+  W12_dwsbench_w0 seed 2: test 93.93 (val 92.60, 41 ep)
+  W12_dwsbench_w0 seed 3: test 93.25 (val 91.47, 21 ep)
+  W12_dwsbench_w0 seed 4: test 93.96 (val 92.25, 47 ep)
+W12_dwsbench_w0: 93.51  f=0.9895  params=1,874,898  (15133s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W12_dwsbench_w0.json
+=== done Sun Sep 13 14:37:11 CEST 2026 ===

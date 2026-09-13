@@ -1,0 +1,28 @@
+{
+  "dataset": "mnist",
+  "protocol": "P-dws-bench-w0",
+  "n_inrs": 512,
+  "width": 186,
+  "tolerance": 0.0001,
+  "graded": true,
+  "raw_bias": false,
+  "note": "logit move under group elements, on fitted networks; a random reader, since invariance is a property of the architecture and not of trained weights",
+  "by_winding": {
+    "3": {
+      "logit_move_max": 2.033201553786057e-06,
+      "neutral_block_move_max_dinf_only": 1.025596141346341e-08,
+      "within_tolerance": true
+    },
+    "10": {
+      "logit_move_max": 2.8631577606574865e-06,
+      "neutral_block_move_max_dinf_only": 5.123579072119355e-08,
+      "within_tolerance": true
+    },
+    "40": {
+      "logit_move_max": 6.641323125222698e-06,
+      "neutral_block_move_max_dinf_only": 1.6254011825367343e-07,
+      "within_tolerance": true
+    }
+  },
+  "all_within_tolerance": true
+}

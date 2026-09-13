@@ -1,0 +1,28 @@
+{
+  "dataset": "fashionmnist",
+  "protocol": "P-dws-bench-w0",
+  "n_inrs": 512,
+  "width": 186,
+  "tolerance": 0.0001,
+  "graded": true,
+  "raw_bias": false,
+  "note": "logit move under group elements, on fitted networks; a random reader, since invariance is a property of the architecture and not of trained weights",
+  "by_winding": {
+    "3": {
+      "logit_move_max": 2.5111469312832924e-06,
+      "neutral_block_move_max_dinf_only": 4.775614126373284e-09,
+      "within_tolerance": true
+    },
+    "10": {
+      "logit_move_max": 2.702581241464941e-06,
+      "neutral_block_move_max_dinf_only": 2.3876365773389807e-08,
+      "within_tolerance": true
+    },
+    "40": {
+      "logit_move_max": 7.024520527920686e-06,
+      "neutral_block_move_max_dinf_only": 7.63552350235841e-08,
+      "within_tolerance": true
+    }
+  },
+  "all_within_tolerance": true
+}

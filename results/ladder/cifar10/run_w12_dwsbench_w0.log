@@ -1,0 +1,11 @@
+=== W12 on the cifar10 INR benchmark, omega_0 absorbed, Sun Sep 13 16:05:14 CEST 2026 ===
+W12_dwsbench_w0: width 186 (capacity rule against the decoder's 1,873,162)
+  W12_dwsbench_w0 seed 0: test 43.72 (val 43.50, 15 ep)
+  W12_dwsbench_w0 seed 1: test 44.43 (val 43.92, 15 ep)
+  W12_dwsbench_w0 seed 2: test 43.94 (val 43.54, 17 ep)
+  W12_dwsbench_w0 seed 3: test 44.52 (val 44.28, 11 ep)
+  W12_dwsbench_w0 seed 4: test 44.39 (val 44.30, 10 ep)
+W12_dwsbench_w0: 44.20  f=0.9972  params=1,875,270  (4015s)
+
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/cifar10/W12_dwsbench_w0.json
+=== done Sun Sep 13 17:12:12 CEST 2026 ===
