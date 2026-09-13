@@ -1,0 +1,23 @@
+=== S15 Sun Sep 13 17:13:01 CEST 2026 ===
+baseline 94.36
+  pi                       acc  17.64  delta +76.72  gap 6.0e-07
+  tau                      acc  93.94  delta  +0.41  gap 7.1e-06
+  tau+pi                   acc  17.10  delta +77.26  gap 9.1e-06
+  rho                      acc  82.66  delta +11.69  gap 3.8e-06
+  rho+pi                   acc  15.29  delta +79.06  gap 3.7e-06
+  rho+tau                  acc  80.87  delta +13.49  gap 9.7e-06
+  rho+tau+pi               acc  15.88  delta +78.48  gap 1.0e-05
+  sigma                    acc  31.45  delta +62.90  gap 0.0e+00
+  sigma+pi                 acc  15.29  delta +79.07  gap 6.0e-07
+  sigma+tau                acc  30.73  delta +63.63  gap 8.3e-06
+  sigma+tau+pi             acc  15.47  delta +78.88  gap 8.2e-06
+  sigma+rho                acc  30.90  delta +63.45  gap 3.5e-06
+  sigma+rho+pi             acc  15.93  delta +78.42  gap 3.8e-06
+  sigma+rho+tau            acc  30.58  delta +63.78  gap 9.5e-06
+  sigma+rho+tau+pi         acc  15.54  delta +78.82  gap 8.8e-06
+  full_draw5678            acc  15.30  delta +79.06  gap 8.9e-06
+  full_draw9012            acc  15.51  delta +78.84  gap 1.0e-05
+  non_group_scramble       acc  93.29  delta  +1.06  gap 2.7e+00
+shapley: {'sigma': 29.86, 'rho': 4.3, 'tau': 0.42, 'pi': 44.24} sum 78.82
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s15/factorial_mnist.json
+=== done Sun Sep 13 17:58:39 CEST 2026 ===
