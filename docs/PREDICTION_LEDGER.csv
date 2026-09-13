@@ -134,3 +134,15 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-09-13,S17,"H-S17-2 f_k(W5), each of draws 1 and 2",0.50,0.38,0.62,85f3b6347f87449a
 2026-09-13,S17,"H-S17-3 Delta_k at B=0, each of draws 1 and 2",76,68,81,85f3b6347f87449a
 2026-09-13,S17,P-S17-A probability all three f_k(W5) lie within 0.08 of each other,P=0.70,NA,NA,85f3b6347f87449a
+2026-09-13,S15,H-S15-8 FashionMNIST full-cell Delta,68,60,72,6477de40922a9311
+2026-09-13,S15,H-S15-9 FashionMNIST phi_pi,38,25,50,6477de40922a9311
+2026-09-13,S15,H-S15-10 FashionMNIST phi_sigma,26,15,38,6477de40922a9311
+2026-09-13,S15,H-S15-11 CIFAR-10 full-cell Delta,29,22,33,6477de40922a9311
+2026-09-13,S15,H-S15-12 CIFAR-10 phi_pi,15,8,24,6477de40922a9311
+2026-09-13,S15,H-S15-13 CIFAR-10 phi_sigma,11,5,18,6477de40922a9311
+2026-09-13,S15,P-S15-D probability phi_pi is largest on both FashionMNIST and CIFAR-10,P=0.65,NA,NA,6477de40922a9311
+2026-09-13,S15,P-S15-E probability phi_rho+phi_tau below 20% of the full-cell Delta on both,P=0.80,NA,NA,6477de40922a9311
+2026-09-13,S15,P-S15-F probability the non-group scramble costs less than 5 points on both,P=0.60,NA,NA,6477de40922a9311
+2026-09-13,S18,H-S18-1 s(W12) at width 128,0.85,0.60,0.98,ddad1a27d6c47039
+2026-09-13,S18,H-S18-2 W12 shared-det minus random at width 128,8,3,20,ddad1a27d6c47039
+2026-09-13,S18,P-S18-A probability s(W12) at width 128 exceeds 0.677,P=0.75,NA,NA,ddad1a27d6c47039

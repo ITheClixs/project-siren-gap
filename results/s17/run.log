@@ -1,0 +1,137 @@
+=== S17 Sun Sep 13 18:20:28 CEST 2026 ===
+fitting: /Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py --dataset mnist --protocol P-shared-det --steps 300 --n-train 10000 --n-val 2000 --n-test 2000 --tag s17o1 --seed-offset 1 --out-root data/inrbench
+shard_000000: 256 fits in 5.8s  psnr_med=36.0dB  overall 44.1 fits/s
+shard_000256: 256 fits in 4.5s  psnr_med=35.7dB  overall 49.4 fits/s
+shard_000512: 256 fits in 4.6s  psnr_med=36.0dB  overall 51.5 fits/s
+shard_000768: 256 fits in 4.6s  psnr_med=36.2dB  overall 52.5 fits/s
+shard_001024: 256 fits in 4.6s  psnr_med=35.8dB  overall 53.1 fits/s
+shard_001280: 256 fits in 4.5s  psnr_med=36.3dB  overall 53.6 fits/s
+shard_001536: 256 fits in 4.7s  psnr_med=35.9dB  overall 53.8 fits/s
+shard_001792: 256 fits in 4.8s  psnr_med=35.8dB  overall 53.7 fits/s
+shard_002048: 256 fits in 4.8s  psnr_med=36.0dB  overall 53.7 fits/s
+shard_002304: 256 fits in 5.0s  psnr_med=36.1dB  overall 53.4 fits/s
+shard_002560: 256 fits in 5.1s  psnr_med=36.3dB  overall 53.1 fits/s
+shard_002816: 256 fits in 5.3s  psnr_med=35.8dB  overall 52.7 fits/s
+shard_003072: 256 fits in 5.3s  psnr_med=35.8dB  overall 52.3 fits/s
+shard_003328: 256 fits in 5.5s  psnr_med=35.8dB  overall 51.8 fits/s
+shard_003584: 256 fits in 6.8s  psnr_med=36.1dB  overall 50.5 fits/s
+shard_003840: 256 fits in 7.0s  psnr_med=36.0dB  overall 49.3 fits/s
+shard_004096: 256 fits in 6.1s  psnr_med=36.0dB  overall 48.9 fits/s
+shard_004352: 256 fits in 6.5s  psnr_med=36.1dB  overall 48.2 fits/s
+shard_004608: 256 fits in 6.3s  psnr_med=36.5dB  overall 47.8 fits/s
+shard_004864: 256 fits in 6.2s  psnr_med=36.2dB  overall 47.4 fits/s
+shard_005120: 256 fits in 6.6s  psnr_med=36.3dB  overall 46.9 fits/s
+shard_005376: 256 fits in 6.2s  psnr_med=36.2dB  overall 46.6 fits/s
+shard_005632: 256 fits in 6.3s  psnr_med=36.1dB  overall 46.3 fits/s
+shard_005888: 256 fits in 6.2s  psnr_med=36.3dB  overall 46.1 fits/s
+shard_006144: 256 fits in 6.3s  psnr_med=36.2dB  overall 45.8 fits/s
+shard_006400: 256 fits in 6.4s  psnr_med=36.0dB  overall 45.6 fits/s
+shard_006656: 256 fits in 6.3s  psnr_med=35.5dB  overall 45.4 fits/s
+shard_006912: 256 fits in 6.3s  psnr_med=35.9dB  overall 45.2 fits/s
+shard_007168: 256 fits in 6.5s  psnr_med=35.2dB  overall 44.9 fits/s
+shard_007424: 256 fits in 6.3s  psnr_med=35.8dB  overall 44.8 fits/s
+shard_007680: 256 fits in 6.3s  psnr_med=36.4dB  overall 44.6 fits/s
+shard_007936: 256 fits in 6.6s  psnr_med=36.1dB  overall 44.4 fits/s
+shard_008192: 256 fits in 6.3s  psnr_med=36.1dB  overall 44.3 fits/s
+shard_008448: 256 fits in 6.4s  psnr_med=36.2dB  overall 44.2 fits/s
+shard_008704: 256 fits in 6.4s  psnr_med=35.9dB  overall 44.0 fits/s
+shard_008960: 256 fits in 6.6s  psnr_med=35.8dB  overall 43.9 fits/s
+shard_009216: 256 fits in 6.4s  psnr_med=35.8dB  overall 43.7 fits/s
+shard_009472: 256 fits in 6.6s  psnr_med=36.0dB  overall 43.6 fits/s
+shard_009728: 256 fits in 6.5s  psnr_med=36.1dB  overall 43.5 fits/s
+shard_009984: 256 fits in 6.6s  psnr_med=35.9dB  overall 43.3 fits/s
+shard_010240: 256 fits in 6.5s  psnr_med=35.9dB  overall 43.2 fits/s
+shard_010496: 256 fits in 6.5s  psnr_med=36.1dB  overall 43.1 fits/s
+shard_010752: 256 fits in 6.5s  psnr_med=36.1dB  overall 43.0 fits/s
+shard_011008: 256 fits in 6.5s  psnr_med=36.0dB  overall 43.0 fits/s
+shard_011264: 256 fits in 6.4s  psnr_med=35.7dB  overall 42.9 fits/s
+shard_011520: 256 fits in 6.5s  psnr_med=36.2dB  overall 42.8 fits/s
+shard_011776: 256 fits in 6.4s  psnr_med=36.1dB  overall 42.7 fits/s
+shard_012032: 256 fits in 6.7s  psnr_med=35.9dB  overall 42.6 fits/s
+shard_012288: 256 fits in 6.4s  psnr_med=35.7dB  overall 42.6 fits/s
+shard_012544: 256 fits in 6.4s  psnr_med=35.9dB  overall 42.5 fits/s
+shard_012800: 256 fits in 6.5s  psnr_med=35.8dB  overall 42.5 fits/s
+shard_013056: 256 fits in 6.5s  psnr_med=35.8dB  overall 42.4 fits/s
+shard_013312: 256 fits in 6.6s  psnr_med=35.9dB  overall 42.3 fits/s
+shard_013568: 256 fits in 6.6s  psnr_med=35.7dB  overall 42.3 fits/s
+shard_013824: 176 fits in 4.6s  psnr_med=35.6dB  overall 42.2 fits/s
+{
+  "n_inrs": 14000,
+  "psnr_median": 35.974693298339844,
+  "psnr_q05": 33.7423677444458,
+  "corr_psnr_label": -0.04724894360420838,
+  "wallclock_total_s": 331.84589409828186,
+  "grad_norm_median": 0.0090964799746871,
+  "grad_norm_q95": 0.01281622489914298
+}
+fitting: /Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py --dataset mnist --protocol P-shared-det --steps 300 --n-train 10000 --n-val 2000 --n-test 2000 --tag s17o2 --seed-offset 2 --out-root data/inrbench
+shard_000000: 256 fits in 6.7s  psnr_med=33.9dB  overall 38.1 fits/s
+shard_000256: 256 fits in 6.7s  psnr_med=33.9dB  overall 38.1 fits/s
+shard_000512: 256 fits in 6.6s  psnr_med=34.1dB  overall 38.3 fits/s
+shard_000768: 256 fits in 6.8s  psnr_med=34.1dB  overall 38.1 fits/s
+shard_001024: 256 fits in 6.8s  psnr_med=33.7dB  overall 38.0 fits/s
+shard_001280: 256 fits in 6.6s  psnr_med=34.1dB  overall 38.1 fits/s
+shard_001536: 256 fits in 6.7s  psnr_med=33.8dB  overall 38.1 fits/s
+shard_001792: 256 fits in 6.5s  psnr_med=34.0dB  overall 38.2 fits/s
+shard_002048: 256 fits in 6.7s  psnr_med=34.1dB  overall 38.2 fits/s
+shard_002304: 256 fits in 6.5s  psnr_med=34.0dB  overall 38.3 fits/s
+shard_002560: 256 fits in 6.5s  psnr_med=33.9dB  overall 38.4 fits/s
+shard_002816: 256 fits in 6.5s  psnr_med=33.8dB  overall 38.5 fits/s
+shard_003072: 256 fits in 6.4s  psnr_med=33.9dB  overall 38.6 fits/s
+shard_003328: 256 fits in 6.5s  psnr_med=33.9dB  overall 38.6 fits/s
+shard_003584: 256 fits in 6.6s  psnr_med=33.7dB  overall 38.7 fits/s
+shard_003840: 256 fits in 6.5s  psnr_med=33.9dB  overall 38.7 fits/s
+shard_004096: 256 fits in 6.6s  psnr_med=33.9dB  overall 38.7 fits/s
+shard_004352: 256 fits in 6.5s  psnr_med=34.0dB  overall 38.7 fits/s
+shard_004608: 256 fits in 6.5s  psnr_med=34.1dB  overall 38.8 fits/s
+shard_004864: 256 fits in 6.5s  psnr_med=34.0dB  overall 38.8 fits/s
+shard_005120: 256 fits in 6.5s  psnr_med=34.1dB  overall 38.8 fits/s
+shard_005376: 256 fits in 6.4s  psnr_med=34.1dB  overall 38.9 fits/s
+shard_005632: 256 fits in 6.4s  psnr_med=34.2dB  overall 38.9 fits/s
+shard_005888: 256 fits in 6.4s  psnr_med=34.4dB  overall 39.0 fits/s
+shard_006144: 256 fits in 6.5s  psnr_med=34.3dB  overall 39.0 fits/s
+shard_006400: 256 fits in 6.5s  psnr_med=34.1dB  overall 39.0 fits/s
+shard_006656: 256 fits in 6.4s  psnr_med=33.6dB  overall 39.0 fits/s
+shard_006912: 256 fits in 6.3s  psnr_med=34.0dB  overall 39.0 fits/s
+shard_007168: 256 fits in 6.4s  psnr_med=33.5dB  overall 39.1 fits/s
+shard_007424: 256 fits in 6.5s  psnr_med=33.9dB  overall 39.1 fits/s
+shard_007680: 256 fits in 6.5s  psnr_med=33.9dB  overall 39.1 fits/s
+shard_007936: 256 fits in 6.5s  psnr_med=34.0dB  overall 39.1 fits/s
+shard_008192: 256 fits in 6.5s  psnr_med=33.9dB  overall 39.1 fits/s
+shard_008448: 256 fits in 6.5s  psnr_med=34.4dB  overall 39.1 fits/s
+shard_008704: 256 fits in 6.4s  psnr_med=34.1dB  overall 39.1 fits/s
+shard_008960: 256 fits in 6.6s  psnr_med=34.0dB  overall 39.1 fits/s
+shard_009216: 256 fits in 6.4s  psnr_med=34.1dB  overall 39.1 fits/s
+shard_009472: 256 fits in 6.5s  psnr_med=34.0dB  overall 39.1 fits/s
+shard_009728: 256 fits in 6.4s  psnr_med=33.9dB  overall 39.2 fits/s
+shard_009984: 256 fits in 6.6s  psnr_med=33.8dB  overall 39.1 fits/s
+shard_010240: 256 fits in 6.4s  psnr_med=33.9dB  overall 39.2 fits/s
+shard_010496: 256 fits in 6.6s  psnr_med=34.0dB  overall 39.1 fits/s
+shard_010752: 256 fits in 6.6s  psnr_med=34.2dB  overall 39.1 fits/s
+shard_011008: 256 fits in 6.5s  psnr_med=33.8dB  overall 39.1 fits/s
+shard_011264: 256 fits in 6.6s  psnr_med=33.6dB  overall 39.1 fits/s
+shard_011520: 256 fits in 6.5s  psnr_med=33.8dB  overall 39.1 fits/s
+shard_011776: 256 fits in 6.5s  psnr_med=34.1dB  overall 39.1 fits/s
+shard_012032: 256 fits in 6.5s  psnr_med=33.9dB  overall 39.1 fits/s
+shard_012288: 256 fits in 6.4s  psnr_med=33.8dB  overall 39.2 fits/s
+shard_012544: 256 fits in 6.5s  psnr_med=33.9dB  overall 39.2 fits/s
+shard_012800: 256 fits in 6.7s  psnr_med=33.7dB  overall 39.1 fits/s
+shard_013056: 256 fits in 6.3s  psnr_med=33.9dB  overall 39.2 fits/s
+shard_013312: 256 fits in 6.6s  psnr_med=33.9dB  overall 39.2 fits/s
+shard_013568: 256 fits in 6.4s  psnr_med=33.9dB  overall 39.2 fits/s
+shard_013824: 176 fits in 4.5s  psnr_med=33.8dB  overall 39.2 fits/s
+{
+  "n_inrs": 14000,
+  "psnr_median": 33.95783615112305,
+  "psnr_q05": 31.972444343566895,
+  "corr_psnr_label": -0.04981268186311237,
+  "wallclock_total_s": 357.4678246974945,
+  "grad_norm_median": 0.011297384276986122,
+  "grad_norm_q95": 0.015741323772817846
+}
+W3 10.86
+draw 0: W1 88.50  W5 49.82  f(W5) 0.502  delta_sym 77.56  travel 0.186
+draw 1: W1 84.61  W5 45.90  f(W5) 0.475  delta_sym 70.23  travel 0.210
+draw 2: W1 88.46  W5 54.37  f(W5) 0.561  delta_sym 75.58  travel 0.206
+wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s17/theta0_mnist.json
+=== done Sun Sep 13 18:35:55 CEST 2026 ===
