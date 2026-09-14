@@ -1,0 +1,37 @@
+{
+  "dataset": "mnist",
+  "protocol": "P-random-w128",
+  "prereg": "docs/prereg/S9.md",
+  "W1": 95.4099988937378,
+  "W3": 10.470000058412552,
+  "width": 186,
+  "reader_params": 1874898,
+  "graded": true,
+  "raw_bias": false,
+  "u_mode": "full",
+  "acc": [
+    85.75,
+    85.0,
+    84.7,
+    85.6,
+    85.55
+  ],
+  "mean": 85.32,
+  "ci95_bootstrap": [
+    84.97,
+    85.65
+  ],
+  "recovery_fraction": 0.8812004140007719,
+  "f_ci95": [
+    0.8781445479884452,
+    0.8842562800130986
+  ],
+  "epochs_ran": [
+    31,
+    23,
+    24,
+    30,
+    36
+  ],
+  "wallclock_s": 60943.72944688797
+}

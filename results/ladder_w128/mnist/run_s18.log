@@ -1,0 +1,13 @@
+=== S18 W12 on P-random-w128 Sun Sep 13 21:06:51 CEST 2026 ===
+W12_w128: width 186 (capacity rule against the decoder's 1,873,162)
+  W12_w128 seed 0: test 85.75 (val 89.70, 31 ep)
+  W12_w128 seed 1: test 85.00 (val 89.20, 23 ep)
+  W12_w128 seed 2: test 84.70 (val 89.40, 24 ep)
+  W12_w128 seed 3: test 85.60 (val 90.05, 30 ep)
+  W12_w128 seed 4: test 85.55 (val 88.90, 36 ep)
+W12_w128: 85.32  f=0.8812  params=1,874,898  (60944s)
+
+wrote results/ladder_w128/mnist/W12_w128.json
+=== S18 W12 on P-shared-det-w128 Mon Sep 14 14:02:37 CEST 2026 ===
+W12_w128_shareddet: width 186 (capacity rule against the decoder's 1,873,162)
+  W12_w128_shareddet seed 0: test 91.75 (val 94.40, 36 ep)
