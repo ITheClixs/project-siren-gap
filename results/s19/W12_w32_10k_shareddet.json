@@ -1,0 +1,38 @@
+{
+  "dataset": "mnist",
+  "protocol": "P-shared-det-s8s300",
+  "prereg": "docs/prereg/S19.md",
+  "W1": 88.50000000000001,
+  "W3": 10.86,
+  "width": 186,
+  "reader_params": 1874898,
+  "graded": true,
+  "raw_bias": false,
+  "fold_bias": false,
+  "u_mode": "full",
+  "acc": [
+    87.35,
+    87.6,
+    86.35,
+    87.05,
+    88.3
+  ],
+  "mean": 87.33,
+  "ci95_bootstrap": [
+    86.75,
+    87.88000000000001
+  ],
+  "recovery_fraction": 0.9849739888069001,
+  "f_ci95": [
+    0.9758163641516943,
+    0.9924678048575861
+  ],
+  "epochs_ran": [
+    43,
+    51,
+    26,
+    33,
+    39
+  ],
+  "wallclock_s": 1674.669193983078
+}

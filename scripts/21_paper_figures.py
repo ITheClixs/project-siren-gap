@@ -261,7 +261,11 @@ def fig_mechanism() -> None:
 
 def fig_calibration() -> None:
     rows = list(csv.DictReader((ROOT / "docs" / "PREDICTION_OUTCOMES.csv").open()))
-    iv = [r for r in rows if r["kind"] == "interval"]
+    # H-S1-4a re-measured an anchor already known from an earlier gate: a reproducibility check,
+    # not a forecast, so it is left out of the calibration record (TMLR review, App. G).
+    excluded = {"H-S1-4a"}
+    iv = [r for r in rows if r["kind"] == "interval"
+          and r["prediction"].split(" ")[0] not in excluded]
     # normalize each prediction to its own registered interval: 0 = lo80, 1 = hi80
     names, z_obs, hits, arm = [], [], [], []
     for r in iv:

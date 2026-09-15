@@ -1,0 +1,10 @@
+{
+  "acc": [
+    88.15,
+    88.9,
+    88.8,
+    88.1,
+    88.55
+  ],
+  "source": "results/s8/sweep.json by_steps.300"
+}

@@ -1,0 +1,49 @@
+{
+  "study": "S19 A5 off-grid functional discrepancy",
+  "prereg": "docs/prereg/S19.md",
+  "n_images": 2000,
+  "fit_grid": 28,
+  "fine_grid": 55,
+  "pairs": {
+    "independent_fits_randomK_k0_k1": {
+      "n": 2000,
+      "on_grid_rel_median": 0.03233945742249489,
+      "off_grid_rel_median": 0.10401102900505066,
+      "ratio_off_over_on_median": 3.157531976699829,
+      "ratio_q10_q90": [
+        2.232224702835083,
+        4.635860443115234
+      ]
+    },
+    "shared_det_vs_random": {
+      "n": 2000,
+      "on_grid_rel_median": 0.02942943386733532,
+      "off_grid_rel_median": 0.10378263890743256,
+      "ratio_off_over_on_median": 3.4295661449432373,
+      "ratio_q10_q90": [
+        2.404271364212036,
+        4.880521297454834
+      ]
+    },
+    "shared_det_vs_shared_stoch": {
+      "n": 2000,
+      "on_grid_rel_median": 0.04757196456193924,
+      "off_grid_rel_median": 0.09661371260881424,
+      "ratio_off_over_on_median": 2.0261285305023193,
+      "ratio_q10_q90": [
+        1.6477426290512085,
+        2.442572832107544
+      ]
+    },
+    "different_images_shared_det": {
+      "n": 2000,
+      "on_grid_rel_median": 0.7635046243667603,
+      "off_grid_rel_median": 0.7802254557609558,
+      "ratio_off_over_on_median": 1.022749662399292,
+      "ratio_q10_q90": [
+        1.0187811851501465,
+        1.0265617370605469
+      ]
+    }
+  }
+}
