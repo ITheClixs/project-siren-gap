@@ -13,3 +13,9 @@ W12_w128_shareddet: width 186 (capacity rule against the decoder's 1,873,162)
   W12_w128_shareddet seed 0: test 91.75 (val 94.40, 36 ep)
   W12_w128_shareddet seed 1: test 92.35 (val 94.75, 70 ep)
   W12_w128_shareddet seed 2: test 92.85 (val 94.55, 49 ep)
+  W12_w128_shareddet seed 3: test 92.00 (val 94.70, 40 ep)
+  W12_w128_shareddet seed 4: test 92.45 (val 95.10, 45 ep)
+W12_w128_shareddet: 92.28  f=0.9631  params=1,874,898  (89529s)
+
+wrote results/ladder_w128/mnist/W12_w128_shareddet.json
+=== done Tue Sep 15 14:54:51 CEST 2026 ===

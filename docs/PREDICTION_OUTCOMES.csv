@@ -174,3 +174,4 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-09-13,P-S15-F non-group scramble below 5 points on both,probability,0.6,,,1,NA,,0.16,
 2026-09-14,H-S18-1 s(W12) at width 128,interval,0.85,0.6,0.98,0.8812,HIT,0.0312,,
 2026-09-14,P-S18-A probability s(W12) at width 128 exceeds 0.677,probability,0.75,,,1,NA,,0.0625,
+2026-09-15,H-S18-2 W12 shared-det minus random at width 128,interval,8,3,20,6.96,HIT,1.04,,92.28 (P-shared-det-w128) minus 85.32 (P-random-w128); 5 seeds each
