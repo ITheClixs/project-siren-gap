@@ -26,7 +26,9 @@ import torch
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
+from sirengap.canon.csort import _phase_reduce  # noqa: E402
 from sirengap.data.schema import load_corpus  # noqa: E402
+from sirengap.models.params import outgoing, replace_layer  # noqa: E402
 
 SPLITS = ("train", "val", "test")
 
@@ -36,10 +38,19 @@ def main() -> None:
     ap.add_argument("--dataset", default="mnist")
     ap.add_argument("--protocol", default="P-random")
     ap.add_argument("--out", required=True, help="parent directory for the exported corpus")
+    ap.add_argument("--fold", action="store_true",
+                    help="fold every hidden bias into [-pi/2, pi/2) first (ScaleGMN's Algorithm 1 in "
+                         "canonical form; function-preserving)")
     args = ap.parse_args()
 
     params, meta = load_corpus(ROOT / "data" / "inrbench" / args.dataset / args.protocol)
-    dest = (Path(args.out) / f"sirengap-{args.dataset}-{args.protocol}").resolve()
+    if args.fold:
+        for layer in range(params.n_layers):
+            w, b = params.hidden[layer]
+            w, b, out_w = _phase_reduce(w, b, outgoing(params, layer))
+            params = replace_layer(params, layer, w, b, out_w)
+    tag = "-fold" if args.fold else ""
+    dest = (Path(args.out) / f"sirengap-{args.dataset}-{args.protocol}{tag}").resolve()
     (dest / "inrs").mkdir(parents=True, exist_ok=True)
     splits: dict = {s: {"path": [], "label": []} for s in SPLITS}
     for i in range(params.batch):
@@ -61,7 +72,8 @@ def main() -> None:
     (dest / "splits_rel.json").write_text(json.dumps(rel))
     (dest / "export.json").write_text(json.dumps({
         "source": f"data/inrbench/{args.dataset}/{args.protocol}", "n": params.batch,
-        "transform": "none: canonical form as stored (omega_0 absorbed into hidden W and b)",
+        "transform": ("hidden biases folded into [-pi/2, pi/2) by g_{0,j}; otherwise " if args.fold else "")
+        + "canonical form as stored (omega_0 absorbed into hidden W and b)",
         "counts": {s: len(v["label"]) for s, v in splits.items()}}, indent=2))
     print(f"wrote {params.batch} INRs to {dest}", {s: len(v["label"]) for s, v in splits.items()})
 
