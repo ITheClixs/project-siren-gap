@@ -146,3 +146,21 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-09-13,S18,H-S18-1 s(W12) at width 128,0.85,0.60,0.98,ddad1a27d6c47039
 2026-09-13,S18,H-S18-2 W12 shared-det minus random at width 128,8,3,20,ddad1a27d6c47039
 2026-09-13,S18,P-S18-A probability s(W12) at width 128 exceeds 0.677,P=0.75,NA,NA,ddad1a27d6c47039
+2026-09-15,S19,H-S19-1 s(W12) at width 32 on 10k corpora,0.85,0.65,0.97,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-2 W12 residual width 32 10k corpora,9,4,16,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-3 W12 residual FashionMNIST,9,3,20,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-4 W12 residual CIFAR-10,4,0,12,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-5 damage sign dose p=0.25,35,10,60,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-6 damage relabelling dose p=0.25,45,15,70,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-7 damage layer-two non-group scramble,40,10,75,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-8 grid-probe shared-minus-random K=16,4,0,10,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-9 grid-probe shared-minus-random K=64,0.5,-1.5,3,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-10 off-grid over on-grid discrepancy ratio,3,1.2,10,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-11 s of fold-then-grade,0.85,0.65,0.95,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-12 fraction of fitted INRs with delta<1e-3,0.01,0,0.08,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-13 fraction of MNIST benchmark layer-1 biases outside fold interval,0.2,0.02,0.6,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-14 s of ScaleGMN on MNIST P-random,0.80,0.50,0.95,867d9cbdbe769f5a
+2026-09-15,S19,H-S19-15 s of NG-GNN on MNIST P-random,0.55,0.20,0.90,867d9cbdbe769f5a
+2026-09-15,S19,P-S19-A probability damage monotone in p for both doses,P=0.85,NA,NA,867d9cbdbe769f5a
+2026-09-15,S19,P-S19-B probability W12 beats ScaleGMN on MNIST P-random,P=0.55,NA,NA,867d9cbdbe769f5a
+2026-09-15,S19,P-S19-C probability fold-then-grade within 0.03 of s(W12),P=0.40,NA,NA,867d9cbdbe769f5a
