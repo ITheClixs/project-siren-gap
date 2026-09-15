@@ -2,5 +2,5 @@
 K=  16: shared-det  57.98  random  51.54  D = +6.44
 K=  64: shared-det  95.08  random  95.34  D = -0.25
 K= 256: shared-det  98.10  random  98.07  D = +0.03
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s16/function_nuisance_mnist.json
+wrote <repo>/results/s16/function_nuisance_mnist.json
 === done Sun Sep 13 18:20:28 CEST 2026 ===

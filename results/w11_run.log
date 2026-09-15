@@ -11,4 +11,4 @@ W11a: 35.26  f=0.2653  params=1,879,874  (2186s)
   W11b seed 4: test 57.13 (val 57.16, 12 ep)
 W11b: 56.24  f=0.5261  params=1,845,210  (2924s)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W11.json
+wrote <repo>/results/ladder/mnist/W11.json

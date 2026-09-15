@@ -19,5 +19,5 @@ baseline 44.29
   full_draw9012            acc  16.83  delta +27.46  gap 9.8e-06
   non_group_scramble       acc  42.24  delta  +2.04  gap 2.7e+00
 shapley: {'sigma': 10.64, 'rho': 5.12, 'tau': 0.74, 'pi': 10.27} sum 26.78
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s15/factorial_cifar10.json
+wrote <repo>/results/s15/factorial_cifar10.json
 === done Sun Sep 13 21:06:51 CEST 2026 ===

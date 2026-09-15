@@ -84,13 +84,17 @@ def accuracy(model: nn.Module, params: SirenParams, y: torch.Tensor,
 
 
 def train_probe_reader(by_split, labels, n_probes: int, seed: int, device: str,
-                       out_dim: int, freeze: bool = False, max_epochs: int = MAX_EPOCHS) -> dict:
+                       out_dim: int, freeze: bool = False, max_epochs: int = MAX_EPOCHS,
+                       probe_init: torch.Tensor | None = None) -> dict:
     """Same schedule as the frozen decoder; only the probes and the head are trained."""
     torch.manual_seed(seed)
     p_tr = to_device(by_split["train"], device)
     p_va = to_device(by_split["val"], device)
     p_te = to_device(by_split["test"], device)
     model = ProbeReader(n_probes=n_probes, out_dim=out_dim, freeze_probes=freeze).to(device)
+    if probe_init is not None:  # S19 A4: probes fixed at chosen coordinates, e.g. pixel centres
+        with torch.no_grad():
+            model.probes.copy_(probe_init.to(device))
 
     with torch.no_grad():
         sample = index_params(p_tr, torch.arange(min(4096, p_tr.batch)))

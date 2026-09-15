@@ -31,7 +31,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from sirengap.eval.rungs import SPLITS, CorpusCache  # noqa: E402
 from sirengap.eval.stats import bootstrap_ci_mean  # noqa: E402
-from sirengap.models.params import SirenParams  # noqa: E402
+from sirengap.canon.csort import _phase_reduce  # noqa: E402
+from sirengap.models.params import SirenParams, outgoing, replace_layer  # noqa: E402
 from sirengap.models.phasor import (  # noqa: E402
     CHARACTERS,
     PhasorGradedReader,
@@ -62,6 +63,16 @@ def matched_width(feats: dict, graded: bool = True, lo: int = 32, hi: int = 320)
         if abs(n - DECODER_PARAMS) < best_gap:
             best, best_gap = w, abs(n - DECODER_PARAMS)
     return best
+
+
+def fold_biases(p: SirenParams) -> SirenParams:
+    """Fold every hidden bias into [-pi/2, pi/2) by g_{0,j}, flipping the outgoing weights to
+    match: the canonical-form version of ScaleGMN's Algorithm 1. Function-preserving (S19 A6)."""
+    for layer in range(p.n_layers):
+        w, b = p.hidden[layer]
+        w, b, out_w = _phase_reduce(w, b, outgoing(p, layer))
+        p = replace_layer(p, layer, w, b, out_w)
+    return p
 
 
 def extract(by_split: dict[str, SirenParams], chunk: int = 4096,
@@ -168,10 +179,16 @@ def main() -> None:
     ap.add_argument("--raw-bias", action="store_true",
                     help="the third arm (W12b): same graded skeleton, bias entering raw instead "
                          "of phasor-lifted, so it separates coordinates from architecture")
+    ap.add_argument("--fold-bias", action="store_true",
+                    help="S19 A6: fold every bias into [-pi/2, pi/2) first, then read it raw in the "
+                         "graded skeleton (fold then grade)")
+    ap.add_argument("--prereg", default="docs/prereg/S9.md")
     args = ap.parse_args()
 
     cache = CorpusCache(Path(args.root) / args.dataset, args.dataset)
     by_split, labels = cache.split_params(args.protocol)
+    if args.fold_bias:
+        by_split = {s: fold_biases(p) for s, p in by_split.items()}
     ladder = ROOT / "results" / "ladder" / args.dataset
     anchor_dir = Path(args.anchors_dir) if args.anchors_dir else ladder
     anchors = {r: json.loads(
@@ -179,7 +196,7 @@ def main() -> None:
     w1, w3 = np.array(anchors["W1"]), np.array(anchors["W3"])
 
     t0 = time.time()
-    feats = extract(by_split, raw_bias=args.raw_bias, u_mode=args.u_mode)
+    feats = extract(by_split, raw_bias=args.raw_bias or args.fold_bias, u_mode=args.u_mode)
     stats = feature_scale(feats["train"])
     fs = {s: apply_scale(feats[s], stats) for s in SPLITS}
     del feats
@@ -190,6 +207,8 @@ def main() -> None:
     width = args.width or matched_width(fs["train"], graded=graded)
     if args.out_name:
         name = args.out_name
+    elif args.fold_bias:
+        name = "W12fb"
     elif args.ungraded and args.raw_bias:
         name = "W12ub"
     else:
@@ -210,10 +229,10 @@ def main() -> None:
     n = min(len(a), len(w1), len(w3))
     f = (a[:n] - w3[:n]) / (w1[:n] - w3[:n])
     out = {
-        "dataset": args.dataset, "protocol": args.protocol, "prereg": "docs/prereg/S9.md",
+        "dataset": args.dataset, "protocol": args.protocol, "prereg": args.prereg,
         "W1": float(w1.mean()), "W3": float(w3.mean()),
         "width": width, "reader_params": params_n, "graded": graded,
-        "raw_bias": bool(args.raw_bias), "u_mode": args.u_mode,
+        "raw_bias": bool(args.raw_bias), "fold_bias": bool(args.fold_bias), "u_mode": args.u_mode,
         "acc": accs, "mean": float(a.mean()), "ci95_bootstrap": bootstrap_ci_mean(a),
         "recovery_fraction": float(f.mean()), "f_ci95": bootstrap_ci_mean(f),
         "epochs_ran": epochs, "wallclock_s": time.time() - t0,

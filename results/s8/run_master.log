@@ -10,10 +10,10 @@ width 122 (capacity rule against the decoder's 1,873,162)
   W12u seed 3: test 83.09 (val 83.86, 15 ep)
   W12u seed 4: test 83.29 (val 84.18, 16 ep)
 Traceback (most recent call last):
-  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/47_w12_phasor.py", line 209, in <module>
+  File "<repo>/scripts/47_w12_phasor.py", line 209, in <module>
     main()
     ~~~~^^
-  File "/Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/47_w12_phasor.py", line 199, in main
+  File "<repo>/scripts/47_w12_phasor.py", line 199, in main
     print(f"{name}: {out['mean']:.2f}  f={out['recovery_fraction']:.4f}  "
              ^^^^
 UnboundLocalError: cannot access local variable 'name' where it is not associated with a value
@@ -30,7 +30,7 @@ W12u: width 122 (capacity rule against the decoder's 1,873,162)
   W12u seed 4: test 83.29 (val 84.18, 16 ep)
 W12u: 82.93  f=0.8579  params=1,888,212  (4225s)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W12u.json
+wrote <repo>/results/ladder/mnist/W12u.json
 --- W12 on unscattered P-shared-det (re-measures the S6 triple) Tue Aug  4 00:57:40 +03 2026 ---
 W12_shareddet: width 186 (capacity rule against the decoder's 1,873,162)
   W12_shareddet seed 0: test 96.37 (val 96.76, 56 ep)
@@ -40,7 +40,7 @@ W12_shareddet: width 186 (capacity rule against the decoder's 1,873,162)
   W12_shareddet seed 4: test 95.25 (val 96.46, 23 ep)
 W12_shareddet: 95.46  f=1.0138  params=1,874,898  (7796s)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W12_shareddet.json
+wrote <repo>/results/ladder/mnist/W12_shareddet.json
 --- S5: re-price the frontier with W12 on it Tue Aug  4 03:07:39 +03 2026 ---
 function-query K=   1:  13.64    1.320 MFLOP/INR (89s)
 function-query K=   4:  16.20    1.333 MFLOP/INR (85s)
@@ -50,7 +50,7 @@ function-query K= 256:  98.16    2.430 MFLOP/INR (231s)
 nuisance control K=16: P-random 52.11 vs P-shared-det 57.54 (diff +5.43)
 frozen-probe ablation K=16: learned 52.11 vs fixed 40.86 (learning buys +11.25)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s5/pareto_mnist.json
+wrote <repo>/results/s5/pareto_mnist.json
 --- S5: re-score Tue Aug  4 03:19:30 +03 2026 ---
 prereg 80bdc96ce9497c3d on mnist: 5/8 intervals hit
   H-S5-1   obs=     16.2 MISS 
@@ -72,7 +72,7 @@ prereg section 5 verdict:
   exceeds function-query's entire per-task cost. PO-6's corollary is not merely
   proved; it is binding. The paper must say so plainly.
 
-appended 11 rows to /Users/dmr/Development/Projects/ai-research/project-siren-gap/docs/PREDICTION_OUTCOMES.csv
+appended 11 rows to <repo>/docs/PREDICTION_OUTCOMES.csv
 --- P-shared-det @ 300 steps Tue Aug  4 03:19:30 +03 2026 ---
 {
   "n_inrs": 14000,
@@ -302,7 +302,7 @@ scoring:
   H-S8-3: registered 0.6 [0.45, 0.72], observed 0.5018 -> HIT
 S8 intervals: 2/2
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s8/sweep.json
+wrote <repo>/results/s8/sweep.json
 --- P-shared-det @ 10000 steps Tue Aug  4 05:43:44 +03 2026 ---
 shard_000000: 256 fits in 165.0s  psnr_med=58.7dB  overall 1.6 fits/s
 shard_000256: 256 fits in 202.7s  psnr_med=58.7dB  overall 1.4 fits/s
@@ -453,8 +453,8 @@ scoring:
 S8 intervals: 6/8
 falsifier f(W5)<0.15: not fired; P-S8-A True, P-S8-B True, P-S8-C False
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s8/sweep.json
-appended 11 rows to /Users/dmr/Development/Projects/ai-research/project-siren-gap/docs/PREDICTION_OUTCOMES.csv
+wrote <repo>/results/s8/sweep.json
+appended 11 rows to <repo>/docs/PREDICTION_OUTCOMES.csv
 --- S5: re-price the frontier with W12, at the registered n=5 Tue Aug  4 17:00:34 +03 2026 ---
 function-query K=   1:  13.57    1.320 MFLOP/INR (114s)
 function-query K=   4:  16.37    1.333 MFLOP/INR (137s)
@@ -464,5 +464,5 @@ function-query K= 256:  98.23    2.430 MFLOP/INR (214s)
 nuisance control K=16: P-random 52.11 vs P-shared-det 57.54 (diff +5.43)
 frozen-probe ablation K=16: learned 52.11 vs fixed 40.86 (learning buys +11.25)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s5/pareto_mnist.json
+wrote <repo>/results/s5/pareto_mnist.json
 === resume chain complete Tue Aug  4 17:13:45 +03 2026 ===

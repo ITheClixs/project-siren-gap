@@ -1,5 +1,5 @@
 === S17 Sun Sep 13 18:20:28 CEST 2026 ===
-fitting: /Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py --dataset mnist --protocol P-shared-det --steps 300 --n-train 10000 --n-val 2000 --n-test 2000 --tag s17o1 --seed-offset 1 --out-root data/inrbench
+fitting: <repo>/scripts/03_generate_inrbench.py --dataset mnist --protocol P-shared-det --steps 300 --n-train 10000 --n-val 2000 --n-test 2000 --tag s17o1 --seed-offset 1 --out-root data/inrbench
 shard_000000: 256 fits in 5.8s  psnr_med=36.0dB  overall 44.1 fits/s
 shard_000256: 256 fits in 4.5s  psnr_med=35.7dB  overall 49.4 fits/s
 shard_000512: 256 fits in 4.6s  psnr_med=36.0dB  overall 51.5 fits/s
@@ -64,7 +64,7 @@ shard_013824: 176 fits in 4.6s  psnr_med=35.6dB  overall 42.2 fits/s
   "grad_norm_median": 0.0090964799746871,
   "grad_norm_q95": 0.01281622489914298
 }
-fitting: /Users/dmr/Development/Projects/ai-research/project-siren-gap/scripts/03_generate_inrbench.py --dataset mnist --protocol P-shared-det --steps 300 --n-train 10000 --n-val 2000 --n-test 2000 --tag s17o2 --seed-offset 2 --out-root data/inrbench
+fitting: <repo>/scripts/03_generate_inrbench.py --dataset mnist --protocol P-shared-det --steps 300 --n-train 10000 --n-val 2000 --n-test 2000 --tag s17o2 --seed-offset 2 --out-root data/inrbench
 shard_000000: 256 fits in 6.7s  psnr_med=33.9dB  overall 38.1 fits/s
 shard_000256: 256 fits in 6.7s  psnr_med=33.9dB  overall 38.1 fits/s
 shard_000512: 256 fits in 6.6s  psnr_med=34.1dB  overall 38.3 fits/s
@@ -133,5 +133,5 @@ W3 10.86
 draw 0: W1 88.50  W5 49.82  f(W5) 0.502  delta_sym 77.56  travel 0.186
 draw 1: W1 84.61  W5 45.90  f(W5) 0.475  delta_sym 70.23  travel 0.210
 draw 2: W1 88.46  W5 54.37  f(W5) 0.561  delta_sym 75.58  travel 0.206
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s17/theta0_mnist.json
+wrote <repo>/results/s17/theta0_mnist.json
 === done Sun Sep 13 18:35:55 CEST 2026 ===

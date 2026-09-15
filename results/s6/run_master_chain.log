@@ -12,7 +12,7 @@ baseline (no scatter): 13.92
   B=  3 invariants    35.37
   B=  3 delta_sym = -0.50 pts   (functional gap 4.35e-06)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s6/orbit_mnist_prandom.json
+wrote <repo>/results/s6/orbit_mnist_prandom.json
 --- S7: rung W10c, MNIST Mon Aug  3 16:26:17 +03 2026 ---
 === rung W10c ===
   W10c seed 0: test 24.26 (val 24.60, 14 ep)
@@ -52,7 +52,7 @@ baseline (no scatter): 94.36
   B= 10 invariants    72.44
   B= 10 delta_sym = +79.09 pts   (functional gap 8.70e-06)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s6/orbit_mnist_perm.json
+wrote <repo>/results/s6/orbit_mnist_perm.json
 --- S6 H-S6-5: W11b on unscattered P-shared-det Mon Aug  3 17:14:46 +03 2026 ---
   W11b seed 0: test 84.27 (val 86.28, 17 ep)
   W11b seed 1: test 84.79 (val 85.84, 25 ep)
@@ -61,5 +61,5 @@ wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s6/o
   W11b seed 4: test 85.56 (val 87.18, 41 ep)
 W11b: 84.81  f=0.8813  params=1,845,210  (4151s)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W11_shareddet.json
+wrote <repo>/results/ladder/mnist/W11_shareddet.json
 === master chain complete Mon Aug  3 18:23:59 +03 2026 ===

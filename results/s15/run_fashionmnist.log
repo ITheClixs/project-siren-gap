@@ -19,5 +19,5 @@ baseline 82.97
   full_draw9012            acc  17.83  delta +65.14  gap 1.3e-05
   non_group_scramble       acc  82.25  delta  +0.72  gap 2.5e+00
 shapley: {'sigma': 20.47, 'rho': 4.9, 'tau': 0.43, 'pi': 39.05} sum 64.85
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s15/factorial_fashionmnist.json
+wrote <repo>/results/s15/factorial_fashionmnist.json
 === done Sun Sep 13 20:42:37 CEST 2026 ===

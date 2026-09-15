@@ -20,4 +20,4 @@ baseline (no scatter): 94.36
   B= 10 invariants    72.39
   B= 10 delta_sym = +64.08 pts   (functional gap 9.36e-06)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/s6/orbit_mnist_noperm.json
+wrote <repo>/results/s6/orbit_mnist_noperm.json

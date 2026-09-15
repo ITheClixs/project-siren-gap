@@ -7,5 +7,5 @@ W12_dwsbench_w0: width 186 (capacity rule against the decoder's 1,873,162)
   W12_dwsbench_w0 seed 4: test 93.96 (val 92.25, 47 ep)
 W12_dwsbench_w0: 93.51  f=0.9895  params=1,874,898  (15133s)
 
-wrote /Users/dmr/Development/Projects/ai-research/project-siren-gap/results/ladder/mnist/W12_dwsbench_w0.json
+wrote <repo>/results/ladder/mnist/W12_dwsbench_w0.json
 === done Sun Sep 13 14:37:11 CEST 2026 ===
