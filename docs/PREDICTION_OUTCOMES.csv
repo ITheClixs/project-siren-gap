@@ -180,3 +180,7 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-09-15,H-S19-10 off-grid over on-grid discrepancy ratio,interval,3,1.2,10,3.158,HIT,0.1575,,median over 2000 images; P-random-K views k0 and k1
 2026-09-15,H-S19-12 fraction of fitted INRs with delta<1e-3,interval,0.01,0,0.08,0.0003,HIT,0.0097,,same fraction for fresh initializations
 2026-09-15,H-S19-13 fraction of MNIST benchmark layer-1 biases outside fold interval,interval,0.2,0.02,0.6,0.02175,HIT,0.1783,,49% of INRs have at least one
+2026-09-16,H-S19-5 damage sign dose p=0.25,interval,35,10,60,13.2,HIT,21.8,,
+2026-09-16,H-S19-6 damage relabelling dose p=0.25,interval,45,15,70,14.91,MISS,30.09,,missed low
+2026-09-16,H-S19-7 damage layer-two non-group scramble,interval,40,10,75,9.02,MISS,30.98,,missed low; function-changing reorderings cost little
+2026-09-16,P-S19-A probability damage monotone in p for both doses,probability,0.85,,,1,NA,,0.0225,
