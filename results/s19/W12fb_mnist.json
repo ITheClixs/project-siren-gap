@@ -1,0 +1,38 @@
+{
+  "dataset": "mnist",
+  "protocol": "P-random",
+  "prereg": "docs/prereg/S19.md",
+  "W1": 94.35600000000001,
+  "W3": 13.922,
+  "width": 186,
+  "reader_params": 1873782,
+  "graded": true,
+  "raw_bias": false,
+  "fold_bias": true,
+  "u_mode": "full",
+  "acc": [
+    73.58,
+    72.86,
+    73.46,
+    73.31,
+    73.35
+  ],
+  "mean": 73.31199999999998,
+  "ci95_bootstrap": [
+    73.078,
+    73.488
+  ],
+  "recovery_fraction": 0.7383705743218778,
+  "f_ci95": [
+    0.7363157721898116,
+    0.7407079718086076
+  ],
+  "epochs_ran": [
+    24,
+    24,
+    25,
+    26,
+    24
+  ],
+  "wallclock_s": 5247.61958193779
+}

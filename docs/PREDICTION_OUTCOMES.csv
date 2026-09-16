@@ -184,3 +184,5 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-09-16,H-S19-6 damage relabelling dose p=0.25,interval,45,15,70,14.91,MISS,30.09,,missed low
 2026-09-16,H-S19-7 damage layer-two non-group scramble,interval,40,10,75,9.02,MISS,30.98,,missed low; function-changing reorderings cost little
 2026-09-16,P-S19-A probability damage monotone in p for both doses,probability,0.85,,,1,NA,,0.0225,
+2026-09-16,H-S19-11 s of fold-then-grade,interval,0.85,0.65,0.95,0.7384,HIT,0.1116,,73.31% over five seeds; W12 0.917
+2026-09-16,P-S19-C probability fold-then-grade within 0.03 of s(W12),probability,0.40,,,0,NA,,0.16,registered continuity rule not triggered
