@@ -1,3 +1,9 @@
+> **Superseded.** This is the first version of the argument, kept as the record of how the route
+> was found. It contains the defects an external review identified (a sign recovery that uses one
+> odd grid, an unobservable zero-frequency coefficient, a fixed finite Kruskal cutoff, a projection to
+> one line). The canonical statement and proof are Appendix C of the TMLR manuscript; `-v2` is the
+> intermediate restructuring.
+
 # PO-2 deep case: a proof of generic identifiability at $L = 2$
 
 Status: complete argument. The asymptotic of §5 is pointwise in $u$ and not uniform, which §6 does

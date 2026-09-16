@@ -119,3 +119,24 @@ def test_phasor_reader_flops_are_ordered_sensibly() -> None:
     assert raw < graph < phasor, f"raw {raw}, graph {graph}, phasor {phasor}"
     for cost in (weight_phasor_reader(arch, w) for w in (64, 128, 256)):
         assert cost["per_inr"] > 0 and cost["reader"] > cost["preprocess"]
+
+
+def test_w12_analytic_cost_equals_counted_forward():
+    """The analytic W12 reader cost must equal PyTorch's FLOP count of the actual forward pass.
+
+    An external review found the formula double-counting the graded mixing maps and omitting the
+    four message projections (163.3 against 145.7 MFLOP at width 186). Pin exact agreement at small
+    widths so the accounting cannot drift from the module again.
+    """
+    from torch.utils.flop_counter import FlopCounterMode
+
+    from sirengap.eval.flops import Arch, weight_phasor_reader
+    from sirengap.fitting.batched import absorb_omega, init_from_seeds
+    from sirengap.models.phasor import PhasorGradedReader, phasor_features
+
+    for w, d in ((8, 10), (16, 24)):
+        feats = phasor_features(absorb_omega(init_from_seeds([0], 2, (w, w), 1)))
+        model = PhasorGradedReader.from_features(feats, width=d, n_classes=10).eval()
+        with torch.no_grad(), FlopCounterMode(display=False) as counter:
+            model(feats)
+        assert weight_phasor_reader(Arch(width=w), d)["reader"] == counter.get_total_flops()

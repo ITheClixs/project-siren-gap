@@ -1,0 +1,14 @@
+{
+  "mnist": {
+    "c": 1,
+    "beta_only_qda_test_acc": 11.35
+  },
+  "fashionmnist": {
+    "c": 1,
+    "beta_only_qda_test_acc": 10.8
+  },
+  "cifar10": {
+    "c": 3,
+    "beta_only_qda_test_acc": 13.22
+  }
+}

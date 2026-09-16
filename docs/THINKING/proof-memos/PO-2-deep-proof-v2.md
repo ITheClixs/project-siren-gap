@@ -1,3 +1,8 @@
+> **Canonical version.** The statement and proof in Appendix C of the TMLR manuscript are the
+> canonical ones. They sharpen this memo in one respect: the theorem there is one-sided (only
+> $\theta$ is assumed generic; $\theta'$ is any depth-two network no wider than it), whereas §7 below
+> assumes both networks satisfy (A1). Where the two differ, Appendix C governs.
+
 # PO-2 at depth two: a restructured proof (v2)
 
 Status: complete argument, restructured 2026-09-11 after a line-by-line audit of v1

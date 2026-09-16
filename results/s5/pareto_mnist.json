@@ -172,7 +172,7 @@
       "name": "W12 phasor-graded",
       "access": "weight",
       "acc": 87.64200000000001,
-      "flops": 163330520,
+      "flops": 145653080,
       "amortized": 0,
       "preprocess": 2432
     }
