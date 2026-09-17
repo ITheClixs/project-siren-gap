@@ -1,0 +1,38 @@
+{
+  "dataset": "fashionmnist",
+  "protocol": "P-shared-det",
+  "prereg": "docs/prereg/S19.md",
+  "W1": 82.96799999999999,
+  "W3": 12.655999999999999,
+  "width": 186,
+  "reader_params": 1874898,
+  "graded": true,
+  "raw_bias": false,
+  "fold_bias": false,
+  "u_mode": "full",
+  "acc": [
+    81.07,
+    81.09,
+    81.71,
+    81.42,
+    80.82
+  ],
+  "mean": 81.22200000000001,
+  "ci95_bootstrap": [
+    80.97399999999999,
+    81.52399999999999
+  ],
+  "recovery_fraction": 0.9751789728417475,
+  "f_ci95": [
+    0.972214526705443,
+    0.9793051819251228
+  ],
+  "epochs_ran": [
+    18,
+    21,
+    19,
+    15,
+    30
+  ],
+  "wallclock_s": 70265.84892368317
+}
