@@ -59,6 +59,9 @@ def main() -> None:
     ap.add_argument("--raw-bias", action="store_true",
                     help="audit the third arm (W12b): same graded skeleton, unlifted bias, which "
                          "must move under a winding or the control is vacuous (S10 section 5)")
+    ap.add_argument("--active-gates", action="store_true",
+                    help="draw every message gate from N(0,1); the reader initializes them at zero, "
+                         "which leaves the message channels out of the audit")
     args = ap.parse_args()
 
     cache = CorpusCache(Path(args.root) / args.dataset, args.dataset)
@@ -73,6 +76,12 @@ def main() -> None:
     model = PhasorGradedReader.from_features(base, width=args.width,
                                              graded=not args.ungraded)
     model.eval()
+    if args.active_gates:
+        gate_gen = torch.Generator().manual_seed(1)
+        with torch.no_grad():
+            for name, prm in model.named_parameters():
+                if name.endswith(".scale"):
+                    prm.copy_(torch.randn(prm.shape, generator=gate_gen))
     with torch.no_grad():
         logits = model(apply_scale(base, stats))
 
@@ -80,6 +89,7 @@ def main() -> None:
         "dataset": args.dataset, "protocol": args.protocol,
         "n_inrs": int(params.batch), "width": args.width, "tolerance": TOL,
         "graded": not args.ungraded, "raw_bias": bool(args.raw_bias),
+        "active_gates": bool(args.active_gates),
         "note": "logit move under group elements, on fitted networks; a random reader, since "
                 "invariance is a property of the architecture and not of trained weights",
         "by_winding": {},
@@ -122,6 +132,7 @@ def main() -> None:
     # Non-default protocols get their own file so an audit of another corpus never overwrites the
     # registered P-random artifact.
     suffix = "" if args.protocol == "P-random" else f"_{args.protocol}"
+    suffix += "_active_gates" if args.active_gates else ""
     path = out_dir / f"{tag}_invariance_{args.dataset}{suffix}.json"
     path.write_text(json.dumps(report, indent=2))
     print(f"\nwrote {path}")
