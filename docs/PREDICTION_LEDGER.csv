@@ -164,3 +164,4 @@ date,study,quantity,point,lo80,hi80,rationale-hash
 2026-09-15,S19,P-S19-A probability damage monotone in p for both doses,P=0.85,NA,NA,867d9cbdbe769f5a
 2026-09-15,S19,P-S19-B probability W12 beats ScaleGMN on MNIST P-random,P=0.55,NA,NA,867d9cbdbe769f5a
 2026-09-15,S19,P-S19-C probability fold-then-grade within 0.03 of s(W12),P=0.40,NA,NA,867d9cbdbe769f5a
+2026-09-17,S19,H-S19-16 s of W11a with pooled edge statistics MNIST P-random,0.265,0.23,0.30,109620cab96c41ce

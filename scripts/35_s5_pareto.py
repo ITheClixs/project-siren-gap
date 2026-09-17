@@ -47,6 +47,7 @@ from sirengap.eval.flops import (  # noqa: E402
     weight_phasor_reader,
     weight_invariants,
     weight_raw,
+    weight_raw_graph_reader,
 )
 from sirengap.eval.probes import ProbeReader  # noqa: E402
 from sirengap.eval.rungs import SPLITS, CorpusCache  # noqa: E402
@@ -149,10 +150,10 @@ def weight_points(dataset: str, arch: Arch) -> list[dict]:
     if w11.exists():
         v = json.loads(w11.read_text())["variants"]
         pts.append(("W11a equivariant (raw)", v["W11a"]["mean"],
-                    weight_equivariant_reader(arch, v["W11a"]["width"],
-                                              invariant_features=False, n_global=0)))
+                    weight_raw_graph_reader(arch, v["W11a"]["width"])))
+        # W11b's global block is layer2_features: 4 x width entries for an L=2 network
         pts.append(("W11b equivariant (invariant)", v["W11b"]["mean"],
-                    weight_equivariant_reader(arch, v["W11b"]["width"])))
+                    weight_equivariant_reader(arch, v["W11b"]["width"], n_global=4 * arch.width)))
 
     w12_path = ROOT / "results" / "ladder" / dataset / "W12.json"
     if w12_path.exists():

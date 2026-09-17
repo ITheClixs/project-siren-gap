@@ -140,3 +140,38 @@ def test_w12_analytic_cost_equals_counted_forward():
         with torch.no_grad(), FlopCounterMode(display=False) as counter:
             model(feats)
         assert weight_phasor_reader(Arch(width=w), d)["reader"] == counter.get_total_flops()
+
+
+def test_graph_reader_analytic_costs_equal_counted_forward():
+    """W11a and W11b are priced by the modules that actually run.
+
+    An external review found W11a priced with W11b's multi-relational architecture (247.4 against
+    96.5 MFLOP at width 424). Pin both graph readers to PyTorch's count of their own forward pass.
+    """
+    from torch.utils.flop_counter import FlopCounterMode
+
+    from sirengap.eval.flops import Arch, weight_equivariant_reader, weight_raw_graph_reader
+    from sirengap.fitting.batched import absorb_omega, init_from_seeds
+    from sirengap.models.readers import (
+        InvariantGraphReader,
+        RawGraphReader,
+        invariant_graph_features,
+        raw_graph_features,
+    )
+
+    for w, d in ((8, 10), (16, 24)):
+        params = absorb_omega(init_from_seeds([0], 2, (w, w), 1))
+        raw = raw_graph_features(params)
+        model_a = RawGraphReader(m=raw["x1"].shape[2] - 1, c=raw["x2"].shape[2] - 1, width=d).eval()
+        with torch.no_grad(), FlopCounterMode(display=False) as counter:
+            model_a(raw)
+        assert weight_raw_graph_reader(Arch(width=w), d)["reader"] == counter.get_total_flops()
+
+        inv = invariant_graph_features(params)
+        model_b = InvariantGraphReader(
+            n_node=inv["x1"].shape[2], n_edge=inv["e"].shape[3], n_global=inv["g"].shape[1], width=d
+        ).eval()
+        with torch.no_grad(), FlopCounterMode(display=False) as counter:
+            model_b(inv)
+        cost_b = weight_equivariant_reader(Arch(width=w), d, n_global=inv["g"].shape[1])
+        assert cost_b["reader"] == counter.get_total_flops()

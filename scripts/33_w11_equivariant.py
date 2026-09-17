@@ -149,6 +149,7 @@ def main() -> None:
     ap.add_argument("--root", default="data/inrbench")
     ap.add_argument("--protocol", default="P-random",
                     help="S6 arm (iii) needs the unscattered P-shared-det baseline for H-S6-5")
+    ap.add_argument("--prereg", default="docs/prereg/S1-w11.md")
     ap.add_argument("--out-name", default="W11",
                     help="cell name under results/ladder/<dataset>; never overwrite W11.json "
                          "with a non-default protocol")
@@ -160,7 +161,7 @@ def main() -> None:
     anchors = {r: json.loads((ladder / f"{r}.json").read_text())["acc"] for r in ("W1", "W3")}
     w1, w3 = np.array(anchors["W1"]), np.array(anchors["W3"])
 
-    out = {"dataset": args.dataset, "prereg": "docs/prereg/S1-w11.md",
+    out = {"dataset": args.dataset, "prereg": args.prereg,
            "protocol": args.protocol,
            "W1": float(w1.mean()), "W3": float(w3.mean()), "variants": {}}
 

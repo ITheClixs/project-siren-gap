@@ -127,11 +127,31 @@ def weight_invariants(arch: Arch, encoding_dim: int, n_classes: int = 10) -> dic
     return {"preprocess": pre, "reader": head, "per_inr": pre + head, "amortized": 0}
 
 
+def weight_raw_graph_reader(
+    arch: Arch, width: int, rounds: int = 2, n_classes: int = 10,
+) -> dict[str, int]:
+    """W11a: bipartite message passing on the raw weights of an L=2 network.
+
+    Mirrors `RawGraphReader`: node encoders for both layers, then per round two edge-weighted
+    aggregations over the n1 x n2 coupling matrix and a linear update of each layer's nodes.
+    """
+    n1 = n2 = arch.width
+    d = width
+    enc = MAC * n1 * (arch.in_dim + 1) * d + MAC * n2 * (1 + arch.out_dim) * d
+    per_round = 2 * MAC * n1 * n2 * d + MAC * (n1 + n2) * 2 * d * d
+    head = mlp_forward([4 * d, 256, n_classes])
+    total = enc + rounds * per_round + head
+    return {"preprocess": 0, "reader": total, "per_inr": total, "amortized": 0}
+
+
 def weight_equivariant_reader(
     arch: Arch, width: int, rounds: int = 2, relations: int = 8,
     n_global: int = 320, invariant_features: bool = True, n_classes: int = 10,
 ) -> dict[str, int]:
-    """W11: a graph reader over the weights. Message passing dominates."""
+    """W11b: multi-relational message passing over W10's invariants. Message passing dominates.
+
+    This is `InvariantGraphReader`; W11a is priced by `weight_raw_graph_reader`.
+    """
     w, d = arch.width, width
     pre = 0
     if invariant_features:

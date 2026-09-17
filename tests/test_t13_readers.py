@@ -15,9 +15,12 @@ import pytest
 import torch
 
 from conftest import random_params
+from sirengap.models.params import SirenParams
 from sirengap.models.readers import (
     InvariantGraphReader,
     RawGraphReader,
+    apply_stats,
+    feature_stats,
     invariant_graph_features,
     raw_graph_features,
 )
@@ -61,6 +64,33 @@ def test_t13a_raw_reader_is_permutation_invariant(trial: int) -> None:
         moved = reader(_dbl(raw_graph_features(apply(_perm_only(params, trial), params))))
     gap = (base - moved).abs().max().item()
     assert gap < 1e-8, f"W11a is not permutation-invariant: {gap:.2e}"
+
+
+def _slot_heterogeneous(params: SirenParams) -> SirenParams:
+    """Scale each layer-one slot's outgoing column differently, so per-slot statistics differ."""
+    (w1, b1), (w2, b2) = params.hidden
+    scale = torch.linspace(0.2, 5.0, w2.shape[2], dtype=w2.dtype)
+    return SirenParams(hidden=((w1, b1), (w2 * scale, b2)), w_out=params.w_out, b_out=params.b_out)
+
+
+@pytest.mark.parametrize("trial", range(3))
+def test_t13a2_standardized_raw_pipeline_is_permutation_invariant(trial: int) -> None:
+    """Invariance must survive the training-time standardization, not only the bare reader.
+
+    Statistics are fitted on a batch whose layer-one slots differ in scale, then applied to one
+    network and to a relabelling of it. Statistics indexed by neuron slot do not commute with the
+    relabelling; statistics shared across slots do.
+    """
+    train = _slot_heterogeneous(random_params(64, 2, (8, 8), 1, seed=900 + trial))
+    stats = feature_stats({k: v.double() for k, v in raw_graph_features(train).items()})
+    params = _slot_heterogeneous(random_params(3, 2, (8, 8), 1, seed=950 + trial))
+    reader = _raw_reader(params)
+    moved_params = apply(_perm_only(params, trial), params)
+    with torch.no_grad():
+        base = reader(apply_stats(_dbl(raw_graph_features(params)), stats))
+        moved = reader(apply_stats(_dbl(raw_graph_features(moved_params)), stats))
+    gap = (base - moved).abs().max().item()
+    assert gap < 1e-8, f"standardized W11a pipeline is not permutation-invariant: {gap:.2e}"
 
 
 def test_t13b_raw_reader_is_not_dinf_invariant() -> None:

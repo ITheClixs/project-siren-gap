@@ -156,7 +156,7 @@
       "name": "W11a equivariant (raw)",
       "access": "weight",
       "acc": 35.26199999999999,
-      "flops": 247411200,
+      "flops": 96527872,
       "amortized": 0,
       "preprocess": 0
     },
@@ -164,7 +164,7 @@
       "name": "W11b equivariant (invariant)",
       "access": "weight",
       "acc": 56.242000000000004,
-      "flops": 119086080,
+      "flops": 118987776,
       "amortized": 0,
       "preprocess": 77824
     },

@@ -40,7 +40,9 @@ def raw_graph_features(params: SirenParams) -> dict[str, Tensor]:
 
     x1 [B, n1, m+1]: each layer-1 neuron's incoming row and bias.
     x2 [B, n2, 1+c]: each layer-2 neuron's bias and outgoing column.
-    e  [B, n2, n1]:  W2, the edges between them.
+    e  [B, n2, n1, 1]: W2, the edges between them, with a trailing channel axis so that
+       `feature_stats` pools its statistics over both neuron axes. Statistics indexed by
+       neuron slot would not commute with a relabelling of the neurons.
     """
     if params.n_layers != 2:
         raise ValueError(f"W11 readers are derived for L=2 (got L={params.n_layers})")
@@ -50,7 +52,7 @@ def raw_graph_features(params: SirenParams) -> dict[str, Tensor]:
     return {
         "x1": torch.cat([w1, b1[:, :, None]], dim=2),
         "x2": torch.cat([b2[:, :, None], u.transpose(1, 2)], dim=2),
-        "e": w2,
+        "e": w2[..., None],
     }
 
 
@@ -83,7 +85,11 @@ def invariant_graph_features(params: SirenParams) -> dict[str, Tensor]:
 
 
 def feature_stats(feats: dict[str, Tensor]) -> dict[str, tuple[Tensor, Tensor]]:
-    """Per-channel mean/std over batch and index axes, for input standardisation."""
+    """Per-channel mean/std over batch and index axes, for input standardisation.
+
+    Every tensor must carry a trailing channel axis: all other axes are pooled, so the statistics
+    are shared across neuron slots and commute with neuron permutations.
+    """
     stats = {}
     for k, v in feats.items():
         dims = tuple(range(v.ndim - 1))
@@ -126,7 +132,7 @@ class RawGraphReader(nn.Module):
     def forward(self, f: dict[str, Tensor]) -> Tensor:
         h1 = self.enc1(f["x1"])  # [B, n1, d]
         h2 = self.enc2(f["x2"])  # [B, n2, d]
-        e = f["e"]  # [B, n2, n1]
+        e = f["e"][..., 0]  # [B, n2, n1]
         n1, n2 = h1.shape[1], h2.shape[1]
         for r in range(self.rounds):
             # edge-weighted aggregation: covariant under independent permutations of both axes
