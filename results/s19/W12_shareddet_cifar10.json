@@ -1,0 +1,38 @@
+{
+  "dataset": "cifar10",
+  "protocol": "P-shared-det",
+  "prereg": "docs/prereg/S19.md",
+  "W1": 44.288000000000004,
+  "W3": 12.644,
+  "width": 186,
+  "reader_params": 1875270,
+  "graded": true,
+  "raw_bias": false,
+  "fold_bias": false,
+  "u_mode": "full",
+  "acc": [
+    48.05,
+    47.83,
+    48.0,
+    49.24,
+    48.07
+  ],
+  "mean": 48.238,
+  "ci95_bootstrap": [
+    47.91799999999999,
+    48.758
+  ],
+  "recovery_fraction": 1.1248361478051874,
+  "f_ci95": [
+    1.1085119741096432,
+    1.1444981281180673
+  ],
+  "epochs_ran": [
+    19,
+    9,
+    12,
+    16,
+    12
+  ],
+  "wallclock_s": 2965.6280369758606
+}
