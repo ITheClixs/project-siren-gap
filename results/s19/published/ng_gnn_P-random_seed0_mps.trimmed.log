@@ -1,0 +1,23 @@
+wandb: Tracking run with wandb version 0.30.0
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+wandb: Run data is saved locally in <repo-root>/external/neural-graphs/wandb/offline-run-20260917_175801-rvtvwlop
+wandb: View this run in the terminal with `wandb leet`
+<repo-root>/external/.venv-ext/lib/python3.11/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[2026-09-17 17:58:02,733][root][INFO] - train size 55000, val size 5000, test size 10000
+[2026-09-17 17:58:02,756][root][INFO] - weight shapes: (torch.Size([2, 32]), torch.Size([32, 32]), torch.Size([32, 1])), bias shapes: (torch.Size([32]), torch.Size([32]), torch.Size([1]))
+<repo-root>/external/.venv-ext/lib/python3.11/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[2026-09-17 17:58:03,172][root][INFO] - number of parameters: 92010
+  0%|          | 0/50 [00:00<?, ?it/s]<repo-root>/external/neural-graphs/experiments/inr_classification/main.py:170: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler(**cfg.gradscaler)
+<repo-root>/external/.venv-ext/lib/python3.11/site-packages/torch/utils/data/dataloader.py:1102: UserWarning: 'pin_memory' argument is set as true but not supported on MPS now, device pinned memory won't be used.
+  super().__init__(loader)
+... progress lines elided ...
+[49 430], train loss: 1.314, test_loss: 1.552, test_acc: 0.428: 100%|██████████| 50/50 [21:54:59<00:00, 1578.00s/it]
+[49 430], train loss: 1.314, test_loss: 1.552, test_acc: 0.428: 100%|██████████| 50/50 [21:54:59<00:00, 1578.00s/it]
+[1;34mwandb[0m: 
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync <repo-root>/external/neural-graphs/wandb/offline-run-20260917_175801-rvtvwlop[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20260917_175801-rvtvwlop/logs[0m
+done Fri Sep 18 15:53:03 CEST 2026

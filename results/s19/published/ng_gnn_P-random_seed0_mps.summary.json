@@ -1,0 +1,16 @@
+{
+  "reader": "NG-GNN (kofinas2024graph), public code, model=pna",
+  "corpus": "in-house MNIST P-random, 55k/5k/10k, canonical form",
+  "deviation_from_prereg": "one seed (registered three), 50 epochs (registered full schedule), P-random only",
+  "device": "Apple MPS",
+  "seed": 0,
+  "epochs": 50,
+  "wallclock_h": 21.92,
+  "test_acc": 42.8,
+  "W1": 94.356,
+  "W3": 13.922,
+  "s": 0.359,
+  "prereg": "docs/prereg/S19.md",
+  "arm": "A9",
+  "note": "final-epoch test accuracy as printed by the authors' training loop; reduced budget, so a lower bound on what this reader reaches"
+}
