@@ -191,3 +191,4 @@ date_scored,prediction,kind,point,lo80,hi80,observed,verdict,abs_error,brier,not
 2026-09-17,H-S19-3 W12 residual FashionMNIST,interval,9,3,20,10.348,HIT,1.348,,shared-det 81.22 (five seeds) minus P-random 70.87
 2026-09-17,H-S19-4 W12 residual CIFAR-10,interval,4,0,12,5.078,HIT,1.078,,shared-det 48.24 (five seeds) minus P-random 43.16; shared-det W12 exceeds the raw anchor W1 44.29
 2026-09-18,H-S19-15 s of NG-GNN on MNIST P-random,interval,0.55,0.20,0.90,0.359,HIT,0.191,,42.8% after 50 epochs one seed on MPS; reduced budget so a lower bound; narrowing rule needs 0.867 and is not triggered
+2026-09-19,H-S19-16 s of W11a with pooled edge statistics MNIST P-random,interval,0.265,0.23,0.30,0.2606,HIT,0.0044,,34.88% over five seeds; the defective run gave 0.2653; narrowing rule not triggered

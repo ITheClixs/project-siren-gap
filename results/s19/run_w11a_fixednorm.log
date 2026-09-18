@@ -1,0 +1,10 @@
+=== S19 addendum 01 W11a fixed normalization Sat Sep 19 01:04:00 CEST 2026
+  W11a seed 0: test 33.88 (val 35.30, 14 ep)
+  W11a seed 1: test 35.10 (val 35.80, 11 ep)
+  W11a seed 2: test 35.41 (val 36.20, 14 ep)
+  W11a seed 3: test 34.92 (val 35.78, 11 ep)
+  W11a seed 4: test 35.11 (val 35.40, 14 ep)
+W11a: 34.88  f=0.2606  params=1,879,874  (2968s)
+
+wrote <repo-root>/project-siren-gap/results/ladder/mnist/W11a_fixednorm.json
+=== done Sat Sep 19 01:53:35 CEST 2026
