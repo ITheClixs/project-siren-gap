@@ -1,0 +1,20 @@
+{
+  "reader": "ScaleGMN (kalogeropoulos2024scalegmn), public code, mnist_cls config",
+  "corpus": "in-house MNIST P-shared-det, 55k/5k/10k, canonical form with the bias fold applied by our exporter",
+  "deviation_from_prereg": "UNREGISTERED exploratory arm: S19 A9 registered P-random only. One seed, 20 epochs against the config default 200.",
+  "device": "Apple MPS",
+  "seed": 0,
+  "epochs": 20,
+  "wallclock_h": 10.5,
+  "model_selection": "best validation epoch (16): val 0.9726",
+  "test_acc": 96.36,
+  "reader_params": 1772042,
+  "w12_params": 1873162,
+  "companion_run": "results/s19/published/scalegmn_P-random-fold_seed0.summary.json (test 94.76)",
+  "scalegmn_residual_shared_minus_random": 1.6,
+  "w12_residual_shared_minus_random": 7.82,
+  "w12_shared": 95.46,
+  "w12_random": 87.64,
+  "W1_shared": 94.356,
+  "note": "the residual of S12/S19 is reader-relative: a published reader at matched capacity loses 1.60 points between the protocols where W12 loses 7.82"
+}

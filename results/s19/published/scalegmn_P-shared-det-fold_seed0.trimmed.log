@@ -1,0 +1,61 @@
+batch_size: 128
+  dataset: labeled_mnist_inr
+  dataset_path: ./data/sirengap-mnist-P-shared-det-fold/
+  num_epochs: 20
+  seed: 0
+[info] Setting all random seeds 0
+net params: 1,772,042
+Validation after epoch 0:
+  epoch 0: val_acc 0.8128  test_acc 0.7913  train_acc 0.7900
+  new best: val 0.8128 -> test 0.7913
+Validation after epoch 1:
+  epoch 1: val_acc 0.8746  test_acc 0.8554  train_acc 0.8548
+  new best: val 0.8746 -> test 0.8554
+Validation after epoch 2:
+  epoch 2: val_acc 0.9150  test_acc 0.9068  train_acc 0.8996
+  new best: val 0.9150 -> test 0.9068
+Validation after epoch 3:
+  epoch 3: val_acc 0.9192  test_acc 0.9064  train_acc 0.9170
+  new best: val 0.9192 -> test 0.9064
+Validation after epoch 4:
+  epoch 4: val_acc 0.9458  test_acc 0.9358  train_acc 0.9370
+  new best: val 0.9458 -> test 0.9358
+Validation after epoch 5:
+  epoch 5: val_acc 0.9540  test_acc 0.9443  train_acc 0.9434
+  new best: val 0.9540 -> test 0.9443
+Validation after epoch 6:
+  epoch 6: val_acc 0.9482  test_acc 0.9447  train_acc 0.9496
+Validation after epoch 7:
+  epoch 7: val_acc 0.9590  test_acc 0.9518  train_acc 0.9584
+  new best: val 0.9590 -> test 0.9518
+Validation after epoch 8:
+  epoch 8: val_acc 0.9594  test_acc 0.9492  train_acc 0.9580
+  new best: val 0.9594 -> test 0.9492
+Validation after epoch 9:
+  epoch 9: val_acc 0.9558  test_acc 0.9500  train_acc 0.9624
+Validation after epoch 10:
+  epoch 10: val_acc 0.9610  test_acc 0.9513  train_acc 0.9658
+  new best: val 0.9610 -> test 0.9513
+Validation after epoch 11:
+  epoch 11: val_acc 0.9632  test_acc 0.9562  train_acc 0.9678
+  new best: val 0.9632 -> test 0.9562
+Validation after epoch 12:
+  epoch 12: val_acc 0.9642  test_acc 0.9592  train_acc 0.9788
+  new best: val 0.9642 -> test 0.9592
+Validation after epoch 13:
+  epoch 13: val_acc 0.9696  test_acc 0.9603  train_acc 0.9748
+  new best: val 0.9696 -> test 0.9603
+Validation after epoch 14:
+  epoch 14: val_acc 0.9610  test_acc 0.9584  train_acc 0.9760
+Validation after epoch 15:
+  epoch 15: val_acc 0.9716  test_acc 0.9624  train_acc 0.9800
+  new best: val 0.9716 -> test 0.9624
+Validation after epoch 16:
+  epoch 16: val_acc 0.9726  test_acc 0.9636  train_acc 0.9834
+  new best: val 0.9726 -> test 0.9636
+Validation after epoch 17:
+  epoch 17: val_acc 0.9682  test_acc 0.9654  train_acc 0.9866
+Validation after epoch 18:
+  epoch 18: val_acc 0.9660  test_acc 0.9635  train_acc 0.9796
+Validation after epoch 19:
+  epoch 19: val_acc 0.9664  test_acc 0.9604  train_acc 0.9768
