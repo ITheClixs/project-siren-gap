@@ -1,0 +1,37 @@
+{
+  "reader": "ScaleGMN (kalogeropoulos2024scalegmn), public code, mnist_cls config",
+  "corpus": "in-house MNIST P-random, 55k/5k/10k, canonical form with the bias fold applied by our exporter",
+  "deviation_from_prereg": "one seed (registered three), 20 epochs (config default 200), P-random only",
+  "device": "Apple MPS",
+  "seed": 0,
+  "epochs": 20,
+  "wallclock_h": 10.9,
+  "model_selection": "best validation epoch (18): val 0.9574",
+  "test_acc": 94.76,
+  "W1": 94.356,
+  "W3": 13.922,
+  "s": 1.005,
+  "per_epoch_best_val": [
+    {
+      "epoch": 12,
+      "val": 95.12,
+      "test": 93.71
+    },
+    {
+      "epoch": 14,
+      "val": 95.38,
+      "test": 94.93
+    },
+    {
+      "epoch": 18,
+      "val": 95.74,
+      "test": 94.76
+    }
+  ],
+  "prereg": "docs/prereg/S19.md",
+  "arm": "A9",
+  "note": "first run of this arm computed metrics but reported them only through wandb, which was disabled; rerun with printing patched in",
+  "reader_params": 1772042,
+  "capacity_note": "within 5.4% of the 1,873,162 every reader in the W12 table is sized to, so the comparison is capacity-matched",
+  "w12_params": 1873162
+}

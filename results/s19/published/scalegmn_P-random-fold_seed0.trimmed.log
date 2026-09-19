@@ -1,0 +1,36 @@
+Len train set: 55000
+Len val set: 5000
+Len test set: 10000
+  epoch 0: val_acc 0.5986  test_acc 0.5905  train_acc 0.5804
+  new best: val 0.5986 -> test 0.5905
+  epoch 1: val_acc 0.7930  test_acc 0.7653  train_acc 0.7532
+  new best: val 0.7930 -> test 0.7653
+  epoch 2: val_acc 0.8302  test_acc 0.8183  train_acc 0.8322
+  new best: val 0.8302 -> test 0.8183
+  epoch 3: val_acc 0.8894  test_acc 0.8718  train_acc 0.8820
+  new best: val 0.8894 -> test 0.8718
+  epoch 4: val_acc 0.9020  test_acc 0.8902  train_acc 0.8998
+  new best: val 0.9020 -> test 0.8902
+  epoch 5: val_acc 0.9140  test_acc 0.8983  train_acc 0.9136
+  new best: val 0.9140 -> test 0.8983
+  epoch 6: val_acc 0.9362  test_acc 0.9217  train_acc 0.9344
+  new best: val 0.9362 -> test 0.9217
+  epoch 7: val_acc 0.9378  test_acc 0.9242  train_acc 0.9328
+  new best: val 0.9378 -> test 0.9242
+  epoch 8: val_acc 0.9284  test_acc 0.9215  train_acc 0.9404
+  epoch 9: val_acc 0.9428  test_acc 0.9358  train_acc 0.9510
+  new best: val 0.9428 -> test 0.9358
+  epoch 10: val_acc 0.9334  test_acc 0.9277  train_acc 0.9438
+  epoch 11: val_acc 0.9322  test_acc 0.9223  train_acc 0.9386
+  epoch 12: val_acc 0.9512  test_acc 0.9371  train_acc 0.9604
+  new best: val 0.9512 -> test 0.9371
+  epoch 13: val_acc 0.9432  test_acc 0.9283  train_acc 0.9490
+  epoch 14: val_acc 0.9538  test_acc 0.9493  train_acc 0.9732
+  new best: val 0.9538 -> test 0.9493
+  epoch 15: val_acc 0.9306  test_acc 0.9247  train_acc 0.9454
+  epoch 16: val_acc 0.9422  test_acc 0.9375  train_acc 0.9598
+  epoch 17: val_acc 0.9528  test_acc 0.9467  train_acc 0.9712
+  epoch 18: val_acc 0.9574  test_acc 0.9476  train_acc 0.9718
+  new best: val 0.9574 -> test 0.9476
+  epoch 19: val_acc 0.9534  test_acc 0.9447  train_acc 0.9720
+done Sat Sep 19 11:55:23 CEST 2026
