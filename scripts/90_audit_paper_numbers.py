@@ -168,6 +168,31 @@ if __name__ == "__main__":
     good &= check("mean Brier, excluding gate rows", sum(noqg) / len(noqg), 0.190, 0.0006)
     good &= check("mean Brier, all rows", sum(allb) / len(allb), 0.201, 0.0006)
 
+    print("\nprose against the frozen pre-registrations (the class the reviewers kept finding)")
+    s19 = (ROOT / "docs/prereg/S19.md").read_text()
+    a9 = s19[s19.index("**A9"):s19.index("**A9") + 400]
+    both = "P-random" in a9 and "P-shared-det" in a9
+    print(f"  {'ok ' if both else 'FAIL'} A9 registered both corpora, so the paper must not say otherwise")
+    good &= both
+    bad = "A9 registered \\texttt{P-random} only" in txt.replace("\n", " ")
+    print(f"  {'ok ' if not bad else 'FAIL'} paper does not claim A9 registered P-random only")
+    good &= not bad
+    stale = "will be released after review" in txt.replace("\n", " ")
+    print(f"  {'ok ' if not stale else 'FAIL'} no claim that public artifacts are unreleased")
+    good &= not stale
+
+    print("\nboundary statements must match the cells")
+    W1c = mean(load("results/ladder/cifar10/W1.json")["acc"])
+    W3c = mean(load("results/ladder/cifar10/W3.json")["acc"])
+    fal = (mean(load("results/ladder/cifar10/W5.json")["acc"]) - W3c) / (W1c - W3c)
+    inx = max((mean(load(f"results/ladder/cifar10/{w}.json")["acc"]) - W3c) / (W1c - W3c)
+              for w in ("W6", "W7", "W9"))
+    good &= check("CIFAR c_align (below one third)", fal, 0.325)
+    good &= check("CIFAR best inexact (below one eighth)", inx, 0.124)
+    tidy = "between a third and two thirds" in txt.replace("\n", " ")
+    print(f"  {'ok ' if not tidy else 'FAIL'} no tidy-fraction boundary claim the cells fall outside")
+    good &= not tidy
+
     print("\nstrings the paper must contain")
     for needle in ["$1.60$", "$96.36\\%$", "$94.76\\%$", "$80.43$", "$28.56$", "QG-7"]:
         good &= appears(txt, needle)
