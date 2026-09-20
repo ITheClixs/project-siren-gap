@@ -64,10 +64,10 @@ if __name__ == "__main__":
     good &= check("W12 residual (shared - random)", w12s - w12r, 7.82)
 
     print("\nthe residual table of the discussion")
-    good &= check("plain reader residual", w11["W1"] - w11["W3"], 80.44)
+    good &= check("plain reader residual", w11["W1"] - w11["W3"], 80.43)
     good &= check("W11b residual",
                   load("results/ladder/mnist/W11_shareddet.json")["variants"]["W11b"]["mean"]
-                  - w11["variants"]["W11b"]["mean"], 28.57)
+                  - w11["variants"]["W11b"]["mean"], 28.56)
     sg_r = load("results/s19/published/scalegmn_P-random-fold_seed0.summary.json")
     sg_s = load("results/s19/published/scalegmn_P-shared-det-fold_seed0.summary.json")
     good &= check("ScaleGMN P-random", sg_r["test_acc"], 94.76, 0.005)
@@ -117,8 +117,17 @@ if __name__ == "__main__":
     good &= check("W12 CIFAR-10 beats the best baseline",
                   44.20 - max(v[2] for v in tbl1.values()), 5.38, 0.005)
 
+    print("\nprobability calls (Brier)")
+    prob = [r for r in csv.DictReader((ROOT / "docs/PREDICTION_OUTCOMES.csv").open())
+            if r["kind"].strip() == "probability" and r["brier"].strip()]
+    allb = [float(r["brier"]) for r in prob]
+    noqg = [float(r["brier"]) for r in prob if not r["prediction"].startswith("QG")]
+    good &= check("probability calls, excluding gate rows", len(noqg), 54, 0)
+    good &= check("mean Brier, excluding gate rows", sum(noqg) / len(noqg), 0.190, 0.0006)
+    good &= check("mean Brier, all rows", sum(allb) / len(allb), 0.201, 0.0006)
+
     print("\nstrings the paper must contain")
-    for needle in ["$1.60$", "$96.36\\%$", "$94.76\\%$", "$80.44$", "$28.57$", "QG-7"]:
+    for needle in ["$1.60$", "$96.36\\%$", "$94.76\\%$", "$80.43$", "$28.56$", "QG-7"]:
         good &= appears(txt, needle)
 
     print("\n" + ("ALL CHECKS PASS" if good else "SOME CHECKS FAILED"))
