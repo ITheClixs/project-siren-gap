@@ -98,6 +98,25 @@ if __name__ == "__main__":
     good &= check("S19 intervals", len(s19), 16, 0)
     good &= check("S19 hits", sum(1 for r in s19 if r["verdict"].strip().upper() == "HIT"), 12, 0)
 
+    print("\npublished baselines, against ScaleGMN Table 1 (NeurIPS 2024)")
+    # transcribed once from the source table; the audit is that the paper still agrees with them
+    tbl1 = {
+        "ScaleGMN-B": (96.59, 80.78, 38.82), "ScaleGMN": (96.57, 80.46, 36.43),
+        "NG-GNN": (91.40, 68.00, 36.04), "DWSNets": (85.71, 67.06, 34.45),
+        "NFN$_{HNP}$": (79.11, 68.94, 28.64), "NFN$_{NP}$": (78.50, 68.19, 33.41),
+    }
+    bench = (PAPER / "tables" / "bench_table.tex").read_text()
+    for name, (a, b, c) in tbl1.items():
+        row = [l for l in bench.splitlines()
+               if re.match(re.escape(name) + r"\s*\\citep", l.strip())
+               or re.match(re.escape(name) + r"\s*&", l.strip())]
+        hit = bool(row) and all(f"{v:.2f}" in row[0] for v in (a, b, c))
+        print(f"  {'ok ' if hit else 'FAIL'} bench row matches ScaleGMN Table 1: {name}")
+        good &= hit
+    # W12 must be first on CIFAR-10 among non-augmented weight-only readers
+    good &= check("W12 CIFAR-10 beats the best baseline",
+                  44.20 - max(v[2] for v in tbl1.values()), 5.38, 0.005)
+
     print("\nstrings the paper must contain")
     for needle in ["$1.60$", "$96.36\\%$", "$94.76\\%$", "$80.44$", "$28.57$", "QG-7"]:
         good &= appears(txt, needle)
