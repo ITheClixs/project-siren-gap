@@ -145,6 +145,20 @@ if __name__ == "__main__":
     good &= check("MNIST real pixels (P0)", mean(load("results/ladder/mnist/P0.json")["acc"]), 97.97)
     good &= check("CIFAR-10 real pixels (P0)", mean(load("results/ladder/cifar10/P0.json")["acc"]), 55.81)
 
+    print("\nthe 2x2 additive split must close")
+    def frac(w):
+        j = load(f"results/ladder/mnist/{w}.json")
+        return (mean(j["acc"] if isinstance(j, dict) else j) - 13.922) / (94.356 - 13.922)
+    ur, up, gr, gp = frac("W12ub"), frac("W12u"), frac("W12b"), frac("W12")
+    w11a = mean(load("results/ladder/mnist/W11a_fixednorm.json")["variants"]["W11a"]["acc"]) \
+        if "variants" in load("results/ladder/mnist/W11a_fixednorm.json") else None
+    good &= check("phasor main effect, at raw bias", up - ur, 0.301)
+    good &= check("grading main effect, at raw bias", gr - ur, 0.046)
+    good &= check("grading measured at the phasor instead", gp - up, 0.059)
+    good &= check("interaction", gp - up - gr + ur, 0.013)
+    good &= check("the four additive terms close the step",
+                  0.296 + 0.301 + 0.046 + 0.013, gp - 0.2606, 0.002)
+
     print("\nprobability calls (Brier)")
     prob = [r for r in csv.DictReader((ROOT / "docs/PREDICTION_OUTCOMES.csv").open())
             if r["kind"].strip() == "probability" and r["brier"].strip()]
