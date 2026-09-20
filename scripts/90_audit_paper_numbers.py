@@ -117,6 +117,34 @@ if __name__ == "__main__":
     good &= check("W12 CIFAR-10 beats the best baseline",
                   44.20 - max(v[2] for v in tbl1.values()), 5.38, 0.005)
 
+    print("\nfactorial attribution (the figure a reviewer caught us misquoting)")
+    fac = load("results/s15/factorial_mnist.json")
+    sh = fac["shapley"]
+    good &= check("Shapley, relabelling (pi)", sh["pi"], 44.24)
+    good &= check("Shapley, sign flips (sigma)", sh["sigma"], 29.86)
+    good &= check("Shapley, pi shifts (rho)", sh["rho"], 4.30)
+    good &= check("Shapley, windings (tau)",
+                  fac["shapley_sum"] - sh["pi"] - sh["sigma"] - sh["rho"], 0.42)
+    good &= check("Shapley sum", fac["shapley_sum"], 78.82)
+    good &= check("relabelling + sign flips (NOT 63)", sh["pi"] + sh["sigma"], 74.10)
+    good &= check("sign-flip-alone cell, the 63 we misattributed",
+                  fac["cells"]["sigma"]["delta"], 62.90)
+
+    print("\nboth exact reframings, on all three corpora")
+    for d, anchors in (("mnist", None), ("fashionmnist", None), ("cifar10", None)):
+        W1 = mean(load(f"results/ladder/{d}/W1.json")["acc"])
+        W3 = mean(load(f"results/ladder/{d}/W3.json")["acc"])
+        for w, name, quoted in (("W4", "c_sort", {"mnist": 0.177, "fashionmnist": 0.170,
+                                                  "cifar10": 0.108}),
+                                ("W5", "c_align", {"mnist": 0.628, "fashionmnist": 0.664,
+                                                   "cifar10": 0.325})):
+            f = (mean(load(f"results/ladder/{d}/{w}.json")["acc"]) - W3) / (W1 - W3)
+            good &= check(f"{d} {name}", f, quoted[d], 0.0015)
+
+    print("\npixel baselines quoted in the introduction")
+    good &= check("MNIST real pixels (P0)", mean(load("results/ladder/mnist/P0.json")["acc"]), 97.97)
+    good &= check("CIFAR-10 real pixels (P0)", mean(load("results/ladder/cifar10/P0.json")["acc"]), 55.81)
+
     print("\nprobability calls (Brier)")
     prob = [r for r in csv.DictReader((ROOT / "docs/PREDICTION_OUTCOMES.csv").open())
             if r["kind"].strip() == "probability" and r["brier"].strip()]
