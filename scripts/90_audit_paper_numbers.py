@@ -23,7 +23,15 @@ def mean(xs) -> float:
     return sum(xs) / len(xs)
 
 
+HAVE_PAPER = (PAPER / "main.tex").exists()
+
+
 def paper_text() -> str:
+    """The paper's LaTeX, or "" when run from the supplementary archive, which ships the numbers
+    but not the sources. Every numeric check compares against a value hard-coded from the paper,
+    so only the string and table checks need the sources."""
+    if not HAVE_PAPER:
+        return ""
     parts = [(PAPER / "main.tex").read_text()]
     parts += [p.read_text() for p in sorted((PAPER / "sections").glob("*.tex"))]
     parts += [p.read_text() for p in sorted((PAPER / "tables").glob("*.tex"))]
@@ -37,6 +45,9 @@ def check(label: str, computed: float, quoted: float, tol: float = 0.011) -> boo
 
 
 def appears(txt: str, needle: str) -> bool:
+    if not HAVE_PAPER:
+        print(f"  skip quoted in paper (sources not shipped): {needle}")
+        return True
     flat = re.sub(r"\\mathbf\{([^}]*)\}", r"\1", txt.replace("\n", " "))
     ok = needle in flat
     print(f"  {'ok ' if ok else 'FAIL'} quoted in paper: {needle}")
@@ -45,6 +56,8 @@ def appears(txt: str, needle: str) -> bool:
 
 if __name__ == "__main__":
     txt = paper_text()
+    if not HAVE_PAPER:
+        print("paper sources not present: running every numeric check, skipping text checks")
     good = True
 
     print("\nladder anchors and readers (MNIST)")
@@ -105,8 +118,11 @@ if __name__ == "__main__":
         "NG-GNN": (91.40, 68.00, 36.04), "DWSNets": (85.71, 67.06, 34.45),
         "NFN$_{HNP}$": (79.11, 68.94, 28.64), "NFN$_{NP}$": (78.50, 68.19, 33.41),
     }
-    bench = (PAPER / "tables" / "bench_table.tex").read_text()
+    bench = (PAPER / "tables" / "bench_table.tex").read_text() if HAVE_PAPER else ""
     for name, (a, b, c) in tbl1.items():
+        if not HAVE_PAPER:
+            print(f"  skip bench row (sources not shipped): {name}")
+            continue
         row = [l for l in bench.splitlines()
                if re.match(re.escape(name) + r"\s*\\citep", l.strip())
                or re.match(re.escape(name) + r"\s*&", l.strip())]
@@ -174,10 +190,10 @@ if __name__ == "__main__":
     both = "P-random" in a9 and "P-shared-det" in a9
     print(f"  {'ok ' if both else 'FAIL'} A9 registered both corpora, so the paper must not say otherwise")
     good &= both
-    bad = "A9 registered \\texttt{P-random} only" in txt.replace("\n", " ")
+    bad = HAVE_PAPER and "A9 registered \\texttt{P-random} only" in txt.replace("\n", " ")
     print(f"  {'ok ' if not bad else 'FAIL'} paper does not claim A9 registered P-random only")
     good &= not bad
-    stale = "will be released after review" in txt.replace("\n", " ")
+    stale = HAVE_PAPER and "will be released after review" in txt.replace("\n", " ")
     print(f"  {'ok ' if not stale else 'FAIL'} no claim that public artifacts are unreleased")
     good &= not stale
 
@@ -189,7 +205,7 @@ if __name__ == "__main__":
               for w in ("W6", "W7", "W9"))
     good &= check("CIFAR c_align (below one third)", fal, 0.325)
     good &= check("CIFAR best inexact (below one eighth)", inx, 0.124)
-    tidy = "between a third and two thirds" in txt.replace("\n", " ")
+    tidy = HAVE_PAPER and "between a third and two thirds" in txt.replace("\n", " ")
     print(f"  {'ok ' if not tidy else 'FAIL'} no tidy-fraction boundary claim the cells fall outside")
     good &= not tidy
 
