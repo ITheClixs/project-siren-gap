@@ -261,9 +261,9 @@ def fig_mechanism() -> None:
 
 def fig_calibration() -> None:
     rows = list(csv.DictReader((ROOT / "docs" / "PREDICTION_OUTCOMES.csv").open()))
-    # H-S1-4a re-measured an anchor already known from an earlier gate: a reproducibility check,
-    # not a forecast, so it is left out of the calibration record (TMLR review, App. G).
-    excluded = {"H-S1-4a"}
+    # Same counting rule as App. G: QG-7 is a gate check attached to no rung's decoded cell, so it
+    # is left out; H-S1-4a (a re-measured anchor) stays in, flagged in the text. 137 intervals.
+    excluded = {"QG-7"}
     iv = [r for r in rows if r["kind"] == "interval"
           and r["prediction"].split(" ")[0] not in excluded]
     # normalize each prediction to its own registered interval: 0 = lo80, 1 = hi80
@@ -275,11 +275,11 @@ def fig_calibration() -> None:
         names.append(pid)
         z_obs.append((obs - lo) / span if span else 0.0)
         hits.append(r["verdict"] == "HIT")
-        arm.append("cifar" if pid.startswith("H-C1") else "grayscale")
+        arm.append("cifar" if pid.startswith("H-C1") else "other")
 
     n_c = sum(a == "cifar" for a in arm)
     n_g = len(arm) - n_c
-    hits_g = [h for h, a in zip(hits, arm) if a == "grayscale"]
+    hits_g = [h for h, a in zip(hits, arm) if a == "other"]
     hits_c = [h for h, a in zip(hits, arm) if a == "cifar"]
 
     fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(5.5, 4.0),
@@ -296,14 +296,18 @@ def fig_calibration() -> None:
                     color="#3B6EA5" if hit else "#C0392B",
                     marker="o" if abs(z - zc) < 1e-9 else ">")
     if n_c:
-        div = y[n_g] + 0.5
-        ax0.axhline(div, color="0.35", lw=0.6, ls=(0, (2, 2)))
-        ax0.text(-0.72, div + 0.55, f"grayscale arms: {sum(hits_g)}/{n_g}",
-                 fontsize=6, color="0.3", va="bottom")
-        ax0.text(-0.72, div - 0.55, f"CIFAR-10 arm: {sum(hits_c)}/{n_c}",
-                 fontsize=6, color="0.3", va="top")
-    ax0.set_yticks(y)
-    ax0.set_yticklabels(names, fontsize=5.4)
+        # the CIFAR-10 arm is a contiguous block in ledger (registration) order, not the last rows
+        c_idx = [i for i, a in enumerate(arm) if a == "cifar"]
+        top, bottom = y[c_idx[0]] + 0.5, y[c_idx[-1]] - 0.5
+        for edge in (top, bottom):
+            ax0.axhline(edge, color="0.35", lw=0.6, ls=(0, (2, 2)))
+        ax0.text(1.92, (top + bottom) / 2, f"CIFAR-10 arm\n{sum(hits_c)}/{n_c}",
+                 fontsize=6, color="0.3", ha="right", va="center")
+        ax0.text(-0.72, y[0] + 1.15, f"all other arms: {sum(hits_g)}/{n_g}",
+                 fontsize=6, color="0.3", va="center")
+    # 137 row labels do not fit legibly; the ledger (docs/PREDICTION_OUTCOMES.csv) lists them in order
+    ax0.set_yticks([])
+    ax0.set_ylabel(f"{len(names)} registered intervals, in registration order", fontsize=7)
     ax0.set_ylim(y[-1] - 0.8, y[0] + 1.8)
     ax0.set_xlim(-0.75, 1.95)
     ax0.set_xticks([0, 0.5, 1])
@@ -314,9 +318,9 @@ def fig_calibration() -> None:
     ax0.text(1.92, y[0] + 1.15, "arrow = off scale", fontsize=5.6, ha="right", color="0.45")
 
     bars = [("nominal", 0.80, "#B8C6D9"),
-            (f"grayscale\n({sum(hits_g)}/{n_g})", float(np.mean(hits_g)), "#9BB2CB")]
+            (f"all other\narms\n({sum(hits_g)}/{n_g})", float(np.mean(hits_g)), "#9BB2CB")]
     if n_c:
-        bars.append((f"CIFAR-10\n({sum(hits_c)}/{n_c})", float(np.mean(hits_c)), "#3B6EA5"))
+        bars.append((f"CIFAR-10\narm\n({sum(hits_c)}/{n_c})", float(np.mean(hits_c)), "#3B6EA5"))
     ax1.bar(range(len(bars)), [b[1] for b in bars], width=0.6,
             color=[b[2] for b in bars], linewidth=0)
     ax1.set_xticks(range(len(bars)))
@@ -324,7 +328,7 @@ def fig_calibration() -> None:
     ax1.set_ylim(0, 1.05)
     ax1.set_ylabel("80% interval coverage")
     ax1.axhline(0.80, color="0.4", lw=0.7, ls=(0, (3, 2)))
-    ax1.set_title("(b)  calibration, before and after", loc="left")
+    ax1.set_title("(b)  coverage by arm", loc="left")
     for xi, b in enumerate(bars):
         ax1.text(xi, b[1] + 0.02, f"{b[1]:.0%}", ha="center", fontsize=7)
 

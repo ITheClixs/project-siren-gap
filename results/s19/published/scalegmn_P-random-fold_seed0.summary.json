@@ -33,5 +33,7 @@
   "note": "first run of this arm computed metrics but reported them only through wandb, which was disabled; rerun with printing patched in",
   "reader_params": 1772042,
   "capacity_note": "within 5.4% of the 1,873,162 every reader in the W12 table is sized to, so the comparison is capacity-matched",
-  "w12_params": 1873162
+  "w12_params": 1874898,
+  "frozen_decoder_params": 1873162,
+  "corrections": "2026-09-25: deviation text corrected (the arm was registered on both corpora, see docs/prereg/S19.md A9); w12_params was the frozen decoder's count, W12's own is 1874898 (results/ladder/mnist/W12.json)."
 }
