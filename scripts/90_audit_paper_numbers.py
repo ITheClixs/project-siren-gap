@@ -12,7 +12,9 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-PAPER = ROOT / "paper" / "tmlr-anon"
+import os
+PAPER = pathlib.Path(os.environ["SIRENGAP_PAPER"]) if os.environ.get("SIRENGAP_PAPER") \
+    else ROOT / "paper" / "v2"
 
 
 def load(rel: str):
@@ -146,16 +148,14 @@ if __name__ == "__main__":
     good &= check("sign-flip-alone cell, the 63 we misattributed",
                   fac["cells"]["sigma"]["delta"], 62.90)
 
-    print("\nboth exact reframings, on all three corpora")
-    for d, anchors in (("mnist", None), ("fashionmnist", None), ("cifar10", None)):
-        W1 = mean(load(f"results/ladder/{d}/W1.json")["acc"])
-        W3 = mean(load(f"results/ladder/{d}/W3.json")["acc"])
-        for w, name, quoted in (("W4", "c_sort", {"mnist": 0.177, "fashionmnist": 0.170,
-                                                  "cifar10": 0.108}),
-                                ("W5", "c_align", {"mnist": 0.628, "fashionmnist": 0.664,
-                                                   "cifar10": 0.325})):
-            f = (mean(load(f"results/ladder/{d}/{w}.json")["acc"]) - W3) / (W1 - W3)
-            good &= check(f"{d} {name}", f, quoted[d], 0.0015)
+    print("\nrecovery fractions, from the registered scorer (per-seed paired, not a ratio of means)")
+    quoted = {"mnist": {"f_W4": 0.177, "f_W5": 0.628, "f_W6": 0.054, "f_W7": 0.048, "f_W9": 0.003},
+              "fashionmnist": {"f_W4": 0.170, "f_W5": 0.664, "f_W6": 0.032, "f_W7": 0.034, "f_W9": -0.008},
+              "cifar10": {"f_W4": 0.108, "f_W5": 0.324, "f_W6": 0.128, "f_W7": 0.101, "f_W9": 0.001}}
+    for d, cells in quoted.items():
+        rf = load(f"results/ladder/{d}/S1_analysis.json")["recovery_fractions"]
+        for k, q in cells.items():
+            good &= check(f"{d} {k}", rf[k]["point"], q, 0.0006)
 
     print("\npixel baselines quoted in the introduction")
     good &= check("MNIST real pixels (P0)", mean(load("results/ladder/mnist/P0.json")["acc"]), 97.97)
@@ -197,17 +197,17 @@ if __name__ == "__main__":
     print(f"  {'ok ' if not stale else 'FAIL'} no claim that public artifacts are unreleased")
     good &= not stale
 
-    print("\nboundary statements must match the cells")
-    W1c = mean(load("results/ladder/cifar10/W1.json")["acc"])
-    W3c = mean(load("results/ladder/cifar10/W3.json")["acc"])
-    fal = (mean(load("results/ladder/cifar10/W5.json")["acc"]) - W3c) / (W1c - W3c)
-    inx = max((mean(load(f"results/ladder/cifar10/{w}.json")["acc"]) - W3c) / (W1c - W3c)
-              for w in ("W6", "W7", "W9"))
-    good &= check("CIFAR c_align (below one third)", fal, 0.325)
-    good &= check("CIFAR best inexact (below one eighth)", inx, 0.124)
-    tidy = HAVE_PAPER and "between a third and two thirds" in txt.replace("\n", " ")
-    print(f"  {'ok ' if not tidy else 'FAIL'} no tidy-fraction boundary claim the cells fall outside")
-    good &= not tidy
+    print("\nboundary statements must match the registered cells")
+    rfc = load("results/ladder/cifar10/S1_analysis.json")["recovery_fractions"]
+    good &= check("CIFAR c_align (just below one third)", rfc["f_W5"]["point"], 0.324, 0.0006)
+    inx = max(rfc[k]["point"] for k in ("f_W6", "f_W7", "f_W9"))
+    good &= check("CIFAR best inexact (just ABOVE one eighth)", inx, 0.128, 0.0006)
+    flat = txt.replace("\n", " ")
+    for bad_phrase in ("between a third and two thirds", "no inexact\ntreatment exceeds $0.124$",
+                       "no inexact treatment exceeds $0.124$", "just below an eighth"):
+        hit = HAVE_PAPER and bad_phrase in flat
+        print(f"  {'ok ' if not hit else 'FAIL'} paper does not say: {bad_phrase!r}")
+        good &= not hit
 
     print("\nstrings the paper must contain")
     for needle in ["$1.60$", "$96.36\\%$", "$94.76\\%$", "$80.43$", "$28.56$", "QG-7"]:
